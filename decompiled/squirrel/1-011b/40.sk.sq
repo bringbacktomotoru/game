@@ -1,0 +1,83 @@
+diary_settings[100].name = "Room Monitor"
+diary_settings[100].texts = ["I met #playername today#KTe1#I just know we'll get along#KTo1#"]
+diary_settings[100].titles = ["Nice to meet you#KTe1#"]
+
+diary_settings[101].name = "Room Monitor"
+diary_settings[101].texts = ["Being the room monitor is so much fun#KTe1# I sent letters to my friends, inviting them over. I can't wait#KTh1#"]
+diary_settings[101].titles = ["Room Monitor"]
+diary_settings[101].lbl_titles = ["Room Monitor"]
+
+diary_settings[102].name = "Room Monitor"
+diary_settings[102].texts = ["Melody came to visit#KTe1# We had so much fun. I wonder what Melody would do differently. I'd love to see how she decorates her room#KTe1#"]
+diary_settings[102].titles = ["The first guest"]
+
+diary_settings[200].name = "Melody's Managerial Mission#eq#"
+diary_settings[200].texts = ["Melody's inviting friends over#MMe1#There's no time to get ready...#playername, lend a hand#MMe1# Pleeease#MMe1#"]
+diary_settings[200].titles = ["Party preparations#MMe1#"]
+
+diary_settings[201].name = "Melody's Managerial Mission#eq#"
+diary_settings[201].texts = ["Melody's going to bake some more cookies#MMe1#/nTalking to Kitty is so nice, it's like she's Melody's big sister#MMe1#", "Melody's so happy to have such great friends. Melody's going to be a great Manager#MMe1#"]
+diary_settings[201].titles = ["Let's give it another try#MMe1#", "Thanks so much for helping#MMh1#"]
+diary_settings[201].lbl_titles = ["Let's give it/nanother try#MMe1#", "Thanks so much/nfor helping#MMh1#"]
+
+diary_settings[202].name = "Melody's Managerial Mission#eq#"
+diary_settings[202].texts = ["The furniture was a bit heavy, but #playername/nmade redecorating so much easier#CNe1#", "Thankfully I could reach all of the high places by myself. We sure did a great job working together#CNe1# The room's so much nicer now."]
+diary_settings[202].titles = ["Helped with Furniture", "Helped by Flying"]
+
+diary_settings[203].name = "Melody's Managerial Mission#eq#"
+diary_settings[203].texts = ["#playername and the others helped so much#MMh1# Next time #playername visits, Melody will definitely entertain them all by herself#MMe1#"]
+diary_settings[203].titles = ["Great get-together#MMe1#"]
+diary_settings[203].lbl_titles = ["Great/nget-together#MMe1#"]
+
+diary_settings[300].name = "Let's Open a Cafe"
+diary_settings[300].texts = ["I made a list of the furniture we'll need#CNo1# Let's make a great Cafe together#CNe1#"]
+diary_settings[300].titles = ["Let's open a Cafe#CNe1#"]
+diary_settings[300].lbl_titles = ["Let's open/na Cafe#CNe1#"]
+
+diary_settings[301].name = "Let's Open a Cafe"
+diary_settings[301].texts = ["What kind of books should we stock#KRq1# #playername made some suggestions#KRq1# I hope our visitors enjoy the selection#KRe1#", "It's too big and heavy to move alone#KRe1# Good thing #playername was there to help#KRe1# Best play carefully, wouldn't want to trip."]
+diary_settings[301].titles = ["Bookshelf prep", "Counter prep"]
+
+diary_settings[302].name = "Let's Open a Cafe"
+diary_settings[302].texts = ["A fluffy sofa was just what we needed#PNq1# It's the perfect place for a quick nap#PNo1# Huh#PNq1# There's no time to rest～#PNq1#", "A TV was just what we needed#PNq1# This is sure to become a popular cafe to hang out#PNo1# Let's get ready#PNe1#"]
+diary_settings[302].titles = ["Relaxing Sofa", "Fun Cafe"]
+
+diary_settings[303].name = "Let's Open a Cafe"
+diary_settings[303].texts = ["Welcome#CNe1# Our Cafe is finally ready#CNo1# #playername, would you like to place an order#CNe1# Take your time, enjoy the atmosphere#CNe1#"]
+diary_settings[303].titles = ["Cafe Open#CNe1#"]
+
+diary_settings[400].name = "Kitty's 3 Wishes"
+diary_settings[400].texts = ["Let's start preparing#KTe1#I called some friends over. I only hope we can clear all 3 tasks beforehand#KTo1#"]
+diary_settings[400].titles = ["Very excited#KTe1#"]
+
+diary_settings[401].name = "Kitty's 3 Wishes"
+diary_settings[401].texts = ["Apple Pie and Black Tea#MMo1# It's all so elegant#MMe1#/nMaybe we can have a party in Melody's room next time#MMo1#", "The tea party was wonderful#PNe1#I ate so much, I'm stuffed#PNe1# I hope I get invited to the next tea party too#PNo1#"]
+diary_settings[401].titles = ["A fanciful tea party", "I'm stuffed#PNe1#"]
+diary_settings[401].lbl_titles = ["A fanciful/ntea party", "I'm stuffed#PNe1#"]
+
+diary_settings[402].name = "Kitty's 3 Wishes"
+diary_settings[402].texts = ["Everyone enjoyed themselves#KTe1# Purin and Melody had fun dancing. I really loved the song we sung at the end.", "I was a little nervous, but our concert went well#KTe1# The last performance really fit the venue#KTe1# Thanks for the great suggestion#KTe1#"]
+diary_settings[402].titles = ["Fun Concert", "Fancy Concert"]
+
+diary_settings[403].name = "Kitty's 3 Wishes"
+diary_settings[403].texts = ["Spending time with friends is wonderful. Next time I'll be the one to help #playername#KTe1#", "#playername said the tea party was fun while taking a catnap. Let's do something like this again#KTe1#"]
+diary_settings[403].titles = ["Thanks", "Sleeptalking"]
+
+diary_settings[500].name = "Leave it to Detective Melody"
+diary_settings[500].texts = ["A unexpected turn of events#MMe1# Detective Melody is on the case#MMe1# Melody's going to get to the heart of this#MMe1#"]
+diary_settings[500].titles = ["Detective Melody#MMe1#"]
+diary_settings[500].lbl_titles = ["Detective/nMelody#MMe1#"]
+
+diary_settings[501].name = "Leave it to Detective Melody"
+diary_settings[501].texts = ["You noticed the Donuts Very sharp, Cinnamon#MMe1# Melody knew you'd make a great assistant#MMe1# We'll get to the bottom of this together.", "I guess I'm a detective's assistant now. Melody doesn't seem to be listening to me...what's going to happen now#CNq1#"]
+diary_settings[501].titles = ["Dependable assistant", "Detective's assistant"]
+diary_settings[501].lbl_titles = ["Dependable/nassistant", "Detective's assistant"]
+
+diary_settings[502].name = "Leave it to Detective Melody"
+diary_settings[502].texts = ["Detective Kitty is Detective Melody's rival. To think that she'd solve the case first...Melody expected no less from her rival.", "The usual suspects, airtight alibis, a rival detective... We're just getting started."]
+diary_settings[502].titles = ["A rival appears", "Questions"]
+
+diary_settings[503].name = "Leave it to Detective Melody"
+diary_settings[503].texts = ["Purin's safe#MMe1# And that's yet another case cracked#MMe1# No case is too tough for Detective Melody#MMh1#", "Purin's safe#MMe1# We won't lose to Kitty next time#MMe1# No case is too tough for Detective Melody#MMh1#"]
+diary_settings[503].titles = ["Case Cracker Melody#MMh1#", "Case cracked"]
+diary_settings[503].lbl_titles = ["Case Cracker/nMelody#MMh1#", "Case cracked"]

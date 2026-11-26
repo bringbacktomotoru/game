@@ -1,0 +1,400 @@
+class ConfTranslater {
+  now_gamesetting = null;
+  old_gamesetting = null;
+  trans_gamesetting = null;
+
+  constructor() {
+    old_gamesetting = GameSetting();
+    trans_gamesetting = GameSetting();
+
+    local r = ::getResource("/tool_translater/conf/translateTarget.conf");
+
+    now_gamesetting = _loadGameSetting(r);
+    old_gamesetting = _loadGameSetting(r);
+    trans_gamesetting = _loadGameSetting(r);
+
+    _clearTranslateTagetString(old_gamesetting);
+    _clearTranslateTagetString(trans_gamesetting);
+
+    local e = ::getResource("tool_translater/conf/error");
+    foreach (k, val in e.getList()) {
+      old_gamesetting.runsk(val.path);
+      trans_gamesetting.runsk(val.path);
+    }
+
+    local d = ::getResource("tool_translater/conf/diff");
+    foreach (k, val in d.getList()) {
+      old_gamesetting.runsk(val.path);
+    }
+
+    local t = ::getResource("tool_translater/conf/trans");
+    foreach (k, val in t.getList()) {
+      trans_gamesetting.runsk(val.path);
+    }
+  }
+
+  function _loadGameSetting(r) {
+    local gset = GameSetting();
+    r.getContent().call(gset);
+    gset.validate();
+    return gset;
+  }
+
+  function translate() {
+    foreach (key, val in getclass(now_gamesetting)) {
+      if (key == "furniture_type_settings") continue;
+      if (key == "scnenv") continue;
+
+      if (length(now_gamesetting[key]) > 0) {
+        _createTransFile(now_gamesetting[key], key);
+        _createDiffFile(now_gamesetting[key], key);
+        _createExceptionHandlingFile(now_gamesetting[key], key);
+      }
+    }
+  }
+
+  function _clearTranslateTagetString(game_setting) {
+    foreach (key, val in getclass(game_setting)) {
+      foreach (setting in game_setting[key]) {
+        if (setting instanceof Setting) {
+          local targets = setting.getTranslateTarget();
+          foreach (idx, target in targets) {
+            if (target instanceof ::Setting.TranslateTextInfo) {
+              foreach (arr in target.get()) {
+                local tmp = setting;
+                foreach (key in arr) {
+                  if (typeof(tmp[key]) == SS_STRING) {
+                    tmp[key] = "";
+                  }
+                  else {
+                    tmp = tmp[key];
+                  }
+                }
+              }
+            }
+            else {
+              setting[target] = "";
+            }
+          }
+        }
+      }
+
+    }
+
+  }
+
+  function _deepcopy(v) {
+    return BinaryInput.decode(BinaryOutput.encode(v, false));
+  }
+
+  function _createTransFile(settings, name) {
+    local file = FileRef(skGetCurrentDir() + "/project/tool_translater/conf/trans/" + name + ".conf");
+
+    local sbuf = StringBuffer();
+
+    local keys = [];
+    foreach (key, val in settings) {
+      keys + key;
+    }
+    keys = ::sortBy(keys, function(key) { return key });
+
+    for (local i = 0; i < keys.len(); i++) {
+      local setting_id = keys[i];
+      local setting = settings[setting_id];
+      local trans_target = setting.getTranslateTarget();
+      local base = "" + name + "[" + setting_id + "]";
+
+      local old_settings = old_gamesetting[name];
+      local trans_settings = trans_gamesetting[name];
+
+      if (setting_id in old_settings) {
+        local old = old_settings[setting_id];
+        local trans = trans_settings[setting_id];
+
+        foreach (idx, target in trans_target) {
+          if (target instanceof ::Setting.TranslateTextInfo) {
+
+            foreach (val in target.get()) {
+              local tmp = setting;
+              local old_tmp = old;
+              local txt = "\t" + base;
+              foreach (key in val) {
+                tmp = tmp[key];
+                old_tmp = old_tmp[key];
+
+                if (isInt(key)) {
+                  txt = txt + "[" + key + "]";
+                }
+                else {
+                  txt = txt + "[\"" + key + "\"]";
+                }
+              }
+
+              if (tmp == old_tmp) {
+                txt = txt + "\t=\t\"" + old_tmp + "\"\n";
+              }
+              else {
+                txt = "#N" + txt + "\t=\t\"" + tmp + "\"\n";
+              }
+              sbuf + txt;
+            }
+          }
+          else {
+            local txt = "\t";
+            if (typeof(setting[target]) == SS_ARRAY) {
+              println("--- new = " + setting[target] + ", diff = " + old[target])
+
+              if (_checkArrayValue(setting[target], old[target])) {
+                txt = txt + base + "." + target + "\t=\t" + _fromStringArrayToString(trans[target]) + "\n";
+              } else {
+                local arr = [];
+                for (local i = 0; i < setting[target].len(); i++) {
+                  local val = _checkValue(setting[target][i], old[target][i]) ? trans[target][i] : setting[target][i];
+                  arr + val
+                }
+                txt = "#N" + txt + base + "." + target + "\t=\t" + _fromStringArrayToString(arr) + "\n";
+              }
+            } else {
+
+              if (_checkValue(setting[target], old[target])) {
+                txt = txt + base + "." + target + "\t=\t\"" + trans[target] + "\"\n";
+              } else {
+                txt = "#N" + txt + base + "." + target + "\t=\t\"" + setting[target] + "\"\n";
+              }
+            }
+            sbuf + txt;
+          }
+
+        }
+
+        delete trans_settings[setting_id];
+
+      } else {
+
+        foreach (idx, target in trans_target) {
+          if (target instanceof ::Setting.TranslateTextInfo) {
+            local tmp = setting;
+            local txt = "#N\t" + name + "[" + setting_id + "]";
+            foreach (arr in target.get()) {
+              foreach (key in arr) {
+                if (typeof(tmp[key]) == SS_ARRAY) {
+                  txt = txt + "[" + key + "]" + "\t=\t" + tmp[key];
+                  sbuf + txt;
+                }
+                else {
+                  tmp = tmp[key];
+                  txt = txt + "[" + key + "]";
+                }
+              }
+            }
+          }
+          else {
+            local txt = "#N\t" + base + "." + target + "\t=\t";
+
+            if (typeof(setting[target]) == SS_ARRAY) {
+              txt = txt + _fromStringArrayToString(setting[target]) + "\n";
+            } else {
+              txt = txt + "\"" + setting[target] + "\"\n";
+            }
+            sbuf + txt;
+          }
+        }
+
+      }
+      if (length(trans_target) > 0) sbuf + "\n";
+    }
+
+    local trans_settings = trans_gamesetting[name];
+    local _delete_keys = [];
+    foreach (key, val in trans_settings) {
+      _delete_keys + key;
+    }
+
+    if (_delete_keys.len() > 0) {
+
+      sbuf + "\n\t// deleted conf settings....\n";
+
+      for (local i = 0; i < _delete_keys.len(); i++) {
+        local setting_id = _delete_keys[i];
+        local trans_target = trans_settings[setting_id];
+        local base = "" + name + "[" + setting_id + "]";
+
+        foreach (key, target in trans_target) {
+          local txt = "\t" + base + "." + key + "\t=\t";
+
+          if (typeof(target) == SS_ARRAY) {
+            txt = txt + _fromStringArrayToString(target) + "\n";
+          } else {
+            txt = txt + "\"" + target + "\"\n";
+          }
+          sbuf + txt;
+        }
+        if (length(trans_target) > 0) sbuf + "\n";
+      }
+    }
+
+    local bb = ByteBuffer();
+    bb.putText(string(sbuf));
+    bb.pos = 0;
+    file.save(bb);
+  }
+
+  function writeExceptionHanding(sbuf, setting, trans_target, base, tab = false) {
+    foreach (target in trans_target) {
+      if (target instanceof ::Setting.TranslateTextInfo) {
+        local tmp = setting;
+        foreach (val in target.get()) {
+          local tmp = setting;
+          local txt = base + " <- {";
+          local tmp_txt = "";
+          sbuf + ((tab ? "\t" : "") + "if (!" + base + ")\t");
+          foreach (key in val) {
+            tmp = tmp[key];
+            txt = txt + "\"" + key + "\"";
+            if (typeof(tmp) == SS_STRING) break;
+
+            txt = txt + " = {";
+            tmp_txt = tmp_txt + "}";
+          }
+          sbuf + txt + "\t=\t\"\"" + tmp_txt + "}\n";
+        }
+      }
+      else {
+        sbuf + ((tab ? "\t" : "") + "if(! " + base + " ){ " + base + " <- {");
+        sbuf + " " + target + " = \"\",";
+        sbuf + " } }\n";
+      }
+    }
+  }
+
+  function _createDiffFile(settings, name) {
+    local file = FileRef(skGetCurrentDir() + "/project/tool_translater/conf/diff/" + name + ".conf");
+
+    local sbuf = StringBuffer();
+    foreach (setting in settings) {
+      local trans_target = setting.getTranslateTarget();
+
+      local _id = (getclass(setting) == SanrioCharaSetting) ? setting.chara_id : setting.id;
+      local base = "" + name + "[" + _id + "]";
+
+      foreach (idx, target in trans_target) {
+        if (target instanceof ::Setting.TranslateTextInfo) {
+          foreach (val in target.get()) {
+            local tmp = setting;
+            local txt = base;
+            foreach (key in val) {
+              tmp = tmp[key];
+
+              if (isInt(key)) {
+                txt = txt + "[" + key + "]";
+              }
+              else {
+                txt = txt + "[\"" + key + "\"]";
+              }
+            }
+            sbuf + txt + "\t=\t\"" + tmp + "\"\n";
+          }
+        }
+        else {
+          local txt = base + "." + target + "\t=\t";
+
+          if (typeof(setting[target]) == SS_ARRAY) {
+            txt = txt + _fromStringArrayToString(setting[target]) + "\n";
+          } else {
+            txt = txt + "\"" + setting[target] + "\"\n";
+          }
+          sbuf + txt;
+        }
+      }
+      if (length(trans_target) > 0) sbuf + "\n";
+    }
+
+    local bb = ByteBuffer();
+    bb.putText(string(sbuf));
+    bb.pos = 0;
+    file.save(bb);
+
+    println("save file " + name)
+  }
+
+  function _createExceptionHandlingFile(settings, name) {
+    local file = FileRef(skGetCurrentDir() + "/project/tool_translater/conf/error/" + name + ".conf");
+
+    local sbuf = StringBuffer();
+    foreach (setting in settings) {
+      local trans_target = setting.getTranslateTarget();
+      local _id = (getclass(setting) == SanrioCharaSetting) ? setting.chara_id : setting.id;
+      local base = "" + name + "[" + _id + "]";
+      writeExceptionHanding(sbuf, setting, trans_target, base);
+      if (length(trans_target) > 0) sbuf + "\n";
+    }
+
+    local trans_settings = trans_gamesetting[name];
+    local _delete_keys = [];
+    foreach (key, val in trans_settings) {
+      _delete_keys + key;
+    }
+    if (_delete_keys.len() > 0) {
+      for (local i = 0; i < _delete_keys.len(); i++) {
+        local setting_id = _delete_keys[i];
+        local trans_target = trans_settings[setting_id];
+        local base = "" + name + "[" + setting_id + "]";
+
+        local _keys = [];
+        foreach (key, _ in trans_target) {
+          _keys + key;
+        }
+
+        writeExceptionHanding(sbuf, setting, _keys, base);
+        if (length(trans_target) > 0) sbuf + "\n";
+      }
+    }
+
+    local bb = ByteBuffer();
+    bb.putText(string(sbuf));
+    bb.pos = 0;
+    file.save(bb);
+
+    println("save file " + name);
+  }
+
+  function _checkValue(val1, val2) {
+    return val1 == val2 ? true : false;
+  }
+  function _checkArrayValue(arr1, arr2) {
+    if (arr1.len() != arr2.len()) return false;
+
+    for (local i = 0; i < arr1.len(); i++) {
+      if (arr1[i] != arr2[i]) return false;
+    }
+
+    return true;
+  }
+  function _fromStringArrayToString(arr) {
+    local txt = "[";
+    for (local i = 0; i < arr.len(); i++) {
+      txt = txt + "\"" + arr[i] + "\"";
+      if (arr[i + 1] != undefined) txt = txt + ",";
+    }
+    txt = txt + "]";
+
+    return txt;
+  }
+
+  function isInt(val) {
+    local chrset = function(...) {
+      local t = {};
+      for (local l = 0; l < vargc; l++) t[vargv[l]] <- true;
+      return t;
+    }
+    local isdigit = chrset(48, 49, 50, 51, 52, 53, 54, 55, 56, 57);
+
+    local val_len = length(val);
+    for (local i = 1; i < val_len; i++) {
+      local ch = val.slice(i - 1, i);
+      if (!isdigit[ch]) return false;
+    }
+
+    return true;
+  }
+}

@@ -1,0 +1,108 @@
+class EventSceneManager {
+  is_talkevent = false;
+
+  current_class_name = null;
+  chara_id = 0;
+
+  end_scene_func = null;
+
+  moveto_panel = null;
+  moveto_param = null;
+
+  constructor() {
+    chara_id = 0;
+    current_class_name = null;
+    is_talkevent = false;
+
+    moveto_panel = null;
+    moveto_param = null;
+  }
+
+  function startEventSceneTalk(event_id, panel, end_func = null, cos_id = -1, skip_enable = true) {
+    this.end_scene_func = end_func;
+    this.is_talkevent = true;
+
+    current_class_name = getclassname(getclass(panel));
+
+    local setting = ::gamesetting.event_scene_settings[event_id];
+
+    local home_ui = ::gamesession.getCurrentScene().getUI();
+    home_ui.movePanel(::TalkViewPanel, false, { "skip_enable" = skip_enable });
+    home_ui.getCurrentPanel().startTalk(setting.getFilePath(), cos_id);
+  }
+
+  function startEventSceneTalks(event_ids, panel, end_func = null, cos_ids = null) {
+    this.end_scene_func = end_func;
+    this.is_talkevent = true;
+
+    local ks_list = [];
+    foreach (event_id in event_ids) {
+      local setting = ::gamesetting.event_scene_settings[event_id];
+      ks_list + setting.getFilePath();
+    }
+
+    local home_ui = ::gamesession.getCurrentScene().getUI();
+    home_ui.movePanel(::TalkViewPanel);
+    home_ui.getCurrentPanel().startTalks(ks_list, cos_ids);
+  }
+
+  function startEventScenesMotionGet(event_ids, panel, end_func = null, cos_ids = null, motion_ids = null) {
+    this.end_scene_func = end_func;
+    this.is_talkevent = true;
+
+    local ks_list = [];
+    foreach (event_id in event_ids) {
+      local setting = ::gamesetting.event_scene_settings[event_id];
+      ks_list + setting.getFilePath();
+    }
+
+    local home_ui = ::gamesession.getCurrentScene().getUI();
+    home_ui.movePanel(::TalkViewPanel);
+    home_ui.getCurrentPanel().startTalks(ks_list, cos_ids, motion_ids);
+  }
+
+  function startEventSceneDiary(diary_id, moveto_panel = null, moveto_param = null, end_func = null, visible_skip = true) {
+    this.end_scene_func = end_func;
+    this.is_talkevent = true;
+    this.moveto_panel = moveto_panel;
+    this.moveto_param = moveto_param;
+
+    local _ds = ::gamesetting.diary_settings[diary_id];
+    local _ks = _ds.getEventPath();
+
+    local _mask = moveto_param && "mask" in moveto_param ? moveto_param["mask"] : null;
+
+    local home_ui = ::gamesession.getCurrentScene().getUI();
+    home_ui.movePanel(::TalkViewPanel);
+    local _cp = home_ui.getCurrentPanel();
+    _cp.setDiaryID(diary_id);
+    _cp.setVisibleSkip(visible_skip);
+    if (_mask) _cp.setPanelMask(_mask);
+    _cp.startTalk(_ks);
+  }
+
+  function endEventSceneFunc() {
+    if (this.end_scene_func) this.end_scene_func();
+
+  }
+
+  function endEventScene() {
+    local home_ui = ::gamesession.getCurrentScene().getUI();
+    local stage = ::gamesession.getCurrentScene().getStage();
+
+    ::gamesession.closeBackLog();
+    local _clazz = moveto_panel ? moveto_panel : ::HomeTopPanel;
+    home_ui.movePanel(_clazz, false, moveto_param);
+    this.moveto_panel = null;
+    this.moveto_param = null;
+
+    is_talkevent = false;
+
+  }
+
+  function isTalkEvent() {
+    return this.is_talkevent;
+  }
+}
+
+::event_manager <- EventSceneManager();

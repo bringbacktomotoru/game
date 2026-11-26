@@ -1,0 +1,37 @@
+sanrio_chara_settings[1].name = "Hello Kitty"
+sanrio_chara_settings[1].nick_name = "Kitty"
+sanrio_chara_settings[1].desc = "A bright and kind girl, Kitty loves/nto bake cookies and play the piano./nShe dreams of one day becoming a pianist or a poet./nHer favorite food is her mother's apple pie."
+
+sanrio_chara_settings[2].name = "My Melody"
+sanrio_chara_settings[2].nick_name = "Melody"
+sanrio_chara_settings[2].desc = "Gentle and good natured, Melody thinks often of her brother /nand dearly treasures the red hood that her grandmother made for her./nShe loves to bake cookies, her favorite food is Almond Poundcake."
+
+sanrio_chara_settings[3].name = "Lala"
+sanrio_chara_settings[3].desc = "The older sister of the twin stars born on the Omoiyari Star in the Yume Star-Cloud./nShe has traveled a long way to Earth to learn how to shine like the brightest of stars./nShe loves drawing and is an excellent cook."
+
+sanrio_chara_settings[4].name = "Wish me mell"
+sanrio_chara_settings[4].desc = "A little girl rabbit from France. Innocent and honest, she has a kind heart./nShe enjoys hotcakes and omelette rice, but is scared of thunder."
+
+sanrio_chara_settings[7].name = "Bonbonribbon"
+sanrio_chara_settings[7].desc = "A pink bunny with a love for fashion,/nher charm point is a large ribbon that her mother made for her./nShe adores dancing and singing."
+
+sanrio_chara_settings[101].name = "Pompompurin"
+sanrio_chara_settings[101].nick_name = "Purin"
+sanrio_chara_settings[101].desc = "A golden retriever lad with a carefree personality,/neasily identified by his trademark brown beret. He loves to collect shoes./nHe loves milk, wiggly things, and his mother's pudding."
+
+sanrio_chara_settings[102].name = "Cinnamoroll"
+sanrio_chara_settings[102].nick_name = "Cinnamon"
+sanrio_chara_settings[102].desc = "Born far away above the clouds, /nCinnamoroll is a pure white puppy whose cutely curling tail earned him his name./nHe can fly by flapping his ears."
+
+sanrio_chara_settings[103].name = "Kiki"
+sanrio_chara_settings[103].desc = "The younger brother of the twin stars born on the Omoiyari Star in the Yume Star-Cloud. /nFull of curiosity and energy, he can be a little hasty./nLoves to invent things and fish for stars."
+
+sanrio_chara_settings[104].name = "Pochacco"
+sanrio_chara_settings[104].desc = "A lively and inquisitive boy who can also be scatterbrained a just a touch nosy./nHe is a fan of going on walks and banana ice cream."
+
+sanrio_chara_settings[105].name = "Kerokerokeroppi"
+sanrio_chara_settings[105].nick_name = "Keroppi"
+sanrio_chara_settings[105].desc = "An energetic and popular boy that loves adventure, Keroppi lives in Donut Pond./nThough he is not great at swimming, hes crawls well and is an excellent singer."
+
+sanrio_chara_settings[107].name = "Mello"
+sanrio_chara_settings[107].desc = "Melody's second cousin, he treasures the red hood she gave him./nHis favorite hobbies include collecting buttons and playing with My Melody."

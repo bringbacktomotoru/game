@@ -1,0 +1,106 @@
+class PackageDownloadScene extends SKViewEx
+{
+  baseview = null;
+  imgview = null;
+
+  msg = null;
+  slider_progress = null;
+
+  state = 0;
+  rate = 0;
+  updator = null;
+
+  constructor(up) {
+    setRect(0, 0, ::screenWidth, ::screenHeight);
+    updator = up;
+
+  }
+
+  function updateLayout() {
+  }
+
+  function setupScene() {
+  }
+
+  function loadScene() {
+    this.baseview = ::loadSKView("/ui/title/Downloading.ui");
+    centerView(this.baseview);
+    this.baseview.pos.y -= (this.baseview.bnd.h - ::screenHeight) / 2.0;
+    addChild(this.baseview);
+
+    local _layer = this.baseview.findChild("layer")
+
+    this.msg = _layer.findChild("lbl_msg");
+    this.msg.setText(::dict.get("update_downloading", [0]));
+    this.slider_progress = Slider(_layer.findChild("bar_progress"));
+    this.slider_progress.setValue(0.0);
+
+    local tex = runsk("/dl/loadingbg/download.sk");
+    this.imgview = SKImageView(Sprite(tex));
+    this.baseview.findChild("pnl_load_image").addChild(this.imgview);
+
+    repaint();
+    suspend();
+  }
+
+  function startScene() {
+    newthread().start(downloadPackage, this);
+    repaint();
+  }
+
+  function endScene() {
+  }
+
+  function releaseScene() {
+  }
+
+  function showScene() {
+  }
+
+  function downloadPackage() {
+    local _confirm_cnt = 0;
+    for (;;) {
+      try {
+        updator.download();
+        break;
+      } catch (ex) {
+        _confirm_cnt++;
+        printexception(ex);
+
+        if (_confirm_cnt > 2) {
+          ::gamesession.showSimpleConfirmDialog(::dict.get("network_error_message"), ::dict.get("network_error_caution"));
+          _confirm_cnt = 0;
+        }
+      }
+    }
+
+    ::playSound("sousa/1511.wav");
+    this.msg.setText(::dict.get("update_downloaded"));
+    this.slider_progress.setValue(1.0);
+    this.rate = 100;
+    repaint();
+    sleep(1500);
+    skRestart();
+  }
+
+  function quitRequested(e) {
+    printf("PackageDownloadScene.quitRequested().\n");
+  }
+
+  function updateScene(dt) {
+    local ts = updator.totalsize;
+    local ds = updator.dlsize;
+    if (ts > 0 && this.rate < 100) {
+      local r = (ds / (ts + 0.0) * 100.0) | 0;
+      if (r != this.rate) {
+        if ((this.rate < 34 && r >= 34) || (this.rate < 67 && r >= 67)) {
+          this.imgview.sp.tex0 = runsk("/dl/loadingbg/download.sk");
+        }
+        this.rate = r ? r : 0;
+        this.msg.setText(::dict.get("update_downloading", [this.rate]));
+        repaint();
+      }
+      this.slider_progress.setValue(ds / (ts + 0.0));
+    }
+  }
+}

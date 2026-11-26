@@ -1,0 +1,288 @@
+local bitsh = [1.0 / (256.0 * 256.0 * 256.0), 1.0 / (256.0 * 256.0), 1.0 / 256.0, 1.0];
+local packcolor = function(c)
+{
+  return (c >> 24) / 255.0 * bitsh[0] + ((c >> 16) & 255) / 255.0 * bitsh[1] + ((c >> 8) & 255) / 255.0 * bitsh[2] + (c & 255) / 255.0 * bitsh[3];
+}
+
+local setcolor = function(c, m, i) {
+  m[i] = (c >>> 24) / 255.0;
+  m[i + 1] = ((c >>> 16) & 255) / 255.0;
+  m[i + 2] = ((c >>> 8) & 255) / 255.0;
+  m[i + 3] = (c & 255) / 255.0;
+}
+
+::texgenpm <- null;
+
+class texgen
+{
+  static opmap = { "%": "mod", ">": "max", "<": "min", "|": "_mix" };
+  static matids = ["miscmat0", "miscmat1", "miscmat2", "miscmat3", "colormat", "uvmat"];
+
+  width = 256;
+  height = 256;
+
+  single = null;
+  ops = null;
+  funcs = null;
+  nextid = 0;
+  nextres = 0;
+
+  skfx = null;
+  tex = null;
+
+  constructor() {
+    funcs = [];
+    ops = [];
+  }
+
+  function generateSKFX() {
+    local a = resroot.getList();
+    foreach (i, v in a) {
+      printf("b %S %S\n", i, v.path);
+    }
+
+    printf("system/ext/texgen.skfx %S %S\n", ::getResource("/system/ext/texgen.skfx"), ::getResource("/system"));
+    local src = ::getResourceContent("/system/ext/texgen.skfx");
+    local sb = StringBuffer();
+    sb + "fs texgen\n{\n"
+
+    local flen = length(funcs), pi = 0;
+    foreach (i, v in funcs) {
+      sb + sprintf("\tlowp vec4 fn%d( lowp vec2 uv){\n\t\t%S\n\t}\n\n", i, v.gencode(i)).replace(88, 48 + pi).replace(89, 49 + pi);
+      pi += v.nparams();
+    }
+
+    sb + "\tvoid main(){\n";
+    foreach (i, v in funcs) {
+      sb + sprintf("\t\tlowp vec4 %S = fn%d( v_uv.xy);\n", v.name, v.id);
+    }
+    if (length(ops) == 0) {
+      sb + sprintf("\t\tgl_FragColor = %S;\n", funcs[0].name);
+    } else {
+
+      foreach (op in ops) {
+        sb + sprintf("\t\tlowp vec4 %S = %S %S %S;\n", op[1].name, op[2].name, op[0], op[3].name);
+      }
+      sb + sprintf("\t\tgl_FragColor = %S;\n", ops.last()[1].name);
+    }
+    sb + "\t\n\t}\n";
+    sb + "}\n"
+
+    printf("texgen generated code ...\n%S\n", sb);
+    skfx = skFXCompile(src.asText() + sb);
+  }
+
+  static function createpm() {
+    local mb = PolygonMeshBuilder();
+    mb.setMaterial(Material());
+    mb.begin(SK_TRIANGLESTRIP);
+    mb.texcoord(0.0, 1.0); mb.vertex(-1.0, -1.0, 0.0);
+    mb.texcoord(1.0, 1.0); mb.vertex(1.0, -1.0, 0.0);
+    mb.texcoord(0.0, 0.0); mb.vertex(-1.0, 1.0, 0.0);
+    mb.texcoord(1.0, 0.0); mb.vertex(1.0, 1.0, 0.0);
+    mb.end();
+    return mb.toPolygonMesh();
+  }
+
+  function generateTexture() {
+    if (!skfx) generateSKFX();
+    if (!::texgenpm) {
+      ::texgenpm = createpm();
+    }
+    local pm = ::texgenpm;
+    if (!tex) {
+      tex = Texture(); tex.create(width, height, SK_RGBA, 0, 0);
+    }
+    local m = pm.face[0].m;
+    m.tec = skfx[0];
+    local pi = 0;
+    foreach (v in funcs) {
+      switch (v.nparams()) {
+      case 1:
+        local mat = Matrix();
+        v.parammat(mat);
+        m[matids[pi++]] = mat;
+        break;
+      case 2:
+        local mat1 = Matrix(), mat2 = Matrix();
+        v.parammat(mat1, mat2);
+        m[matids[pi++]] = mat1;
+        m[matids[pi++]] = mat2;
+        break;
+      }
+    }
+    do {
+      suspend();
+    } while (!skIsGLEnabled());
+
+    local old = skGetRenderTarget();
+    skSetRenderTarget(tex);
+    skSetViewport();
+    pm.render();
+    skSetRenderTarget(old);
+    return tex;
+  }
+
+  function color(t = null) {
+    return colorfunc(t).setgen(this);
+  }
+
+  function sin(t = null) {
+    return sinfunc(t).setgen(this);
+  }
+
+  function cos(t = null) {
+    return cosfunc(t).setgen(this);
+  }
+
+  function grad(t = null) {
+    return gradfunc(t).setgen(this);
+  }
+
+  function checker(t = null) {
+    return checkerfunc(t).setgen(this);
+  }
+}
+
+class texgen.basefunc
+{
+  id = 0;
+  name = "";
+  g = null;
+
+  constructor(t = null) {
+    foreach (i, v in t) { this[i] = v; }
+  }
+
+  function setgen(_g) {
+    g = _g;
+    id = _g.nextid++;
+    name = char(97 + id);
+    _g.funcs + this;
+    return this;
+  }
+
+  function addop(op, a, b) {
+    local x = texgen.res(a);
+    g.ops + [op, x, a, b];
+    return x;
+  }
+
+  function nparams() { return 1; }
+
+  function _add(b) { return addop("+", this, b); }
+  function _sub(b) { return addop("-", this, b); }
+  function _mul(b) { return addop("*", this, b); }
+}
+
+class texgen.res extends texgen.basefunc
+{
+  constructor(b) {
+    super(null);
+    g = b.g;
+    id = -1;
+    name = "x" + (g.nextres++);
+  }
+}
+
+class texgen.colorfunc extends texgen.basefunc
+{
+  color = 0xffffffff;
+
+  constructor(c) {
+    super(null);
+    color = c;
+  }
+
+  function parammat(m) {
+    setcolor(color, m, 0);
+  }
+
+  function gencode(i) {
+    return "return pX[0];";
+  }
+}
+
+class texgen.checkerfunc extends texgen.basefunc
+{
+  color = 858993663;
+  size = 0.5;
+
+  function parammat(m) {
+    setcolor(color, m, 0);
+    m[4] = size;
+  }
+
+  function gencode(i) {
+    return "lowp vec2 s=step( uv.xy, pX[1].xx); return pX[0] * mod( dot(s,s), 2.0); ";
+  }
+}
+
+class texgen.sinfunc extends texgen.basefunc
+{
+  color = 0xffffffff;
+  vec = [3.141592, 0.0];
+  offs = 0.0;
+
+  function parammat(m) {
+    setcolor(color, m, 0);
+    if (typeof(vec) == SS_ARRAY) {
+      m[4] = vec[0];
+      m[5] = vec[1];
+    } else {
+      m[4] = m[5] = vec;
+    }
+    m[6] = offs;
+  }
+
+  function gencode(i) {
+    return "return pX[0] * sin( dot(uv,pX[1].xy)+pX[1].z);";
+  }
+}
+
+class texgen.cosfunc extends texgen.sinfunc
+{
+  function gencode(i) {
+    return "return pX[0] * cos( dot(uv,pX[1].xy)+pX[1].z);";
+  }
+}
+
+class texgen.gradfunc extends texgen.basefunc
+{
+  colormap = [[0.0, 0xffffffff], [1.0, 0xffffffff]];
+  vec = [1.0, 0.0];
+
+  constructor(map) {
+    super(null);
+    colormap = map;
+  }
+
+  function nparams() { return 2; }
+
+  function parammat(m1, m2) {
+    local len = length(colormap);
+    m1[0] = colormap[0][0];
+    setcolor(colormap[0][1], m2, 0);
+    local l;
+    for (l = 1; l < len; l++) {
+      m1[l * 4] = colormap[l][0];
+      m1[l * 4 + 1] = 1.0 / (colormap[l][0] - colormap[l - 1][0]);
+      setcolor(colormap[l][1], m2, l * 4);
+    }
+    for (; l < 4; l++) {
+      m1[l * 4] = 1.0;
+      m1[l * 4 + 1] = 0.0;
+      m2[l * 4] = m2[l * 4 - 4];
+      m2[l * 4 + 1] = m2[l * 4 - 3];
+      m2[l * 4 + 2] = m2[l * 4 - 2];
+      m2[l * 4 + 3] = m2[l * 4 - 1];
+    }
+  }
+
+  function gencode(i) {
+    local src =
+
+    "if( uv.x <= pX[0].x) return pY[0];\n\t\telse if( uv.x <= pX[1].x) return mix( pY[0] , pY[1], (uv.x-pX[0].x)*pX[1].y);\n\t\telse if( uv.x <= pX[2].x) return mix( pY[1] , pY[2], (uv.x-pX[1].x)*pX[2].y);\n\t\telse if( uv.x <= pX[3].x) return mix( pY[2] , pY[3], (uv.x-pX[2].x)*pX[3].y);\n\t\telse return pY[3];\n\t\t"
+    return src;
+  }
+}

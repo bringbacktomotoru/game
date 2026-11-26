@@ -1,0 +1,86 @@
+import SKViewPropertyID;
+
+class FurnitureLevelupResultDialog extends ::Dialog {
+
+  static LEVELUP_FURNITURE_OFFSET = 15.0;
+
+  btn_detail = null;
+  furniture_data = null;
+
+  constructor(uid) {
+    super(::loadSKView("/ui/dialog/LevelupResultDialog.ui"));
+
+    local _ud = ::gamesession.getUserData();
+    this.furniture_data = _ud.getFurnitureData(uid);
+    local _fs = this.furniture_data.getSetting();
+    local _before_lv = this.furniture_data.getLevel() - 1;
+    local _lv = this.furniture_data.getLevel();
+
+    local _lbl_name = this.view.findChild("lbl_name");
+    _lbl_name.setText(_fs.getName());
+
+    local _lbl_complete = this.view.findChild("lbl_complete");
+    _lbl_complete.setText(::dict.get("levelup_complete_onlytext"));
+    local _lbl_health = this.view.findChild("lbl_health");
+    _lbl_health.setText(::dict.get("recover_health"));
+    local _lbl_product = this.view.findChild("lbl_product");
+    _lbl_product.setText(::dict.get("product_time"));
+
+    this.btn_detail = this.view.findChild("btn_detail");
+    ::TapButton(this.btn_detail).view.addEventListener(ACTION_EVENT, actionevent_showDialog);
+
+    _setLevelupFurnitureInfo(_fs, furniture_data.getLevel());
+    _setupFurnitureSeriesIcon(_fs);
+
+    setShowSE(::SoundConstants.SOUND_LEVELUP_RESULT_FURNITURE);
+  }
+
+  function _setupFurnitureSeriesIcon(_fs) {
+    local pnl_series = this.view.findChild("pnl_seriesicon");
+    local icon = SKImageView();
+    icon.setSprite(_fs.getSeriesSetting().getIconSprite());
+    icon.setRect(0, 0, pnl_series.bnd.w, pnl_series.bnd.h);
+    pnl_series.addChild(icon);
+  }
+
+  function _setLevelupFurnitureInfo(_fs, level) {
+
+    local _pnl_levelup = this.view.findChild("pnl_levelup");
+
+    local _pnl_furniture = _pnl_levelup.findChild("pnl_furniture");
+    _pnl_furniture.findChild("lbl_level").setText(::dict.get("nums_level", [level]));
+
+    local _pnl_icon = _pnl_furniture.findChild("pnl_view");
+    local _icon = SKImageView();
+    _icon.setSprite(this.furniture_data.getCurrentIconSprite());
+    _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+    _pnl_icon.addChild(_icon);
+
+    local setting = this.furniture_data.getSetting();
+    local product_now = setting.getProductByLevel(level);
+    local product_max = setting.getMaxProduct();
+
+    local _lbl_after_time = this.view.findChild("lbl_aftertime");
+    _lbl_after_time.setText(::getTimeText(product_now.time));
+    local _gauge_time = ::ValueGauge(this.view.findChild("gauge_time"));
+    _gauge_time.init(product_now.time, product_max.time);
+
+    local _lbl_after_health = this.view.findChild("lbl_afterhealth");
+    _lbl_after_health.setText(product_now.health);
+    local _gauge_health = ::ValueGauge(this.view.findChild("gauge_health"));
+    _gauge_health.init(product_now.health, product_max.health);
+
+  }
+
+  function _getArrowIconSprite() {
+    local _sp = Sprite(::getTexture("/ui/image/icon/icon/next_view_arrow.png"));
+    _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  function actionevent_showDialog(e) {
+    local dlg = ::FurnitureInfoDialog();
+    dlg.setFurnitureData(this.furniture_data, ::FurnitureInfoDialog.MODE_DETAIL);
+    dlg.show();
+  }
+}

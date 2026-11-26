@@ -1,0 +1,194 @@
+class WorkResultDialog extends ::Dialog {
+  lbl_title = null;
+  lbl_gm_val = null;
+  img_icon_gm = null;
+  img_box = null;
+
+  lbl_reward_item = null;
+  pnl_item_icon = null;
+
+  reward = null;
+
+  show_thread = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/WorkResultDialog.ui"));
+
+    this.lbl_title = this.view.findChild("lbl_title");
+    this.lbl_title.setText(::dict.get("work_result"));
+    this.lbl_title.visible = false;
+
+    this.img_box = this.view.findChild("img_box");
+    this.img_box.visible = false;
+
+    this.lbl_reward_item = this.view.findChild("lbl_reward_item");
+    this.lbl_reward_item.visible = false;
+    this.pnl_item_icon = this.view.findChild("pnl_item_icon");
+    this.pnl_item_icon.visible = false;
+
+    this.lbl_gm_val = this.view.findChild("lbl_gm_val");
+    this.lbl_gm_val.visible = false;
+    this.img_icon_gm = this.view.findChild("img_icon_gm");
+    this.img_icon_gm.visible = false;
+
+    this.btn_ok.visible = false;
+  }
+
+  function setReward(reward) {
+    this.reward = reward;
+    local _rewards = reward.rewards;
+    this.lbl_gm_val.setText(_rewards[2].num);
+    _setItemText(::Setting.getItemName(_rewards[3].kind, _rewards[3].id, _rewards[3].num));
+
+    local _item = ::gamesetting.costume_action_settings[reward.wid].getReward(reward.rri);
+    this.pnl_item_icon.clearChildren();
+    this.pnl_item_icon.addChild(ItemCard(_item));
+  }
+
+  function _setItemText(text) {
+    this.lbl_reward_item.setText(text);
+    local _met = this.lbl_reward_item.fontattr.getFontMetrics();
+    local _size = _met.w;
+
+    local _bnd = this.lbl_reward_item.fontattr.getTextBounds(text, text);
+    local _len = _bnd.w;
+    local _pos1 = [], _pos2 = [];
+    this.lbl_reward_item.textbox.getCharPos(0, _pos1);
+    this.lbl_reward_item.textbox.getCharPos(text.len(), _pos2);
+    local _size_y = Math.abs(_pos2[1] - _pos1[1]) + _met.h;
+
+    local _width = Math.min(_len, this.lbl_reward_item.bnd.w);
+    this.img_box.pos.x = this.lbl_reward_item.pos.x + _width / 2.0;
+    this.view.updateLayout();
+  }
+
+  function show(fade) {
+    local _t = newthread();
+    _t.start(startShowFunc, this);
+    super.show(fade);
+  }
+
+  function startShowFunc() {
+
+    sleep(1000);
+    this.lbl_title.visible = true;
+
+    sleep(1000);
+    this.img_box.visible = true;
+    this.lbl_reward_item.visible = true;
+    playSound(::SoundConstants.SOUND_WORK_RESULT_ITEM);
+    sleep(1000);
+    this.pnl_item_icon.visible = true;
+    playSound(::SoundConstants.SOUND_WORK_RESULT_ITEM);
+
+    sleep(1000);
+    this.lbl_gm_val.visible = true;
+    this.img_icon_gm.visible = true;
+    playSound(::SoundConstants.SOUND_WORK_RESULT_GMRM);
+
+    sleep(1000);
+    this.btn_ok.visible = true;
+  }
+
+  function close() {
+    super.close();
+  }
+}
+
+class WorkResultDialog.ItemCard extends SKView {
+  static REWARD_ROTATE = 0;
+  static MONEY_ROTATE = 35;
+  static MOTION_ROTATE = 25;
+
+  view = null;
+
+  reward = null;
+
+  constructor(reward) {
+    this.reward = reward;
+    this.view = ::loadSKView("/ui/common/WorkRewardCard.ui");
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    addChild(this.view);
+
+    local _btn_item = this.view.findChild("btn_item");
+    _btn_item.findChild("pnl_get").visible = false;
+
+    local _pnl_rank = _btn_item.findChild("pnl_rank");
+    if (reward.rank) _pnl_rank.visible = true;
+    else _pnl_rank.visible = false;
+
+    local _pnl_icon = _btn_item.findChild("pnl_icon");
+    local _lbl_value = _btn_item.findChild("lbl_value");
+    local _icon;
+    local _sp;
+
+    local _frame_sp = ::Setting.getItemFrame(reward.kind);
+    if (_frame_sp) {
+      local _frame = SKImageView(_frame_sp);
+      _frame.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      ::rotateSKView(_frame, REWARD_ROTATE, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_frame);
+    }
+
+    local icon_rate = 0.6;
+    local offset_x = _pnl_icon.bnd.w * (1 - icon_rate) / 2;
+    local offset_y = _pnl_icon.bnd.h * (1 - icon_rate) / 2;
+    switch (reward.kind) {
+    case ITEM_TYPE_GM:
+      _sp = ::Setting.getGMIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(offset_x, offset_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      ::rotateSKView(_icon, MONEY_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      _pnl_icon.addChild(_icon);
+
+      _lbl_value.visible = true;
+      _lbl_value.setText(::dict.get("nums_kakeru", [reward.num]));
+      break;
+
+    case ITEM_TYPE_FREERM:
+      _sp = ::Setting.getRMIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(offset_x, offset_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      ::rotateSKView(_icon, MONEY_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      _pnl_icon.addChild(_icon);
+
+      _lbl_value.visible = true;
+      _lbl_value.setText(::dict.get("nums_kakeru", [reward.num]));
+      break;
+
+    case ITEM_TYPE_COSTUME:
+      _lbl_value.visible = false;
+      _icon = ::SKImageView();
+      _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_icon);
+      CostumeIcon(reward.id, _icon, false, false);
+      break;
+
+    case ITEM_TYPE_FURNITURE:
+      _lbl_value.visible = false;
+
+      local _fs = ::gamesetting.furniture_settings[reward.id];
+      if (!_fs) return;
+      _sp = _fs.getIconSpriteUnacquired();
+      _icon = SKImageView(_sp);
+      _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_icon);
+      break;
+
+    case ITEM_TYPE_ITEM:
+      _lbl_value.visible = false;
+
+      break;
+
+    case ITEM_TYPE_MOTION:
+      _lbl_value.visible = false;
+      local _ms = ::gamesetting.costume_motion_settings[reward.id];
+      _sp = _ms.getIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(offset_x, offset_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      ::rotateSKView(_icon, MOTION_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      _pnl_icon.addChild(_icon);
+      break;
+    }
+  }
+}

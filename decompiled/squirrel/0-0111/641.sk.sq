@@ -1,0 +1,17 @@
+return {
+  modeldata = "_masi.mdl"
+  bnd = [0.0, 6.126393, 0.884854, 10.602499, 6.127967, 8.884853]
+
+  material = [
+  {
+    name = "room_mt"
+    tec = "shading.basic"
+    Ka = 0xfffffffd
+    Kd = 0xffffffff
+    Ks = 0xdbdbdbff
+    Ke = 0
+    shiness = 20.0
+    texture0 = "/res/room/creamycafe_pink/tex/creamycafe.png"
+  }
+  ]
+}

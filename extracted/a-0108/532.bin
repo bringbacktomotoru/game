@@ -1,0 +1,586 @@
+{
+  "ID": "08eebffc-e485-4b8d-99bc-ef9f056c1b13",
+  "Version": "2.3.3.0",
+  "Name": "HomeCourseListSelectPanel",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 318,
+        "Children": [
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 140.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.1094
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.7813
+            },
+            "TopMargin": 140.0,
+            "BottomMargin": 140.0,
+            "Tag": 254,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/menu_bg.jpg",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 500.0
+                },
+                "Scale": {
+                  "ScaleX": 0.57,
+                  "ScaleY": 1.38
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.7778,
+                  "Y": 0.72
+                },
+                "LeftMargin": -280.0,
+                "RightMargin": -280.0,
+                "TopMargin": 140.0,
+                "BottomMargin": 140.0,
+                "Tag": 421,
+                "ActionTag": -1042235499,
+                "Size": {
+                  "X": 1280.0,
+                  "Y": 720.0
+                },
+                "Name": "bg",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 48,
+                "LabelText": "育成メニュー",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {},
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 960.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.96
+                },
+                "PreSize": {
+                  "X": 0.3111,
+                  "Y": 0.05
+                },
+                "LeftMargin": 248.0,
+                "RightMargin": 248.0,
+                "TopMargin": 15.0,
+                "BottomMargin": 935.0,
+                "Tag": 253,
+                "ActionTag": 1081587355,
+                "Size": {
+                  "X": 224.0,
+                  "Y": 50.0
+                },
+                "Name": "lbl_title",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "common/white.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 420.0
+                },
+                "Scale": {
+                  "ScaleX": 46.0,
+                  "ScaleY": 48.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.42
+                },
+                "PreSize": {
+                  "X": 0.0222,
+                  "Y": 0.016
+                },
+                "LeftMargin": 352.0,
+                "RightMargin": 352.0,
+                "TopMargin": 572.0,
+                "BottomMargin": 412.0,
+                "Tag": 425,
+                "ActionTag": 921662472,
+                "Size": {
+                  "X": 16.0,
+                  "Y": 16.0
+                },
+                "Name": "img_white",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/frm_side.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 800.0
+                },
+                "Scale": {
+                  "ScaleX": 0.25,
+                  "ScaleY": 1.03
+                },
+                "RotationSkewX": 90.0,
+                "RotationSkewY": 90.0,
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.8
+                },
+                "PreSize": {
+                  "X": 0.0556,
+                  "Y": 0.72
+                },
+                "LeftMargin": 320.0,
+                "RightMargin": 360.0,
+                "TopMargin": -160.0,
+                "BottomMargin": 440.0,
+                "Tag": 422,
+                "ActionTag": 871074146,
+                "Size": {
+                  "X": 40.0,
+                  "Y": 720.0
+                },
+                "Name": "img_frm_side_t",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/frm_side.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 30.0
+                },
+                "Scale": {
+                  "ScaleX": 0.25,
+                  "ScaleY": 1.03
+                },
+                "RotationSkewX": 90.0,
+                "RotationSkewY": 90.0,
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.03
+                },
+                "PreSize": {
+                  "X": 0.0556,
+                  "Y": 0.72
+                },
+                "LeftMargin": 320.0,
+                "RightMargin": 360.0,
+                "TopMargin": 610.0,
+                "BottomMargin": -330.0,
+                "Tag": 426,
+                "ActionTag": 88972524,
+                "Size": {
+                  "X": 40.0,
+                  "Y": 720.0
+                },
+                "Name": "img_frm_side_b",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "BackColorAlpha": 102,
+                "ComboBoxIndex": 1,
+                "SingleColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 420.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.42
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 0.76
+                },
+                "TopMargin": 200.0,
+                "BottomMargin": 40.0,
+                "Tag": 546,
+                "ActionTag": 2103091116,
+                "Size": {
+                  "X": 720.0,
+                  "Y": 760.0
+                },
+                "Name": "pnl_list",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/btn_h3.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "Scale9Width": 180,
+                "Scale9Height": 78,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 220.0,
+                  "Y": 860.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3056,
+                  "Y": 0.86
+                },
+                "PreSize": {
+                  "X": 0.2778,
+                  "Y": 0.078
+                },
+                "LeftMargin": 120.0,
+                "RightMargin": 400.0,
+                "TopMargin": 101.0,
+                "BottomMargin": 821.0,
+                "Tag": 202,
+                "Children": [
+                  {
+                    "FontSize": 34,
+                    "LabelText": "通常育成",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "OutlineSize": 4,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 100.0,
+                      "Y": 39.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.715,
+                      "Y": 0.5385
+                    },
+                    "LeftMargin": 28.5,
+                    "RightMargin": 28.5,
+                    "TopMargin": 18.0,
+                    "BottomMargin": 18.0,
+                    "Tag": 201,
+                    "ActionTag": -477173953,
+                    "Size": {
+                      "X": 143.0,
+                      "Y": 42.0
+                    },
+                    "Name": "label",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 680419493,
+                "Size": {
+                  "X": 200.0,
+                  "Y": 78.0
+                },
+                "Name": "btn_normal",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/btn_h3.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "Scale9Width": 180,
+                "Scale9Height": 78,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 420.0,
+                  "Y": 860.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5833,
+                  "Y": 0.86
+                },
+                "PreSize": {
+                  "X": 0.2778,
+                  "Y": 0.078
+                },
+                "LeftMargin": 320.0,
+                "RightMargin": 200.0,
+                "TopMargin": 101.0,
+                "BottomMargin": 821.0,
+                "Tag": 204,
+                "Children": [
+                  {
+                    "FontSize": 34,
+                    "LabelText": "イベント育成",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "OutlineSize": 4,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 100.0,
+                      "Y": 39.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.875,
+                      "Y": 0.5385
+                    },
+                    "LeftMargin": 12.5,
+                    "RightMargin": 12.5,
+                    "TopMargin": 18.0,
+                    "BottomMargin": 18.0,
+                    "Tag": 205,
+                    "ActionTag": -1232898772,
+                    "Size": {
+                      "X": 175.0,
+                      "Y": 42.0
+                    },
+                    "Name": "label",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": -222246237,
+                "Size": {
+                  "X": 200.0,
+                  "Y": 78.0
+                },
+                "Name": "btn_event",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -195839293,
+            "Size": {
+              "X": 720.0,
+              "Y": 1000.0
+            },
+            "Name": "base",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 720.0,
+          "Y": 1280.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "common/white.png",
+        "font/logotypejp_mp_b_1.ttf",
+        "image/frm_side.png",
+        "image/menu_bg.jpg",
+        "image/ss_btn.plist",
+        "image/ss_btn.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

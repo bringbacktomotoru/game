@@ -1,0 +1,219 @@
+class CostumeRequestLayer {
+  costumerequest_manager = null;
+  balloons = null;
+
+  user_data = null;
+  stage = null;
+  costume_ids = null;
+  last_room_index = null;
+
+  view = null;
+
+  constructor(view) {
+    this.view = view;
+    this.balloons = {};
+
+    local scene = ::gamesession.getCurrentScene();
+    this.user_data = ::gamesession.getUserData();
+    this.stage = scene.getStage();
+
+    this.costume_ids = this.user_data.getCurrentRoomResideCharas();
+    this.last_room_index = this.user_data.getCurrentRoomIndex();
+
+    this.costumerequest_manager = scene.getCostumeRequestManager();
+    this.view.setUpdateFunc(update.bindenv(this));
+  }
+
+  function update(dt) {
+    local room_index = this.user_data.getCurrentRoomIndex();
+    if (this.last_room_index != room_index) {
+      releaseAllBalloons();
+      this.costume_ids = this.user_data.getCurrentRoomResideCharas();
+      this.last_room_index = room_index
+    }
+
+    local now = ::getServerTime();
+    foreach (cos_id in costume_ids) {
+      local mdl = this.stage.getChara(cos_id) || null;
+      local crd = this.costumerequest_manager.getNewRequest(cos_id);
+      if (!mdl || !crd || !crd.isStartedRequest(now)) {
+        releaseBalloon(cos_id);
+        continue;
+      }
+
+      local bl = this.balloons[cos_id];
+      if (!bl) bl = buildBalloon(crd);
+      bl.update(dt);
+    }
+  }
+
+  function buildBalloon(crd) {
+    local bl = this.balloons[crd.getCostumeID()] || null;
+    if (bl) return;
+
+    bl = Balloon(this);
+    bl.build(crd);
+    this.view.addChild(bl.view);
+    this.balloons[crd.getCostumeID()] <- bl;
+
+    return bl;
+  }
+
+  function releaseBalloon(costume_id) {
+    if (!(costume_id in this.balloons)) return;
+
+    local bl = delete balloons[costume_id];
+    this.view.removeChild(bl.view);
+    bl.release();
+  }
+
+  function releaseAllBalloons() {
+    foreach (key, balloon in this.balloons) {
+      this.view.removeChild(balloon.view);
+      balloon.release();
+    }
+    this.balloons = {};
+  }
+
+  function setEnableBalloonAll(b) {
+    foreach (bl in this.balloons) {
+      bl.setEnableButton(b);
+    }
+  }
+}
+
+class CostumeRequestLayer.Balloon {
+  data = null;
+
+  layer = null;
+  camera = null;
+
+  model = null;
+
+  interval_id = null;
+  tap_btn = null;
+
+  view = null;
+  btn = null;
+
+  v_1 = Vector3D();
+
+  constructor(layer) {
+    this.layer = layer;
+
+    this.camera = ::gamesession.getCurrentScene().getStage().renderer.camera;
+
+    this.view = ::loadSKView("/ui/common/ProductIcon.ui");
+    this.view.findChild("pnl_product_layer").setVisible(false);
+
+    this.btn = this.view.findChild("pnl_costumerequest_layer");
+    this.btn.setVisible(true);
+    this.tap_btn = ::TapButton(this.btn);
+    this.tap_btn.setTappedJingle(SoundConstants.SOUND_WORK_END, 4500);
+    this.tap_btn.setClickFunc(releaseFunc.bindenv(this), false);
+    this.tap_btn.setRepeatable(false);
+  }
+
+  function build(crd) {
+    this.data = crd;
+
+    local stage = ::gamesession.getCurrentScene().getStage();
+    this.model = stage.getChara(this.data.getCostumeID());
+
+    this.interval_id = setInterval(_animebody.bindenv({
+      self = this,
+      timer = 0
+    }), 1);
+  }
+
+  function release() {
+    if (this.interval_id != -1) {
+      clearInterval(this.interval_id);
+      this.interval_id = -1;
+    }
+  }
+
+  function setEnableButton(b) {
+    this.btn.enabled = b;
+  }
+
+  function update(dt) {
+    if (!this.model) return;
+    if (this.model instanceof CharaModel) {
+      if (this.model.isFurnitureScriptRunning()) {
+        this.view.visible = false;
+        return;
+      }
+      else {
+        this.view.visible = true;
+      }
+    }
+
+    v_1.set(0, 0, 0);
+    local _sk3d = model.obj.sk3d;
+    if (_sk3d.parent) {
+      v_1.add(_sk3d.parent.pos);
+
+      local bone = _sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.add(p0[12], 0, p0[14]).transform0(_sk3d.parent.gmat);
+    }
+    v_1.add(this.model.getPos()).add(0, 2.5, 0.0);
+
+    local v = this.camera.project(v_1);
+
+    local x = (layer.view.bnd.w - ::screenWidth) / 2.0 + ::screenWidth * v.x;
+    local y = (layer.view.bnd.h - ::screenHeight) / 2.0 + ::screenHeight * v.y;
+    this.view.pos.set(x, y, v.z);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function releaseFunc() {
+    this.layer.setEnableBalloonAll(false);
+
+    local v = this.camera.project(v_1.set(this.model.getPos()).add(-0.5, 2.0, 0.0));
+    local x = ::screenWidth * v.x;
+    local y = ::screenHeight * v.y;
+
+    local cos_id = this.data.getCostumeID();
+    local setting = ::gamesetting.costume_request_settings[this.data.getID()];
+    local event_idx = this.data.getEventIndex();
+
+    local ret = ::gamesession.getCurrentScene().getCostumeRequestManager().recieveRequest(cos_id, event_idx, setting.getID());
+    if (!ret) {
+      this.layer.setEnableBalloonAll(true);
+      this.layer.releaseBalloon(cos_id);
+      return;
+    }
+
+    ::gamesession.getTapViewLayer().addCompleteProductEffect(x, y, 80, 65, "/res/efx/ptd/complete_work.sk3");
+
+    local _event_id = setting.getRecieveEventID(event_idx);
+    ::event_manager.startEventSceneTalk(_event_id, this, _showResuestDialog.bindenv(this), cos_id);
+    this.layer.setEnableBalloonAll(true);
+  }
+
+  function _showResuestDialog() {
+    local dlg = ::CostumeRequestDialog();
+    dlg.setCostumeRequestData(this.data);
+    dlg.show();
+  }
+
+  function _animebody(dt) {
+    timer += dt;
+
+    if (!self.btn.visible) return;
+
+    local cameraobj_pos_z = ::gamesession.getCurrentScene().stage.renderer.cameraobj.pos.z;
+    local dist = self.model.getPos().z - cameraobj_pos_z;
+
+    local t = timer % 1000;
+    local base_scale = 1.0 + 1.0 * (30.0 + cameraobj_pos_z) / 30.0;
+    local s = base_scale * (1.0 + Math.abs(t - 500) / 10000.0);
+    self.tap_btn.base_scale = s;
+    self.tap_btn.view.scale << s;
+    self.tap_btn.view.matdirty = true;
+    self.tap_btn.view.parent.repaint();
+  }
+}

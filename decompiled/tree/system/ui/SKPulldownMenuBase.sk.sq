@@ -1,0 +1,315 @@
+class SKPulldownMenuBase extends SKView
+{
+  adapt = null;
+
+  currentitem = null;
+  currentitemview = null;
+
+  popupshown = false;
+  popupc = null;
+  menustack = null;
+
+  mousestate = 0;
+
+  mgnx = 4;
+  mgny = 4;
+  lsb = -8;
+
+  nextintervalid = 0;
+
+  constructor() {
+    adapt = MenuAdaptor();
+  }
+
+  function setMenuAdaptor(a) {
+    adapt = a;
+  }
+
+  function getSelectedItem() {
+    return currentitem;
+  }
+
+  function selectItem(o) {
+    if (currentitem == o) return false;
+    currentitem = o;
+    if (currentitemview) {
+      removeChild(currentitemview);
+    }
+    if (o) {
+      currentitemview = adapt.getItemView(0, o, currentitemview, this, false);
+      if (currentitemview) {
+        addChild(currentitemview);
+      }
+    } else {
+      currentitemview = null;
+    }
+    return true;
+  }
+
+  function getSelectedItem() {
+    return currentitem;
+  }
+
+  function enableStateChanged(b) {
+    updateComponentState(mousestate | (b * 4));
+    repaint();
+  }
+
+  function processEvent(e) {
+    if (e.src == this) {
+      switch (e.id) {
+      case MOUSE_ENTERED:
+        mousestate |= 1;
+        updateComponentState(mousestate | (isEnabled() * 4));
+        repaint();
+        break;
+      case MOUSE_EXITED:
+        mousestate &= 0xfffffffe;
+        updateComponentState(mousestate | (isEnabled() * 4));
+        repaint();
+        break;
+      case MOUSE_PRESSED:
+        startMenu();
+        break;
+      }
+    }
+    return super.processEvent(e);
+  }
+
+  function startMenu() {
+    mousestate |= 2;
+    updateComponentState(mousestate | 4);
+
+    local root = getRoot();
+    popupc = PulldownPopupRoot(this, root);
+    root.addChild(popupc);
+    popupshown = true;
+
+    menustack = [];
+    showMenu(this, adapt.rootnode);
+  }
+
+  function endMenu(item) {
+    clearnext();
+    mousestate &= (~2);
+    updateComponentState(mousestate | 4);
+    if (popupc != null) {
+      popupc.parent.removeChild(popupc);
+      popupc.clearChildren();
+    }
+    popupshown = false;
+    popupc = null;
+
+    if (currentitem != item && item) {
+      postActionEvent(item, 0);
+    }
+    if (item) {
+      selectItem(item);
+    }
+  }
+
+  function showMenu(comp, obj) {
+    local listadapt = adapt.getListAdaptor(obj);
+    if (!listadapt) return;
+    local list = createListView();
+    local board;
+    local scroll;
+
+    local r = Rect2D();
+    r.set(comp.bnd);
+    r.transform(comp.mat);
+    local sh = getRoot().bnd.h;
+    if (length(menustack) == 0) {
+
+      local h1 = sh - (r.y + r.h);
+      local h2 = r.y;
+      r.x += mgnx;
+      r.w -= mgnx * 2;
+      local lh = listadapt.getCount() * listadapt.getCellHeight();
+      local rh = Math.min(sh / 3, lh) | 0;
+      if (r.y + r.h + rh + mgny * 2 > sh) {
+        r.h = Math.min(lh, sh / 3) | 0;
+        r.y = r.y - r.h - mgny;
+      } else {
+        r.y += r.h + mgny;
+        r.h = rh;
+      }
+    } else {
+      local sw = getRoot().bnd.w;
+      local w = adapt.getListWidth(obj);
+
+      if (r.x + r.w + w + lsb * mgnx * 2 >= sw) {
+        r.x = r.x - r.w + w - lsb - mgnx;
+      } else {
+        r.x = r.x + r.w + lsb + mgnx;
+      }
+      r.w = w;
+
+      local lh = listadapt.getCount() * listadapt.getCellHeight();
+      local rh = Math.min(lh, sh * 2 / 3) | 0;
+      r.h = rh;
+    }
+    list.setListAdaptor(listadapt);
+    board = createMenuBoard(r);
+    r.x = mgnx; r.y = mgny;
+    scroll = createScrollPane(r);
+    scroll.setContent(list);
+    board.addChild(scroll);
+    popupc.addChild(board);
+
+    if (currentitem) {
+      local i = listadapt.itemIndexOf(currentitem);
+      if (i >= 0) list.setSelectedIndex(i);
+    }
+
+    local listener = PulldownListener(this, list, length(menustack));
+    list.addEventListener(MOUSE_EVENT, listener.procevent, listener);
+    list.addEventListener(ITEM_EVENT, listener.procevent, listener);
+    list.requestFocus();
+
+    menustack + board;
+  }
+
+  function clearMenu(depth) {
+    for (local l = length(menustack) - 1; l >= depth; l--) {
+      popupc.removeChild(menustack.pop());
+    }
+  }
+
+  function clearnext() {
+    if (nextintervalid) {
+      clearInterval(nextintervalid);
+      nextintervalid = 0;
+    }
+  }
+
+  function postItemEvent(id, i) {
+    local e = Event();
+    e.id = id;
+    e.src = this;
+    e.actioncmd = i;
+    ::rootview.postEvent(e);
+  }
+
+  function createListView() {
+    return ListView();
+  }
+
+  function createScrollPane() {
+    return null;
+  }
+
+  function updateComponentState(st) {
+  }
+
+  function createMenuBoard(r) {
+  }
+
+}
+
+class PulldownListener
+{
+  menu = null;
+  menuadapt = null;
+  listview = null;
+  listadapt = null;
+  depth = 0;
+
+  constructor(m, l, d) {
+    menu = m;
+    menuadapt = menu.adapt;
+    depth = d;
+    listview = l;
+    listadapt = listview.adapt;
+  }
+
+  function procevent(e) {
+    if (e.src != listview) return;
+    local idx = listview.selectedidx;
+    local item = idx < 0 ? null : listadapt.getItem(idx);
+    local comp = idx < 0 ? null : listview.getItemView(idx);
+    if (e.id != MOUSE_WHEEL_MOVED) {
+      e.consume();
+    }
+    switch (e.id) {
+    case MOUSE_MOVED:
+      if (depth == length(menu.menustack) - 1) {
+        if (listview.mouseonidx < 0 || listview.mouseonidx == idx) {
+          break;
+        }
+        listview.setSelectedIndex(listview.mouseonidx);
+      }
+      idx = listview.mouseonidx;
+      item = idx < 0 ? null : listadapt.getItem(idx);
+      comp = idx < 0 ? null : listview.getItemView(idx);
+
+    case ITEM_SELECTED:
+      if (item) {
+        timernext(idx, item, comp, depth);
+        menu.postItemEvent(ITEM_SELECTED, item);
+      }
+      break;
+    case MOUSE_ENTERED:
+      if (e.isMouseDown()) {
+        listview.requestDrag(e);
+      }
+      break;
+    case MOUSE_EXITED:
+      if (depth == length(menu.menustack) - 1) {
+        listview.setSelectedIndex(-1);
+      }
+      break;
+    case MOUSE_PRESSED:
+      if (item && menuadapt.hasList(item)) {
+        menu.shownext(item, comp, depth);
+      }
+      break;
+    case MOUSE_RELEASED:
+      if (item) {
+        if (menuadapt.hasList(item)) {
+          menu.shownext(item, comp, depth);
+          break;
+        }
+      }
+      if (idx >= 0) {
+        menu.endMenu(item);
+      }
+      break;
+    }
+  }
+
+  function timernext(idx, item, comp, depth) {
+    menu.clearnext();
+    local func = function() {
+      menu.clearMenu(depth + 1);
+      if (menu.adapt.hasList(item)) {
+        menu.showMenu(comp, item);
+        listview.setSelectedIndex(idx);
+      }
+      menu.nextintervalid = null;
+    }.bindenv(this);
+    menu.nextintervalid = setTimeout(func, 300);
+  }
+}
+
+class PulldownPopupRoot extends SKView
+{
+  menu = null;
+
+  constructor(m, r) {
+    menu = m;
+    bnd.set(0, 0, r.bnd.w, r.bnd.h);
+  }
+
+  function processEvent(e) {
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      if (e.src == this) {
+        menu.endMenu(null);
+        menu.postItemEvent(ITEM_DESELECTED, null);
+      }
+      break;
+    }
+    return super.processEvent(e);
+  }
+}

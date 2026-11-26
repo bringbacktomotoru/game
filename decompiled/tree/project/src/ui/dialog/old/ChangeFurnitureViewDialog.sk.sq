@@ -1,0 +1,133 @@
+class ChangeFurnitureViewDialog extends ::Dialog {
+  data = null;
+  setting = null;
+  model_list = null;
+
+  current_index = null;
+
+  view3d = null;
+
+  lbl_name = null;
+  lbl_desc = null;
+  lbl_level = null;
+  pnl_icon_list = null;
+  pnl_scene = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/ChangeFurnitureViewDialog.ui"));
+
+    this.lbl_name = this.view.findChild("lbl_name");
+    this.lbl_desc = this.view.findChild("lbl_desc");
+    this.lbl_level = this.view.findChild("lbl_level");
+    this.pnl_icon_list = this.view.findChild("pnl_icon_list");
+    this.pnl_scene = this.view.findChild("pnl_scene");
+
+    view3d = Furniture3DView();
+    view3d.setRect(0, 0, this.pnl_scene.bnd.w, this.pnl_scene.bnd.h);
+    view3d.updateLayout();
+    this.pnl_scene.addChild(view3d);
+    view3d.renderer.cameraobj.pos.set(0, 0.5, -6);
+    view3d.renderer.cameraobj.update(0);
+  }
+
+  function setData(furniture_data) {
+    this.data = furniture_data;
+    this.setting = ::gamesetting.furniture_settings[this.data.getID()];
+
+    this.model_list = [];
+    foreach (idx in this.setting.getViewLevelList()) {
+      this.model_list + null;
+    }
+
+    _setupFurnitureIcon();
+    changeCurrentFurniture(this.data.getCurrentViewIndex());
+  }
+
+  function getCurrentIndex() {
+    return this.current_index;
+  }
+
+  function _setupFurnitureIcon() {
+    local offset = 35;
+    foreach (idx, lv in this.setting.getViewLevelList()) {
+      println(idx + " = " + lv)
+
+      local path = "/image/icon/furniture/" + this.setting.getID() + "_" + idx + ".png";
+      local icon = Icon(idx, path);
+      icon.setFunc(changeCurrentFurniture.bindenv(this));
+
+      icon.pos.x = offset;
+      this.pnl_icon_list.addChild(icon);
+      offset += icon.bnd.w + 50;
+    }
+  }
+
+  function changeCurrentFurniture(idx) {
+    if (this.current_index == idx) return;
+    _removeFurnitureModel();
+
+    this.current_index = idx;
+    local level = setting.getViewLeve(this.current_index);
+
+    this.lbl_name.setText(setting.getName(this.current_index));
+    this.lbl_desc.setText(setting.getDesc(this.current_index));
+    this.lbl_level.setText(::dict.get("caution_view_level", [level]));
+
+    local _enable = this.data.getLevel() >= level ? true : false;
+    this.btn_ok.setEnabled(_enable);
+
+    _addFurnitureModel();
+  }
+
+  function _addFurnitureModel() {
+    if (!this.model_list[this.current_index]) {
+      local obj = ::StageObject(this.view3d.scn);
+      ::ViewFactory.buildFurnitureModel(obj, this.data, this.current_index);
+      obj.sk3d.rot.setHPB(10 * Math.PI / 180.0, -10 * Math.PI / 180.0, 0);
+      obj.sk3d.matdirty = true;
+
+      this.model_list[this.current_index] = obj;
+    }
+
+    this.model_list[this.current_index].addToStage();
+    this.view3d.repaint();
+  }
+  function _removeFurnitureModel() {
+    if (!this.model_list[this.current_index]) return;
+    this.model_list[this.current_index].removeFromStage();
+    this.view3d.repaint();
+  }
+}
+
+class ChangeFurnitureViewDialog.Icon extends SKView {
+  index = null;
+  icon = null;
+  func = null;
+  icon_w = 70;
+  icon_h = 70;
+
+  constructor(idx, path) {
+    this.index = idx;
+
+    local sp = ::getSprite(path);
+    sp.blend = SK_MIX;
+    this.icon = SKImageView();
+
+    this.icon.setSprite(sp);
+    this.icon.setRect(0, 0, icon_w, icon_h, icon_w / 2, icon_h / 2);
+    addChild(this.icon);
+
+    setRect(0, 0, icon.bnd.w, icon.bnd.h);
+
+    ::TapButton(this.icon).view.addEventListener(ACTION_EVENT, actionevent);
+  }
+
+  function setFunc(func) {
+    this.func = func;
+  }
+
+  function actionevent(e) {
+    e.consume();
+    func(this.index);
+  }
+}

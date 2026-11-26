@@ -1,0 +1,17 @@
+panel_mission_settings[102].condition_text = "Complete 'Room Monitor (1)'"
+
+panel_mission_settings[202].condition_text = "Complete 'Melody's Managerial Mission#eq# (1)'"
+
+panel_mission_settings[203].condition_text = "Complete Melody's Managerial Mission#eq# (2)'"
+
+panel_mission_settings[302].condition_text = "Complete 'Let's Open a Cafe (1)'"
+
+panel_mission_settings[303].condition_text = "Complete 'Let's Open a Cafe (2)'"
+
+panel_mission_settings[402].condition_text = "Complete 'Kitty's 3 Wishes (1)'"
+
+panel_mission_settings[403].condition_text = "Complete 'Kitty's 3 Wishes (2)'"
+
+panel_mission_settings[502].condition_text = "Complete 'Leave it to Detective Melody (1)'"
+
+panel_mission_settings[503].condition_text = "Complete 'Leave it to Detective Melody (2)'"

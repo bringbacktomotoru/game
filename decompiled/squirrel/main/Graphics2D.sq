@@ -1,0 +1,354 @@
+Texture.res <- null;
+
+function getTexture(src) {
+  if (!src) {
+    return null;
+  }
+  if (src instanceof SS_STRING) {
+    src = ::getResource(src);
+    if (!src) return null;
+  }
+  if (src.userdata) return src.userdata;
+  try {
+    local img = src.getContent();
+    local tex = Texture();
+    tex.load(img);
+    tex.ref = weakref(src);
+    src.flush();
+    src.userdata = tex;
+    return tex;
+  } catch (e) {
+    printf("texture loading error : %S\n", src.path);
+    printexception(e);
+    return null;
+  }
+}
+
+Sprite.constructor <- function(src = null) {
+  shadersrc = skGetDefaultSpriteShader();
+  if (!shadersrc) throw Exception("no default sprite shader");
+
+  if (src instanceof Texture) {
+    tex0 = src;
+  } else
+  if (src instanceof RGBAImage) {
+    tex0 = Texture();
+    tex0.load(src);
+  } else
+  if (src instanceof ::Resource) {
+
+    if (src.userdata) {
+      if (src.userdata instanceof Texture) {
+        tex0 = src.userdata;
+      } else
+      if (src.userdata instanceof Sprite) {
+        set(clone src.userdata);
+        return;
+      }
+    } else
+    if (src.getContent() instanceof Sprite) {
+      src.userdata = src.cache;
+      src.flush();
+      set(clone src.userdata);
+      return;
+    } else {
+      tex0 = ::getTexture(src);
+    }
+    if (!tex0) throw Exception("invalid Sprite source : " + src);
+  }
+  if (tex0) {
+    bnd = Rect2D(0, 0, tex0.width, tex0.height);
+  } else {
+    bnd = Rect2D(0, 0, 32, 32);
+  }
+
+}
+
+Sprite.set <- function(sp) {
+
+  shadersrc = sp.shadersrc;
+  tex0 = sp.tex0;
+  tex1 = sp.tex1;
+  blend = sp.blend;
+  color = sp.color;
+  bnd = sp.bnd;
+  pos = sp.pos;
+  mat = sp.mat;
+  uvmat0 = sp.uvmat0;
+  uvmat1 = sp.uvmat1;
+  streach = sp.streach;
+}
+
+Sprite._cloned <- function(org) {
+
+  bnd = clone bnd;
+  pos = clone pos;
+  mat = clone mat;
+  uvmat0 = clone uvmat0;
+  uvmat1 = clone uvmat1;
+}
+
+Sprite.setSubBounds <- function(bnd) {
+  if (!uvmat0) uvmat0 = Matrix();
+  local b = bnd;
+  local sx = 1.0 / tex0.width;
+  local sy = 1.0 / tex0.height;
+  uvmat0.identity().translate(b[0] * sx, b[1] * sy, 0.0).scale(b[2] * sx, b[3] * sy, 1.0);
+}
+
+class ImageClip
+{
+  clipid = "";
+  subbnd = null;
+  pivot = null;
+  stretch = null;
+  color = 0xffffffff;
+  colorhsv = null;
+  blend = 0;
+
+  uvmat = null;
+  colormat = null;
+  stretchrect = null;
+
+  constructor(t = null) {
+    if (t) {
+      readJSON(t);
+    }
+  }
+
+  function readJSON(t) {
+    foreach (i, v in t) {
+      this[i] = v;
+    }
+  }
+
+  function writeJSON() {
+    local t = {
+      clipid = clipid,
+      subbnd = subbnd,
+      pivot = pivot,
+      stretch = stretch,
+      blend = blend,
+      color = color,
+      colorhsv = colorhsv,
+    };
+    return t;
+  }
+
+  function getUVMatrix(imagesrc) {
+    if (!uvmat) {
+      local b = subbnd;
+      uvmat = Matrix();
+      local sx = 1.0 / imagesrc.width;
+      local sy = 1.0 / imagesrc.height;
+      uvmat.identity().translate(b[0] * sx, b[1] * sy, 0.0).scale(b[2] * sx, b[3] * sy, 1.0);
+    }
+    return uvmat;
+  }
+
+  function getStretchRect() {
+    if (!stretchrect) {
+      stretchrect = Rect2D(stretch[0], stretch[1], stretch[2], stretch[3]);
+    }
+    return stretchrect;
+  }
+
+  function createSprite(tex) {
+    local sp = Sprite(tex);
+    if (pivot) { sp.bnd.x = -pivot[0]; sp.bnd.y = -pivot[1]; }
+    if (subbnd) {
+      sp.uvmat0 = getUVMatrix(tex);
+      sp.bnd.w = subbnd[2];
+      sp.bnd.h = subbnd[3];
+    }
+    if (stretch) {
+      sp.streach = getStretchRect();
+      sp.punch = stretch[4] ? 1 : 0;
+    }
+
+    sp.color0 = color;
+    sp.blend = blend;
+    return sp;
+  }
+}
+
+class ImageClipSet
+{
+  name = "";
+  group = 0;
+  comment = "";
+  imagesrc = "";
+  cliplist = null;
+
+  constructor(t = null) {
+    if (t) {
+      readJSON(t);
+    }
+  }
+
+  function getClip(clipid) {
+    foreach (v in cliplist) {
+      if (v.clipid == clipid) return v;
+    }
+    return null;
+  }
+
+  function getClipSprite(clipid) {
+    local c = getClip(clipid);
+    if (!c) return null;
+
+    local r = ::getResource(imagesrc);
+    if (!r) return null;
+    local tex = ::getTexture(r);
+    if (!tex) return null;
+
+    return c.createSprite(tex);
+  }
+
+  function readJSON(t) {
+    name = t.name;
+    group = t.group;
+    comment = t.comment;
+    imagesrc = t.imagesrc;
+    cliplist = array(length(t.cliplist));
+    foreach (i, v in t.cliplist) {
+      cliplist[i] = ImageClip(v);
+    }
+
+  }
+
+  function writeJSON() {
+    local a = array(length(cliplist));
+    foreach (i, v in cliplist) {
+      a[i] = v.writeJSON();
+    }
+    local t = {
+      name = name,
+      group = group,
+      comment = comment,
+      imagesrc = imagesrc,
+      cliplist = a,
+    };
+    return t;
+  }
+}
+
+function getErrorSprite(path) {
+  throw Exception(sprintf("ERROR SPRITE %S", path));
+  return null;
+}
+
+function getSprite(path, errsp = true) {
+  local i = path.indexOf("#");
+
+  if (i < 0) {
+    local r = ::getResource(path);
+    if (!r) {
+      return errsp ? getErrorSprite(path) : null;
+    }
+
+    if (r.userdata) {
+      if (r.userdata instanceof Texture) {
+        return Sprite(r.userdata);
+      } else {
+        return clone r.userdata;
+      }
+    }
+    if (r.getContent() instanceof Sprite) {
+      r.userdata = r.cache;
+      r.flush();
+      return clone r.userdata;
+    }
+
+    local tex = ::getTexture(r);
+    if (!tex) {
+      return errsp ? getErrorSprite(path) : null;
+    }
+
+    local sp = Sprite(tex);
+    return sp;
+  } else {
+    local p0 = path.substring(0, i);
+    local clipid = path.substring(i + 1);
+    local r = ::getResource(p0);
+    if (!r) {
+      return errsp ? getErrorSprite(path) : null;
+    }
+    local clipset = r.getContent();
+    if (!(clipset instanceof ImageClipSet)) {
+      return errsp ? getErrorSprite(path) : null;
+    }
+
+    local sp = clipset.getClipSprite(clipid);
+    if (!sp) {
+      return errsp ? getErrorSprite(path) : null;
+    }
+    return sp;
+  }
+}
+
+class SpriteSheetClip extends Resource
+{
+  clip = null;
+
+  constructor(ss, t) {
+    clip = ImageClip(t);
+    pres = ss;
+    name = t.clipid;
+    isdir = false;
+  }
+
+  function load(i = 1) {
+    if (cache == null) {
+      cache = clip.createSprite(pres.tex);
+    }
+  }
+}
+
+class SpriteSheet extends Resource
+{
+  tex = null;
+  cliplist = null;
+
+  constructor(r) {
+    local img = r.getContent();
+    r.flush();
+
+    local t = decodeJSON(img.metadata);
+    cliplist = array(length(t.cliplist));
+    foreach (i, v in t.cliplist) {
+      cliplist[i] = SpriteSheetClip(this, v);
+    }
+    if (t["pma"]) {
+      img.premultAlpha();
+    }
+    tex = Texture();
+    tex.load(img);
+    tex.ref = weakref(r);
+    name = r.name;
+    isdir = true;
+  }
+
+  function _cloned(org) {
+    pres = null;
+    pathcache = null;
+    list = null;
+    cache = null;
+    userdata = null;
+    foreach (i, v in cliplist) {
+      cliplist[i] = clone v;
+      cliplist[i].pres = this;
+    }
+  }
+
+  function loadList() {
+    if (!list) {
+      list = [];
+      list.extend(cliplist);
+    };
+  }
+}
+
+function TextBox ::setRichText(s) {
+
+}

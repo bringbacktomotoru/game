@@ -1,0 +1,124 @@
+;
+;----------- テスト -------------
+;新しい服に着替えて自慢する話
+
+; 作業部屋指定
+[focusroom address={[0,0]}]
+
+; キャラ出現
+[popchara name=lala relative x=3.5 angle=90]
+
+; 初期配置
+[rotatecamera head=80 time=0]
+[movecamera type=1 x=-3.0 z=14.0 y=-2.0 time=0]
+[wait time=1000]
+
+; 手を振りながら発見
+[startanime name=lala time=2000 script=tefuri]
+[balloon name=lala time=1000]
+あら…☆
+[wait time=1000]
+[endballoon name=lala]
+[waitaction name=lala script=tefuri]
+
+; 移動＋カメラも移動
+[movechara name=lala type=1 x=-2.0 script=movie_walk neutral=stand time=5000]
+[rotatecamera head=1 time=3500]
+[movecamera type=1 x=3.2 z=-5.0 time=3000]
+; 移動しながら喋る
+[balloon name=lala time=5000]
+キキ！
+[wait time=1500]
+[endballoon name=lala]
+[wait time=1000]
+
+; 途中からキャラ出現
+[popchara name=kiki relative=1 x=-1.0 angle=90]
+; 2キャラ振り向き
+[turnchara name=kiki angle=-55 time=1000 script=turn_r]
+[waitaction name=kiki script=turn_r]
+[turnchara name=lala angle=55 time=300 script=turn_r]
+[waitaction name=lala script=turn_r]
+; 手をあげて挨拶
+[startanime name=kiki time=1500 script=teage]
+[waitaction name=kiki script=teage]
+[startanime name=lala time=1500 script=teage]
+[waitaction name=lala script=teage]
+
+[wait time=1000]
+
+; 会話
+[balloon name=lala time=3000]
+あのね、[r]お洋服を[r]着替えてみたの…☆
+[wait time=3500]
+[endballoon name=lala]
+; カメラ移動_1キャラアップ
+[movecamera type=1 x=-0.5 z=2.0 time=0]
+[rotatecamera head=23 time=0]
+; くるくるお披露目
+[startanime name=lala time=4000 script=kurukuru]
+[balloon name=lala]
+どうかしら？[wait time=3500][r]似合ってる…？
+[wait time=3000]
+[endballoon name=lala]
+[waitaction name=lala script=kurukuru]
+
+[wait time=1000]
+; カメラ移動
+[movecamera type=1 x=2.5 z=1.3 time=0]
+[rotatecamera head=-50 time=0]
+; 2キャラ照れ
+[startanime name=kiki time=7000 script=tere]
+[balloon name=kiki]
+わあ☆可愛い♪[r][wait time=2500]とっても[r]似合ってるよララ☆
+[wait time=4000]
+[endballoon name=kiki]
+[waitaction name=kiki script=tere]
+; カメラ移動_二人映る
+[movecamera type=1 x=-2.0 z=-3.3 time=0]
+[rotatecamera head=1 time=0]
+[wait time=1000]
+[startanime name=lala time=3000 script=ketsui]
+[balloon name=lala]
+ほんとう？[r]ありがとう☆[r][wait time=2000]少し照れくさいわね…♪
+[wait time=4000]
+[endballoon name=lala]
+[waitaction name=lala script=ketsui]
+
+[wait time=1000]
+; カメラ移動
+[movecamera type=1 x=2.0 z=3.3 time=0]
+[rotatecamera head=-50 time=0]
+[startanime name=kiki time=14000 script=picture_kansou_event]
+[balloon name=kiki]
+いいなあ～♪[r][wait time=2000]ぼくも新しい服、[wait time=2000][r]ほしいな～☆
+[wait time=4000]
+[endballoon name=kiki]
+
+[wait time=1000]
+; カメラ移動_二人映る
+[movecamera type=1 x=-2.0 z=-3.3 time=0]
+[rotatecamera head=1 time=0]
+
+[wait time=500]
+
+[balloon name=lala]
+じゃあ今度キキの[wait time=1000][r]新しい服、[wait time=1000][r]一緒に選びましょ☆
+[waitaction name=kiki script=picture_kansou_event]
+[wait time=1000]
+[endballoon name=lala]
+; アクション
+[startanime name=lala time=5000 script=yokopatapata]
+[startanime name=kiki time=5000 script=pyonpyon_set script_args={[3,"smile3"]}]
+[waitaction name=lala script=ketsui]
+[waitaction name=kiki script=pyonpyon]
+
+[wait time=3000]
+
+; 手を挙げて挨拶
+[startanime name=lala time=2000 script=tefuri]
+[startanime name=kiki time=2000 script=tefuri]
+[waitaction name=lala script=tefuri]
+[waitaction name=kiki script=tefuri]
+[wait time=1000]
+

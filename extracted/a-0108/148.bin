@@ -1,0 +1,19 @@
+// UIScript created by ShutterChanceFrame.ui 
+
+function show_shutter_frame() {
+	$img_shutter_frame.anime(0,5,20);
+}
+
+function hide_shutter_frame() {
+	$img_shutter_frame.anime(5,0,20);
+}
+
+function hide_shutter_frame2() {
+	$img_shutter_frame.anime(10,15,20);
+}
+
+function change_shutter_frame() {
+	$img_shutter_frame.anime(5,10,20);
+}
+
+

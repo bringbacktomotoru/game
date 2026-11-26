@@ -1,0 +1,22 @@
+runsk("/res/goods/goods_base.sk")
+
+with model {
+  body <- {
+    pm = "tray.pm"
+  }
+}
+
+with script {
+
+  function start() {
+    anime(0, 0, 0, false);
+  }
+
+  function start_tray() {
+    anime(1, 1, 0, false);
+  }
+
+  function end() {
+  }
+
+}

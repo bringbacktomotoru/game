@@ -1,0 +1,28 @@
+runsk("/res/anime/base.sk");
+
+model =
+{
+
+  body = { pm = "../clothes/default/kitty.pm" }
+  face = { pm = "../facial/kitty_face.pm" parentname = "body" shadowbones = "body" }
+  r_hand = { pm = "../hand/kitty/guR.pm" parentname = "body" shadowbones = "body" }
+  l_hand = { pm = "../hand/kitty/guL.pm" parentname = "body" shadowbones = "body" }
+
+}
+
+with script {
+
+  function setup() {
+
+    setCharaSetting(::gamesetting.sanrio_chara_settings[1]);
+    morphFace("def", 0);
+    sk3d.setMotion(getMotionData(::getResource("/res/anime/scene01.mot")));
+  }
+
+  function first_chara_select() {
+    tefuri_set(3, "smile");
+
+    first_chara_select_kitty();
+  }
+
+}

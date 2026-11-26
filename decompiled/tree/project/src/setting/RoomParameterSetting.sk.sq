@@ -1,0 +1,45 @@
+class RoomParameterSetting extends ::Setting {
+  id = -1;
+
+  chara_params = null;
+  furniture_params = null;
+  rarity_params = null;
+  work_params = null;
+
+  function loadConfAtServer(t) {
+    local _setting = RoomParameterSetting();
+    foreach (k, v in t) {
+      switch (k) {
+      case "chara_params":
+      case "furniture_params":
+      case "rarity_params":
+      case "work_params":
+        _setting[k] = decodeJSON[v];
+      default:
+        _setting[k] = v;
+      }
+    }
+    return _setting;
+
+  }
+
+  function getCharaParam(lv) {
+    return this.chara_params[lv - 1];
+  }
+
+  function getFurnitureParam(lv) {
+    return this.furniture_params[lv - 1];
+  }
+
+  function getRarityParam(lv) {
+    return this.rarity_params[lv - 1];
+  }
+
+  function getWorkParam(lv) {
+    return this.work_params[lv - 1];
+  }
+
+  function getParameters(lv) {
+    return { chara = getCharaParam(lv), furniture = getFurnitureParam(lv), rarity = getRarityParam(lv), work = getWorkParam(lv) };
+  }
+}

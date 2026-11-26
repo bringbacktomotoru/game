@@ -1,0 +1,5 @@
+gacha_settings[1].name = "Aurora Gacha"
+gacha_settings[1].desc = "A gacha with clothes and furniture/nThe surprise is half the fun♪"
+
+gacha_settings[2].name = "Happiness /nGacha"
+gacha_settings[2].desc = "The amount of Happiness needed to spin /nincreases the more you use it./nResets at the beginning of the month."

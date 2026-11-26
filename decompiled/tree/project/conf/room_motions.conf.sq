@@ -1,0 +1,192 @@
+room_motion_settings[1] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_burabura";
+  desc = "ぶらぶら";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[2] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_nobi";
+  desc = "のび～";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[3] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_nayamu";
+  desc = "う～ん…";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[4] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_ho";
+  desc = "へー…";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[5] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_terecheek";
+  desc = "照れちゃう…！";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[6] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_bishi";
+  desc = "ビシッ！";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[7] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_yokopatapata";
+  desc = "パタパタ";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[8] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_hokori";
+  desc = "パッパッ";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[9] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_teage";
+  desc = "はーい！";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[10] <- ActionSetting({
+  action_type = 1;
+  action_name = "home_norinori";
+  desc = "ノリノリ";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 800;
+})
+
+room_motion_settings[11] <- ActionSetting({
+  action_type = 1;
+  action_name = "multipurpose_ho";
+  desc = "へー…";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 500;
+})
+
+room_motion_settings[12] <- ActionSetting({
+  action_type = 1;
+  action_name = "cos_erasou";
+  desc = "へへへ～ん！";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 1278;
+})
+
+room_motion_settings[13] <- ActionSetting({
+  action_type = 1;
+  action_name = "cos_keirei";
+  desc = "敬礼";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 1343;
+})
+
+room_motion_settings[14] <- ActionSetting({
+  action_type = 1;
+  action_name = "cos_yasume";
+  desc = "ひとやすみ";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 1650;
+})
+
+room_motion_settings[15] <- ActionSetting({
+  action_type = 1;
+  action_name = "cos_takawarai";
+  desc = "お～っほっほっほ";
+  frequency = 3;
+  move_speed = 0;
+  prev_actions = [];
+  is_use_furniture = false;
+  take_picture_time = 660;
+})
+
+room_motion_settings[16] <- ActionSetting({
+  action_type = 1;
+  action_name = "def_stand";
+  frequency = 6;
+  move_speed = 0.0;
+  prev_actions = [];
+  is_use_furniture = false;
+})
+
+room_motion_settings[1001] <- ActionSetting({
+  action_type = 2;
+  action_name = "walk";
+  frequency = 10;
+  move_speed = 0.009;
+})
+room_motion_settings[1002] <- ActionSetting({
+  action_type = 2;
+  action_name = "dash";
+  frequency = 10;
+  move_speed = 0.013;
+})
+room_motion_settings[1003] <- ActionSetting({
+  action_type = 2;
+  action_name = "skip";
+  frequency = 10;
+  move_speed = 0.011;
+})

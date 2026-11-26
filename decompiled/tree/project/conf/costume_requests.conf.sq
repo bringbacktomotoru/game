@@ -1,0 +1,117 @@
+costume_request_settings[1] <- CostumeRequestSetting({
+  desc = "おでかけする";
+  type = CostumeRequestSetting.TYPE_WORK;
+  event_ids = [[401], [404]];
+  push_text_id = 1;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_GM, id = 0, num = 30 }];
+})
+
+costume_request_settings[2] <- CostumeRequestSetting({
+  desc = "おでかけする";
+  type = CostumeRequestSetting.TYPE_WORK;
+  event_ids = [[402], [405]];
+  push_text_id = 2;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_GM, id = 0, num = 50 }];
+})
+
+costume_request_settings[3] <- CostumeRequestSetting({
+  desc = "おでかけする";
+  type = CostumeRequestSetting.TYPE_WORK;
+  event_ids = [[403], [406]];
+  push_text_id = 3;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_GM, id = 0, num = 80 }];
+})
+
+costume_request_settings[4] <- CostumeRequestSetting({
+  desc = "家具ですごす";
+  type = CostumeRequestSetting.TYPE_OYUGI;
+  event_ids = [[501], [504]];
+  push_text_id = 7;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_GM, id = 0, num = 30 }];
+})
+
+costume_request_settings[5] <- CostumeRequestSetting({
+  desc = "家具ですごす";
+  type = CostumeRequestSetting.TYPE_OYUGI;
+  event_ids = [[502], [505]];
+  push_text_id = 8;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_GM, id = 0, num = 50 }];
+})
+
+costume_request_settings[6] <- CostumeRequestSetting({
+  desc = "家具ですごす";
+  type = CostumeRequestSetting.TYPE_OYUGI;
+  event_ids = [[503], [506]];
+  push_text_id = 9;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_GM, id = 0, num = 80 }];
+})
+
+costume_request_settings[7] <- CostumeRequestSetting({
+  desc = "ベッドでねむる";
+  type = CostumeRequestSetting.TYPE_OYUGI;
+  target_type = 7;
+  event_ids = [[507], [510]];
+  push_text_id = 13;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_FREERM, id = 0, num = 1 },
+  { kind = ITEM_TYPE_GM, id = 0, num = 50 }];
+})
+
+costume_request_settings[8] <- CostumeRequestSetting({
+  desc = "ベッドでねむる";
+  type = CostumeRequestSetting.TYPE_OYUGI;
+  target_type = 7;
+  event_ids = [[508], [511]];
+  push_text_id = 14;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_FREERM, id = 0, num = 3 },
+  { kind = ITEM_TYPE_GM, id = 0, num = 10 }];
+})
+
+costume_request_settings[9] <- CostumeRequestSetting({
+  desc = "ベッドでねむる";
+  type = CostumeRequestSetting.TYPE_OYUGI;
+  target_type = 7;
+  event_ids = [[509], [512]];
+  push_text_id = 15;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_FREERM, id = 0, num = 10 }];
+})
+
+costume_request_settings[10] <- CostumeRequestSetting({
+  desc = "植物にお水をあげる";
+  type = CostumeRequestSetting.TYPE_OYUGI;
+  target_type = 13;
+  event_ids = [[513], [516]];
+  push_text_id = 19;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_FREERM, id = 0, num = 1 },
+  { kind = ITEM_TYPE_GM, id = 0, num = 50 }];
+})
+
+costume_request_settings[11] <- CostumeRequestSetting({
+  desc = "植物にお水をあげる";
+  type = CostumeRequestSetting.TYPE_OYUGI;
+  target_type = 13;
+  event_ids = [[514], [517]];
+  push_text_id = 20;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_FREERM, id = 0, num = 3 },
+  { kind = ITEM_TYPE_GM, id = 0, num = 10 }];
+})
+
+costume_request_settings[12] <- CostumeRequestSetting({
+  desc = "植物にお水をあげる";
+  type = CostumeRequestSetting.TYPE_OYUGI;
+  target_type = 13;
+  event_ids = [[515], [518]];
+  push_text_id = 21;
+  timelimit = 60;
+  rewards = [{ kind = ITEM_TYPE_FREERM, id = 0, num = 10 }];
+})

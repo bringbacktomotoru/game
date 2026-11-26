@@ -1,0 +1,17 @@
+return {
+  modeldata = "sunbeam_big.mdl"
+  bnd = [0.0, 0.0, 0.0, 0.994523, 0.994522, 0.0]
+
+  material = [
+  {
+    name = "sunbeam"
+    tec = "decal.def"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 0xffffffff
+    Ke = 0
+    shiness = 20.0
+    texture0 = "tex/sunbeam.png"
+  }
+  ]
+}

@@ -1,0 +1,82 @@
+class CostumeRequestData {
+  static STATE_NEW = 1;
+  static STATE_RECIEVED = 2;
+  static STATE_CLEARED = 3;
+
+  id = -1;
+  costume_id = -1;
+  start_time = -1;
+  target_id = -1;
+  state = -1;
+  event_index = -1;
+
+  function loadWithCreate(loader) {
+    local crd = ::CostumeRequestData();
+    crd.id = loader.get();
+    crd.costume_id = loader.get();
+    crd.start_time = loader.get();
+    crd.target_id = loader.get();
+    crd.state = loader.get();
+    crd.event_index = loader.get();
+
+    return crd;
+  }
+
+  function setStartTime(time) {
+    this.start_time = time;
+  }
+
+  function isStateNew() {
+    return this.state == STATE_NEW ? true : false;
+  }
+  function isStateCleared() {
+    return this.state == STATE_CLEARED ? true : false;
+  }
+
+  function isStartedRequest(time) {
+    if (time >= this.start_time) return true;
+    return false;
+  }
+
+  function setRecieved(event_index) {
+    this.state = STATE_RECIEVED;
+    this.event_index = event_index;
+  }
+  function setCleared() {
+    this.state = STATE_CLEARED;
+  }
+
+  function getID() {
+    return this.id;
+  }
+  function getCostumeID() {
+    return this.costume_id;
+  }
+  function getRequestType() {
+    local setting = ::gamesetting.costume_request_settings[this.id];
+    return setting.getType();
+  }
+
+  function getRemainTimeLimit(time) {
+    local remain = (getTimeLimitMin() * 60 + this.start_time) - time;
+    return remain;
+  }
+
+  function getRemainInterval(time) {
+    return this.start_time - time;
+  }
+
+  function getTimeLimitMin() {
+    local setting = ::gamesetting.costume_request_settings[this.id];
+    return setting.getTimeLimitMin();
+  }
+
+  function getRewards() {
+    local setting = ::gamesetting.costume_request_settings[this.id];
+    return setting.getRewards();
+  }
+
+  function getEventIndex() {
+    return this.event_index;
+  }
+}

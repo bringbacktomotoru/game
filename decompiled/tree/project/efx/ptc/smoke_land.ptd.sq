@@ -1,0 +1,160 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "1"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 2
+    start = 0, start_spr = 0
+    life = 600, life_spr = 150
+    posx = 0.0, posy = 0.3, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 1.466077, dirz = 0.0
+    dir_sprx = 0.523599, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = "smoke01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.32, "vel_spr": 0.0 },
+  { "classid": "ptcmod_scale", "scale": [0.5, 2.0], "xyz": 7 },
+  { "classid": "ptcmod_acc", "coord": 0, "acc_spr": 0.0, "acc": -0.204, "axisid": 1 },
+  { "classid": "ptcmod_color", "color": [-1, -1, -1, -256] },
+  ] },
+with ParticleGroupData() {
+  name = "2"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 2
+    start = 0, start_spr = 0
+    life = 600, life_spr = 150
+    posx = 0.0, posy = 0.3, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 1.047198, diry = 1.466077, dirz = 0.0
+    dir_sprx = 0.523599, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = "smoke01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.32, "vel_spr": 0.0 },
+  { "classid": "ptcmod_scale", "scale": [0.5, 2.0], "xyz": 7 },
+  { "classid": "ptcmod_acc", "coord": 0, "acc_spr": 0.0, "acc": -0.204, "axisid": 1 },
+  { "classid": "ptcmod_color", "color": [-1, -1, -1, -256] },
+  ] },
+with ParticleGroupData() {
+  name = "3"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 2
+    start = 0, start_spr = 0
+    life = 600, life_spr = 150
+    posx = 0.0, posy = 0.3, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 2.094395, diry = 1.466077, dirz = 0.0
+    dir_sprx = 0.523599, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = "smoke01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.32, "vel_spr": 0.0 },
+  { "classid": "ptcmod_scale", "scale": [0.5, 2.0], "xyz": 7 },
+  { "classid": "ptcmod_acc", "coord": 0, "acc_spr": 0.0, "acc": -0.204, "axisid": 1 },
+  { "classid": "ptcmod_color", "color": [-1, -1, -1, -256] },
+  ] },
+with ParticleGroupData() {
+  name = "4"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 2
+    start = 0, start_spr = 0
+    life = 600, life_spr = 150
+    posx = 0.0, posy = 0.3, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 3.141593, diry = 1.466077, dirz = 0.0
+    dir_sprx = 0.523599, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = "smoke01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.32, "vel_spr": 0.0 },
+  { "classid": "ptcmod_scale", "scale": [0.5, 2.0], "xyz": 7 },
+  { "classid": "ptcmod_acc", "coord": 0, "acc_spr": 0.0, "acc": -0.204, "axisid": 1 },
+  { "classid": "ptcmod_color", "color": [-1, -1, -1, -256] },
+  ] },
+with ParticleGroupData() {
+  name = "5"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 2
+    start = 0, start_spr = 0
+    life = 600, life_spr = 150
+    posx = 0.0, posy = 0.3, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = -2.094395, diry = 1.466077, dirz = 0.0
+    dir_sprx = 0.523599, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = "smoke01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.32, "vel_spr": 0.0 },
+  { "classid": "ptcmod_scale", "scale": [0.5, 2.0], "xyz": 7 },
+  { "classid": "ptcmod_acc", "coord": 0, "acc_spr": 0.0, "acc": -0.204, "axisid": 1 },
+  { "classid": "ptcmod_color", "color": [-1, -1, -1, -256] },
+  ] },
+with ParticleGroupData() {
+  name = "6"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 2
+    start = 0, start_spr = 0
+    life = 600, life_spr = 150
+    posx = 0.0, posy = 0.3, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = -1.047198, diry = 1.466077, dirz = 0.0
+    dir_sprx = 0.523599, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = "smoke01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.32, "vel_spr": 0.0 },
+  { "classid": "ptcmod_scale", "scale": [0.5, 2.0], "xyz": 7 },
+  { "classid": "ptcmod_acc", "coord": 0, "acc_spr": 0.0, "acc": -0.204, "axisid": 1 },
+  { "classid": "ptcmod_color", "color": [-1, -1, -1, -256] },
+  ] },
+]

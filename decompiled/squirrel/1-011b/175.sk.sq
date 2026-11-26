@@ -1,0 +1,120 @@
+with Serializable() {
+
+  class RoomSlotData {
+    room_uid = -1;
+    reside_charas = null;
+
+    constructor() {
+      this.reside_charas = [];
+    }
+
+    function load(loader) {
+      this.room_uid = loader.get();
+
+      this.reside_charas = array(loader.get());
+      foreach (idx, _ in this.reside_charas) {
+        this.reside_charas[idx] = loader.get();
+      }
+    }
+
+    function setRoomUID(uid) {
+      this.room_uid = uid;
+    }
+
+    function getRoomUID() {
+      return this.room_uid;
+    }
+
+    function isUsing() {
+      return this.room_uid != -1;
+    }
+
+    function getResideCharaNum() {
+      return length(reside_charas);
+    }
+
+    function getResideCharas() {
+      return this.reside_charas;
+    }
+
+    function getResideCharaCostumeID(chara_id) {
+      local setting = ::gamesetting.costume_settings;
+      foreach (id in this.reside_charas) {
+        if (setting[id].getCharaID() == chara_id) return id;
+      }
+      return -1;
+    }
+
+    function isCharaResiding(chara_id) {
+      local costume_settings = ::gamesetting.costume_settings;
+      foreach (costume_id in this.reside_charas) {
+        local setting = costume_settings[costume_id];
+        if (setting.getCharaID() == chara_id) return true;
+      }
+
+      return false;
+    }
+
+    function addResideChara(costume_id) {
+      this.reside_charas + costume_id;
+      print("chara added, costume_id : " + costume_id)
+    }
+
+    function removeResideChara(costume_id) {
+      foreach (idx, id in reside_charas) {
+        if (id != costume_id) continue;
+
+        return delete reside_charas[idx];
+      }
+      return -1;
+    }
+
+    function removeAllResideChara() {
+      local remove_charas = clone this.reside_charas; s
+      this.reside_charas.clear();
+
+      return remove_charas;
+    }
+
+    function getMaxResideNum() {
+      return getRoomSetting().getCharaIDs().len();
+    }
+
+    function getRoomEditData() {
+      return ::gamesession.getUserData().getRoomEditData(this.room_uid);
+    }
+
+    function getRoomName() {
+      local _red = getRoomEditData();
+      return _red.getRoomSetting().getName();
+    }
+
+    function getRoomID() {
+      local _red = getRoomEditData();
+      if (!_red) return -1;
+      return _red.getRoomID();
+    }
+
+    function getRoomSetting() {
+      return ::gamesetting.room_settings[getRoomID()];
+    }
+
+    function getNeedAddResideCharaList() {
+      local _rs = getRoomSetting();
+      local _chara_ids = _rs.getCharaIDs();
+
+      local _list = [];
+      if (_chara_ids.len() == this.reside_charas.len()) return _list;
+
+      foreach (idx, chara_id in _chara_ids) {
+        if (this.isCharaResiding(chara_id)) continue;
+        if (!_rs.checkCharaReleaseCondition(chara_id)) continue;
+        _list + chara_id;
+      }
+
+      return _list;
+
+    }
+  }
+
+}

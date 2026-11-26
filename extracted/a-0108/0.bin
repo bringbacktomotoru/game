@@ -1,0 +1,66 @@
+// UIScript created by ARPanel_3.ui 
+
+function setup() {
+	$front_load_icon.visible = false;
+	$front_load_arrow.visible = false;
+	$lbl_loading_front.visible = false;
+	$back_load_icon.visible = false;
+	$back_load_arrow.visible = false;
+	$lbl_loading_back.visible = false;
+}
+
+function loading(){
+	$front_load_icon.visible = true;
+	$front_load_arrow.visible = true;
+	$lbl_loading_front.visible = true;
+	$back_load_icon.visible = true;
+	$back_load_arrow.visible = true;
+	$lbl_loading_back.visible = true;
+	
+	$front_load_icon.anime(10,20,5,true);
+	$front_load_arrow.anime(10,20,5,true);
+	$lbl_loading_front.anime(10,20,5,true);
+	$back_load_icon.anime(10,20,5,true);
+	$back_load_arrow.anime(10,20,5,true);
+	$lbl_loading_back.anime(10,20,5,true);
+}
+
+function capturing(){
+	$capturing_arrow.anime(10,20,5,true);
+}
+
+function recording(){
+	$lbl_record.anime(10,20,3,true);
+}
+
+function show_chara_menu() {
+	$btn_back_front.anime(0,5,20);
+	$btn_back.anime(0,5,20);
+	$btn_change.anime(0,5,20);
+	$btn_back.anime(0,5,20);
+	$btn_exec_motion.anime(0,5,20);
+	$btn_exec_motion_lock.anime(0,5,20);
+	$btn_next_motion.anime(0,5,20);
+	$btn_chara_menu.anime(0,5,20);
+	$pnl_chara_menu.anime(0,5,20);
+	$pnl_current_chara.anime(0,5,20);
+	$btn_AR_pose.anime(0,5,20);
+	$pnl_scale_slider.anime(0,5,20);
+	$img_playing.anime(0,5,20);
+}
+
+function hide_chara_menu() {
+	$btn_back_front.anime(5,0,20);
+	$btn_change.anime(5,0,20);
+	$btn_back.anime(5,0,20);
+	$btn_exec_motion.anime(5,0,20);
+	$btn_exec_motion_lock.anime(5,0,20);
+	$btn_next_motion.anime(5,0,20);
+	$btn_chara_menu.anime(5,0,20);
+	$pnl_chara_menu.anime(5,0,20);
+	$pnl_current_chara.anime(5,0,20);
+	$btn_AR_pose.anime(5,0,20);
+	$pnl_scale_slider.anime(5,0,20);
+	$img_playing.anime(5,0,20);
+}
+

@@ -1,0 +1,27 @@
+furniture_item_production_settings[1] <- ::ProductionSetting({
+  tap_nums = [30];
+  wait_taps = [10];
+  product_time = 300;
+  limit_tap_time = 290;
+})
+
+furniture_item_production_settings[2] <- ::ProductionSetting({
+  tap_nums = [20, 20];
+  wait_taps = [10, 20];
+  product_time = 300;
+  limit_tap_time = 290;
+})
+
+furniture_item_production_settings[3] <- ::ProductionSetting({
+  tap_nums = [15, 15, 15];
+  wait_taps = [10, 25, 40];
+  product_time = 300;
+  limit_tap_time = 290;
+})
+
+furniture_item_production_settings[4] <- ::ProductionSetting({
+  tap_nums = [15, 15, 15];
+  wait_taps = [20, 40, 60];
+  product_time = 300;
+  limit_tap_time = 290;
+})

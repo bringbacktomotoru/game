@@ -1,0 +1,4 @@
+class CharaPatRewardSetting extends Setting {
+  id = null;
+  items = null;
+}

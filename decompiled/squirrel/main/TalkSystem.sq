@@ -1,0 +1,131 @@
+class TalkSystem
+{
+
+  macro = null;
+  api = null;
+
+  sharedflags = null;
+
+  scriptdirs = null;
+  viewdirs = null;
+
+  constructor()
+  {
+    sharedflags = {};
+    macro = {};
+    api = TalkAPI();
+    scriptdirs = [::resroot];
+    viewdirs = [::resroot];
+  }
+
+  function dispose() {
+  }
+
+  function getScript(storage) {
+    if (storage instanceof TalkScript) {
+      return storage;
+    }
+    local res = null;
+    foreach (r in scriptdirs) {
+      res = r.getResource(storage);
+      if (res) break;
+    }
+    if (!res) {
+      throw Exception("SCRIPT(" + storage + ") not found.");
+    }
+    if (res.userdata) return res.userdata;
+
+    local compiler = TalkCompiler(res);
+    local scp = compiler.compile();
+    res.userdata = scp;
+    return scp;
+  }
+
+  function getView(storage) {
+    if (storage.endsWith(".json")) {
+      local c = ::loadCocos(storage);
+      return c;
+    }
+
+    local res = null;
+    foreach (r in viewdirs) {
+      res = r.getResource(storage);
+      if (res) break;
+    }
+    if (!res) return null;
+    if (storage.endsWith(".ui")) {
+      return ::loadSKView(res, ::SKGroupView);
+    } else {
+      return ::getSprite(res.path);
+    }
+  }
+}
+
+class TalkAPI
+{
+  f = null;
+  tf = null;
+  sf = null;
+  args = null;
+
+  ctx = null;
+  runner = null;
+
+  extention = null;
+
+  constructor() {
+    f = {};
+    tf = {};
+    sf = {};
+    args = {};
+    extention = {};
+  }
+
+  function call(func) {
+    return func();
+  }
+
+  function _get(id) {
+    return extention[id];
+  }
+
+  function _set(id, v) {
+    if (id in extention) {
+      extention[id] = v;
+    } else {
+      return undefined;
+    }
+  }
+
+  function _newslot(id, v, flag) {
+    extention[id] <- v;
+  }
+
+  function trace(s) {
+    printf("%S\n", s);
+  }
+
+  function findChild(id) {
+    return ctx.findChild(id);
+  }
+
+  function varg(i) {
+    return args["varg"][i];
+  }
+
+  function waitClick() {
+    return ctx.waitClick();
+  }
+
+  function waitClickStart() {
+    return ctx.waitClickStart();
+  }
+
+  function waitClickCheck() {
+    return ctx.waitClickCheck();
+  }
+
+  function waitClickEnd() {
+    return ctx.waitClickEnd();
+  }
+}

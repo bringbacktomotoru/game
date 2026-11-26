@@ -1,0 +1,69 @@
+help_settings[1] <- ::HelpSetting({
+  title = "トモトルにようこそ！";
+  desc = "";
+  image_list = ["1_1.png", "1_2.png"];
+  tutorial_id = 1;
+})
+
+help_settings[2] <- ::HelpSetting({
+  title = "ショップで家具を買う";
+  desc = "";
+  image_list = ["6_1.png"];
+  tutorial_id = 6;
+})
+
+help_settings[3] <- ::HelpSetting({
+  title = "買った家具を置いてみましょう";
+  desc = "";
+  image_list = ["7_1.png"];
+  tutorial_id = 7;
+})
+
+help_settings[4] <- ::HelpSetting({
+  title = "家具レイアウト";
+  desc = "";
+  image_list = ["10_1.png"];
+  tutorial_id = 10;
+})
+
+help_settings[5] <- ::HelpSetting({
+  title = "おともだちの興味を引こう";
+  desc = "";
+  image_list = ["12_1.png"];
+  tutorial_id = 12;
+})
+
+help_settings[6] <- ::HelpSetting({
+  title = "おもいで日記";
+  desc = "";
+  image_list = ["14_1.png", "14_2.png"];
+  tutorial_id = 14;
+})
+
+help_settings[7] <- ::HelpSetting({
+  title = "おともだちの写真を撮ろう！";
+  desc = "";
+  image_list = ["15_1.png", "15_2.png", "15_3.png", "15_4.png", "15_5.png"];
+  tutorial_id = 15;
+})
+
+help_settings[8] <- ::HelpSetting({
+  title = "お洋服について";
+  desc = "";
+  image_list = ["1001_1.png", "1001_2.png", "1001_3.png"];
+  tutorial_id = 1001;
+})
+
+help_settings[9] <- ::HelpSetting({
+  title = "共通ハピネスについて";
+  desc = "";
+  image_list = ["1002_1.png"];
+  tutorial_id = 1002;
+})
+
+help_settings[10] <- ::HelpSetting({
+  title = "おともだちが家具に向かうのをやめてほしいとき";
+  desc = "";
+  image_list = ["1003_1.png"];
+  tutorial_id = 1003;
+})

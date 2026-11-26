@@ -1,0 +1,82 @@
+with Serializable() {
+
+  class ItemBoostData {
+    id = null;
+    kind = null;
+    type = null;
+    targets = null;
+    value = null;
+
+    start_time = null;
+    used_count = null;
+
+    constructor(id) {
+      local setting = ::gamesetting.item_settings[id];
+
+      this.id = id;
+      this.kind = setting.kind;
+      this.type = setting.type;
+      this.targets = setting.targets;
+      this.value = setting.value;
+
+      if (this.type == ItemSetting.TYPE_PERIOD) {
+        this.start_time = ::getServerTime();
+        used_count = -1;
+      } else {
+        this.start_time = -1;
+        used_count = 0;
+      }
+    }
+
+    function setServerData() {
+    }
+
+    function getID() {
+      return this.id;
+    }
+
+    function getType() {
+      return this.type;
+    }
+
+    function getTargets() {
+      return this.targets;
+    }
+
+    function getValue() {
+      return this.value;
+    }
+
+    function addBoostCount() {
+      if (this.type != ItemSetting.TYPE_COUNT) return;
+      used_count++;
+    }
+
+    function getRemainTime(now) {
+      return getFinishTime() - now;
+    }
+    function getFinishTime() {
+      local setting = ::gamesetting.item_settings[this.id];
+      return this.start_time + setting.getTimeSec();
+    }
+    function getRemainCount() {
+      local setting = ::gamesetting.item_settings[this.id];
+      return setting.time - used_count;
+    }
+
+    function checkFinished() {
+      local setting = ::gamesetting.item_settings[this.id];
+      switch (this.type) {
+      case ItemSetting.TYPE_PERIOD:
+        local now = ::getServerTime();
+        if (now >= start_time + setting.getTimeSec()) return true;
+        break;
+      case ItemSetting.TYPE_COUNT:
+        if (used_count >= setting.time) return true;
+      }
+
+      return false;
+    }
+  }
+
+}

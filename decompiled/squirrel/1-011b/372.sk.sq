@@ -1,0 +1,362 @@
+class WorkSelectDialog extends ::Dialog {
+
+  static STATE_OK = 0;
+  static STATE_SHORTAGE_LEVEL = 1;
+  static STATE_SHORTAGE_HEALTH = 2;
+
+  pnl_chara_icon = null;
+
+  lbl_health = null;
+  lbl_time = null;
+  lbl_gm = null;
+
+  pnl_work = null;
+
+  btn_work_ok = null;
+  btn_work_ng = null;
+
+  pnl_reward_items = null;
+  reclist = null;
+  scroll = null;
+  start_enable = -1;
+  need_level = -1;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/WorkSelectDialog.ui"));
+
+    this.pnl_work = WorkCard(this.view.findChild("pnl_work"));
+    this.pnl_chara_icon = this.view.findChild("pnl_chara_icon");
+
+    local _lbl_time = this.view.findChild("lbl_time");
+    _lbl_time.setText(::dict.get("work_select_time"));
+    local _lbl_gm = this.view.findChild("lbl_gm");
+    _lbl_gm.setText(::dict.get("work_select_gm"));
+
+    this.lbl_time = this.view.findChild("lbl_time_val");
+    this.lbl_gm = this.view.findChild("lbl_gm_val");
+
+    this.view.findChild("lbl_confirm_work").setText(::dict.get("work_select_confirm"));
+    this.btn_cancel.findChild("lbl_cancel").setText(::dict.get("cancel"));
+    this.btn_ok.findChild("lbl_work").setText(::dict.get("change_work_select"));
+
+    this.lbl_health = this.btn_ok.findChild("lbl_health_val");
+    this.btn_work_ok = this.btn_ok.findChild("btn_work_ok");
+    this.btn_work_ng = this.btn_ok.findChild("btn_work_ng");
+
+    local _pnl_reward = this.view.findChild("pnl_reward");
+    local _lbl_reward_item = _pnl_reward.findChild("lbl_reward_item");
+    _lbl_reward_item.setText(::dict.get("work_select_reward"));
+
+    this.pnl_reward_items = _pnl_reward.findChild("pnl_reward_items");
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dyscale = 0.0;
+    this.pnl_reward_items.addChild(this.reclist);
+    this.pnl_reward_items.setBuffer(true);
+  }
+
+  function setData(cd, ws, idx) {
+
+    this.lbl_health.setText(ws.getUseHealth());
+    this.lbl_time.setText(ws.getWorkTimeText());
+    this.lbl_gm.setText(ws.getRewardGM());
+
+    this.reclist.clearChildren();
+    local _rt = ws.getRewardTable();
+    local _offset = 0;
+    local _cid = cd.getID();
+    local _wrd = ::gamesession.getUserData().getWorkRewardData(_cid);
+    if (_rt) {
+      for (local i = 0; i < _rt.len(); i++) {
+        local _mark = false;
+        if (_wrd && _wrd.contain(ws.getID(), i)) _mark = true;
+        local _item = ItemCard(_rt[i], _mark, _cid);
+        this.reclist.addChild(_item);
+        _item.pos.set(_offset, 0);
+        _item.matdirty = true;
+        _item.repaint();
+        _offset += _item.bnd.w + 10;
+      }
+    }
+    this.reclist.setRect(0, 0, _offset, this.pnl_reward_items.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+
+    this.start_enable = STATE_OK;
+    this.need_level = ws.getLevel();
+    if (this.need_level > cd.getLevel()) {
+      this.start_enable = STATE_SHORTAGE_LEVEL;
+    }
+    else if (ws.getUseHealth() > cd.getHealth()) {
+      this.start_enable = STATE_SHORTAGE_HEALTH;
+    }
+
+    if (this.start_enable == STATE_OK) {
+      this.btn_work_ok.visible = true;
+      this.btn_work_ng.visible = false;
+      this.tapbutton_ok.setTappedJingle(SoundConstants.SOUND_WORK_START, 3000);
+    }
+    else {
+      this.btn_work_ok.visible = false;
+      this.btn_work_ng.visible = true;
+    }
+
+    this.pnl_work.setWork(cd, ws, idx);
+
+    this.pnl_chara_icon.clearChildren();
+    local _sp = cd.getCharaSetting().getIconSprite();
+    local _icon = SKImageView(_sp);
+    _icon.setRect(0, 0, this.pnl_chara_icon.bnd.w, this.pnl_chara_icon.bnd.h);
+    this.pnl_chara_icon.addChild(_icon);
+  }
+
+  function actionevent(e) {
+    switch (e.src) {
+    case btn_ok: _press_ok(); break;
+    case btn_cancel:
+    case btn_close: ret = 0; close(); break;
+    }
+
+    if (func) func(ret);
+  }
+
+  function _press_ok() {
+
+    if (this.start_enable != STATE_OK) {
+      ::gamesession.messagelayer.closeAllMessage();
+      local _message = ::Message();
+      _message.setMsec(4 * 1000);
+      switch (this.start_enable) {
+      case STATE_SHORTAGE_LEVEL: _message.setText(::dict.get("work_select_shortage_level", [this.need_level])); break;
+      case STATE_SHORTAGE_HEALTH: _message.setText(::dict.get("work_select_shortage_health")); break;
+      default: _message.setText("error code:" + this.start_enable); break;
+      }
+      _message.setFontSize(32);
+      _message.setPosition(::screenWidth / 2.0, ::screenHeight / 2.0);
+      _message.show();
+      return;
+    }
+
+    ret = 1;
+    close();
+  }
+}
+
+class WorkSelectDialog.ItemCard extends SKView {
+  static REWARD_ROTATE = 0;
+  static MONEY_ROTATE = 35;
+  static MOTION_ROTATE = 25;
+
+  view = null;
+
+  reward = null;
+  costume_id = -1;
+
+  constructor(reward, mark, cid) {
+    this.reward = reward;
+    this.costume_id = cid;
+    this.view = ::loadSKView("/ui/common/WorkRewardCard.ui");
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    addChild(this.view);
+
+    local _btn_item = this.view.findChild("btn_item");
+    ::TapButton(_btn_item, false).view.addEventListener(ACTION_EVENT, actionevent_desc);
+
+    local _pnl_get = _btn_item.findChild("pnl_get");
+    if (mark) _pnl_get.visible = true;
+    else _pnl_get.visible = false;
+
+    local _pnl_rank = _btn_item.findChild("pnl_rank");
+    if (reward.rank) {
+      _pnl_rank.visible = true;
+      _pnl_rank.findChild("lbl_rare").setText(::dict.get("rare"));
+    }
+    else {
+      _pnl_rank.visible = false;
+    }
+
+    local _pnl_icon = _btn_item.findChild("pnl_icon");
+    local _lbl_value = _btn_item.findChild("lbl_value");
+    local _icon;
+    local _sp;
+
+    local _frame_sp = ::Setting.getItemFrame(reward.kind);
+    if (_frame_sp) {
+      local _frame = SKImageView(_frame_sp);
+      _frame.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      ::rotateSKView(_frame, REWARD_ROTATE, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_frame);
+    }
+
+    local icon_rate = 0.6;
+    local off_x = _pnl_icon.bnd.w * (1 - icon_rate) / 2;
+    local off_y = _pnl_icon.bnd.h * (1 - icon_rate) / 2;
+
+    switch (reward.kind) {
+    case ITEM_TYPE_GM:
+      _sp = ::Setting.getGMIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(off_x, off_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      ::rotateSKView(_icon, MONEY_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      _pnl_icon.addChild(_icon);
+
+      _lbl_value.visible = true;
+      _lbl_value.setText(::dict.get("nums_kakeru", [reward.num]));
+      break;
+
+    case ITEM_TYPE_FREERM:
+      _sp = ::Setting.getRMIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(off_x, off_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      ::rotateSKView(_icon, MONEY_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      _pnl_icon.addChild(_icon);
+
+      _lbl_value.visible = true;
+      _lbl_value.setText(::dict.get("nums_kakeru", [reward.num]));
+      break;
+
+    case ITEM_TYPE_COSTUME:
+      _lbl_value.visible = false;
+      _icon = ::SKImageView();
+      _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_icon);
+      CostumeIcon(reward.id, _icon, false, false);
+      break;
+
+    case ITEM_TYPE_FURNITURE:
+      _lbl_value.visible = false;
+
+      local _fs = ::gamesetting.furniture_settings[reward.id];
+      if (!_fs) return;
+      _sp = _fs.getIconSpriteUnacquired();
+      _icon = SKImageView(_sp);
+      _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_icon);
+      break;
+
+    case ITEM_TYPE_ITEM:
+      _lbl_value.visible = false;
+
+      break;
+
+    case ITEM_TYPE_MOTION:
+      _lbl_value.visible = false;
+      local _ms = ::gamesetting.costume_motion_settings[reward.id];
+      _sp = _ms.getIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(off_x, off_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      ::rotateSKView(_icon, MOTION_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      _pnl_icon.addChild(_icon);
+      break;
+    }
+  }
+
+  function actionevent_desc(e) {
+    local dlg = RewardDialog();
+    dlg.setReward(this.reward.kind, this.reward.id, this.reward.num, this.costume_id);
+    dlg.show();
+  }
+}
+
+class WorkSelectDialog.WorkCard {
+  layer = null;
+  view = null;
+
+  btn_work = null;
+  lbl_work_name = null;
+  pnl_complete = null;
+  pnl_lock = null;
+  img_icon_quest = null;
+
+  costume_data = null;
+  work_setting = null;
+  work_index = -1;
+
+  img_bg1 = null;
+  img_bg2 = null;
+  img_bg3 = null;
+
+  constructor(v) {
+    this.layer = v;
+    this.view = ::loadSKView("/ui/common/WorkCard.ui");
+    this.view.scale(0.75);
+    this.layer.addChild(this.view);
+
+    this.btn_work = this.view.findChild("btn_work");
+    this.pnl_complete = this.btn_work.findChild("pnl_complete");
+    this.pnl_lock = this.btn_work.findChild("pnl_lock");
+
+    this.img_bg1 = this.btn_work.findChild("img_bg1");
+    this.img_bg2 = this.btn_work.findChild("img_bg2");
+    this.img_bg3 = this.btn_work.findChild("img_bg3");
+
+    this.lbl_work_name = this.btn_work.findChild("lbl_work_name");
+
+    this.view.startMethod("setNameOnly");
+
+    this.img_icon_quest = this.view.findChild("img_icon_quest");
+  }
+
+  function setWork(cd, ws, idx) {
+    this.costume_data = cd;
+    this.work_setting = ws;
+    this.work_index = idx;
+    if (!cd || !ws) return;
+
+    local _wrd = ::gamesession.getUserData().getWorkRewardData(cd.getID());
+    local _rate = 0.0;
+    if (_wrd) _rate = _wrd.getRewardRate(ws.getID());
+    if (_rate >= 1.0) {
+      this.pnl_complete.visible = true;
+      this.pnl_lock.visible = false;
+    }
+    else if (ws.getLevel() > cd.getLevel()) {
+      this.pnl_complete.visible = false;
+      this.pnl_lock.visible = true;
+    }
+    else {
+      this.pnl_complete.visible = false;
+      this.pnl_lock.visible = false;
+    }
+
+    this.lbl_work_name.setText(ws.getName());
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (getclass(_scene) != ::SanrioGameScene) return;
+    local _request_manager = _scene.getCostumeRequestManager();
+
+    this.img_icon_quest.setVisible(_request_manager.hasValidRequest(cd.getID(), ::CostumeRequestSetting.TYPE_WORK));
+
+    _setWorkBg();
+  }
+
+  function _setWorkBg() {
+    switch (this.work_index) {
+    case 0:
+      this.img_bg1.visible = true;
+      this.img_bg2.visible = false;
+      this.img_bg3.visible = false;
+      break;
+    case 1:
+      this.img_bg1.visible = false;
+      this.img_bg2.visible = true;
+      this.img_bg3.visible = false;
+      break;
+    case 2:
+      this.img_bg1.visible = false;
+      this.img_bg2.visible = false;
+      this.img_bg3.visible = true;
+      break;
+    default:
+      this.img_bg1.visible = false;
+      this.img_bg2.visible = false;
+      this.img_bg3.visible = false;
+      break;
+    }
+  }
+
+  function setViewVisible(v) {
+    this.layer.visible = v;
+    this.layer.matdirty = true;
+    this.layer.repaint();
+  }
+}

@@ -1,0 +1,16 @@
+return {
+  modeldata = "plane_1010.mdl"
+  bnd = [0.0, 0.0, 0.0, 0.5, 0.0, 0.5]
+
+  material = [
+  {
+    name = "select_mt"
+    tec = "shading.basic"
+    Ka = 286331153
+    Kd = 0
+    Ks = 2139062271
+    Ke = 0
+    shiness = 20.0
+  }
+  ]
+}

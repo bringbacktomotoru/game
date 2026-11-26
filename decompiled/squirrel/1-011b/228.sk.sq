@@ -1,0 +1,45 @@
+class ReleaseMotionSetting extends ::Setting {
+  id = 0;
+  release_motions = null;
+
+  function loadConfAtServer(t) {
+    local _setting = ReleaseMotionSetting();
+
+    foreach (k, v in t) {
+      switch (k) {
+      case "release_motions":
+        _setting[k] = decodeJSON(v);
+        break;
+      default:
+        _setting[k] = v;
+      }
+
+    }
+    return _setting;
+  }
+
+  function getID() {
+    return this.id;
+  }
+
+  function getReleaseMotionsID(lv = -1) {
+    if (!this.release_motions) return null;
+    if (lv < 0) return this.release_motions;
+
+    local _ret = [];
+    foreach (rm in this.release_motions) {
+      if (rm.level == lv) _ret + rm.motion_id;
+    }
+    return _ret;
+  }
+
+  function getLevelUpReleaseMotionsID(start_lv, end_lv) {
+    if (!this.release_motions) return null;
+
+    local _ret = [];
+    foreach (rm in this.release_motions) {
+      if (rm.level >= start_lv && rm.level <= end_lv) _ret + rm.motion_id;
+    }
+    return _ret;
+  }
+}

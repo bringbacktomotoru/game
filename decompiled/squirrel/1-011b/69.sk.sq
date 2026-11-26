@@ -1,0 +1,8 @@
+prop_settings[1] <- ::PropSetting({
+  name = "フォーク";
+  prop_script = "cos_fork_spoon_start";
+  stand_motion = -1;
+  walk_motion = -1;
+  dash_motion = -1;
+  prop_motion_list = [16, 17, 18, 20, 24];
+})

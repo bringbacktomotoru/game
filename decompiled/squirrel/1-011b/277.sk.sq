@@ -1,0 +1,83 @@
+with PMEditor {
+  function setPM(p) {
+    pm = p;
+
+    sk3d = SK3DObject(p);
+    canvas.setSK3(sk3d);
+    rightpanel.setPolygonMesh(p);
+    timeline.setSK3(sk3d);
+  }
+
+  function setVisibleRectWire(b) {
+    rightpanel.setVisibleRectWire(b);
+  }
+}
+
+function PolygonMesh ::write(sb, isPatch = false) {
+
+  sb.printf("///  PolygonMesh written by SKBuilder.!!!!!\n/// \n")
+  sb.printf("return {\n")
+
+  if (!isPatch) {
+    sb.printf("modeldata = \"%S\"\n", modeldatatxt);
+    if (motiondatatxt) sb.printf("motiondata = \"%S\"\n", motiondatatxt);
+    sb.printf("bnd = [%f,%f,%f,%f,%f,%f]\n", bnd.x, bnd.y, bnd.z, bnd.r, bnd.s, bnd.t);
+  }
+
+  if (shapesets) {
+    sb.printf("\nshapesets = {\n");
+    local _shape_keys = Table.keys(shapesets);
+
+    local comp_func = function(key1, key2) {
+      local _cmp = key1.compare(key2);
+      return _cmp < 0 ? -1 : _cmp > 0 ? 1 : 0;
+    }
+
+    _shape_keys = stableSort(_shape_keys, comp_func);
+    foreach (_shape_key in _shape_keys) {
+      local _shape = shapesets[_shape_key];
+      sb.printf("\t\"%S\":%S,\n", _shape_key, _writeShapeParameters(_shape));
+    }
+
+    sb.printf("}\n");
+  }
+  if (rbdataset) {
+    sb.printf("\nrbdataset = [\n");
+    foreach (rb in rbdataset) {
+      local t = writeRigidBodyData(rb);
+      sb.printf("\t%S,\n", encodeJSON(t));
+    }
+    sb.printf("\n]\n");
+  }
+  sb.printf("\nmaterial = [\n");
+  foreach (i, f in face) {
+    writeMaterial(f.m, sb);
+  }
+  sb.printf("]\n}\n")
+}
+
+function PolygonMesh ::_writeShapeParameters(shape) {
+  local comp_func = function(key1, key2) {
+    if (key1.equals("uvscroll")) return 1;
+    if (key2.equals("uvscroll")) return 0;
+    local _cmp = key1.compare(key2);
+    return _cmp < 0 ? -1 : _cmp > 0 ? 1 : 0;
+  }
+  local _keys = Table.keys(shape);
+  _keys = stableSort(_keys, comp_func);
+  local _str = "{";
+  foreach (_key in _keys) {
+    local _val = shape[_key];
+    local _vtype = typeof(_val);
+    local _strval;
+    if (_vtype == SS_FLOAT) {
+      _strval = sprintf("%.2f", _val);
+    } else {
+      _strval = encodeJSON(_val);
+    }
+
+    _str = _str + "\"" + _key + "\":" + _strval + ",";
+  }
+  _str = _str + "}";
+  return _str;
+}

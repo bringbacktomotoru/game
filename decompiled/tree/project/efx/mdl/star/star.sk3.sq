@@ -1,0 +1,29 @@
+model =
+{
+  root = {
+    pm = "star.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+  }
+
+  function start() {
+    spin(0, 0, -7, 3000);
+    generate({ view = "../../ptc/star.ptd", connect = 1 });
+    pass(3000);
+    kill();
+  }
+
+  function die() {
+    playSound("attack/burn3.wav");
+    zoomTo(0.1, 0.1, 0.1, 200);
+    pass(500);
+    kill();
+  }
+
+}

@@ -1,0 +1,91 @@
+class MailData {
+  mail_id = -1;
+
+  limit_time = null;
+
+  message_type = null;
+  title = null;
+  message = null;
+
+  item_kind = -1;
+  item_id = -1;
+  item_amount = -1;
+  item_target_id = -1;
+
+  is_read = false;
+  has_item = true;
+
+  constructor(mail_id) {
+    this.mail_id = mail_id;
+  }
+
+  function loadWithCreate(loader) {
+    local mail_id = loader.get();
+    local data = ::MailData(mail_id);
+
+    local limit = loader.get();
+    data.limit_time = Date(time201511 + limit);
+
+    data.message_type = loader.get();
+    data.title = loader.get();
+    data.message = loader.get();
+
+    data.item_kind = loader.get();
+    data.item_id = loader.get();
+    data.item_amount = loader.get();
+    data.item_target_id = loader.get();
+
+    data.is_read = loader.get();
+    data.has_item = loader.get();
+
+    return data;
+  }
+
+  function getMailId() {
+    return this.mail_id;
+  }
+
+  function getTimelimitText() {
+    return ::dict.get("mail_item_limit", [::dateToLimitText(this.limit_time)]);
+  }
+
+  function getTitle() {
+    return ::dict.get("mail_title" + this.message_type, [this.title]);
+  }
+
+  function getMessage() {
+    return ::dict.get("mail_message" + this.message_type, [this.message]);
+  }
+
+  function setReadFlag() {
+    this.is_read = true;
+  }
+
+  function isRead() {
+    return this.is_read;
+  }
+
+  function isItemAttached() {
+    return this.item_amount > 0;
+  }
+
+  function hasItem() {
+    return this.has_item;
+  }
+
+  function getItemID() {
+    return this.item_id;
+  }
+
+  function getItemKind() {
+    return this.item_kind;
+  }
+
+  function itemReceived() {
+    this.has_item = false;
+  }
+
+  function toString() {
+    return this + "{" + mail_id + ", title[" + title + "], message[" + message + "]}";
+  }
+}

@@ -1,0 +1,24 @@
+class CostumeDetailDialog extends ::Dialog {
+  component = null;
+
+  lbl_name = null;
+  lbl_desc = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/CostumeDetailDialog.ui"));
+
+    this.lbl_name = this.view.findChild("lbl_name");
+    this.lbl_desc = this.view.findChild("lbl_desc");
+
+    this.component = ::CostumeComponent(this.view.findChild("pnl_view"));
+
+    this.btn_close.findChild("lbl").setText(::dict.get("close"));
+    this.view.findChild("pnl_slide").findChild("lbl_slide").setText(::dict.get("rewarddialog_slide_desc"));
+  }
+
+  function setData(cd) {
+    this.lbl_name.setText(cd.getName());
+    this.lbl_desc.setText(cd.getDesc());
+    this.component.setCostume(cd.getID());
+  }
+}

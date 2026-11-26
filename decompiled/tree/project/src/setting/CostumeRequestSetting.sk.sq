@@ -1,0 +1,90 @@
+class CostumeRequestSetting extends ::Setting {
+  static TYPE_OYUGI = 1;
+  static TYPE_WORK = 2;
+
+  id = -1;
+  desc = null;
+  talk_key = null;
+  type = -1;
+  rewards = null;
+  timelimit = -1;
+  target_type = -1;
+  period = null;
+  event_ids = null;
+  next_quest_id = -1;
+  push_text_id = -1;
+
+  function loadConfAtServer(t) {
+    local setting = CostumeRequestSetting();
+
+    foreach (k, v in t) {
+      switch (k) {
+      case "rewards":
+      case "period":
+        setting[k] = decodeJSON(v);
+        break;
+      case "event_ids":
+        setting[k] = [];
+        local _ids = decodeJSON(v);
+        setting[k] + decodeJSON(_ids[0]);
+        setting[k] + decodeJSON(_ids[1]);
+
+        break;
+      default:
+        setting[k] = v;
+      }
+    }
+
+    return setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (desc) trans + "desc";
+
+    return trans;
+  }
+
+  function getID() {
+    return this.id;
+  }
+
+  function getDesc() {
+    return this.desc;
+  }
+
+  function getType() {
+    return this.type;
+  }
+
+  function getTimeLimitMin() {
+    return this.timelimit;
+  }
+  function getRewards() {
+    return this.rewards
+  }
+
+  function getRecieveEventID(idx) {
+    if (idx < 0) {
+      println("!!!!!!! getRecieveEventID index = -1")
+      return this.event_ids[0][0];
+    }
+    return this.event_ids[0][idx];
+  }
+  function getCompleteEventID(idx) {
+    if (idx < 0) {
+      println("!!!!!!! getCompleteEventID index = -1")
+      return this.event_ids[1][0];
+    }
+    return this.event_ids[1][idx];
+  }
+
+  function hasTargetType() {
+    return target_type > 0;
+  }
+
+  function getTargetType() {
+    return target_type;
+  }
+}

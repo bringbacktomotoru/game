@@ -1,0 +1,50 @@
+class OpeningMoviePanel extends ::MoviePanel {
+
+  constructor() {
+    super();
+
+    this.fileref = FileRef(skGetDataDir() + "/OP.mp4");
+    if (!this.fileref.exists()) {
+      local _res = ::getResource("/movie/OP.mp4");
+      this.fileref.save(_res.getContent());
+      if (skGetOSName() == "Android") this.fileref = FileRef(skGetDataDir() + "/OP.mp4");
+    }
+    this.picture_state = { saved = false, frame = 0 };
+  }
+
+  function create() {
+    return ::loadSKView("/ui/MoviePlayer.ui", ::OpeningMoviePanel);
+  }
+
+  function added() {
+    super.added();
+
+    setPaused(false);
+
+    if (this.picture_state.frame) {
+
+      this.movie_view.seek(this.picture_state.frame);
+    }
+
+    this.btn_back.setVisible(false);
+    this.play_button.setVisible(false);
+    this.btn_play.setVisible(false);
+
+    this.movie_view.setEndFunc(function() {
+      setPaused(true);
+      repaint();
+
+      local _ts = ::gamesetting.tutorial_settings[::TutorialSetting.TUTORIAL_FIRST_LOGIN];
+      getHomeUI().movePanel(::ImageViewPanel, false, { "setting" = _ts, "can_no_read" = false });
+
+    }.bindenv(this))
+  }
+
+  function showed() {
+    stopBGM();
+    this.movie_view.play();
+  }
+
+  function _mouseevent(e) {
+  }
+}

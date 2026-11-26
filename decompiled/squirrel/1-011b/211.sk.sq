@@ -1,0 +1,71 @@
+class GachaItemsSetting extends Setting {
+  id = 0;
+  items = null;
+
+  function loadConfAtServer(t) {
+    local _setting = GachaItemsSetting();
+
+    foreach (k, v in t) {
+      switch (k) {
+      case "items":
+        _setting[k] = decodeJSON(v);
+        break;
+      default:
+        _setting[k] = v;
+      }
+
+    }
+    return _setting;
+  }
+
+  function getFuaturedItems() {
+    local _list = [];
+    for (local i = 0; i < this.items.len(); i++) {
+      local _item = this.items[i];
+      if (_item.flag == 1) _list + _item;
+    }
+    return _list;
+  }
+
+  function getRandomGachaIndexes(exec_num) {
+    if (!items) return null;
+    if (exec_num < 1) return null;
+
+    local _total_rate = 0;
+    for (local i = 0; i < items.len(); i++) {
+      _total_rate += items[i].rate;
+    }
+
+    local _indexes = [];
+    for (local i = 0; i < exec_num; i++) {
+      local _rnd = Math.rndi(_sum_rate - 1) + 1;
+      local _sum_rate = 0;
+      for (local j = 0; j < items.len(); j++) {
+        _sum_rate += items[j].rate;
+        if (_sum_rate >= _rnd) {
+          _indexes + j;
+          break;
+        }
+      }
+    }
+
+    return _indexes;
+  }
+
+  function getRewardItems(idxes) {
+    if (!items) return null;
+    if (!idxes || idxes.len() < 1) return null;
+
+    local _list = [];
+    for (local i = 0; i < idxes.len(); i++) {
+      if (idxes[i] < 0 || idxes[i] >= items.len()) continue;
+      local _ri = items[idxes[i]];
+      if (_ri) _list + _ri;
+    }
+    return _list
+  }
+
+  function getAllItems() {
+    return this.items;
+  }
+}

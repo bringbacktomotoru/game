@@ -1,0 +1,149 @@
+class SKMenuAdaptor extends MenuAdaptor
+{
+  rootnode = null;
+
+  listselect1 = null;
+  listselect2 = null;
+  listmouseon = null;
+  listsubmenu = null;
+
+  constructor() {
+    rootnode = Node(this);
+    rootnode.name = "__ROOT__";
+
+    listselect1 = ::getSprite("/system/ui.silver/ui.clp#listselect1");
+    listselect2 = ::getSprite("/system/ui.silver/ui.clp#listselect2");
+    listmouseon = ::getSprite("/system/ui.silver/ui.clp#listmouseon");
+    listsubmenu = ::getSprite("/system/ui.silver/ui.clp#tri3");
+  }
+
+  function clearNodes() {
+    rootnode.clearItems();
+  }
+
+  function addItem(_o) {
+    return rootnode.addItem(_o);
+  }
+
+  function addSubnode(_o) {
+    return rootnode.addSubnode(_o);
+  }
+
+  function getCellHeight() {
+    return 20;
+  }
+
+  function getItemView(idx, o, convertv, parentv, stateonly) {
+    if (!(convertv instanceof ListItem)) {
+      convertv = ListItem();
+    }
+    if (!stateonly) {
+
+      convertv.setItem(o);
+    }
+    if ("isSelected" in parentv && parentv.isSelected(idx)) {
+      if (parentv.focused) {
+        convertv.backsp = clone listselect2;
+      } else {
+        convertv.backsp = clone listselect1;
+      }
+    } else
+    if ("isMouseon" in parentv && parentv.isMouseon(idx)) {
+      convertv.backsp = clone listmouseon;
+    } else {
+      convertv.backsp = null;
+    }
+
+    convertv.setRect(0, 0, parentv.bnd.w, "cellh" in parentv ? parentv.cellh : parentv.bnd.h)
+    return convertv;
+  }
+
+  function getListWidth(o) {
+    return 140;
+  }
+
+  function hasList(o) {
+    return (o instanceof MenuListAdaptor) && o.getCount() > 0;
+  }
+
+  function getListAdaptor(o) {
+    return (o instanceof MenuListAdaptor) ? o : null;
+  }
+
+  function getParent(o) {
+    return o.parent;
+  }
+
+}
+
+class SKMenuAdaptor.Node extends MenuListAdaptor
+{
+  parent = null;
+  name = null;
+  icon = null;
+  ref = null;
+  enabled = true;
+
+  constructor(ma) {
+    menuadapt = ma;
+    node = this;
+    list = null;
+  }
+
+  function clearItems() {
+    if (list) list.clear();
+  }
+
+  function addItem(o) {
+    if (!list) list = [o]; else list + o;
+    return o;
+  }
+
+  function addSubnode(o) {
+    local n = createNode(o);
+    if (!list) list = [n]; else list + n;
+    return n;
+  }
+
+  function createNode(o) {
+    local n = SKMenuAdaptor.Node(menuadapt);
+    n.name = ::getObjectName(o);
+    n.icon = ::getObjectIcon(o);
+    n.ref = o;
+    n.parent = this;
+    return n;
+  }
+
+  function calcListWidth() {
+    local w = 128;
+
+    return w;
+  }
+}
+
+class SKMenuAdaptor.ListItem extends SKListAdaptor.ListItem
+{
+  submenusp = null;
+
+  function setItem(o) {
+    super.setItem(o);
+    if ("getCount" in o && o.getCount() > 0) {
+      submenusp = ::getSprite("/system/ui.silver/ui.clp#tri3");
+      submenusp.pos = Vector3D();
+    } else {
+      submenusp = null;
+    }
+  }
+
+  function updateLayout() {
+    super.updateLayout();
+    if (submenusp) {
+      submenusp.pos(bnd.w - 10.0, 10.0, 0.0);
+    }
+  }
+
+  function render() {
+    super.render();
+    skDrawSprite(submenusp);
+  }
+}

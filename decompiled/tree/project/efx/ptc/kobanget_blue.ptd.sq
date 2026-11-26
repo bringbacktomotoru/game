@@ -1,0 +1,31 @@
+parentcoord <- false
+currentgroup <- 0.0
+groups <- [
+with ParticleGroupData() {
+  name = "spark"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 5
+    start = 0, start_spr = 80
+    life = 600, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 1.0, pos_spry = 0.8, pos_sprz = 0.8
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.2, "h": 0.2, "axis": 0 }
+  texture = "star02.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel_spr": 0.0, "vel": 0.0 },
+  { "classid": "ptcmod_acc", "coord": 1, "acc_spr": 0.0, "acc": 0.2, "axisid": 1 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, -0.576923], "scale": 3.141593, "axisid": 2 },
+  { "classid": "ptcmod_color", "color": [-402653185, 9961471, -419430401, 10026752, -436207617, 10026752, -402653185, 10026752] },
+  { "classid": "ptcmod_scale", "scale": [2.0, 1.615385, 1.769231, 1.192308, 0.0], "xyz": 7 },
+  ] },
+]

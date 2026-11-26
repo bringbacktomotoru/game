@@ -1,0 +1,204 @@
+local v_1 = Vector3D();
+local v_2 = Vector3D();
+local v_3 = Vector3D();
+local v_y = Vector3D(0, 1, 0);
+local q_1 = Quaternion();
+local r_1 = Rect3D();
+
+local ds = {
+  src = null,
+  type = 0,
+  kind = 0,
+  dmg = 0,
+  reaction = null,
+  weight = 0,
+  snd = null,
+};
+
+class DashAttack extends DashObject
+{
+  srcobj = null;
+  attackset = null;
+  actions = null;
+
+  pos = null;
+  action = null;
+
+  hitobjs = null;
+
+  avoidattack = 0;
+
+  constructor(s, src, a) {
+    super(s);
+    srcobj = src;
+    attackset = a;
+    if (!a["enemytype"]) {
+
+      if (src instanceof DashPlayer) {
+        a.enemytype <- GROUPMASK_ENEMY;
+      } else
+      if (src instanceof DashEnemyBase) {
+        a.enemytype <- GROUPMASK_PLAYER;
+      } else {
+
+        a.enemytype <- GROUPMASK_PLAYER;
+      }
+    }
+    if (!a["abnd"]) {
+      a.abnd <- Rect3D(0, 0, 0, 0.55, 0.55, 0.55);
+    }
+
+    init();
+  }
+
+  function init() {
+    if (attackset.view) {
+      sk3d = SK3DObject(::getResource(attackset.view));
+      pos = sk3d.pos;
+      if (attackset["hpb"]) {
+        sk3d.rot.setHPB(attackset.hpb.x, attackset.hpb.y, attackset.hpb.z);
+        sk3d.matdirty = true;
+      }
+    } else {
+      pos = Vector3D();
+    }
+    if (attackset["pos"]) {
+      pos << srcobj.pos + attackset.pos
+    } else {
+      pos << srcobj.pos;
+    }
+    if (sk3d) {
+      sk3d.startScript("start");
+    }
+  }
+
+  function update(dt) {
+    local d = pos - stage.cameraobj.pos;
+    if (d.x < -28 || d.x > 28 || d.y < -20 || d.y > 20) {
+      kill();
+      return alive;
+    }
+
+    action.updateAction(dt);
+
+    if (reservedatk) updateAttacks(dt);
+
+    if (sk3d) {
+      sk3d.matdirty = true;
+      alive &= sk3d.alive;
+    }
+    avoidattack = Math.max(0, avoidattack - dt);
+
+    return alive;
+  }
+
+  function changeAction(a, e) {
+    if (!a) return;
+    action = a;
+    a.startAction(e);
+  }
+
+  function move(dv) {
+    local f = stage.rayTest(v_1 << pos, v_2 << dv, v_3);
+    pos << v_1 + v_2;
+  }
+
+  function moveCheck(dv) {
+    local f = stage.rayTest(v_1 << pos, v_2 << dv, v_3);
+    if (f >= 0.0) {
+      pos << (v_1 + v_2 + v_3);
+      return v_3;
+    } else {
+      pos << v_1 + v_2;
+      return null;
+    }
+  }
+
+  function groundCheck(dy) {
+    local f;
+    v_2(0.0, -footy - dy, 0.0);
+    f = stage.rayTest(v_1(pos.x + 0.2, pos.y, pos.z), v_2, v_3);
+    if (f >= 0) {
+      pos.y = pos.y - dy + v_3.y;
+      return true;
+    }
+    f = stage.rayTest(v_1(pos.x - 0.7, pos.y, pos.z), v_2, v_3);
+    if (f >= 0) {
+      pos.y = pos.y - dy + v_3.y;
+      return true;
+    }
+    return false;
+  }
+
+  function checkAttack(aset = null, autokill = true) {
+    if (avoidattack > 0) return 0;
+    if (!aset) aset = attackset;
+    local a = stage.getObjects(aset.enemytype || attackset.enemytype);
+    local c = 0;
+    local r = aset.abnd + pos;
+    foreach (o in a) {
+      if (o.avoidattack > 0 || (o in hitobjs)) continue;
+      if (r.contacts(o.abnd)) {
+
+        ds.kind = aset["kind"] || 0;
+        ds.src = this;
+        ds.dmg = aset.damage;
+        ds.reaction = aset["reaction"] || null;
+        ds.snd = aset["snd"] || "hit/lite.wav";
+        if (o.giveDamage(ds)) {
+          ++c;
+          if (!aset["pierce"]) {
+            if (autokill) {
+              changeAction(actions.die, null);
+            }
+            return -1;
+          }
+        }
+        if (hitobjs) {
+          hitobjs[o] <- 1;
+        } else {
+          hitobjs = {[o] = 1 };
+        }
+      }
+    }
+    return c;
+  }
+
+  function giveDamage(ds) {
+    kill();
+  }
+
+}
+
+class DashAttackAction
+{
+  a = null;
+
+  constructor(attack) {
+    a = attack;
+  }
+
+  function startAction(e) {
+  }
+
+  function updateAction(dt) {
+  }
+}
+
+class DashAttackActionDie extends DashAttackAction
+{
+  killtime = 500;
+
+  function startAction(e) {
+    if ((!a.sk3d || !a.sk3d.startScript("die")) && !a.reservedatk) {
+      a.kill();
+    }
+    killtime = 500;
+  }
+
+  function updateAction(dt) {
+    if ((killtime -= dt) <= 0 && !a.reservedatk) {
+      a.kill();
+    }
+  }
+}

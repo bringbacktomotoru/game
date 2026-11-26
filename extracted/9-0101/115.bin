@@ -1,0 +1,24 @@
+;
+;----------- テスト -------------
+;チュートリアルテスト
+; ct:文字クリア
+; r:改行
+
+;[focusroom address={[0,0]}]
+
+
+[enablebuttonall enable = false]
+
+[enablebutton type = 2 target={["btn_menu_shop"]} enable = true]
+[focusin x=480 y=600 sx=80 sy=80 time=100]
+[wait time=300]
+[tutorialwindow x=480 y=240]
+この家具を
+[enable enable=true]
+[waitclick]
+[enablebuttonall enable = true];画面遷移してからenablebuttonはマズいくさい
+;ここから先別画面
+[hide_tutorialwindow]
+[wait time=500]
+[focusout time=300]
+[wait time=800]

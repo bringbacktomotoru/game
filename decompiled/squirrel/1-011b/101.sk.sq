@@ -1,0 +1,2381 @@
+class ARModelViewer extends SKView {
+  static BASE_CAMERA_POS = Vector3D(0.0, 1.4, -8.0);
+  static DEVICE_ROTATION_INTERVAL = 5;
+  static LAST_TAPPED_INTERVAL = 2000.0;
+  static NEXT_CONDUCT_INTERVAL = 2000;
+  static CANCEL_USE_FURNITURE_COUNT = 3;
+  static FURNITURE_BARRAGE_LIMIT = 800;
+  static FOCUS_TIME = 5000;
+  static MOVE_ROUTE_QUEUE_SIZE = 50;
+
+  current_chara_id = null;
+
+  rect = null;
+  image_rect = null;
+
+  scene = null;
+  renderer = null;
+  sk3dview = null;
+
+  image_scene = null;
+  image_renderer = null;
+  image_sk3dview = null;
+
+  charas = null;
+  furnitures = null;
+  house_manager = null;
+
+  select_chara_models = null;
+
+  last_tap_time = -1;
+  attract_model = null;
+  approach_model = null;
+  approach_chara_list = null;
+  select_model = null;
+  last_select_model = null;
+  start_attract_time = -1;
+
+  current_furniture_id = -1;
+
+  current_pos = null;
+  total_move = null;
+
+  viewmat = null;
+  imageViewMat = null;
+  cameraPos = null;
+  image_camera_pos = null;
+  fixed_camera_pos = null;
+  image_fixed_camera_pos = null;
+  target_pos = null;
+  camera_rot = null;
+  recognized_count = 0;
+  first_result = true;
+
+  is_recognized_prev = false;
+  is_enabled_prev = false;
+  camera_near = 1.0;
+  camera_far = 100.0;
+
+  ar_module = null;
+
+  texture_landmark = null;
+  landmark_particle_map = null;
+  liner = null;
+
+  talk_view = null;
+  talk_window = null;
+  image_talk_view = null;
+  image_talk_window = null;
+  sentence_manager = null;
+
+  accel_vec = null;
+  v_1 = null;
+  v_2 = null;
+  deviceRotate = 0;
+  imageDeviceRotate = 0;
+  capture_dir = 0;
+  prev_device_rotation = 0;
+
+  total_gyro_rot = null;
+  estimated_pos = null;
+  recognition_lost_gyro = null;
+  recognition_lost_pos = null;
+  fixed_tar = null;
+  fixed_up = null;
+  image_fixed_tar = null;
+  image_fixed_up = null;
+
+  last_tapped = null;
+
+  origin = null;
+
+  landmark_update_time = 0;
+
+  next_can_conduct_time = 0;
+
+  chara_appeal_layer = null;
+
+  last_furniture_tap = -1;
+  furniture_barrage_count = 0;
+
+  focus_chara = null;
+  focus_time = -1;
+  focus_lock = false;
+
+  drag_route_thread = null;
+  route_prev = null;
+  move_route = null;
+  route_length = 0;
+
+  shutter_chance_manager = null;
+  last_exec_motion_id = -1;
+
+  targetMat = null;
+
+  constructor(rect) {
+    super();
+    charas = {};
+    furnitures = {};
+    updateRect(rect);
+    image_rect = clone rect;
+    viewmat = Matrix();
+    imageViewMat = Matrix();
+    cameraPos = Vector3D();
+    image_camera_pos = Vector3D();
+    target_pos = Vector3D(0, 0.5, 0);
+    camera_rot = Vector3D();
+
+    is_enabled_prev = ::ENABLE_AR;
+    current_chara_id = -1;
+
+    texture_landmark = Texture().create(32, 32, SK_RGBA, 3, 0);
+    landmark_particle_map = {};
+    liner = [];
+    this.accel_vec = Vector3D();
+    this.fixed_camera_pos = Vector3D();
+    this.image_fixed_camera_pos = Vector3D();
+    this.last_tapped = 0;
+
+    this.approach_chara_list = [];
+
+    this.recognition_lost_gyro = Quaternion();
+    this.recognition_lost_pos = Vector3D();
+    fixed_tar = Vector3D();
+    fixed_up = Vector3D();
+    image_fixed_tar = Vector3D();
+    image_fixed_up = Vector3D();
+
+    this.move_route = [];
+
+    this.shutter_chance_manager = ARShutterChanceManager(this);
+  }
+
+  function loadStageScene() {
+    total_move = current_pos = Vector3D();
+
+    this.scene = SK3DScene();
+    this.scene.getB3World();
+    this.renderer = createSceneRenderer();
+
+    this.sk3dview = SK3DView(this.scene, this.renderer);
+    this.sk3dview.setRect(rect.x, rect.y, rect.w, rect.h);
+    this.sk3dview.setAutoUpdate(false);
+
+    this.image_scene = SK3DScene();
+    this.image_scene.getB3World();
+    this.image_renderer = createSceneRenderer();
+    this.image_sk3dview = SK3DView(this.image_scene, this.image_renderer);
+    this.image_sk3dview.setRect(image_rect.x, image_rect.y, image_rect.w, image_rect.h);
+    this.image_sk3dview.setAutoUpdate(false);
+
+    addChild(sk3dview);
+
+    this.scene.clearObjects();
+    this.image_scene.clearObjects();
+
+    this.renderer.camera.lookat(BASE_CAMERA_POS, Vector3D(0, 0.5, 0));
+    this.image_renderer.camera.lookat(BASE_CAMERA_POS, Vector3D(0, 0.5, 0));
+
+    this.fixed_camera_pos.set(BASE_CAMERA_POS);
+    this.image_fixed_camera_pos.set(BASE_CAMERA_POS);
+
+    this.renderer.cullfilterfunc = function(o) {
+      if (o.parent) {
+        return self.cullfilterfunc(o.parent);
+      }
+      self.v_1.set(o.pos).sub(pos);
+      return self.v_1.length() >= o.visible_distance ? true : false;
+    }.bindenv({ self = this.renderer, pos = fixed_camera_pos });
+
+    this.image_renderer.cullfilterfunc = function(o) {
+      if (o.parent) {
+        return self.cullfilterfunc(o.parent);
+      }
+      self.v_1.set(o.pos).sub(pos);
+      return self.v_1.length() >= o.visible_distance ? true : false;
+    }.bindenv({ self = this.renderer, pos = image_fixed_camera_pos });
+
+    cameraPos = clone BASE_CAMERA_POS;
+    image_camera_pos = clone BASE_CAMERA_POS;
+    local w = rect.w, h = rect.h;
+    this.renderer.camera.perspective(40.0, float(w) / h, camera_near, camera_far);
+    this.image_renderer.camera.perspective(40.0, float(w) / h, camera_near, camera_far);
+
+    _cameraEnable(false);
+
+    local env = SK3DEnvironment(::gamesetting.scnenv["morning"]);
+    this.scene.setEnvironment(env);
+    this.image_scene.setEnvironment(env);
+
+    setRenderSetting(false);
+
+    select_chara_models = [];
+    selectAllModels();
+
+    talk_view = TalkWindow();
+    talk_view.setRect(rect.x, rect.y, rect.w, rect.h);
+    talk_window = ARTalkWindowLayer(talk_view);
+    talk_view.setWindowLayer(talk_window);
+
+    this.chara_appeal_layer = ARCharaAppealLayer(this);
+
+    image_talk_view = TalkWindow();
+    image_talk_view.setRect(image_rect.x, image_rect.y, image_rect.w, image_rect.h);
+    image_talk_window = ARTalkWindowLayer(image_talk_view);
+    image_talk_view.setWindowLayer(image_talk_window);
+
+    this.addChild(talk_view);
+
+    this.sentence_manager = ARSentenceManager(this, talk_window, image_talk_window, this.renderer.camera, this.image_renderer.camera);
+
+    imageDeviceRotate = deviceRotate = 0;
+
+    this.house_manager = ARHouseManager(this.scene, this.image_scene);
+  }
+
+  function removed() {
+    super.removed();
+    this.ar_module = null;
+    talk_view = null;
+    this.accel_vec = null;
+    this.move_route = null;
+  }
+
+  function setARModule(ar_module) {
+    this.ar_module = ar_module;
+    foreach (chara in charas) {
+      chara.setARModule(ar_module);
+    }
+    this.talk_window.setARModule(ar_module);
+  }
+
+  function setARPanel(pnl) {
+    this.shutter_chance_manager.setARPanel(pnl);
+  }
+
+  function setRenderSetting(enable_ios_movie) {
+    local env = SK3DEnvironment(::gamesetting.scnenv["morning"]);
+    local model_render = ::createRenderSetting(env["postfx"]);
+    local _shadow_rs = ::createRenderSetting({});
+
+    if (enable_ios_movie) {
+      model_render.passes[2] = {
+        cls = "FXMixImageBGRAPass"
+        src1 = "colortex"
+        src2 = "eighthtex"
+        target = null
+      };
+    }
+    renderer.setRenderSetting(model_render);
+
+    image_renderer.setRenderSetting(model_render);
+  }
+
+  function selectAllModels() {
+
+    select_chara_models.clear();
+    foreach (id, chara in charas) {
+
+      chara.setDark(false);
+
+      select_chara_models + id;
+
+    }
+    _updateCurrentCharaID();
+  }
+
+  function _updateCurrentCharaID() {
+    if (select_chara_models.len() != 1) current_chara_id = -1;
+    else current_chara_id = select_chara_models[0];
+  }
+
+  function selectAllClear() {
+    foreach (chara_id in select_chara_models) {
+      local model = charas[chara_id];
+      model.setDark(true);
+    }
+
+    select_chara_models.clear();
+    _updateCurrentCharaID();
+  }
+
+  function _cameraEnable(enable, recognized = false, flipY = false, image_device_rotate = -1) {
+    if (enable) {
+      if (recognized) {
+        local _camera_value = ar_module.calcCameraMatrix(cameraPos, viewmat, flipY, targetMat);
+        this.fixed_camera_pos.set(_camera_value[0]);
+        this.fixed_tar.set(_camera_value[1]);
+        this.fixed_up.set(_camera_value[2]);
+        this.renderer.camera.lookat(_camera_value[0], _camera_value[1], _camera_value[2]);
+
+        _camera_value = ar_module.calcCameraMatrix(image_camera_pos, imageViewMat, flipY, targetMat);
+        this.image_fixed_camera_pos.set(_camera_value[0]);
+        this.image_fixed_tar.set(_camera_value[1]);
+        this.image_fixed_up.set(_camera_value[2]);
+        this.image_renderer.camera.lookat(_camera_value[0], _camera_value[1], _camera_value[2]);
+      } else {
+
+        if (ARPanel.SENSOR_ESTIMATE_ENABLED) {
+          if (!total_gyro_rot) return;
+
+          if (is_recognized_prev) {
+            recognition_lost_gyro.set(total_gyro_rot);
+            recognition_lost_pos.set(estimated_pos * ar_module.getCoodinateSystemScale() * 5.0);
+          }
+
+          local _hpb = total_gyro_rot.toMatrix().getHPB();
+          local _lost_hpb = recognition_lost_gyro.toMatrix().getHPB();
+
+          local _r = Quaternion.fromHPB((_hpb.x - _lost_hpb.x), _hpb.y - _lost_hpb.y, (_hpb.z - _lost_hpb.z));
+
+          local _t = _r * (fixed_tar - fixed_camera_pos);
+          local _u = _r * (fixed_up);
+
+          local _v = Vector3D().set(recognition_lost_pos) - (estimated_pos * ar_module.getCoodinateSystemScale() * 5.0);
+
+          local _e = fixed_camera_pos + _v;
+          this.renderer.camera.lookat(_e, _e + _t, _u);
+
+          _hpb = _r.toMatrix().getHPB() * Math.RTOD;
+
+        } else {
+          local _eye = clone BASE_CAMERA_POS;
+          local _tar = Vector3D(0, 0.5, 0);
+          local _upvec = Vector3D(0.0, 1.0, 0.0);
+
+          this.fixed_camera_pos.set(_eye);
+          this.renderer.camera.lookat(_eye, _tar, _upvec);
+
+          if (image_device_rotate >= 0) {
+            local _mat = Matrix.fromHPB(0, 0, image_device_rotate * Math.DTOR);
+            _eye.transform0(_mat);
+            _tar.transform0(_mat);
+            _upvec.transform0(_mat);
+          }
+          this.image_fixed_camera_pos.set(_eye);
+          this.image_renderer.camera.lookat(_eye, _tar, _upvec);
+
+        }
+      }
+    } else {
+      local _eye = clone BASE_CAMERA_POS;
+      local _tar = Vector3D(0, 0.5, 0);
+      local _upvec = Vector3D(0.0, 1.0, 0.0);
+
+      this.fixed_camera_pos.set(_eye);
+      this.renderer.camera.lookat(_eye, _tar, _upvec);
+
+      if (image_device_rotate >= 0) {
+        local _mat = Matrix.fromHPB(0, 0, image_device_rotate * Math.DTOR);
+        _eye.transform0(_mat);
+        _tar.transform0(_mat);
+        _upvec.transform0(_mat);
+      }
+      this.image_fixed_camera_pos.set(_eye);
+      this.image_renderer.camera.lookat(_eye, _tar, _upvec);
+    }
+  }
+
+  function calcAcculateDeviceRotation() {
+    if (accel_vec.length() < 0.01) return 0.0;
+    if (!v_1) v_1 = Vector3D();
+    if (!v_2) v_2 = Vector3D();
+    v_1.set(accel_vec.x, accel_vec.y, 0.0).normalize();
+    v_2.set(1.0, 0.0, 0.0);
+    local _flag = v_1.y < 0.0 ? 1.0 : -1.0;
+
+    local cos_theta = v_1.dot(v_2) / (v_1.length() / v_2.length());
+    local _dir = Math.acos(cos_theta) * Math.RTOD * _flag;
+    if (Math.abs(prev_device_rotation - _dir) > DEVICE_ROTATION_INTERVAL) prev_device_rotation = _dir;
+
+    return prev_device_rotation;
+  }
+
+  function update(dt) {
+    sk3dview.updateScene(dt);
+    image_sk3dview.updateScene(dt);
+
+    local _dir = flushTalkWindowRotation(false, false);
+    flushTalkWindowRotation(true, false);
+    this.chara_appeal_layer.update(_dir, dt);
+
+    foreach (chara in charas) {
+      chara.update(dt);
+    }
+
+    foreach (furniture in furnitures) {
+      furniture.update(dt);
+    }
+
+    updateLayout();
+
+    this.shutter_chance_manager.update(dt);
+  }
+
+  function updateLandmarks(landmarks, corners, rectangle) {
+    if (landmarks.len() == 0 || corners.len() == 0 || rectangle.len() == 0) return;
+
+    local _cnt = rectangle.len();
+    local sub = _cnt - liner.len();
+    if (sub > 0) {
+      for (local i = 0; i < sub; i++) liner + _createLineParticle();
+    } else if (sub < 0) {
+      local min = liner.len() + sub;
+      for (local i = liner.len() - 1; i >= min; i--) {
+        this.scene.removeObject(liner[i]);
+        delete liner[i];
+      }
+    }
+
+    local _sub = 0;
+    local last = rectangle.len();
+    for (local i = 0; i < last; i++) {
+      local _vtx0 = clone rectangle[i];
+      local _vtx1 = clone rectangle[(i + 1) % last];
+
+      if (!liner[i - _sub].ptc) {
+        this.scene.removeObject(liner[i - _sub]);
+        delete liner[i - _sub];
+        _sub++;
+      } else {
+        local _vec1 = _vtx1.getPosition() - _vtx0.getPosition();
+        local _half_len = _vec1.length() / 2;
+        liner[i - _sub].ptc.groups[0].ptch = _half_len;
+        local _rot1 = _aimQuaternion(_vec1.normalize());
+        liner[i - _sub].ptc.groups[0].gmat.setSRT(_vtx0.getPosition() + _rot1 * Vector3D(0, 0, _half_len), Vector3D(1.0), _rot1);
+        liner[i - _sub].matdirty = true;
+      }
+    }
+  }
+
+  static function _aimQuaternion(v) {
+    local h = Math.atan2(v.x, v.z);
+    local p = Math.asin(-v.y);
+    return Quaternion.fromHPB(h, p, 0.0);
+  }
+
+  function _createPerticleEffect() {
+    local p = ParticleEffect();
+    local pg = ParticleGroup();
+    p.gmat = Matrix();
+    pg.aimtype = 0;
+    pg.emitter = _particleEmitter();
+
+    pg.ptcw = 0.005 * ar_module.getCoodinateSystemScale();
+    pg.ptch = 0.005 * ar_module.getCoodinateSystemScale();
+    pg.ptcaxis = 1;
+    pg.m = Material();
+    pg.m.Kd = 0xffffffff;
+    pg.m.blend = SK_PMASRCMIX;
+    pg.m.depthmask = 0;
+    pg.m.cullface = SK_OFF;
+    pg.gmat = p.gmat;
+    pg.m.tec = skFXFindTechnique("decal.def");
+    pg.m.tex0 = texture_landmark;
+    p.groups = [pg];
+
+    local _sk3d = SK3DObject(p);
+    _sk3d.pos << Vector3D(0.0);
+    _sk3d.rot << Quaternion(0.0, 0.0, 0.0, 1.0);
+    _sk3d.scale << Vector3D(1.0);
+    _sk3d.matdirty = true;
+    _sk3d.updateMatrix();
+
+    this.scene.addObject(_sk3d);
+
+    if (!_sk3d.startScript("start")) {
+      if (_sk3d.ptc) _sk3d.startParticle(false);
+    }
+
+    return _sk3d;
+  }
+
+  function _createLineParticle() {
+    local p = ParticleEffect();
+    local pg = ParticleGroup();
+    p.gmat = Matrix();
+    pg.aimtype = 0;
+    pg.emitter = _particleEmitter();
+
+    pg.ptcw = 0.00125 * ar_module.getCoodinateSystemScale();
+    pg.ptch = 0.0025;
+    pg.lmat = Matrix().identity();
+    pg.ptcaxis = 1;
+    pg.m = Material();
+    pg.m.Kd = 0xffffffff;
+    pg.m.blend = SK_PMASRCMIX;
+    pg.m.depthmask = 0;
+    pg.m.cullface = SK_OFF;
+    pg.gmat = p.gmat;
+    pg.m.tec = skFXFindTechnique("decal.def");
+    p.groups = [pg];
+
+    local _sk3d = SK3DObject(p);
+    _sk3d.pos << Vector3D(0.0);
+    _sk3d.rot << Quaternion(0.0, 0.0, 0.0, 1.0);
+    _sk3d.scale << Vector3D(1.0);
+    _sk3d.matdirty = true;
+    _sk3d.updateMatrix();
+
+    this.scene.addObject(_sk3d);
+
+    if (!_sk3d.startScript("start")) {
+      if (_sk3d.ptc) _sk3d.startParticle(false);
+    }
+
+    return _sk3d;
+  }
+
+  function _particleEmitter() {
+    local _emit = with ParticleEmitter() {
+      num = 1
+      start = 0, start_spr = 0
+      life = 10000, life_spr = 10000
+      posx = 0.0, posy = 0.0, posz = 0.0
+      pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+      dirx = 0.0, diry = 0.0, dirz = 0.0
+      dir_sprx = 0, dir_spry = 0.0, dir_sprz = 0
+    };
+
+    return _emit;
+  }
+
+  function clearObjects() {
+    removed();
+    clearCharas();
+    clearFurnitures();
+    scene.clearObjects();
+    select_chara_models.clear();
+
+  }
+
+  function destruct() {
+    clearObjects();
+    total_move = current_pos = null;
+    this.scene = null;
+    this.renderer = null;
+    this.image_scene = null;
+    this.image_renderer = null;
+
+    removeChild(sk3dview);
+    this.sk3dview = null;
+    this.image_sk3dview = null;
+
+    select_chara_models.clear();
+    select_chara_models = null;
+    current_chara_id = -1;
+
+    interruptDragRouteThread();
+    drag_route_thread = null;
+  }
+
+  function clearCharas() {
+    foreach (uid, chara in charas) {
+      chara.release();
+    }
+
+    Table.clear(charas);
+    selectAllModels();
+  }
+
+  function clearFurnitures() {
+    foreach (uid, furniture in furnitures) {
+      furniture.disconnectCharas();
+      furniture.release();
+    }
+    Table.clear(furnitures);
+  }
+
+  function updateLayout() {
+    super.updateLayout();
+    repaint();
+  }
+
+  function updateRect(rect, lx = 0, ly = 0) {
+    this.rect = rect;
+    if (this.sk3dview) this.sk3dview.setRect(rect.x, rect.y, rect.w, rect.h, lx, ly);
+    if (this.talk_view) {
+      this.talk_view.setRect(rect.x, rect.y, rect.w, rect.h, lx, ly);
+      this.talk_view.updateLayout();
+    }
+  }
+
+  function getTappedModel(screen_x, screen_y) {
+    local _is_furniture_only = false;
+
+    local _now = skGetTime();
+
+    if (this.last_tap_time + ::SanrioGameScene.FURNITURE_BARRAGE_LIMIT > _now) {
+      _is_furniture_only = true;
+    }
+
+    local _v = Vector3D(screen_x / ::displayWidth, screen_y / ::displayHeight, 0.0);
+
+    local near = this.renderer.camera.unproject(_v);
+    _v.z = 1.0;
+    local far = this.renderer.camera.unproject(_v);
+
+    scene.b3world.updateAABBs();
+
+    local b3res = scene.b3world.rayTest(0, near, far, ::ViewFactory.RAYTEST_MASK, ::ViewFactory.RAYTEST_GROUP);
+    if (b3res.len() < 1) return null;
+
+    foreach (model in furnitures) {
+      if (!model.visible) continue;
+      if (model.getB3body() == b3res.bodyb) {
+        return model;
+      }
+    }
+
+    if (_is_furniture_only) return null;
+
+    foreach (model in charas) {
+      if (!model.visible) continue;
+      if (model.getB3body() == b3res.bodyb) {
+        return model;
+      }
+    }
+    return null;
+  }
+
+  function getTappedFurnitureModel(screen_x, screen_y) {
+    local _v = Vector3D(screen_x / ::displayWidth, screen_y / ::displayHeight, 0.0);
+
+    local near = this.renderer.camera.unproject(_v);
+    _v.z = 1.0;
+    local far = this.renderer.camera.unproject(_v);
+
+    scene.b3world.updateAABBs();
+
+    local b3res = scene.b3world.rayTest(0, near, far, ::ViewFactory.RAYTEST_MASK, ::ViewFactory.RAYTEST_GROUP);
+    if (b3res.len() < 1) return null;
+
+    foreach (model in furnitures) {
+      if (!model.visible) continue;
+      if (model.getB3body() == b3res.bodyb) {
+        return model;
+      }
+    }
+
+    return null;
+  }
+
+  function addCharaByCostumeId(costume_id = 0, susp = false, rebuild = false) {
+
+    local _attr = null;
+
+    local _chara_id = ::gamesetting.costume_settings[costume_id].getCharaID();
+    local _chara = null;
+    if (charas[_chara_id]) {
+      _chara = charas[_chara_id];
+      if (rebuild) {
+        _attr = { pos = Vector3D(_chara.getPos()), rot = Quaternion(_chara.getRotation()) }
+      }
+      _chara.removeShadow();
+      scene.removeObject(_chara.sk3d);
+      _chara.getCaptureModel().release();
+
+    } else {
+      _chara = ::ARCharaModel(this.scene);
+      _chara.setModelViewer(this);
+      charas[_chara_id] <- _chara;
+    }
+    _chara.setCostumeID(costume_id);
+
+    local _ccm = ::ARCharaModel(this.image_scene);
+    _ccm.setModelViewer(this);
+    _ccm.setCostumeID(costume_id);
+    _ccm.build(true, null, susp, _attr);
+
+    _chara.build(true, _ccm, susp, _attr);
+    _chara.setARModule(ar_module);
+    local _pid = _chara.getPropID();
+    if (rebuild && _pid != -1) {
+      _chara.startProp(::gamesetting.prop_settings[_pid], true);
+    }
+
+    if (!::contains(select_chara_models, _chara_id)) select_chara_models + _chara_id;
+
+    _updateCurrentCharaID();
+
+    _chara.startUpdate();
+
+    repaint();
+
+    return _chara;
+  }
+
+  function initApproachCharaList() {
+    clearApproachCharaList();
+    foreach (_cm in this.charas) {
+      this.approach_chara_list + _cm;
+    }
+  }
+
+  function clearApproachCharaList() {
+    this.approach_chara_list.clear();
+  }
+
+  function replaceApprochList(cm, is_top) {
+    local _idx = this.approach_chara_list.indexOf(cm);
+    if (_idx < 0) return;
+    delete this.approach_chara_list[_idx];
+    if (is_top) this.approach_chara_list[0] <- cm;
+    else this.approach_chara_list + cm;
+  }
+
+  function popApproachChara() {
+
+    local _tmp_list = clone this.approach_chara_list;
+    for (local i = 0; i < this.approach_chara_list.len(); i++) {
+      local _cm = this.approach_chara_list[i]
+      if (_cm.isFurnitureScriptRunning()) continue;
+      if (_cm.isInLinkAction()) continue;
+
+      delete this.approach_chara_list[i];
+      this.approach_chara_list + _cm;
+
+      return _cm;
+    }
+
+    return null;
+  }
+
+  function addSanrioCharas() {
+    local _reside_charas = ::gamesession.getUserData().getCurrentRoomResideCharas();
+    foreach (_cid in _reside_charas) {
+      addCharaByCostumeId(_cid);
+
+    }
+  }
+
+  function addSanrioCharaByTakingIds(taking_id_table) {
+    foreach (_t in taking_id_table) {
+      foreach (cid in _t.cids) {
+        addCharaByCostumeId(cid);
+      }
+    }
+  }
+
+  function changeSanrioChara(cid) {
+    local _current = getCurrentChara();
+    if (_current.getCostumeID() == cid) return false;
+
+    local _processing = ::gamesession.processinglayer;
+    _processing.startProcess(skGetTime());
+
+    local _ud = ::gamesession.getUserData();
+    if (cid in _ud.getCostumeDataTable()) {
+      local _cm = addCharaByCostumeId(cid, true, true);
+      _cm.clearTasks();
+      return true;
+    }
+    return false;
+  }
+
+  function getCurrentCharaModel() {
+    return getCurrentChara();
+  }
+
+  function getCurrentChara() {
+    return getChara(current_chara_id);
+  }
+
+  function getCurrentCharaID() {
+    return this.current_chara_id;
+  }
+
+  function getChara(chara_id, is_capture = false) {
+    if (is_capture) {
+      return charas[chara_id] ? charas[chara_id].capture_model : null;
+    }
+    return charas[chara_id] || null;
+  }
+
+  function getCharas() {
+    return this.charas;
+  }
+
+  function getCharaFromCharaKey(chara_key, is_capture = false) {
+    local _chara_id = -1;
+    foreach (id, setting in ::gamesetting.sanrio_chara_settings) {
+      if (setting.getTalkKey() == chara_key) {
+        _chara_id = id;
+        break;
+      }
+    }
+
+    return getChara(_chara_id, is_capture);
+  }
+
+  function getRandomCharaModel() {
+    if (!this.charas || length(this.charas) < 1) return null;
+    local _keys = ::getTableKeys(this.charas);
+    local _idx = _keys[Math.rndi(_keys.len() - 1)];
+    return this.charas[_idx];
+  }
+
+  function getNearestCharaModel(p, furniture_check = false, attract_check = false, link_check = false, focus_check = false, tapped_script_check = false) {
+    local _dist = 100000;
+    local _ret = null;
+    foreach (chara in charas) {
+      if (furniture_check && chara.isFurnitureScriptRunning()) continue;
+      if (attract_check && chara.hasAttractTarget()) continue;
+      if (link_check && chara.isInLinkAction()) continue;
+      if (focus_check && chara == this.focus_chara) continue;
+      if (tapped_script_check && chara.hasTappedScript()) continue;
+
+      local _d = ::getDistance(p, chara.getPos());
+      if (_d < _dist) {
+        _dist = _d;
+        _ret = chara;
+      }
+    }
+    return _ret;
+  }
+
+  function getNearRandomActionChara(mine) {
+    local _DIST = 20;
+    local _list = [];
+
+    foreach (chara in charas) {
+      if (chara == mine) continue;
+      if (!chara.isPlayRandomAction()) continue;
+      if (chara.isFurnitureScriptRunning()) continue;
+      if (chara.isInLinkAction()) continue;
+      if (chara.hasAttractTarget()) continue;
+      if (chara == this.focus_chara) continue;
+
+      local _d = ::getDistance(mine.getPos(), chara.getPos());
+      if (_d < _DIST) {
+        _list + chara;
+      }
+    }
+
+    if (_list.len() > 0) {
+      return Math.rndPick(_list);
+    }
+    return null;
+  }
+
+  function getLastExecuteMotionID() {
+    return this.last_exec_motion_id;
+  }
+
+  function startCharasScript(script, scp_args = null, is_turn_front = true) {
+    foreach (chara in charas) {
+      chara.startCharaScriptAction(script, scp_args, is_turn_front);
+    }
+  }
+
+  function startCurrentCharaScript(script, scp_args = null, is_turn_front = true) {
+    local _chara = getCurrentChara();
+    _chara.startCharaScriptAction(script, scp_args, is_turn_front);
+
+  }
+
+  function currentCharaScript(script) {
+    local _chara = getCurrentChara();
+    if (!_chara) return;
+    return _chara.getCurrentScriptName().equals(script);
+  }
+
+  function startCharasScripts() {
+    foreach (chara in charas) {
+      if (!chara.canInterruptAction()) continue;
+      if (!chara.isPlayRandomAction() && !chara.isPlayNoMoveAction()) {
+        local _tasks = chara.getScriptActionTasks();
+        if (_tasks) chara.setupTasks(_tasks);
+        else println("tasks is nul.");
+      }
+    }
+  }
+
+  function startCharasScriptCheese() {
+    local _DELAY_RATE = 30;
+    local _DELAY_TIME_MIN = 1000;
+    local _DELAY_TIME_MAX = 3000;
+
+    foreach (chara in charas) {
+      if (chara.isFurnitureScriptRunning()) continue;
+
+      if (::PUBLIC_RANDOM.nexti(100) < _DELAY_RATE) {
+        local _tasks = chara.createStartCharaScriptActionTasks("multipurpose_kurukuru", null, true);
+        local _delay = _DELAY_TIME_MIN + ::PUBLIC_RANDOM.nexti(_DELAY_TIME_MAX - _DELAY_TIME_MIN);
+        chara.reserveTasks(_tasks, _delay);
+      } else {
+        if (!chara.canInterruptAction()) continue;
+        chara.startCharaScriptAction("multipurpose_kurukuru", null, true);
+      }
+    }
+  }
+
+  function clearCharaParam() {
+    _removeTappedCharaEffect();
+    selectAllModels();
+
+    foreach (chara in charas) {
+      chara.setPos(Vector3D());
+      chara.setAngle(0.0);
+      chara.writeToCaptureModel();
+
+      chara.clearAction(true, true);
+      chara.clearModifiers();
+      chara.setFurnitureScriptRunning(false);
+      chara.resetTargetFurnitureUID();
+      chara.resetTappedScript();
+      chara.resetAttractTarget();
+      chara.shadowVisible(true);
+    }
+  }
+
+  function clearCharasAction() {
+    foreach (chara in charas) {
+      chara.clearAction();
+      chara.setFurnitureScriptRunning(false);
+      chara.resetTargetFurnitureUID();
+    }
+  }
+
+  function setCharasVisible(b) {
+    foreach (chara in charas) {
+      chara.setVisible(b);
+    }
+  }
+
+  function initCharasPos(pos_table) {
+    if (!pos_table) {
+      setCharasRandomPos();
+      return;
+    }
+    local _center = false;
+    foreach (chara in charas) {
+      if (chara.isFurnitureScriptRunning()) continue;
+
+      if (!_center) {
+
+        setCharaCenterPos(chara);
+        _center = true;
+      }
+      else {
+
+        local _pos = pos_table[chara.getCostumeID()];
+        if (!_pos) _pos = Vector3D(0.0, 0.0, 0.0);
+
+        if (inBoundOtherModel(chara, _pos)) setCharaRandomPos(chara);
+        else chara.setBothModelPos(_pos);
+      }
+    }
+  }
+
+  function setCharasRandomPos() {
+    local _put_center = false;
+    foreach (chara in charas) {
+      if (chara.isFurnitureScriptRunning()) continue;
+      if (!_put_center) {
+
+        setCharaCenterPos(chara);
+        _put_center = true;
+      } else {
+
+        setCharaRandomPos(chara);
+      }
+    }
+  }
+
+  function setCharaCenterPos(chara) {
+    if (chara.isFurnitureScriptRunning()) return;
+    local _tmp_pos = Vector3D();
+    local _info = this.house_manager.getRoomInfo();
+    if (_info) _tmp_pos = _info.getEnabledNodeByVortex(0.0, 0.0);
+    else _tmp_pos = getVortexBoundCheckPosition(chara);
+    chara.setBothModelPos(_tmp_pos);
+  }
+
+  function setCharaRandomPos(chara) {
+    if (chara.isFurnitureScriptRunning()) return;
+
+    local _info = this.house_manager.getRoomInfo();
+    if (_info) {
+      local _grid_pos = _info.getRandomNodePos();
+      if (!_grid_pos) _grid_pos = Vector3D();
+      for (local i = 0; i < 30; i++) {
+        if (!inBoundOtherModel(chara, _grid_pos)) break;
+        _grid_pos = _info.getRandomNodePos();
+        if (!_grid_pos) _grid_pos = Vector3D();
+      }
+      chara.setBothModelPos(_grid_pos);
+    }
+    else {
+      local _MAX_FORMULATE_NUM = 10;
+      local _rectangle = ar_module.getRectangle(chara.getPos());
+      if (!_rectangle) {
+        println("can't create rectangle.");
+        return;
+      }
+
+      local _pos_min = _rectangle.getPosMin();
+      local _pos_max = _rectangle.getPosMax();
+      local _rect = _rectangle.getVertexes();
+      local _in_rectangle = null;
+      local _v = Vector3D();
+      for (local i = 0; i < _MAX_FORMULATE_NUM * 2; i++) {
+
+        _v.set(::PUBLIC_RANDOM.nextf(_pos_min.x, _pos_max.x), _rect[0].position_.y, ::PUBLIC_RANDOM.nextf(_pos_min.z, _pos_max.z));
+
+        _in_rectangle = _rectangle.isInRectangle(_v);
+        if (!_in_rectangle) continue;
+
+        if (i < _MAX_FORMULATE_NUM && inBoundOtherModel(chara, _in_rectangle)) continue;
+        chara.setBothModelPos(_in_rectangle);
+        break;
+      }
+    }
+  }
+
+  function getVortexBoundCheckPosition(chara) {
+    local _a = 0;
+    local _d = 1.0;
+    local _pos = Vector3D(0.0, 0.0, 0.0);
+    for (local i = 0; i < 100; i++) {
+      if (!inBoundOtherModel(chara, _pos)) break;
+      local _rad = _a * Math.DTOR;
+      _pos.x = _d * Math.cos(_rad);
+      _pos.z = _d * Math.sin(_rad);
+      _a += 45;
+      if (_a >= 360) {
+        _a = 0;
+        _d += 1.0;
+      }
+    }
+    return _pos;
+  }
+
+  function setCharasRandomAction() {
+    foreach (chara in charas) {
+      if (chara.getTargetFurnitureUID() != -1) continue;
+      if (!chara.canInterruptAction()) continue;
+
+      chara.setRandomAction(true);
+      local _tasks = chara.getScriptActionTasks();
+      chara.setupTasks(_tasks);
+    }
+  }
+
+  function _searchCharas(screen_x, screen_y) {
+    local _v = Vector3D(screen_x / ::displayWidth, screen_y / ::displayHeight, 0.0);
+
+    local near = this.renderer.camera.unproject(_v);
+    _v.z = 1.0;
+    local far = this.renderer.camera.unproject(_v);
+
+    scene.b3world.updateAABBs();
+    local b3res = scene.b3world.rayTest(1, near, far, ::ViewFactory.RAYTEST_MASK, ::ViewFactory.RAYTEST_GROUP);
+    if (b3res.len() < 1) return null;
+    foreach (model in charas) {
+      if (model.getB3body() == b3res.bodyb) {
+        return model;
+      }
+    }
+    return null;
+  }
+
+  function selectCurrentChara() {
+    local _models = Table.values(charas);
+    if (_models.len() <= 0) {
+      println("There is no one in this room.");
+      return;
+    }
+
+    select_chara_models.clear();
+    select_chara_models + _models[0].getCharaID();
+
+    _updateCurrentCharaID();
+  }
+
+  function setFocusChara(fc) {
+    if (fc) {
+      this.focus_time = skGetTime();
+      if (fc.startCharaScriptAction(::CharaModel.SCRIPT_NAME_FOCUS, null, true)) {
+        fc.setCanInterruptAction(true);
+        fc.setAutoAction(false);
+        if (this.focus_chara && this.focus_chara != fc) this.focus_chara.setAutoAction(false);
+        this.focus_chara = fc;
+        this.chara_appeal_layer.addNoticeBalloon(fc);
+        local _cid = fc.getCostumeID();
+        this.talk_window.interruptTalkWindow(_cid)
+        this.image_talk_window.interruptTalkWindow(_cid)
+      }
+    }
+    else {
+      this.focus_time = -1;
+      if (this.focus_chara) this.focus_chara.setAutoAction(false);
+      this.focus_chara = fc;
+    }
+  }
+  function updateFocusTime() {
+    if (this.focus_chara) this.focus_time = skGetTime();
+  }
+
+  function getFocusChara() {
+    return this.focus_chara;
+  }
+
+  function setFocusLock(b) {
+    this.focus_lock = b;
+    if (!b) updateFocusTime();
+  }
+  function getFocusLock() {
+    return this.focus_lock;
+  }
+
+  function addHapinessBalloon(model) {
+    chara_appeal_layer.addHapinessBalloon(model);
+  }
+
+  function addShutterChanceBalloon(model) {
+    this.chara_appeal_layer.addShutterBalloon(model);
+  }
+
+  function releaseAllBalloons() {
+    chara_appeal_layer.releaseAllBalloons();
+  }
+
+  function startCharaAction(as) {
+    if (::ENABLE_AR) {
+      local _panel = ::gamesession.getCurrentScene().getUI().getCurrentPanel();
+      if (_panel instanceof ARPanel && !_panel.isDetecting()) return false;
+    }
+
+    local _cur = getCurrentCharaModel();
+    if (!_cur) return false;
+
+    if (!as) {
+
+      local _chara_data = _cur.getCharaData();
+      if (!_chara_data) return false;
+      local _chara_motion_list = _chara_data.getMotions();
+      if (!_chara_motion_list || _chara_motion_list.len() == 0) return false;
+      local _rnd_id = Math.rndi(_chara_motion_list.len() - 1);
+      as = ::gamesetting.costume_motion_settings[_chara_motion_list[_rnd_id]];
+    }
+
+    if (!as) return false;
+
+    local _scp = as.getActionName();
+    local _efx_model = ::AREffectModel(this.scene);
+    _efx_model.setModelViewer(this);
+    _efx_model.build("/res/AR_point/point.pm", "/res/furniture/base.sk3", "/res/furniture/base_efx.sk3");
+    _efx_model.setARModule(this.ar_module);
+    _efx_model.setPos(Vector3D(this.fixed_camera_pos).add(0.0, -1.5, 0.0));
+    _efx_model.setVisible(true);
+    _efx_model.startScript("efx_throw", _efx_model, _cur, _scp);
+
+    this.last_exec_motion_id = as.getID();
+
+    this.shutter_chance_manager.challengeShutterChance(_cur);
+
+    interruptDragRouteThread();
+
+    return true;
+  }
+
+  function addFurnitureId(fuid = 0, susp = false) {
+    local _fd = ::gamesession.getUserData().getFurnitureData(fuid);
+
+    local _furniture = null;
+    if (furnitures[fuid]) {
+      _furniture = furnitures[fuid];
+      _furniture.removeShadow();
+      scene.removeObject(_furniture.obj.sk3d);
+      _furniture.getCaptureModel().release();
+    } else {
+      _furniture = ::ARFurnitureModel(this.scene);
+      _furniture.setModelViewer(this);
+    }
+
+    local _cfm = ::ARFurnitureModel(this.image_scene);
+    _cfm.setModelViewer(this);
+    _cfm.build(_fd);
+
+    _furniture.build(_fd, _cfm);
+    _furniture.setARModule(ar_module);
+
+    current_furniture_id = fuid;
+
+    if (!furnitures[fuid]) {
+      furnitures[fuid] <- _furniture;
+    }
+
+    if (susp) suspend();
+
+    if (susp) suspend();
+    repaint();
+
+    return _furniture;
+  }
+
+  function addFurnitures() {
+    local _ud = ::gamesession.getUserData();
+    local _edit = _ud.getRoomEditDataBySlotIdx(_ud.getCurrentRoomIndex());
+    local _layouts = _edit.getFurnitureLayouts();
+
+    foreach (layout in _layouts) {
+      local _uid = layout.getUID();
+      local _fd = _ud.getFurnitureData(_uid);
+      if (_fd.getSetting().getEnableActionNum() > 1) continue;
+      addFurnitureId(_uid);
+    }
+  }
+
+  function addCurrentFurniture() {
+
+    local _table = ::gamesession.getUserData().getFurnitureDataTable();
+    foreach (uid, fd in _table) {
+      if (fd.getSetting().getEnableActionNum() != 1) continue;
+      addFurnitureId(uid);
+      break;
+    }
+  }
+
+  function addFurnitureByTakingIds(taking_id_table) {
+    foreach (_t in taking_id_table) {
+      if (_t.fuid <= 0) continue;
+      addFurnitureId(_t.fuid);
+    }
+  }
+
+  function setFurnituresVisible(b) {
+    foreach (_furniture in furnitures) {
+      _furniture.setVisible(b);
+    }
+  }
+
+  function startFurnituresEffect(effect) {
+    foreach (_furniture in furnitures) {
+      _furniture.startEffect(effect);
+    }
+  }
+
+  function setFurnituresRandomPos() {
+    local _MAX_FORMULATE_NUM = 10;
+    foreach (_furniture in furnitures) {
+      local _rectangle = ar_module.getRectangle(_furniture.getPos());
+      if (!_rectangle) {
+        println("can't create rectangle.");
+        return;
+      }
+      local _pos_min = _rectangle.getPosMin();
+      local _pos_max = _rectangle.getPosMax();
+      local _rect = _rectangle.getVertexes();
+      local _in_rectangle = null;
+      local _v = Vector3D();
+      for (local i = 0; i < _MAX_FORMULATE_NUM * 2; i++) {
+
+        _v.set(::PUBLIC_RANDOM.nextf(_pos_min.x, _pos_max.x), _rect[0].position_.y, ::PUBLIC_RANDOM.nextf(_pos_min.z, _pos_max.z));
+
+        _in_rectangle = _rectangle.isInRectangle(_v);
+        if (!_in_rectangle) continue;
+
+        if (i < _MAX_FORMULATE_NUM && inBoundOtherModel(_furniture, _in_rectangle)) continue;
+        _furniture.setPos(_in_rectangle);
+        break;
+      }
+    }
+  }
+
+  function setFurnituresLayout() {
+    local _ud = ::gamesession.getUserData();
+    local _edit = _ud.getRoomEditDataBySlotIdx(_ud.getCurrentRoomIndex());
+    local _layouts = _edit.getFurnitureLayouts();
+
+    foreach (_furniture in furnitures) {
+
+      local _layout = _edit.getFurnitureLayoutData(_furniture.getUID());
+      _furniture.setBothModelPos(Vector3D(_layout.x, _layout.y, _layout.z));
+      _furniture.setBothModelRotation(Quaternion.fromHPB(_layout.angle * Math.DTOR, 0, 0));
+    }
+  }
+
+  function getNearestFurnitureModel(pos, is_capture = false) {
+    local _ret_fm = null;
+    local _ret_dist = -1;
+    foreach (fm in this.furnitures) {
+
+      if (is_capture) fm = fm.getCaptureModel();
+
+      if (!fm.getFurnitureSetting().canUseFurniture()) continue;
+      if (fm.getTargetCharaTable()) continue;
+      local _d = ::getDistance(pos, fm.getPos());
+      if (!_ret_fm || _ret_dist > _d) {
+        _ret_fm = fm;
+        _ret_dist = _d;
+      }
+    }
+    return { fm = _ret_fm, dist = _ret_dist };
+  }
+
+  function getFurnitureModel(fid, is_capture = false) {
+    if (is_capture) {
+      local _fm = furnitures[fid] || null;
+      return _fm != null ? furnitures[fid].capture_model : null;
+    }
+    return furnitures[fid];
+  }
+  function getFurnitureModels() {
+    return furnitures;
+  }
+
+  function getAttractModel(cm, is_capture = false) {
+    if (!this.approach_model) return null;
+    local _am = this.approach_model;
+    local _cm = cm;
+    if (is_capture) {
+      _am = this.approach_model.getCaptureModel();
+      _cm = cm.getCaptureModel();
+    }
+    if (_am != _cm) return null;
+
+    if (this.last_tap_time + ::SanrioGameScene.CHARACTER_APPROACH_LIMIT < skGetTime()) return null;
+    local _at = this.attract_model;
+    if (is_capture) {
+      _at = _at.getCaptureModel();
+    }
+    return _at;
+
+  }
+
+  function startUseFurnitureForce(taking_id_tables = null) {
+    if (taking_id_tables) {
+      foreach (_t in taking_id_tables) {
+        if (_t.fuid <= 0) continue;
+        if (_t.cids.len() == 0) continue;
+        local _fm = getFurnitureModel(_t.fuid);
+        _fm.startUseFurnitureScriptForce(_t.cids);
+      }
+    } else {
+
+      local _pm = ::gamesession.getCurrentScene().getProductionManager();
+      local _f_models = getFurnitureModels();
+      local _ud = ::gamesession.getUserData();
+      foreach (_fuid, _fm in _f_models) {
+        local _fd = _ud.getFurnitureData(_fuid);
+        if (!_fd.hasProductData()) continue;
+
+        local _pd = _fd.getProductData();
+        _fm.startUseFurnitureScriptForce(_pd.getCostumeIDList(), -1, false);
+      }
+    }
+
+  }
+
+  function addHouseModel(room_id, room_info) {
+    this.house_manager.addHouseModel(room_id);
+    this.house_manager.setRoomInfo(room_info);
+  }
+
+  function setHouseVisible(v) {
+    this.house_manager.setHouseVisible(v);
+  }
+
+  function initHouseVisible() {
+    this.house_manager.initHouseVisible(this.renderer);
+  }
+
+  function updateHouseVisible() {
+    this.house_manager.updateHouseVisible(this.renderer);
+  }
+
+  function getHouseManager() {
+    return this.house_manager;
+  }
+
+  function addOriginModel(rid, capture_model = null, susp = false) {
+    local _rs = ::gamesetting.room_settings[rid];
+
+    origin = ::AROriginModel(this.scene);
+    origin.setModelViewer(this);
+
+    origin.build(_rs, capture_model);
+
+    if (susp) suspend();
+    if (ar_module) origin.setARModule(ar_module);
+
+    origin.setVisible(true);
+
+    if (susp) suspend();
+
+    return origin;
+  }
+
+  function startOriginEffect(effect) {
+    origin.startEffect(effect);
+  }
+
+  function setOriginVisible(b) {
+    origin.setVisible(b);
+  }
+
+  function setModelsVisible(b) {
+    if (::ENABLE_AR) {
+      setCharasVisible(b);
+      setFurnituresVisible(b);
+    }
+  }
+
+  function setARParam(result, enable, flipY, device_rotate) {
+
+    local _os_name = skGetOSName();
+    local _recognized = ar_module.isRecognized(result);
+
+    local _tMat = null;
+    if (enable && _os_name == "iOS") {
+      _tMat = result.getTargetMatrix();
+      _tMat[14] *= -1.0;
+      targetMat = _tMat;
+    }
+
+    foreach (chara in charas) {
+      chara.setARMode(enable);
+
+      if (is_enabled_prev != enable) {
+        chara.setScale(Vector3D(1.0));
+        chara.resetPhysicalBones();
+      }
+    }
+
+    foreach (furniture in furnitures) {
+      furniture.setARMode(enable);
+    }
+
+    if (enable) {
+      if (_os_name == "Android") {
+        sarSmartar.sarConvertPose2Matrix(result.position_, result.rotation_, viewmat);
+        cameraPos = clone result.position_;
+      } else if (_recognized) {
+        viewmat = result.getMatrix();
+        cameraPos = clone result.position_;
+
+        if (first_result) {
+          camera_near = 0.01;
+          camera_far = 100.0;
+          local _width = rect.w;
+          local _height = rect.h;
+          ar_module.calcProjectionMatrix(result, _width, _height, camera_near, camera_far);
+          local projmat = result.getProjectionMatrix();
+          this.renderer.camera[SK_PROJECTION] = projmat;
+          this.renderer.camera.prjtype = 1;
+          this.renderer.camera.znear = camera_near;
+          this.renderer.camera.zfar = camera_far;
+          this.renderer.camera.fovy = 0.0;
+
+          first_result = false;
+        }
+      }
+    }
+
+    this.deviceRotate = device_rotate;
+
+    _cameraEnable(enable, _recognized, flipY);
+
+    if (is_enabled_prev != enable) {
+      if (enable) {
+        first_result = true;
+      } else {
+        cameraPos = clone BASE_CAMERA_POS;
+        image_camera_pos = clone BASE_CAMERA_POS;
+        setPerspective(40.0, rect.w, rect.h);
+        setImagePerspective(40.0, image_rect.w, image_rect.h);
+      }
+    }
+
+    is_recognized_prev = _recognized;
+    is_enabled_prev = enable;
+  }
+
+  function getFixedCameraPos() {
+    return this.fixed_camera_pos;
+  }
+
+  function setPerspective(fovy, width, height) {
+    this.renderer.camera.perspective(fovy, float(width) / height, camera_near, camera_far);
+  }
+
+  function setImagePerspective(fovy, width, height) {
+    this.image_renderer.camera.perspective(fovy, float(width) / height, camera_near, camera_far);
+  }
+
+  function getPerspective() {
+    return this.renderer.camera[SK_PROJECTION];
+  }
+
+  function getImagePerspective() {
+    return this.image_renderer.camera[SK_PROJECTION];
+  }
+
+  function setAccelVec(vec) {
+    this.accel_vec.set(vec);
+  }
+
+  function setTotalGyroRotation(rot) {
+    this.total_gyro_rot = rot;
+  }
+
+  function setEstimatedPosition(pos) {
+    this.estimated_pos = pos;
+  }
+
+  function inBoundOtherModel(model, pos) {
+    local _is_capture = model.capture_model == null;
+
+    if (model instanceof ARFurnitureModel && model.isOverlaidModel()) return null;
+
+    foreach (chara in charas) {
+      local _cm = chara;
+      if (_is_capture) _cm = chara.capture_model;
+
+      if (model instanceof ARCharaModel && _cm.getCostumeID() == model.getCostumeID()) continue;
+      if (!model.checkHit(pos, _cm.getPos(), _cm.sk3d.bnd)) continue;
+      return _cm;
+    }
+
+    if (this.house_manager.getRoomInfo()) return null;
+    foreach (furniture in furnitures) {
+      local _fm = furniture;
+      if (_is_capture) _fm = funriture.capture_model;
+
+      if (model instanceof ARFurnitureModel && model.getUID() == _fm.getUID()) continue;
+      if (_fm.isOverlaidModel()) continue;
+      if (!model.checkHit(pos, _fm.getPos(), _fm.obj.sk3d.bnd)) continue;
+      return _fm;
+    }
+
+    return null;
+  }
+
+  function getShutterChanceState() {
+    return this.shutter_chance_manager.getShutterChanceState();
+  }
+  function getShutterChanceModel() {
+    return this.shutter_chance_manager.getShutterChanceModel();
+  }
+
+  function isShutterChance(m) {
+    return this.shutter_chance_manager.isShutterChance(m);
+  }
+
+  function executeCapture() {
+    return this.shutter_chance_manager.executeCapture();
+  }
+
+  function getAddGameMoney() {
+    return this.shutter_chance_manager.getAddGameMoney();
+  }
+
+  function resetAddGameMoney() {
+    this.shutter_chance_manager.resetAddGameMoney();
+  }
+
+  function addedImageViewer(view) {
+    view.addChild(image_sk3dview);
+    view.addChild(image_talk_view);
+  }
+
+  function setImageBackView(view) {
+    image_renderer.setBackView(view);
+  }
+
+  function removeImageViewer() {
+    image_sk3dview.removeFromParent();
+    image_talk_view.removeFromParent();
+  }
+
+  function updateImageRect(rect, lx = 0, ly = 0) {
+    this.image_rect.set(rect);
+    this.image_sk3dview.setRect(rect.x, rect.y, rect.w, rect.h, lx, ly);
+    this.image_talk_view.setRect(rect.x, rect.y, rect.w, rect.h, lx, ly);
+  }
+
+  function setImageViewerPos(pos) {
+    this.image_sk3dview.pos.set(pos);
+    this.image_talk_view.pos.set(pos);
+  }
+
+  function setImageViewerRot(rot) {
+    this.image_sk3dview.rot.set(rot);
+    this.image_talk_view.rot.set(rot);
+  }
+
+  function imageViewerMatdirty() {
+    this.image_sk3dview.matdirty = true;
+    this.image_talk_view.matdirty = true;
+  }
+
+  function getImageTalkWindow() {
+    return this.image_talk_window;
+  }
+
+  function updateARImageParam(result, enable = true, flipY = false, image_device_rotate = -1) {
+
+    local _os_name = skGetOSName();
+    local _image_device_rotate = image_device_rotate;
+    local _recognized = ar_module.isRecognized(result);
+
+    if (_os_name == "Android") {
+      if (_image_device_rotate >= 0) {
+
+        local _flipy = ar_module.isFlipY();
+        local _imgrot = ar_module.getCameraImageRotation();
+        if ((_flipy && _imgrot == 0) || (!_flipy && _imgrot == 180)) {
+          _image_device_rotate = (_image_device_rotate + 180) % 360;
+        }
+      }
+      if (enable) {
+        image_camera_pos.set(result.position_);
+
+        local mat = Matrix().set(viewmat);
+        if (_image_device_rotate >= 0) {
+          local _rotmat = Matrix.fromHPB(0, 0, _image_device_rotate * Math.DTOR);
+          for (local i = 4; i < 8; i++) {
+            local _tmp = mat[i];
+            mat[i] = mat[i + 4];
+            mat[i + 4] = _tmp;
+          }
+          mat = mat.invert44() * _rotmat;
+          mat = mat.invert44();
+          for (local i = 4; i < 8; i++) {
+            local _tmp = mat[i];
+            mat[i] = mat[i + 4];
+            mat[i + 4] = _tmp;
+          }
+        }
+        imageViewMat = mat;
+      }
+    } else if (_recognized) {
+      viewmat = result.getMatrix();
+      imageViewMat = Matrix().set(viewmat);
+      image_camera_pos = clone result.position_;
+
+      if (first_result) {
+        camera_near = 0.01;
+        camera_far = 100.0;
+        local _width = image_rect.w;
+        local _height = image_rect.h;
+        ar_module.calcProjectionMatrix(result, _width, _height, camera_near, camera_far);
+        local projmat = result.getProjectionMatrix();
+        this.image_renderer.camera[SK_PROJECTION] = projmat;
+        this.image_renderer.camera.prjtype = 1;
+        this.image_renderer.camera.znear = camera_near;
+        this.image_renderer.camera.zfar = camera_far;
+        this.image_renderer.camera.fovy = 0.0;
+
+        first_result = false;
+      }
+    }
+
+    this.imageDeviceRotate = _image_device_rotate;
+
+    _cameraEnable(enable, _recognized, flipY, image_device_rotate);
+  }
+
+  function getImageRect() {
+    return image_rect;
+  }
+
+  function screenTapped(x, y) {
+    local _model = getTappedModel(x, y);
+    local _image_model = null;
+
+    if (_model instanceof ::ARCharaModel) {
+      local _fuid = _model.getTargetFurnitureUID();
+      if (_fuid >= 0) _model = getFurnitureModel(_fuid);
+    }
+
+    updateSelectModel(_model);
+
+    if (_model instanceof ARCharaModel) {
+      tappedCharaModel(_model);
+    }
+    else if (_model instanceof ARFurnitureModel) {
+      tappedFurnitureModel(_model);
+    }
+    else if (!_model) {
+      tappedSpace(x, y);
+    }
+  }
+
+  function screenDragged() {
+    if (!::ENABLE_AR) return false;
+
+    local _cur = getCurrentChara();
+    if (!_cur) return false;
+
+    if (this.move_route.len() < 2) return false;
+
+    ::gamesession.getTapViewLayer().killTapEffect();
+
+    _cur.startRouteMoveAction(this.move_route);
+
+    return true;
+  }
+
+  function clearMoveRoute(clear = true) {
+    interruptDragRouteThread(clear);
+    this.route_prev = null;
+    this.move_route.clear();
+    this.route_length = 0;
+  }
+
+  function addMoveRoute(route) {
+    if (!::ENABLE_AR) return;
+
+    local _at_room = this.house_manager.getRoomInfo() != null;
+
+    local _cur = getCurrentChara();
+    if (!_cur) return;
+
+    local _col_pos;
+    if (this.house_manager.getHouseModel()) _col_pos = this.house_manager.getFloorCollisionPos(this.renderer, route.x, route.z);
+    else _col_pos = _getPlaneCollisionPos(route.x, route.z);
+
+    if (!_col_pos) return;
+    local _move_pos;
+    if (_at_room) {
+      _move_pos = _col_pos;
+    }
+    else {
+      local _p = _cur.getPos();
+      local _v = _col_pos - _p;
+      _move_pos = _p + _v;
+    }
+
+    if (this.route_prev) {
+      local _d = ::getDistance(this.route_prev, _move_pos);
+      if (_d < 1) {
+        return;
+      }
+    }
+    if (move_route.len() >= MOVE_ROUTE_QUEUE_SIZE) {
+      delete move_route[0];
+    }
+
+    this.move_route + { pos = _move_pos, timestamp = route.t, first = true, idx = route_length };
+    this.route_length = (this.route_length + 1) % MOVE_ROUTE_QUEUE_SIZE;
+    this.route_prev = _move_pos;
+
+    if (this.route_length == 2) {
+      _startMoveRouteEffect();
+    }
+  }
+
+  function interruptDragRouteThread(clear = true) {
+    if (drag_route_thread && isThreadRunning(drag_route_thread)) {
+      drag_route_thread.interruptGoto("END");
+    }
+
+    local _cur = getCurrentChara();
+    if (clear && _cur && _cur.isRouteMoveAction()) {
+      _cur.clearAction(false);
+    }
+  }
+
+  function _startMoveRouteEffect() {
+    if (!drag_route_thread) drag_route_thread = newthread();
+
+    if (isThreadRunning(drag_route_thread)) return;
+    local _cur = getCurrentChara();
+    if (!_cur) return;
+    drag_route_thread.start(_monitorCharaReach, { self = this, route = this.move_route, chara = _cur });
+  }
+
+  function _monitorCharaReach() {
+    local _effects = [];
+
+    local _rp = self.is_recognized_prev;
+    local _rem_idx = 0;
+
+    while ((chara.getPos() - route[0].pos).length() > 0.2) {
+      local _visible_changed = false;
+      if (_rp != self.is_recognized_prev) {
+        _rp = self.is_recognized_prev;
+        _visible_changed = true;
+      }
+
+      local _del_start_idx = -1;
+      local _over = false;
+      if (_rem_idx != route[0].idx) {
+
+        _del_start_idx = _rem_idx;
+        if (route[0].idx - _rem_idx < 0) _over = true;
+        _rem_idx = route[0].idx;
+
+      }
+      local _front_route = route[0];
+      local _rem_cnt = 0;
+      foreach (_efx in _effects) {
+        if (_del_start_idx != -1 && !_efx.removed) {
+          _efx.removed = (_over && (_del_start_idx <= _efx.idx || _efx.idx < _rem_idx)) || (_del_start_idx <= _efx.idx && _efx.idx < _rem_idx);
+        }
+        if (!_efx.sk3d.alive) {
+
+          if (_efx.removed) removei;
+
+          _effects + { sk3d = self.generateRouteEffect("/res/efx/ptd/tap_route_loop.ptd", _efx.sk3d.pos), idx = _efx.idx, removed = false };
+          removei;
+        }
+        if (_visible_changed) _efx.sk3d.visible = _rp;
+
+      }
+
+      _effects.extend(self.drawDragRoute(route));
+      sleep(16 * 10);
+    }
+    sleep(300);
+    END:
+    if (self.getCurrentChara() != chara) {
+
+      chara.clearAction(false);
+    }
+
+    foreach (_efx in _effects) {
+      _efx.sk3d.kill();
+      removei;
+    }
+    return;
+  }
+
+  function drawDragRoute(route) {
+
+    local _effects = [];
+    foreach (r in route) {
+      if (!r.first) continue;
+      _effects + { sk3d = generateRouteEffect("/res/efx/ptd/tap_route.ptd", r.pos), idx = r.idx, removed = false };
+      r.first = false;
+    }
+    return _effects;
+  }
+
+  function generateRouteEffect(path, pos) {
+    local _p_efx = getParticleEffect(::getResource(path));
+    local _ptd = ::SK3DObject();
+
+    _ptd.pos.set(pos);
+    _ptd.scale.set(2.7);
+    _ptd.matdirty = true;
+    _ptd.updateMatrix();
+    _ptd.visible = is_recognized_prev;
+
+    this.scene.addObject(_ptd);
+
+    _ptd.setParticle(_p_efx);
+    _ptd.startParticle();
+    return _ptd;
+  }
+
+  function tappedSpace(x, y) {
+
+    if (::ENABLE_AR) conductCharas_atScreenPos(x, y);
+  }
+
+  function _getPlaneCollisionPos(screen_x, screen_y) {
+    local v = Vector3D(screen_x / ::displayWidth, screen_y / ::displayHeight, 1.0);
+
+    local _q1 = Vector3D().set(this.fixed_camera_pos);
+    local _q2 = this.renderer.camera.unproject(v);
+
+    local _rectangle = ar_module.getRectangle(Vector3D(0, 0, 0));
+    if (!_rectangle) return null;
+    local _p = _rectangle.getVertexes()[0].position_;
+    local _n = Vector3D(0.0, 1.0, 0.0);
+
+    local _pq1 = _p - _q1;
+    local _pq2 = _p - _q2;
+    local _dot_pq1 = _pq1.dot(_n);
+    local _dot_pq2 = _pq2.dot(_n);
+
+    if (Math.abs(_dot_pq1) < 1e-05) { _dot_pq1 = 0.0; }
+    if (Math.abs(_dot_pq2) < 1e-05) { _dot_pq2 = 0.0; }
+
+    if (_dot_pq1 == 0.0 && _dot_pq2 == 0.0) {
+
+      println("lay to rectangle can't calc to cross.");
+      return null;
+    } else if (!((_dot_pq1 >= 0.0 && _dot_pq2 <= 0.0) || (_dot_pq1 <= 0.0 && _dot_pq2 >= 0.0))) {
+      println("lay to rectangle don't cross.");
+      return null;
+    }
+
+    local _q1q2 = _q2 - _q1;
+
+    local _ratio = Math.abs(_dot_pq1) / (Math.abs(_dot_pq1) + Math.abs(_dot_pq2));
+
+    local _v = (_q1q2 * _ratio);
+    return _q1 + _v;
+  }
+
+  function conductCharas_atScreenPos(screen_x, screen_y) {
+    local _t = skGetTime();
+    if (next_can_conduct_time > _t) return;
+
+    local _panel = ::gamesession.getCurrentScene().getUI().getCurrentPanel();
+    if (!(_panel instanceof ARPanel)) return;
+    if (!_panel.getCharaUIEnable(this.current_chara_id)) return;
+
+    local _col_pos;
+    if (this.house_manager.getHouseModel()) _col_pos = this.house_manager.getFloorCollisionPos(this.renderer, screen_x, screen_y);
+    else _col_pos = _getPlaneCollisionPos(screen_x, screen_y);
+
+    if (!_col_pos) return;
+    local _DIST = 0.01 * ar_module.getCoodinateSystemScale();
+
+    local p_efx = getParticleEffect(::getResource("/res/efx/ptd/tap_floor.ptd"));
+    local _ptd = ::SK3DObject();
+
+    _ptd.pos.set(_col_pos);
+    _ptd.scale.set(2, 2, 2);
+    _ptd.matdirty = true;
+    _ptd.updateMatrix();
+
+    this.scene.addObject(_ptd);
+
+    _ptd.setParticle(p_efx);
+    _ptd.startParticle();
+    ::gamesession.getTapViewLayer().killTapEffect();
+
+    local _chara = getCurrentCharaModel();
+    if (_chara) {
+      local _p = _chara.getPos();
+      local _v = _col_pos - _p;
+
+      this.talk_window.interruptTalkWindow(_chara.getCostumeID())
+
+      local _suc;
+      if (this.house_manager.getHouseModel()) {
+        _suc = _chara.startMoveAction(_col_pos);
+      }
+      else {
+        _suc = _chara.startMoveAction(_p + _v);
+      }
+
+      if (_suc) {
+
+        interruptDragRouteThread();
+
+        _panel.setEnableMotions(::ARPanel.UI_STATE_ENABLE, _chara.getCharaID());
+      }
+    }
+
+    next_can_conduct_time = _t + NEXT_CONDUCT_INTERVAL;
+  }
+
+  function _removeTappedCharaEffect() {
+
+    if (this.select_chara_models.len() > 0) {
+
+      local _cur = this.charas[this.select_chara_models[0]];
+      if (_cur) _cur.startEffect("removeFocusEffect");
+    }
+  }
+
+  function tappedCharaModel(model) {
+
+    if (model.hasTappedScript()) {
+      model.startTappedScript();
+      return;
+    }
+
+    if (model == this.focus_chara) {
+      this.sentence_manager.execTapTalk(model);
+      return;
+    }
+
+    this.select_chara_models.clear();
+    this.select_chara_models + model.getCharaID();
+    _updateCurrentCharaID();
+
+    this.replaceApprochList(model, true);
+
+    local _fuid = model.getTargetFurnitureUID();
+    if (_fuid > 0) {
+      local _fm = getFurnitureModel(_fuid);
+      _fm.tapProduct();
+    }
+
+  }
+
+  function _searchFurnitures(screen_x, screen_y) {
+    local _v = Vector3D(screen_x / ::displayWidth, screen_y / ::displayHeight, 0.0);
+
+    local near = this.renderer.camera.unproject(_v);
+    _v.z = 1.0;
+    local far = this.renderer.camera.unproject(_v);
+
+    scene.b3world.updateAABBs();
+    local b3res = scene.b3world.rayTest(1, near, far, ::ViewFactory.RAYTEST_MASK, ::ViewFactory.RAYTEST_GROUP);
+    if (b3res.len() < 1) return null;
+    foreach (model in furnitures) {
+      if (model.getB3body() == b3res.bodyb) {
+        return model;
+      }
+    }
+    return null;
+  }
+
+  function tappedFurnitureModel(model) {
+    local _now = skGetTime();
+
+    if (!model.getFurnitureSetting().canUseFurniture()) return;
+
+    model.startEffect("focusEffectFurniture");
+
+    local _fd = model.getFurnitureData();
+    if (_fd.hasProductData()) {
+      local _pd = _fd.getProductData();
+      local _cid = _pd.getCostumeIDList()[0] || -1;
+      if (_cid > 0) {
+        local _setting = ::gamesetting.costume_settings[_cid];
+        local _chara_id = _setting.getCharaID();
+        local _cm = getChara(_chara_id);
+        tappedCharaModel(_cm);
+        return;
+      }
+    } else {
+      if (this.last_select_model instanceof ::ARCharaModel) {
+        this.approach_model = popApproachChara();
+        this.attract_model = model;
+        this.start_attract_time = _now;
+      } else {
+
+        if (!this.approach_model || this.last_tap_time + ::SanrioGameScene.CHARACTER_APPROACH_LIMIT < _now) {
+          this.approach_model = popApproachChara();
+          this.attract_model = model;
+          this.start_attract_time = _now;
+        }
+      }
+
+      if (this.approach_model) {
+        if (!this.approach_model.isPlayRandomAction()) {
+          return;
+        }
+
+        local _is_add = model.addAttractChara(this.approach_model);
+        if (_is_add) {
+          this.chara_appeal_layer.addAttractBalloon(this.approach_model);
+        }
+        model.updateAttractTime();
+      }
+    }
+
+    this.last_tap_time = _now;
+  }
+
+  function updateSelectModel(model) {
+    this.last_select_model = this.select_model;
+    this.select_model = model;
+  }
+
+  function selectTappedModels_startTappedMotion(screen_x, screen_y) {
+    if (skGetTime() - last_tapped < LAST_TAPPED_INTERVAL) {
+      last_tapped = skGetTime();
+      return;
+    }
+    last_tapped = skGetTime();
+
+    local chara = getCurrentChara();
+
+    if (chara.isFurnitureScriptRunning()) return;
+    if (!chara.canInterruptAction()) return;
+
+    local _viewmat = Matrix().set(this.renderer.camera[1]);
+    local _v0 = fixed_camera_pos;
+    local _v1 = _v0 - chara.getPos();
+    local _v3 = _v1 * -1;
+
+    local _v2 = -Vector3D(_viewmat[2], _viewmat[6], _viewmat[10]);
+    local _cos_theta = _v3.dot(_v2) / (_v3.length() * _v2.length());
+    local _dist = _v3.length() * _cos_theta;
+
+    local pos = s2wPos(screen_x * getViewScale(), screen_y * getViewScale(), _dist);
+
+    pos.z = chara.getPos().z;
+
+    if (!chara.inBounds(pos)) {
+      selectAllModels();
+      _updateCurrentCharaID();
+      return;
+    }
+
+    _v1.normalize();
+
+    _viewmat[12] = 0;
+    _viewmat[13] = 0;
+    _viewmat[14] = 0;
+
+    local _v2 = Vector3D(0, 0, -1);
+
+    local _rot = Quaternion.from2Axis(_v1, _v2);
+    local _hpb = _rot.toMatrix().getHPB();
+
+    local _tasks = chara.createTapScriptAction(_hpb.x);
+    chara.setupTasks(_tasks);
+  }
+
+  function moveSelectModel_atScreenPos(screen_x, screen_y) {
+
+    foreach (chara_id in select_chara_models) {
+      local _model = charas[chara_id];
+      local _pos = _model.getPos();
+      local _screen_pos = w2sPos(_pos);
+
+      local _viewmat = Matrix().set(this.renderer.camera[1]);
+      local _v0 = clone BASE_CAMERA_POS;
+      local _v1 = _pos - _v0;
+
+      local _v2 = -Vector3D(_viewmat[2], _viewmat[6], _viewmat[10]);
+      local _cos_theta = _v1.dot(_v2) / (_v1.length() * _v2.length());
+      local _dist = _v1.length() * _cos_theta;
+      local _v_1 = s2wPos(_screen_pos.x + (screen_x * getViewScale()), _screen_pos.y + (screen_y * getViewScale()), 8.0);
+
+      local _x = _v_1.x;
+      local _y = _v_1.y;
+
+      _model.setBothModelPos(_v_1);
+    }
+  }
+
+  function rotateSelectModel_atScreenXY(screen_x, screen_y) {
+    foreach (chara_id in select_chara_models) {
+      local _model = charas[chara_id];
+
+      local _v1 = Vector3D(screen_x, screen_y, 0.0).normalize();
+      local _v2 = Vector3D(0.0, 1.0 0.0);
+
+      local _dot = _v1.x * _v2.x + _v1.y * _v2.y;
+      local _len = _v1.length() * _v2.length();
+      local _cos = Math.clamp((_dot / _len), -1, 1);
+      local _theta = int(Math.abs(Math.acos(_cos) * Math.RTOD));
+
+      local _before = _theta;
+      while (_theta > 90) { _theta -= 90; }
+
+      if (_theta >= 30 && _theta <= 60) return;
+
+      local _rot = _model.getRotation();
+      local _rot2 = Quaternion.fromAxis(-screen_y * Math.DTOR, Vector3D(1, 0, 0));
+      local _rot3 = Quaternion.fromAxis(-screen_x * Math.DTOR, Vector3D(0, 1, 0));
+      _rot3.synthesize(_rot2);
+      _rot = _rot3.synthesize(_rot);
+      _rot.normalize();
+      _model.setBothModelRotation(_rot);
+    }
+  }
+
+  function ScalingSelectModel_atPinch(scale) {
+    foreach (chara_id in select_chara_models) {
+      local _model = charas[chara_id];
+      local _scale = _model.getScale();
+      _scale += Vector3D(scale);
+      if (_scale.lengthSq() < 0.5) {
+        continue;
+      }
+      _model.setBothModelScale(_scale);
+    }
+  }
+
+  function w2sPos(pos) {
+    local v = this.renderer.camera.project(pos);
+    v.x *= ::screenWidth;
+    v.y *= ::screenHeight;
+    v.z = 0.0;
+
+    return v;
+  }
+
+  function s2wPos(x, y, rate_z) {
+    local ratex = x / rect.w;
+    local ratey = y / rect.h;
+    local v = Vector3D(ratex, ratey, 0.0);
+    local pos_near = this.renderer.camera.unproject(v);
+
+    v.z = 1.0;
+    local pos_far = this.renderer.camera.unproject(v);
+
+    local _r = rate_z / (pos_far - pos_near).length();
+    local _world_x = pos_near.x + (pos_far.x - pos_near.x) * _r;
+    local _world_y = pos_near.y + (pos_far.y - pos_near.y) * _r;
+    local _world_z = pos_near.z + (pos_far.z - pos_near.z) * _r;
+
+    return v.set(_world_x, _world_y, _world_z);
+  }
+
+  function addTalkWindow(sk3d, talk_key, chara_key, small) {
+
+    local _charas = charas;
+    foreach (chara in _charas) {
+      if (chara.sk3d != sk3d) continue;
+      this.talk_window.addTalk(sk3d, talk_key, chara_key, chara.getCostumeID(), this.renderer.camera, -1, small);
+      return;
+    }
+    foreach (chara in _charas) {
+      local _cm = chara.capture_model;
+      if (_cm.sk3d != sk3d) continue;
+
+      local _tw = getTalk(talk_key, chara_key);
+      if (!_tw) {
+        println("does not have talkkey in model_viewer.....");
+        return;
+      }
+      this.image_talk_window.addTalk(sk3d, talk_key, chara_key, chara.getCostumeID(), this.image_renderer.camera, _tw.talk_index, small);
+      return;
+    }
+  }
+
+  function removeAllTalkWindow() {
+    talk_window.removeAllTalkWindow();
+    image_talk_window.removeAllTalkWindow();
+  }
+
+  function getTalkView() {
+    return this.talk_view;
+  }
+
+  function getTalk(talk_key, chara_key) {
+    return talk_window.getTalk(talk_key, chara_key);
+  }
+
+  function rebuildTalk(big_size) {
+    image_talk_window.rebuildRandomTalk(big_size);
+  }
+
+  function flushTalkWindowPosition() {
+    image_talk_window.flushPosition();
+  }
+
+  function flushTalkWindowScale(sc) {
+    image_talk_window.flushScale(sc);
+  }
+
+  function updateSceneBound() {
+    image_talk_window.updateSceneBound();
+  }
+
+  function registerDir(dir) {
+
+    this.capture_dir = dir;
+  }
+
+  function flushTalkWindowRotation(is_record, is_capture) {
+    local _prev_accel = Vector3D().set(accel_vec);
+    local _ret = 0.0;
+    if (!is_recognized_prev || !is_enabled_prev || is_capture) {
+      accel_vec.set(0.0, 0.0, 0.0);
+    }
+    if (!is_record && !is_capture) {
+      this.deviceRotate = is_enabled_prev ? 0.0 : this.deviceRotate * -1.0;
+      local _device_rot = this.deviceRotate;
+
+      local _dir = this.deviceRotate;
+      if (ENABLE_AR) {
+        local _a = !is_record && !is_capture;
+        local _flipy = ar_module.isFlipY();
+        local _imgrot = ar_module.getCameraImageRotation();
+
+        if (_a) {
+
+          if ((_flipy && _imgrot == 0) || (!_flipy && _imgrot == 180)) {
+            _dir += 180.0;
+            if (_dir > 360.0) _dir -= 360.0;
+          }
+        }
+      }
+      talk_window.updateOffset(_dir, is_enabled_prev);
+
+      _dir = calcAcculateDeviceRotation();
+      _dir += _device_rot;
+
+      if (ENABLE_AR) {
+
+        local _a = !is_record && !is_capture && !is_recognized_prev && is_enabled_prev;
+        local _flipy = ar_module.isFlipY();
+        local _imgrot = ar_module.getCameraImageRotation();
+        if (!_a) {
+          if ((_flipy && _imgrot == 0) || (!_flipy && _imgrot == 180)) {
+            _dir += 180.0;
+            if (_dir > 360.0) _dir -= 360.0;
+          }
+        }
+      }
+      _ret = _dir * Math.DTOR;
+      talk_window.update(_ret);
+    } else {
+
+      local _image_device_rot = is_enabled_prev && !is_record ? 0.0 : this.imageDeviceRotate * -1.0;
+
+      if ((is_record || is_capture) && !is_enabled_prev) {
+
+        _image_device_rot -= capture_dir * (is_record ? -1.0 : 1.0);
+      }
+      if (is_record && is_enabled_prev) {
+        _image_device_rot = capture_dir;
+      }
+
+      local _image_dir = _image_device_rot;
+      local _p = false;
+
+      image_talk_window.updateOffset(_image_dir, is_enabled_prev);
+
+      _image_dir = calcAcculateDeviceRotation();
+      _image_dir += _image_device_rot;
+
+      if (ENABLE_AR) {
+
+        local _b = is_record && !is_capture && is_recognized_prev && is_enabled_prev;
+        local _c = !is_record && is_capture && is_enabled_prev;
+        local _flipy = ar_module.isFlipY();
+        local _imgrot = ar_module.getCameraImageRotation();
+
+      }
+      _ret = _image_dir * Math.DTOR;
+      image_talk_window.update(_ret);
+    }
+
+    accel_vec.set(_prev_accel);
+
+    return _ret;
+  }
+
+  function setProp() {
+    local _cur = getCurrentChara();
+    if (!_cur) return;
+    local _dlg = ::PropDialog();
+    _dlg.setCharaModel(_cur);
+    _dlg.show();
+
+  }
+}
+
+class ::ARModelViewer.TalkWindow extends SKView {
+
+  layer = null;
+
+  function setWindowLayer(layer) {
+    this.layer = layer;
+  }
+
+  function removed() {
+    layer = null;
+  }
+
+  function removeChild(c) {
+    if (layer) {
+      local _balloons = layer.balloons;
+      foreach (i, _balloon in _balloons) {
+        if (_balloon != c) continue;
+        delete _balloons[i];
+        break;
+      }
+    }
+    return super.removeChild(c);
+  }
+
+}

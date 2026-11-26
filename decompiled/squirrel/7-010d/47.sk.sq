@@ -1,0 +1,20 @@
+model =
+{
+  root = {
+    pm = "tabasco_laser.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function start() {
+    uvscroll(-4, 0);
+    for (;;) {
+      spin(0, 0, -8, 1000);
+      pass(1000);
+    }
+  }
+
+}

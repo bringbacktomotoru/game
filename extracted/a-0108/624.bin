@@ -1,0 +1,454 @@
+{
+  "ID": "e4fcc556-9d15-47f6-a7dd-3e298e2d5c09",
+  "Version": "2.3.3.0",
+  "Name": "title",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [
+          {
+            "ActionTag": 1742337878,
+            "Property": "Position",
+            "Frames": [
+              {
+                "X": 360.0,
+                "Y": 640.0,
+                "FrameIndex": 0,
+                "EasingData": {
+                  "Type": 0
+                },
+                "ctype": "PointFrameData"
+              }
+            ],
+            "ctype": "TimelineData"
+          },
+          {
+            "ActionTag": 1742337878,
+            "Property": "Scale",
+            "Frames": [
+              {
+                "X": 1.0,
+                "Y": 1.0,
+                "FrameIndex": 0,
+                "EasingData": {
+                  "Type": 0
+                },
+                "ctype": "ScaleValueFrameData"
+              }
+            ],
+            "ctype": "TimelineData"
+          },
+          {
+            "ActionTag": 1742337878,
+            "Property": "RotationSkew",
+            "Frames": [
+              {
+                "X": 0.0,
+                "Y": 0.0,
+                "FrameIndex": 0,
+                "EasingData": {
+                  "Type": 0
+                },
+                "ctype": "ScaleValueFrameData"
+              }
+            ],
+            "ctype": "TimelineData"
+          }
+        ],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 3,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/title.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 640.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 41,
+            "ActionTag": 1742337878,
+            "Size": {
+              "X": 720.0,
+              "Y": 1280.0
+            },
+            "Name": "img_back",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/biglbl/taptostart.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 128.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.1
+            },
+            "PreSize": {
+              "X": 0.4778,
+              "Y": 0.05
+            },
+            "LeftMargin": 188.0,
+            "RightMargin": 188.0,
+            "TopMargin": 1120.0,
+            "BottomMargin": 96.0,
+            "Tag": 89,
+            "ActionTag": 498096219,
+            "Size": {
+              "X": 344.0,
+              "Y": 64.0
+            },
+            "Name": "img",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FontSize": 20,
+            "LabelText": "Ver. 0.3.001 TRAILER",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 25.6
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.02
+            },
+            "PreSize": {
+              "X": 0.3056,
+              "Y": 0.0156
+            },
+            "LeftMargin": 250.0,
+            "RightMargin": 250.0,
+            "TopMargin": 1244.4,
+            "BottomMargin": 15.6,
+            "Tag": 1335,
+            "ActionTag": -252577270,
+            "Size": {
+              "X": 220.0,
+              "Y": 20.0
+            },
+            "Name": "lbl_ver",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_h3.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 59,
+            "Scale9OriginY": 25,
+            "Scale9Width": 62,
+            "Scale9Height": 28,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 150.0,
+              "Y": 1200.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2083,
+              "Y": 0.9375
+            },
+            "PreSize": {
+              "X": 0.2778,
+              "Y": 0.0609
+            },
+            "LeftMargin": 50.0,
+            "RightMargin": 470.0,
+            "TopMargin": 41.0,
+            "BottomMargin": 1161.0,
+            "Tag": 152,
+            "Children": [
+              {
+                "IsCustomSize": true,
+                "FontSize": 28,
+                "LabelText": "データ引き継ぎ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 4,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 104.0,
+                  "Y": 34.9986
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.52,
+                  "Y": 0.4487
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 0.5385
+                },
+                "LeftMargin": 4.0,
+                "RightMargin": -4.0,
+                "TopMargin": 22.0014,
+                "BottomMargin": 13.9986,
+                "Tag": 155,
+                "ActionTag": 1432842630,
+                "Size": {
+                  "X": 200.0,
+                  "Y": 42.0
+                },
+                "Name": "lbl",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -366339732,
+            "Size": {
+              "X": 200.0,
+              "Y": 78.0
+            },
+            "Name": "btn_takeover",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_h3.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 59,
+            "Scale9OriginY": 25,
+            "Scale9Width": 62,
+            "Scale9Height": 28,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 590.0004,
+              "Y": 1200.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.8194,
+              "Y": 0.9375
+            },
+            "PreSize": {
+              "X": 0.2778,
+              "Y": 0.0609
+            },
+            "LeftMargin": 490.0004,
+            "RightMargin": 29.9996,
+            "TopMargin": 41.0,
+            "BottomMargin": 1161.0,
+            "Tag": 315,
+            "Children": [
+              {
+                "IsCustomSize": true,
+                "FontSize": 28,
+                "LabelText": "初期化",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 4,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 104.0,
+                  "Y": 34.9986
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.52,
+                  "Y": 0.4487
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 0.5385
+                },
+                "LeftMargin": 4.0,
+                "RightMargin": -4.0,
+                "TopMargin": 22.0014,
+                "BottomMargin": 13.9986,
+                "Tag": 316,
+                "ActionTag": 1556636327,
+                "Size": {
+                  "X": 200.0,
+                  "Y": 42.0
+                },
+                "Name": "lbl",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1842320236,
+            "Size": {
+              "X": 200.0,
+              "Y": 78.0
+            },
+            "Name": "btn_forceinit",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 720.0,
+          "Y": 1280.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/biglbl/taptostart.png",
+        "../image/ss_btn.plist",
+        "../image/ss_btn.png",
+        "../image/title.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

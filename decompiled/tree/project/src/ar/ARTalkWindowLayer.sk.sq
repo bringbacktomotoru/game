@@ -1,0 +1,204 @@
+class ARTalkWindowLayer {
+  v_1 = Vector3D();
+
+  view = null;
+  ar_module = null;
+
+  balloons = null;
+
+  constructor(view) {
+    this.view = view;
+    this.view.multitouch = true;
+    balloons = {};
+  }
+
+  function setARModule(module) {
+    this.ar_module = module;
+  }
+
+  function removed() {
+    balloons = {};
+    balloons = null;
+  }
+
+  function update(dir) {
+    foreach (balloon in balloons) {
+      balloon.setRotation(0.0, 0.0, dir);
+    }
+  }
+
+  function getTalk(talk_key, chara_key) {
+    foreach (balloon in balloons) {
+      if (balloon.talk_key != talk_key) continue;
+      if (balloon.chara_key != chara_key) continue;
+      return balloon;
+    }
+    return null;
+  }
+
+  function updateOffset(dir, enable) {
+    local _offset_y = _getOffsetY();
+    foreach (balloon in balloons) {
+      if (enable) {
+        balloon.setOffset(0.0, _offset_y, 0);
+        continue;
+      }
+      local _theta = dir * Math.DTOR;
+      local _r = _offset_y;
+      balloon.setOffset(_r * Math.sin(_theta), _r * Math.cos(_theta), 0.0);
+    }
+  }
+
+  function _getOffsetY() {
+    local _offset_y = 3.5;
+    if (this.ar_module) {
+      _offset_y += (this.ar_module.getCoodinateSystemScale() - 40) * 0.025;
+    }
+    return _offset_y;
+  }
+
+  function flushPosition() {
+    foreach (balloon in balloons) {
+      balloon.flushPosition();
+    }
+  }
+
+  function flushScale(scale) {
+    foreach (balloon in balloons) {
+      balloon.setScale(scale);
+    }
+  }
+
+  function rebuildRandomTalk(big_size = false) {
+    local _bal_keys = [];
+    local _keys = [];
+    foreach (k, balloon in balloons) {
+      _bal_keys + balloon.getTalkParam();
+      _keys + k
+    }
+
+    removeAllTalkWindow();
+
+    local _cnt = 0;
+    foreach (key in _bal_keys) {
+      if (key.state != TalkWindow.STATE_STARTED) continue;
+      local _tw = ::TalkWindow(key.talk, key.chara, big_size);
+      _tw.setSK3D(key.sk3d);
+      _tw.setOffset(key.offset[0], key.offset[1], key.offset[2]);
+      _tw.setRendererCamera(key.camera);
+      _tw.setSceneBound(clone key.bound);
+      _tw.has_rootview = key.has_rootview;
+      balloons[_keys[_cnt]] <- _tw;
+
+      if (key.sk3d.parent) {
+        local bone = key.sk3d.parentbone;
+        local p0 = bone.parts.bindpose;
+        v_1.set(p0[12], 0, p0[14]).transform0(key.sk3d.parent.gmat);
+        _tw.setBoneOffset(v_1);
+      }
+      _tw.setLayer(this);
+      this.view.addChild(_tw);
+      _tw.startTalk(key.talk_index);
+      _cnt++;
+    }
+  }
+
+  function addTalk(sk3d, talk_key, chara_key, cos_id, camera = null, idx = -1, small = false) {
+    if (cos_id < 0) return;
+
+    if (small) {
+      if (getSmallBalloonNum(cos_id) >= 2) return;
+    }
+    else {
+      if (getNormalBalloonNum(cos_id) > 0) return;
+    }
+
+    interruptTalkWindow(cos_id);
+
+    local _tw = ::TalkWindow(talk_key, chara_key, false, small);
+
+    _tw.has_rootview = (idx == -1);
+    _tw.setSK3D(sk3d);
+    _tw.setOffset(0.0, _getOffsetY(), 0);
+    _tw.setRendererCamera(camera);
+    _tw.setSceneBound(clone this.view.bnd);
+    balloons[cos_id] <- _tw;
+
+    if (sk3d.parent) {
+      local bone = sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(sk3d.parent.gmat);
+      _tw.setBoneOffset(v_1);
+    }
+    _tw.setLayer(this);
+    this.view.addChild(_tw);
+    if (idx != -1) {
+      return _tw.startTalk(idx);
+    }
+    return _tw.startRandomTalk();
+  }
+
+  function addTalkSentenceWindow(cm, sentence, chara_key, camera = null) {
+    local _sk3d = cm.sk3d;
+    local _tsw = ::SentenceTalkWindow(chara_key);
+    _tsw.setSK3D(_sk3d);
+    _tsw.setRendererCamera(camera);
+    _tsw.setSceneBound(clone this.view.bnd);
+    if (_sk3d.parent) {
+      local bone = _sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(_sk3d.parent.gmat);
+      _tsw.setBoneOffset(v_1);
+    }
+    _tsw.setLayer(this);
+
+    balloons[cm.getCostumeID()] <- _tsw;
+
+    this.view.addChild(_tsw);
+    _tsw.startTalk(sentence);
+
+    return _tsw;
+  }
+
+  function interruptTalkWindow(cos_id) {
+    local _tw = delete balloons[cos_id];
+    if (_tw) _tw.interruptTalk();
+  }
+
+  function removeAllTalkWindow() {
+    this.view.clearChildren();
+    this.balloons = {};
+  }
+  function removeTalkWindow(tw) {
+    this.view.removeChild(tw);
+    foreach (cos_id, _tw in this.balloons) {
+      if (_tw == tw) {
+        delete this.balloons[cos_id];
+        break;
+      }
+    }
+  }
+
+  function updateSceneBound() {
+    foreach (balloon in balloons) {
+      balloon.setSceneBound(clone this.view.bnd);
+    }
+  }
+
+  function getSmallBalloonNum(continue_id = -1) {
+    local _num = 0;
+    foreach (k, balloon in balloons) {
+      if (k == continue_id) continue;
+      if (balloon.isSmallSize()) _num++;
+    }
+    return _num;
+  }
+  function getNormalBalloonNum(continue_id = -1) {
+    local _num = 0;
+    foreach (k, balloon in balloons) {
+      if (k == continue_id) continue;
+      if (!balloon.isSmallSize()) _num++;
+    }
+    return _num;
+  }
+}

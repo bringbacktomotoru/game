@@ -1,0 +1,292 @@
+class RoomDetailDialog extends ::Dialog {
+  room_id = null;
+
+  pnl_scroll = null;
+  scroll = null;
+  reclist = null;
+  scroll_bar = null;
+
+  view = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/RoomDetailDialog.ui"));
+
+    this.pnl_scroll = this.view.findChild("pnl_scroll");
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dxscale = 0.0;
+    this.pnl_scroll.addChild(this.reclist);
+    this.pnl_scroll.setBuffer(true);
+    this.scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+
+    this.btn_close.findChild("lbl_close").setText(::dict.get("close"));
+  }
+
+  function setScroll(rid, pmid, cos_list, fur_list, orn_list, mot_list) {
+    this.room_id = rid;
+
+    this.reclist.clearChildren();
+    local _offset = 0;
+    local _pnl_w = this.pnl_scroll.bnd.w;
+
+    _offset = _createRoomComponent(rid, _offset);
+    if (pmid > 0) _offset = _createDiaryComponent(pmid, _offset + 20);
+    _offset = _createCharaComponent(rid, _pnl_w, _offset + 20);
+
+    if (cos_list.len() > 0 || fur_list.len() > 0 || orn_list.len() > 0 || mot_list.len() > 0) {
+      _offset = _createShopItemsTextComponent(_offset + 50);
+      if (cos_list && cos_list.len() > 0) _offset = _createCostumeComponent(cos_list, _pnl_w, _offset + 20);
+      if (fur_list && fur_list.len() > 0) _offset = _createFurnitureComponent(fur_list, _pnl_w, _offset + 20);
+      if (orn_list && orn_list.len() > 0) _offset = _createOrnamentComponent(orn_list, _pnl_w, _offset + 20);
+
+    }
+
+    this.reclist.setRect(0, 0, this.pnl_scroll.bnd.w, _offset);
+    this.scroll.setScrollRect(this.reclist.bnd);
+    this.scroll_bar.setup(this.scroll, this.pnl_scroll.bnd, true);
+  }
+
+  function _createRoomComponent(rid, offset) {
+    local _cmp = RoomComponent(rid);
+    _cmp.pos.y = offset;
+    this.reclist.addChild(_cmp);
+    offset += _cmp.bnd.h;
+    return offset;
+  }
+
+  function _createCharaComponent(rid, pnl_w, offset) {
+    local _cmp = CharaComponent(rid, pnl_w);
+    _cmp.pos.y = offset;
+    this.reclist.addChild(_cmp);
+    offset += _cmp.bnd.h;
+    return offset;
+  }
+
+  function _createDiaryComponent(pmid, offset) {
+    local _cmp = DiaryComponent(pmid);
+    _cmp.pos.y = offset;
+    this.reclist.addChild(_cmp);
+    offset += _cmp.bnd.h;
+    return offset;
+  }
+
+  function _createCostumeComponent(cos_list, pnl_w, offset) {
+    local _cmp = IconListComponent(cos_list, ITEM_TYPE_COSTUME, pnl_w);
+    _cmp.pos.y = offset;
+    this.reclist.addChild(_cmp);
+    offset += _cmp.bnd.h;
+    return offset;
+  }
+
+  function _createFurnitureComponent(cos_list, pnl_w, offset) {
+    local _cmp = IconListComponent(cos_list, ITEM_TYPE_FURNITURE, pnl_w, false);
+    _cmp.pos.y = offset;
+    this.reclist.addChild(_cmp);
+    offset += _cmp.bnd.h;
+    return offset;
+  }
+
+  function _createOrnamentComponent(cos_list, pnl_w, offset) {
+    local _cmp = IconListComponent(cos_list, ITEM_TYPE_FURNITURE, pnl_w, true);
+    _cmp.pos.y = offset;
+    this.reclist.addChild(_cmp);
+    offset += _cmp.bnd.h;
+    return offset;
+  }
+
+  function _createMotionComponent(cos_list, pnl_w, offset) {
+    local _cmp = IconListComponent(cos_list, ITEM_TYPE_MOTION, pnl_w);
+    _cmp.pos.y = offset;
+    this.reclist.addChild(_cmp);
+    offset += _cmp.bnd.h;
+    return offset;
+  }
+
+  function _createShopItemsTextComponent(offset) {
+    local _cmp = ::loadSKView("/ui/common/RoomDetailItemLine.ui");
+    _cmp.pos.y = offset;
+    this.reclist.addChild(_cmp);
+    offset += _cmp.bnd.h;
+
+    _cmp.startMethod("setupShopItemsText");
+    _cmp.findChild("lbl_text").setText(::dict.get("release_at_roombuy"));
+
+    return offset;
+  }
+
+  function _createTextComponent(txt, offset, font_mini = false) {
+    local _cmp = ::loadSKView("/ui/common/RoomDetailItemLine.ui");
+    _cmp.pos.y = offset;
+    this.reclist.addChild(_cmp);
+    offset += _cmp.bnd.h;
+
+    if (font_mini) {
+      _cmp.startMethod("setupMiniText");
+      _cmp.findChild("lbl_text_mini").setText(txt);
+    } else {
+      _cmp.startMethod("setupText");
+      _cmp.findChild("lbl_text").setText(txt);
+    }
+
+    return offset;
+  }
+}
+
+class RoomDetailDialog.RoomComponent extends SKView {
+  rid = null;
+  view = null;
+
+  constructor(rid) {
+    this.view = ::loadSKView("/ui/common/RoomDetailItemRoom.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    local _icon = this.view.findChild("img_icon");
+    local _lbl_size = this.view.findChild("lbl_scale");
+    local _lbl_name = this.view.findChild("lbl_name");
+
+    local _rs = ::gamesetting.room_settings[rid];
+    _lbl_size.setText(_rs.getSizeText());
+    _lbl_name.setText(_rs.getName());
+    _icon.setSprite(_rs.getIconSpriteUnacquired());
+    _icon.updateLayout();
+  }
+}
+
+class RoomDetailDialog.CharaComponent extends SKView {
+  rid = null;
+  static COL_NUM = 2;
+
+  constructor(rid, pnl_w) {
+    super();
+
+    local _rs = ::gamesetting.room_settings[rid];
+    local _chara_list = _rs.getCharaIDs();
+
+    local _lbl = ::loadSKView("/ui/common/RoomDetailItemLine.ui");
+    addChild(_lbl);
+    _lbl.startMethod("setupCharaText");
+    _lbl.findChild("lbl_text").setText(::dict.get("roomdetail_chara"));
+
+    local _w = pnl_w / COL_NUM;
+    local _offset = _lbl.bnd.h;
+
+    for (local i = 0; i < _chara_list.len(); i++) {
+      local _item = CharaItem(_chara_list[i]);
+      local _x = _w * (i % COL_NUM) + (_w - _item.bnd.w) / 2;
+      if (i > 0 && i % COL_NUM == 0) _offset += _item.bnd.h;
+      _item.pos.x = _x;
+      _item.pos.y = _offset;
+      _item.matdirty = true;
+      _item.repaint();
+      addChild(_item);
+
+      if (i == _chara_list.len() - 1) _offset += _item.bnd.h;
+    }
+
+    setRect(0, 0, pnl_w, _offset);
+  }
+}
+
+class RoomDetailDialog.CharaComponent.CharaItem extends SKView {
+  id = null;
+  view = null;
+
+  constructor(id) {
+    super();
+
+    this.id = id;
+    this.view = ::loadSKView("/ui/common/RoomDetailItemChara.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    local _cs = ::gamesetting.sanrio_chara_settings[this.id];
+
+    local _icon = this.view.findChild("img_icon");
+    _icon.setSprite(_cs.getIconSprite());
+    _icon.updateLayout();
+
+    this.view.findChild("lbl_name").setText(_cs.getName());
+  }
+}
+
+class RoomDetailDialog.DiaryComponent extends SKView {
+  pmid = null;
+  view = null;
+
+  constructor(pmid) {
+    super();
+
+    this.pmid = pmid;
+    this.view = ::loadSKView("/ui/common/RoomDetailItemDiary.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    local _pms = ::gamesetting.panel_mission_settings[pmid];
+    local _lbl_title = this.view.findChild("lbl_title");
+    _lbl_title.setText(_pms.getName());
+
+    local _img = this.view.findChild("img_diary");
+
+    this.view.findChild("lbl").setText(::dict.get("event"));
+  }
+}
+
+class RoomDetailDialog.IconListComponent extends SKView {
+  static ICON_W = 160;
+  static ICON_H = 160;
+  static COL_NUM = 5;
+
+  view = null;
+
+  constructor(id_list, item_type, pnl_w, is_ornament = false) {
+    local _line = ::loadSKView("/ui/common/RoomDetailItemLine.ui");
+    addChild(_line);
+    _line.startMethod("setupIconLabelText");
+
+    switch (item_type) {
+    case ITEM_TYPE_COSTUME:
+      _line.findChild("lbl_text").setText(::dict.get("costume"));
+      break;
+    case ITEM_TYPE_FURNITURE:
+      local _txt = is_ornament ? ::dict.get("ornament") : ::dict.get("furniture");
+      _line.findChild("lbl_text").setText(_txt);
+      break;
+    case ITEM_TYPE_MOTION:
+      _line.findChild("lbl_text").setText(::dict.get("motion"));
+      break;
+    }
+
+    local _offset = _line.bnd.h + 10;
+    local _w = pnl_w / COL_NUM;
+
+    for (local i = 0; i < id_list.len(); i++) {
+      local _icon = ::SKImageView();
+      local _x = _w * (i % COL_NUM) + (_w - ICON_W) / 2;
+      if (i > 0 && i % COL_NUM == 0) _offset += ICON_H;
+      _icon.setRect(_x, _offset, ICON_W, ICON_H);
+      addChild(_icon);
+
+      switch (item_type) {
+      case ITEM_TYPE_COSTUME:
+        local _cs = ::gamesetting.costume_settings[id_list[i]];
+        _icon.setSprite(_cs.getSpriteCostumeIcon());
+        break;
+      case ITEM_TYPE_FURNITURE:
+        local _fs = ::gamesetting.furniture_settings[id_list[i]];
+        _icon.setSprite(_fs.getIconSpriteUnacquired());
+        break;
+      case ITEM_TYPE_MOTION:
+        local _ms = ::gamesetting.costume_motion_settings[id_list[i]];
+        _icon.setSprite(_ms.getIconSprite());
+        break;
+      }
+      _icon.updateLayout();
+    }
+
+    _offset += ICON_H + 20;
+
+    setRect(0, 0, pnl_w, _offset);
+  }
+
+}

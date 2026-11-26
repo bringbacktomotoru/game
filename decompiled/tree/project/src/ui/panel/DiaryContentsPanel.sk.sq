@@ -1,0 +1,275 @@
+class DiaryContentsPanel extends ::HomeUI.Panel {
+  static need_money_layer = false;
+  static need_rank_layer = false;
+  static need_panel_name = true;
+  static need_menu_layer = false;
+  static disable_long_tap = true;
+
+  static PAGE_ITEM_SPACE = 40;
+  static ITEM_SPACE_W = 20;
+  static ITEM_SPACE_H = 20;
+
+  item_table = null;
+  page_item_list = null;
+  page_index = null;
+
+  init_diary = null;
+
+  view = null;
+  pnl_list = null;
+  pnl_page = null;
+  btn_back = null;
+  btn_r = null;
+  btn_l = null;
+
+  function added() {
+    super.added();
+    registerMouseEventReceiver(this);
+    this.view = ::loadSKView("/ui/DiaryContentsPanel.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    this.pnl_list = this.view.findChild("pnl_list");
+    this.pnl_page = this.view.findChild("pnl_page");
+
+    this.btn_r = this.view.findChild("btn_R");
+    ::TapButton(this.btn_r).view.addEventListener(ACTION_EVENT, actionevent_change);
+    this.btn_l = this.view.findChild("btn_L");
+    ::TapButton(this.btn_l).view.addEventListener(ACTION_EVENT, actionevent_change);
+
+    this.btn_back = this.view.findChild("btn_back");
+    ::TapButton(this.btn_back).view.addEventListener(ACTION_EVENT, actionevent_back);
+
+    _createPageItem();
+
+    this.page_index = -1;
+    this.item_table = {};
+
+    local _idx = this.init_diary > 0 ? _findPageIndex(this.init_diary) : 0;
+    _changePage(_idx);
+
+  }
+
+  function removed() {
+    super.removed();
+    removeMouseEventReceiver(this);
+  }
+
+  function setPanelParam(param) {
+    this.init_diary = param["diary_id"] || -1;
+  }
+
+  function _createPageItem() {
+    local _contents = ::gamesetting.diary_contents;
+    local _num = _contents.len();
+    this.pnl_page.clearChildren();
+    this.page_item_list = [];
+
+    local _center = this.pnl_page.bnd.w / 2;
+    local _dis = PageItem.VIEW_SIZE + PAGE_ITEM_SPACE;
+    local _sx = _center - (_dis * (_num - 1)) / 2;
+    local _offset = _sx;
+
+    for (local i = 0; i < _num; i++) {
+      local _item = PageItem();
+      _item.pos.x = _offset;
+      this.pnl_page.addChild(_item);
+      this.page_item_list + _item;
+
+      _offset += _dis;
+    }
+  }
+
+  function _changePage(idx) {
+    if (this.page_index == idx) return;
+
+    if (this.page_index != -1) this.page_item_list[this.page_index].changePage(false);
+    this.page_index = idx;
+    this.page_item_list[this.page_index].changePage(true);
+
+    this.pnl_list.clearChildren();
+
+    local _list = this.item_table[this.page_index] || [];
+    local _offset_x = 0;
+
+    if (_list.len() == 0) {
+      local _ids = ::gamesetting.diary_contents[this.page_index];
+      for (local i = 0; i < _ids.len(); i++) {
+        local _item = ContentItem();
+        _item.setDiaryID(_ids[i]);
+
+        if (i > 0 && i % 2 == 0) _offset_x += _item.bnd.w + ITEM_SPACE_W;
+        _item.pos.x = _offset_x;
+        _item.pos.y = i % 2 == 0 ? 0 : _item.bnd.h + ITEM_SPACE_H;
+
+        this.pnl_list.addChild(_item);
+        _list + _item;
+      }
+
+      this.item_table[this.page_index] <- _list;
+    } else {
+
+      foreach (item in _list) {
+        this.pnl_list.addChild(item);
+      }
+    }
+
+    local _b;
+    _b = this.page_index > 0 ? true : false;
+    this.btn_l.setVisible(_b);
+
+    _b = this.page_index < this.page_item_list.len() - 1 ? true : false;
+    this.btn_r.setVisible(_b);
+  }
+
+  function actionevent_change(e) {
+    e.consume();
+
+    local _idx;
+    switch (e.src) {
+    case this.btn_r:
+      flickRight();
+      break;
+    case this.btn_l:
+      flickLeft();
+      break;
+    }
+
+  }
+
+  function flickRight() {
+    _changePage(Math.clamp(this.page_index + 1, 0, this.page_item_list.len() - 1));
+  }
+
+  function flickLeft() {
+    _changePage(Math.clamp(this.page_index - 1, 0, this.page_item_list.len() - 1));
+  }
+
+  function actionevent_back(e) {
+    e.consume();
+    getHomeUI().moveTopPanel();
+  }
+
+  function _findPageIndex(diary_id) {
+    local _contents = ::gamesetting.diary_contents;
+
+    foreach (idx, list in _contents) {
+      if (list.indexOf(diary_id) != -1) return idx;
+    }
+    return 0;
+  }
+
+  function setTutorialLock() {
+    this.btn_back.setEnabled(false);
+  }
+
+  function getFirstDiary() {
+    if (!this.item_table || !this.item_table[this.page_index]) return null;
+    return this.item_table[this.page_index][0];
+  }
+}
+
+class DiaryContentsPanel.ContentItem extends SKView {
+  diary_id = null;
+
+  view = null;
+  btn_icon = null;
+  img_lbl = null;
+  lbl_title = null;
+
+  constructor() {
+    super();
+
+    this.view = ::loadSKView("/ui/common/DiaryContentsItem.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    this.btn_icon = this.view.findChild("btn_icon");
+
+    local _pnl = this.view.findChild("pnl_lbl");
+    this.img_lbl = _pnl.findChild("img_lbl");
+    this.lbl_title = _pnl.findChild("lbl_title");
+    if (::READ_TRANS_FILE == "EN") this.lbl_title.setFont("RiiTN_R.ttf");
+
+    diary_id = -1;
+  }
+
+  function setDiaryID(id) {
+    this.diary_id = id;
+
+    if (this.diary_id < 0) {
+      this.view.startMethod("setupEmpty");
+      return;
+    }
+
+    local _ds = ::gamesetting.diary_settings[this.diary_id];
+    local _sp;
+
+    if (_ds.checkConditions()) {
+      _sp = _ds.getClearSprite();
+      this.view.startMethod("setupClear");
+      local _title = _ds.getDiaryTitle(-1, true);
+      this.lbl_title.setText(_title);
+      local _txt_color = _ds.getDiaryTextColor();
+      if (_txt_color) this.lbl_title.setColor(_txt_color);
+      this.view.startMethod("rotateLabel", _ds.getLabelAngle());
+      local _sp = _ds.getLabelSprite(_title);
+      if (_sp) this.img_lbl.setSprite(_sp);
+      this.img_lbl.updateLayout();
+
+      ::TapButton(this.btn_icon, false).view.addEventListener(ACTION_EVENT, actionevent_diary);
+    } else {
+      _sp = _ds.getNoClearSprite();
+      this.view.startMethod("setupNoClear");
+    }
+    this.btn_icon.setSprite(_sp);
+    this.btn_icon.updateLayout();
+
+  }
+
+  function actionevent_diary(e) {
+    e.consume();
+    _getHomeUI().movePanel(::DiaryPanel, false, { "diary_id" = diary_id });
+  }
+
+  function _getHomeUI() {
+    return parent.parent.parent.getHomeUI();
+  }
+
+  function getDiaryId() {
+    return this.diary_id;
+  }
+}
+
+class DiaryContentsPanel.PageItem extends SKView {
+  static VIEW_SIZE = 40;
+
+  img_current = null;
+
+  constructor() {
+    super();
+
+    setRect(0, 0, VIEW_SIZE, VIEW_SIZE, VIEW_SIZE / 2, VIEW_SIZE / 2);
+
+    local _bg = SKImageView();
+    _bg.setRect(0, 0, VIEW_SIZE, VIEW_SIZE);
+    local _sp = ::getSprite("/ui/image/diary/diary/page_gray.png");
+    _sp.blend = SK_MIX;
+    _bg.setSprite(_sp);
+    _bg.updateLayout();
+    addChild(_bg);
+
+    this.img_current = SKImageView();
+    this.img_current.setRect(0, 0, VIEW_SIZE, VIEW_SIZE);
+    _sp = ::getSprite("/ui/image/diary/diary/page.png");
+    _sp.blend = SK_MIX;
+    this.img_current.setSprite(_sp);
+    this.img_current.updateLayout();
+    addChild(this.img_current);
+
+    this.img_current.setVisible(false);
+  }
+
+  function changePage(b) {
+    this.img_current.setVisible(b);
+  }
+}

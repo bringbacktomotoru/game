@@ -1,0 +1,45 @@
+foreach (f_name in [
+"HomeUI.sk"
+"Panel.sk"
+"PanelTransition.sk"
+
+"HomeTopPanel.sk"
+
+"RoomEditPanel.sk"
+
+"ItemListPanel.sk"
+
+"TalkViewPanel.sk"
+
+"ShopPanel.sk"
+
+"CharaFocusPanel.sk"
+"CharaListPanel.sk"
+"CharaProfilePanel.sk"
+
+"RoomMemberPanel.sk"
+"MemberSelectPanel.sk"
+
+"PropertyPanel.sk"
+"HelpPanel.sk"
+
+"GalleryPanel.sk"
+"PictureDetailPanel.sk"
+"MoviePanel.sk"
+"ImageViewPanel.sk"
+
+"OptionPanel.sk"
+
+"ARPanel.sk"
+
+"MailPanel.sk"
+"NewCostumeEventPanel.sk"
+"RoomSelectPanel.sk"
+"DiaryPanel.sk"
+"DiaryContentsPanel.sk"
+"PanelMissionPanel.sk"
+"LetterPanel.sk"
+"OpeningMoviePanel.sk"
+]) {
+  runsk("/src/ui/panel/" + f_name);
+}

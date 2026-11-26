@@ -1,0 +1,67 @@
+;
+;----------- テスト短めイベント -------------
+;掃除したって言ってくる話
+
+; 作業部屋指定
+[focusroom address={[0,0]}]
+
+; 初期配置
+[popchara name=purin relative=1 x=0 angle=0]
+[movecamera type=1 z=11 y=-1.7]
+; 手振り
+[wait time=500]
+[startanime name=purin time=2000 script=tefuri]
+[balloon name=purin time=5000]
+[wait time=500]お～い♪
+[waitaction name=purin script=tefuri]
+[endballoon name=purin]
+[wait time=1300]
+
+[balloon name=purin]
+今日はお部屋の[r][wait time=1000]お掃除をしたんだ！[wait time=2500]
+[endballoon name=purin]
+
+[wait time=1000]
+
+[movecamera type=1 x=-5.5 z=2.0 time=0]
+[rotatecamera head=70 time=0]
+
+[startanime name=purin time=3000 script=ketsui]
+[balloon name=purin time=3000]
+[wait time=500]どうかな？
+[waitaction name=purin script=ketsui]
+[endballoon name=purin]
+[wait time=500]
+
+[movecamera type=1 x=10.5 time=0]
+[rotatecamera head=-70 time=0]
+
+[startanime name=purin time=3000 script=ketsui]
+[balloon name=purin time=5000]
+[wait time=1000]ピカピカでしょ？[wait time=2500]
+[waitaction name=purin script=ketsui]
+[endballoon name=purin]
+
+[wait time=1000]
+[movecamera type=1 x=-5.0 z=-2.0 time=0]
+[rotatecamera head=0.5 time=0]
+[startanime name=purin time=7500 script=picture_kansou_event script_args={[0,"kiraniko"]}]
+[balloon name=purin]
+[wait time=500]お掃除ってお部屋も[r][wait time=1500]心もすっきりするから[wait time=1500][r]大好きだな～♪[wait time=2500]
+[waitaction name=purin script=picture_kansou_event]
+[endballoon name=purin]
+
+[wait time=2000]
+
+[startanime name=purin time=5300 script=lampstand_manzoku_set script_args={[3,"smile4","manzoku"]}]
+[balloon name=purin time=5000]
+[wait time=500]また一緒に[r][wait time=1500]お話ししようね♡
+[waitaction name=purin script=lampstand_manzoku_set]
+[endballoon name=purin]
+[wait time=500]
+[startanime name=purin time=2000 script=tefuri]
+[waitaction name=purin script=tefuri]
+
+[wait time=1000]
+
+

@@ -1,0 +1,206 @@
+class SwipeButton
+{
+  static SWIPE_DIST_SQ = 800;
+
+  sound = "ui/click.wav";
+
+  view = null;
+  func_pressed = null;
+  region = null;
+
+  is_pressed = false;
+  is_targetin = false;
+  is_finished = true;
+  consume = true;
+
+  sx = 0;
+  sy = 0;
+  ux = 0;
+  uy = 0;
+  original_x = 0;
+  original_y = 0;
+
+  swipe_target_x1 = 0;
+  swipe_target_y1 = 0;
+  swipe_target_x2 = 0;
+  swipe_target_y2 = 0;
+
+  event_func = null;
+
+  release_visible = true;
+
+  constructor(v, consum = true) {
+    view = v;
+    region = v.findChild("region") || v;
+    this.event_func = region.addEventListener(MOUSE_EVENT, mouseevent);
+    v.pickable = true;
+    consume = consum;
+    original_x = view.pos.x;
+    original_y = view.pos.y;
+  }
+
+  function remove() {
+    region.removeEventListener(MOUSE_EVENT, event_func);
+    this.event_func = null;
+  }
+
+  function setSwipeTargetRect(skview) {
+    local ratio = ::displayHeight / ::screenHeight;
+    swipe_target_x1 = (skview.pos.x + skview.bnd.x) * ratio;
+    swipe_target_y1 = (skview.pos.y + skview.bnd.y) * ratio;
+    swipe_target_x2 = skview.bnd.w * ratio + swipe_target_x1;
+    swipe_target_y2 = skview.bnd.h * ratio + swipe_target_y1;
+  }
+
+  function setSwipeTargetXY(x1, y1, x2, y2) {
+    this.swipe_target_x1 = x1 < x2 ? x1 : x2;
+    this.swipe_target_y1 = y1 < y2 ? y1 : y2;
+    this.swipe_target_x2 = x2 > x1 ? x2 : x1;
+    this.swipe_target_y2 = y2 > y1 ? y2 : y1;
+  }
+
+  function _lensq(x, y) {
+    local dx = x - sx;
+    local dy = y - sy;
+    return dx * dx + dy * dy;
+  }
+
+  function _isInSwipeTarget(x, y) {
+    if (x < this.swipe_target_x1) return false;
+    if (x > this.swipe_target_x2) return false;
+    if (y < this.swipe_target_y1) return false;
+    if (y > this.swipe_target_y2) return false;
+
+    return true;
+  }
+
+  function mouseevent(e) {
+    if (consume) e.consume();
+
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      pressed(e.x, e.y);
+      break;
+    case MOUSE_DRAGGED:
+      dragged(e.x, e.y);
+      break;
+    case MOUSE_RELEASED:
+      released(e.x, e.y);
+      break;
+    case MOUSE_CLICKED:
+      break;
+    }
+  }
+
+  function pressed(ex, ey) {
+    this.is_pressed = true;
+    this.is_finished = false;
+    sx = ux = ex;
+    sy = uy = ey;
+    view.waitForMethod();
+    view.startMethod(pushanime.bindenv(this));
+  }
+
+  function dragged(ex, ey) {
+    if (this.is_pressed) {
+      if (_lensq(ex, ey) > SWIPE_DIST_SQ) {
+        this.is_pressed = false;
+        view.waitForMethod();
+        view.startMethod(clickanimeWithUnpressed.bindenv(this));
+      }
+    }
+    if (!this.is_finished) {
+
+      local view_scale = ::getDisplayScale();
+      view.pos.x -= (ux - ex) / view_scale;
+      ux = ex;
+      view.pos.y -= (uy - ey) / view_scale;
+      uy = ey;
+      view.matdirty = true;
+      view.dorepaint = true;
+      if (!this.is_targetin && _isInSwipeTarget(ex, ey)) {
+        this.is_targetin = true;
+        view.postActionEvent("swipein");
+      }
+      else if (this.is_targetin && !_isInSwipeTarget(ex, ey)) {
+        this.is_targetin = false;
+        view.postActionEvent("swipeout");
+      }
+    }
+  }
+
+  function released(ex, ey) {
+    if (!release_visible) view.visible = false;
+    if (_isInSwipeTarget(ex, ey)) {
+      view.waitForMethod();
+      view.startMethod(clickanimeWithSwiped.bindenv(this));
+    }
+    else if (this.is_pressed) {
+      view.waitForMethod();
+      view.startMethod(clickanimeWithPressed.bindenv(this));
+    }
+    else {
+      view.waitForMethod();
+      view.startMethod(clickanimeWithDropped.bindenv(this));
+    }
+
+    this.is_pressed = false;
+    this.is_finished = true;
+    revertPosition();
+
+  }
+
+  function revertPosition() {
+    view.pos.x = original_x;
+    view.pos.y = original_y;
+    view.matdirty = true;
+  }
+
+  function pushanime() {
+    if (sound) ::playSound(sound);
+    local T = 3;
+    for (local i = 0; i < T; i++) {
+      view.scale << ((T - i) * 0.2 / T + 0.8);
+      view.matdirty = true;
+      view.parent.repaint();
+      sleep(16);
+    }
+    view.postActionEvent("pressed");
+  }
+
+  function clickanimeWithPressed() {
+    clickanime("released");
+  }
+  function clickanimeWithUnpressed() {
+    clickanime("canceled");
+  }
+  function clickanimeWithSwiped() {
+    clickanime("swiped");
+  }
+  function clickanimeWithDropped() {
+    clickanime("dropped");
+  }
+
+  function clickanime(actioncmd) {
+    view.setBuffer(true);
+    local sp = view.buf;
+    local ct = sp.colormat = Matrix();
+    local T = 6;
+    local HT = 3;
+    local T = 3;
+    for (local i = 0; i < T; i++) {
+      ct[12] = ct[13] = ct[14] = 1.0;
+      view.scale << ((i + 1) * 0.2 / T + 0.8);
+      view.matdirty = true;
+      view.parent.repaint();
+      sleep(16);
+    }
+    view.scale << 1.0;
+    view.matdirty = true;
+    view.setBuffer(false);
+    view.parent.repaint();
+
+    suspend();
+    view.postActionEvent(actioncmd);
+  }
+}

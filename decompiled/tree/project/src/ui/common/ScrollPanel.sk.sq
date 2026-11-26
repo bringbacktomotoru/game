@@ -1,0 +1,439 @@
+local scr_1 = Rect2D();
+local v_1 = Vector3D();
+
+class ScrollPanel
+{
+  view = null;
+
+  block = null;
+
+  consume = true;
+
+  touches = null;
+  scrolling = false;
+  scrollvel = null;
+  scrollrect = null;
+  mousex = 0;
+  mousey = 0;
+  dxlog = 0.0;
+  dylog = 0.0;
+  mousetime = 0;
+
+  presstime = 0;
+
+  dxscale = 1.0;
+  dyscale = 1.0;
+
+  intr = 0;
+
+  loop_count = 0;
+
+  movfunc = null;
+  is_scroll_locked = null;
+  limit_rate = 0.2;
+
+  constructor(v, consume = true) {
+    view = v;
+    view.addEventListener(MOUSE_EVENT, mouseevent);
+
+    scrollvel = Vector3D();
+    scrollrect = Rect2D(0, 0, 2048, 2048);
+    block = [32, 32];
+    this.consume = consume;
+
+    this.is_scroll_locked = false;
+  }
+
+  function getScrollRect() {
+    return scrollrect;
+  }
+
+  function setScrollRect(bnd) {
+    scrollrect.set(bnd);
+  }
+  function setLimitRate(Rate) {
+    this.limit_rate = rate;
+  }
+
+  function mouseevent(e) {
+    if (!this.is_scroll_locked) {
+      switch (e.id) {
+      case MOUSE_PRESSED:
+        scrollvel.set(0, 0, 0);
+        scrolling = true;
+        mousex = e.x;
+        mousey = e.y;
+        dxlog = 0.0;
+        dylog = 0.0;
+        presstime = mousetime = e.time;
+        if (intr) {
+          clearInterval(intr);
+          intr = null;
+        }
+        break;
+      case MOUSE_DRAGGED:
+        if (presstime) {
+          if (Math.abs(mousex - e.x) > 24 || Math.abs(mousey - e.y) > 24) {
+            presstime = 0;
+
+          } else
+          if (skGetTime() >= presstime + 100) {
+            presstime = 0;
+            mousex = e.x;
+            mousey = e.y;
+
+          } else {
+            break;
+          }
+        }
+        local dx = (mousex - e.x) * dxscale;
+        local dy = (mousey - e.y) * dyscale;
+        dx = _calcLimitX(dx);
+        dy = _calcLimitY(dy);
+        view.pos.x -= dx;
+        view.pos.y -= dy;
+        view.matdirty = true;
+        view.repaint();
+        mousex = e.x;
+        mousey = e.y;
+        local dt = 1.0 + ((e.time - mousetime) + 0.0) * 0.1;
+        dxlog = dxlog / dt - dx;
+        dylog = dylog / dt - dy;
+        mousetime = e.time;
+        if (movfunc) movfunc(this);
+        break;
+      case MOUSE_RELEASED:
+        local dt = 1.0 + ((e.time - mousetime) + 0.0) * 0.1;
+        dxlog = dxlog / dt;
+        dylog = dylog / dt;
+        local w = view.getWindowRect();
+        local d = dxlog * dxlog + dylog * dylog;
+
+        local _checklimit = _checkLimit()
+        if (((e.time - mousetime) < 100 && !_checklimit) || _checklimit) {
+          if (d > 10 * 10) {
+
+            _moveto(
+            adjust(view.pos.x + dxlog * 14.0, w.w, scrollrect.x, scrollrect.w, block[0]),
+            adjust(view.pos.y + dylog * 14.0, w.h, scrollrect.y, scrollrect.h, block[1]),
+            340 + ((Math.sqrt(d) * 0.1) | 0)
+            );
+          } else {
+            _moveto(
+            adjust(view.pos.x, w.w, scrollrect.x, scrollrect.w, block[0]),
+            adjust(view.pos.y, w.h, scrollrect.y, scrollrect.h, block[1]),
+            150
+            );
+          }
+        }
+        view.matdirty = true;
+        view.repaint();
+        break;
+      }
+    }
+    if (consume) e.consume();
+  }
+
+  function adjust(x, w, sx, sw, blk) {
+    local x0 = x;
+    x = (((x0 + blk * (x0 < 0 ? -0.5 : 0.5)) | 0) / blk) * blk;
+    if (sw < w) sw = w;
+    if (sw >= w) {
+      if (x > sx) {
+        return sx;
+      }
+      if (x + sw < w) {
+        return w - sw;
+      }
+    }
+    return x;
+  }
+
+  function _moveto(x, y, time) {
+    local env = {
+      self = this
+      view = view
+      p0 = Vector3D(view.pos)
+      p1 = Vector3D(x, y, 0)
+      t = 0
+    }
+    local func = function(dt) {
+      if ((t += dt) >= time) {
+        view.pos(p1);
+        view.matdirty = true;
+        view.repaint();
+        if (self.movfunc) self.movfunc(this);
+        self.intr = null;
+        return undefined;
+      } else {
+        view.pos(p0.lerp(p1, Math.pow((t + 0.0) / time, 0.4)));
+        view.matdirty = true;
+        view.repaint();
+        if (self.movfunc) self.movfunc(this);
+      }
+    }.bindenv(env);
+
+    intr = setInterval(func, 1);
+  }
+
+  function _loop(x, y, time) {
+    local env = {
+      self = this
+      view = view
+      sp = Vector3D(view.pos)
+      p0 = Vector3D(view.pos)
+      p1 = Vector3D(x, y, 0)
+      t = 0
+    }
+    local func = function(dt) {
+      if ((t += dt) >= time) {
+        view.pos(sp);
+        view.matdirty = true;
+        view.repaint();
+        if (self.movfunc) self.movfunc(this);
+        t = 0;
+        self.loop_count++;
+      } else {
+        view.pos(p0.lerp(p1, (t + 0.0) / time));
+        view.matdirty = true;
+        view.repaint();
+        if (self.movfunc) self.movfunc(this);
+      }
+    }.bindenv(env);
+
+    intr = setInterval(func, 1);
+  }
+
+  function _loopStop(x, y, time, lerp = null) {
+    if (!lerp) {
+      lerp = function(p0, p1, t, time) {
+        return p0.lerp(p1, (t + 0.0) / time);
+      }
+    }
+    local env = {
+      self = this
+      view = view
+      p0 = Vector3D(view.pos)
+      p1 = Vector3D(x, y, 0)
+      t = 0
+      lerp = lerp;
+    }
+    local func = function(dt) {
+      if ((t += dt) >= time) {
+        view.pos(p1);
+        view.matdirty = true;
+        view.repaint();
+        if (self.movfunc) self.movfunc(this);
+        self.intr = null;
+        return undefined;
+      } else {
+        view.pos(lerp(p0, p1, t, time));
+        view.matdirty = true;
+        view.repaint();
+        if (self.movfunc) self.movfunc(this);
+      }
+    }.bindenv(env);
+
+    intr = setInterval(func, 1);
+  }
+
+  function _quadratic(p0, p1, t, time) {
+    local _t = float(t) / time;
+    local _rate = _t * (2 - _t);
+    return p0 * (1.0 - _rate) + p1 * _rate;
+  }
+
+  function move(dx, dy, time) {
+    local w = view.getWindowRect();
+    local newx = adjust(view.pos.x + dx, w.w, scrollrect.x, scrollrect.w, block[0]);
+    local newy = adjust(view.pos.y + dy, w.h, scrollrect.y, scrollrect.h, block[1]);
+    local _dx = newx - view.pos.x;
+    local _dy = newy - view.pos.y;
+    local d1 = Math.sqrt(dx * dx + dy * dy);
+    local d2 = Math.sqrt(_dx * _dx + _dy * _dy);
+    if (d1 <= 0.01) return;
+    if (d1 != d2) {
+      time = time * d2 / d1;
+    }
+    if (intr) {
+      clearInterval(intr);
+      intr = null;
+    }
+    _moveto(newx, newy, time);
+  }
+
+  function moveTo(x, y, time) {
+
+    if (intr) {
+      clearInterval(intr);
+      intr = null;
+    }
+
+    _moveto(x, y, time);
+  }
+
+  function loop(dx, dy, time) {
+    this.loop_count = 0;
+    local w = view.getWindowRect();
+    local newx = adjust(view.pos.x + dx, w.w, scrollrect.x, scrollrect.w, block[0]);
+    local newy = adjust(view.pos.y + dy, w.h, scrollrect.y, scrollrect.h, block[1]);
+    local _dx = newx - view.pos.x;
+    local _dy = newy - view.pos.y;
+    local d1 = Math.sqrt(dx * dx + dy * dy);
+    local d2 = Math.sqrt(_dx * _dx + _dy * _dy);
+    if (d1 <= 0.01) return;
+    if (d1 != d2) {
+      time = time * d2 / d1;
+    }
+    if (intr) {
+      clearInterval(intr);
+      intr = null;
+    }
+    _loop(newx, newy, time);
+  }
+
+  function loopStop(dx, dy, time) {
+    this.loop_count = 0;
+    local w = view.getWindowRect();
+    local newx = adjust(view.pos.x + dx, w.w, scrollrect.x, scrollrect.w, block[0]);
+    local newy = adjust(view.pos.y + dy, w.h, scrollrect.y, scrollrect.h, block[1]);
+    local _dx = newx - view.pos.x;
+    local _dy = newy - view.pos.y;
+    local d1 = Math.sqrt(dx * dx + dy * dy);
+    local d2 = Math.sqrt(_dx * _dx + _dy * _dy);
+    if (d1 <= 0.01) return;
+    if (d1 != d2) {
+      time = time * d2 / d1;
+    }
+    if (intr) {
+      clearInterval(intr);
+      intr = null;
+    }
+    _loopStop(newx, newy, time);
+  }
+
+  function getBlock() {
+    return this.block;
+  }
+
+  function setBlock(arr) {
+    block.clear();
+    block.extend(arr);
+  }
+
+  function loopStopSlowy(dx, dy, time) {
+    this.loop_count = 0;
+    local w = view.getWindowRect();
+    local newx = adjust(view.pos.x + dx, w.w, scrollrect.x, scrollrect.w, block[0]);
+    local newy = adjust(view.pos.y + dy, w.h, scrollrect.y, scrollrect.h, block[1]);
+    local _dx = newx - view.pos.x;
+    local _dy = newy - view.pos.y;
+    local d1 = Math.sqrt(dx * dx + dy * dy);
+    local d2 = Math.sqrt(_dx * _dx + _dy * _dy);
+    if (d1 <= 0.01) return;
+    if (d1 != d2) {
+      time = time * d2 / d1;
+    }
+    if (intr) {
+      clearInterval(intr);
+      intr = null;
+    }
+    _loopStop(newx, newy, time, _quadratic);
+  }
+
+  function clearInterval() {
+    if (intr) {
+      clearInterval(intr);
+      intr = null;
+    }
+  }
+
+  function getLoopCount() {
+    return this.loop_count;
+  }
+
+  function centered(is_wide, scroll_lock = true) {
+    if (is_wide) {
+      local w_diff = this.view.parent.bnd.w - this.scrollrect.w;
+      if (w_diff >= 0) {
+        this.is_scroll_locked = true;
+        _moveto(w_diff / 2, 0, 0);
+      } else {
+        move(0, 0, 0);
+        this.is_scroll_locked = false;
+      }
+    } else {
+      local h_diff = this.view.parent.bnd.h - this.scrollrect.h;
+      if (h_diff >= 0) {
+        move(0, h_diff / 2, 0);
+        this.is_scroll_locked = true;
+      } else {
+        move(0, 0, 0);
+        this.is_scroll_locked = false;
+      }
+    }
+  }
+
+  function setScrollLocked(b) {
+    this.is_scroll_locked = b;
+  }
+
+  function isWithInScrollRect() {
+    local ret = false;
+    if (this.dxscale > 0) {
+      local w_diff = this.view.parent.bnd.w - this.scrollrect.w;
+      ret = w_diff > 0 ? true : false;
+    }
+    if (this.dyscale > 0) {
+      local h_diff = this.view.parent.bnd.h - this.scrollrect.h;
+      ret = h_diff > 0 ? true : false;
+    }
+
+    return ret;
+  }
+
+  function _calcLimitY(dy) {
+    local _rate = 1.0;
+
+    if (this.view.pos.y > this.scrollrect.y) {
+      _rate = 1.0 - ((this.view.pos.y - this.scrollrect.y) / (this.view.bnd.h * this.limit_rate));
+    }
+
+    else if ((this.view.parent.bnd.h - this.view.pos.y - this.scrollrect.h) > 0) {
+      _rate = 1.0 - ((this.view.parent.bnd.h - this.view.pos.y - this.scrollrect.h) / (this.view.bnd.h * this.limit_rate));
+    }
+
+    return dy *= Math.clamp(_rate, 0.0, 1.0)
+
+  }
+  function _calcLimitX(dx) {
+    local _rate = 1.0;
+
+    if (this.view.pos.x > this.scrollrect.x) {
+      _rate = 1.0 - ((this.view.pos.x - this.scrollrect.x) / (this.view.bnd.h * this.limit_rate));
+    }
+
+    else if ((this.view.parent.bnd.w - this.view.pos.x - this.scrollrect.w) > 0) {
+      _rate = 1.0 - ((this.view.parent.bnd.w - this.view.pos.x - this.scrollrect.w) / (this.view.bnd.h * this.limit_rate));
+    }
+
+    return dx *= Math.clamp(_rate, 0.0, 1.0);
+  }
+
+  function _checkLimit() {
+    if (this.view.pos.y > this.scrollrect.y) {
+      return true;
+    }
+    else if ((this.view.parent.bnd.h - this.view.pos.y - this.scrollrect.h) > 0) {
+      return true;
+    }
+    if (this.view.pos.x > this.scrollrect.x) {
+      return true;
+    }
+    else if ((this.view.parent.bnd.w - this.view.pos.x - this.scrollrect.w) > 0) {
+      return true;
+    }
+    return false;
+
+  }
+}

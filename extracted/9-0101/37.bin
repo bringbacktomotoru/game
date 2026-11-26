@@ -1,0 +1,87 @@
+;
+;----------- 初期登場 -------------
+[playbgm bgm="BGM02"]
+[changeroom id=4]
+
+[focusdoor]
+
+;カメラ初期位置
+[movecamera type=0 x=-2.4 y=3 z=4 time=0]
+[rotatecamera pitch=0 head=150]
+
+[startscene]
+
+[wait time=1500]
+[rotatecamera type=1 pitch=0 head=30 time=5000]
+[wait time=5500]
+[movecamera type=0 x=-2.4 y=2 z=4 time=500]
+;キャラ出現
+[popchara costume=109001 x=-0 z=-11 angle=180 relative=true]
+[startanime name=kitty time=2000 script=pyonpyon_set script_args={[3,"kya","kya"]}]
+[voice name=kitty voice_key="e13_1"]
+[balloonoffset x=1 y=-0.5]
+[balloon name=kitty time=3000 type=1]
+わっ#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=tefuri]
+	
+[startanime name=kitty time=2000 script=kubikashige script_args={[3,"smile"]}]
+[balloon name=kitty time=3000 type=1]
+…うふふっ/n
+#playername/n
+おどろいた#q1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=pyonpyon_set]
+
+[movecamera type=1 z=2 time=0]
+
+[startanime name=kitty time=2000 script=kurukuru_set script_args={[2,"tere","tere"]}]
+[voice name=kitty voice_key="e13_1"]
+[balloonoffset]
+[balloon name=kitty time=3000]
+わたしの部屋に来てくれて/n
+ありがとう#e1#/n
+とってもすてきでしょ#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kurukuru_set]
+
+[startanime name=kitty time=2000 script=uun2_set script_args={[3,"meisou"]}]]
+[balloon name=kitty time=3000]
+あのね…
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=cos_bishi]
+
+[startanime name=kitty time=2000 script=ketsui2 script_args={[3,"kirasmile"]}]
+[voice name=kitty voice_key="e80_1"]
+[balloon name=kitty time=3000]
+わたし、やってみたいことが/n
+3つあるの
+[wait time=3000]
+[endballoon name=kitty]
+
+[startanime name=kitty time=2000 script=pyonpyon_set script_args={[3,"kya","kya"]}]
+[voice name=kitty voice_key="e76_1"]
+[balloon name=kitty time=3000]
+#playernameに/n
+一緒に準備を/n
+手伝ってほしいの#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=hatena2_set]
+
+[startanime name=kitty time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[balloon name=kitty time=3000]
+お願い/n
+#playername#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=hatena2_set]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile"]}]
+[fadeoutbgm spd=12]
+[wait time=2300]
+
+

@@ -1,0 +1,189 @@
+{
+  "ID": "9d96f594-6ce2-4df1-9f7c-995cbef02286",
+  "Version": "2.3.3.0",
+  "Name": "Downloading",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 3,
+        "Children": [
+          {
+            "FontSize": 28,
+            "LabelText": "ダウンロード中(20%)",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 3,
+            "OutlineColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 89.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.1236
+            },
+            "PreSize": {
+              "X": 0.3306,
+              "Y": 0.0472
+            },
+            "LeftMargin": 241.0,
+            "RightMargin": 241.0,
+            "TopMargin": 613.9998,
+            "BottomMargin": 72.0002,
+            "Tag": 689,
+            "ActionTag": -1600992661,
+            "Size": {
+              "X": 238.0,
+              "Y": 34.0
+            },
+            "Name": "msg",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/btn/bigbar.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 40.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.0556
+            },
+            "PreSize": {
+              "X": 0.725,
+              "Y": 0.075
+            },
+            "LeftMargin": 99.0,
+            "RightMargin": 99.0,
+            "TopMargin": 653.0,
+            "BottomMargin": 13.0,
+            "Tag": 26,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/btn/bigbar_frame.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 10.0,
+                  "Y": 10.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 51
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0192,
+                  "Y": 0.1852
+                },
+                "PreSize": {
+                  "X": 0.9617,
+                  "Y": 0.6296
+                },
+                "LeftMargin": 10.0,
+                "RightMargin": 10.0,
+                "TopMargin": 10.0,
+                "BottomMargin": 10.0,
+                "Tag": 27,
+                "ActionTag": -2039237666,
+                "Size": {
+                  "X": 502.0,
+                  "Y": 34.0
+                },
+                "Name": "bar",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": 1739676890,
+            "Size": {
+              "X": 522.0,
+              "Y": 54.0
+            },
+            "Name": "bar_progress",
+            "ctype": "SpriteObjectData"
+          }
+        ],
+        "Size": {
+          "X": 720.0,
+          "Y": 720.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/btn/bigbar.png",
+        "../image/btn/bigbar_frame.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

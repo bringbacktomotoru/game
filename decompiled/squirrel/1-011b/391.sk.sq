@@ -1,0 +1,113 @@
+class NewCostumeEventPanel extends ::HomeUI.Panel {
+  static need_rank_layer = false;
+  static need_camera = true;
+  static need_camera_rotate = true;
+  static need_camera_default = false;
+  static need_menu_layer = false;
+  static show_tapfloor_particle = false;
+  static need_money_layer = false;
+  static need_panel_name = false;
+
+  costume_ids = null;
+  model = null;
+  talkwindow_layer = null;
+  stage = null;
+  processor = null;
+
+  view = null;
+
+  function added() {
+    this.view = ::loadSKView("/ui/NewCostumeEventPanel.ui");
+    this.view.setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    addChild(this.view);
+    this.talkwindow_layer = ::TalkWindowLayer(this.view.findChild("pnl_talkwindow_layer"));
+    this.stage = parent.parent.getStage();
+
+    this.processor = null;
+
+    setVisibleFurnitureModels(false);
+
+    _setupCharaModel();
+  }
+  function removed() {
+    setVisibleFurnitureModels(true);
+    removeAllTalkWindow();
+    this.model.release();
+  }
+  function showed() {
+    _startEvent();
+  }
+
+  function _resetCharaModel() {
+    _setupCharaModel(true);
+  }
+  function _setupCharaModel(rebuild = false) {
+    if (rebuild) removeAllTalkWindow();
+    else this.model = ::CharaModel(this.stage.scene, this.stage);
+
+    this.model.build(this.costume_ids[0]);
+    this.model.setAutoAction(false);
+    this.model.setPosXYZ(0, ::HouseModel.FLOOR_DEPTH, 0);
+
+    local _cw = this.stage.camera_work;
+
+    this.model.setAngle(_cw.hpb[0] * Math.RTOD);
+
+    this.stage.trackModel(this.model, ::CharaFocusPanel.TARGET_OFFSET, 12.0);
+  }
+
+  function setVisibleFurnitureModels(b) {
+    foreach (fm in this.stage.getFurnitureModels()) {
+      fm.setVisible(b);
+    }
+  }
+  function setPanelParam(param) {
+    this.costume_ids = param.costume_ids;
+  }
+
+  function addTalkSentence(chara_key, sentence) {
+    this.talkwindow_layer.setOffset(0, 2.4, 0);
+    return this.talkwindow_layer.addTalkSentenceWindow(this.model.obj.sk3d, sentence, chara_key, false, false, true);
+  }
+  function removeAllTalkWindow() {
+    talkwindow_layer.removeAllTalkWindow();
+  }
+
+  function _startEvent() {
+    newthread().start(function() {
+
+      local _cs = ::gamesetting.costume_settings[this.costume_ids[0]];
+      local _ss = ::gamesetting.new_costume_event_settings[_cs.getNewCostumeEventID()];
+      this.processor = ::SentenceProcessor(this, this.model);
+      this.processor.setSentenceList(_ss);
+
+      this.processor.startSentence();
+      while (this.processor.isRunningSentenceProcessor()) {
+        suspend();
+      }
+
+      sleep(500);
+
+      local _lv = ::gamesession.getUserData().getRank() - this.costume_ids.len() + 1;
+      local _dlg = ::LevelupDialog();
+      _dlg.setLevel(_lv);
+      _dlg.show();
+
+      sleep(500);
+
+      local _tex = runsk("/dl/loadingbg/download.sk");
+      local _trans = MaskPanelTransition(_tex, ::getTexture("/image/rule/gacha.jpg"), 5.0, 50);
+      _trans.sleeptime = 1000;
+
+      if (this.costume_ids.len() > 1) {
+        delete this.costume_ids[0];
+        _trans.rePerformance(_resetCharaModel.bindenv(this));
+        _startEvent();
+      }
+      else {
+        getHomeUI().moveTopPanel(_trans);
+      }
+
+    }.bindenv(this), this);
+  }
+}

@@ -1,0 +1,77 @@
+;
+;----------- 初期登場 -------------
+	
+[focusdoor]
+
+; カメラ初期位置
+[movecamera type=1 z=-15 y=6.2 time=0]
+[rotatecamera pitch=17]
+
+; キャラ出現
+[popchara name=mymelo z=-2 angle=180 relative=true]
+[wait time=200]
+[startanime name=mymelo time=700 script=bookshelf_mitsuketa]
+[waitaction name=mymelo script=bookshelf_mitsuketa]
+[wait time=700]
+
+[movecamera type=1 z=-0.5 y=-3.9 time=2500]
+[rotatecamera pitch=0 time=2500]
+
+[turnchara name=mymelo angle=0 time=1000 script=turn_r]
+[waitaction name=mymelo script=turn_r]
+
+; キャラ前に向かって移動
+[movechara name=mymelo type=1 z=-2 script=skip_smile neutral=stand time=1300]
+[wait time=2000]
+
+; キャラ手振り
+[startanime name=mymelo time=2000 script=tefuri]
+[balloon name=mymelo time=3000]
+[voice voice_key="event_new_chara" name=mymelo]
+はじめまして#h1#/nメロディよ#h1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+[turnchara name=mymelo angle=30 time=500 script=turn_r]
+[waitaction name=mymelo script=turn_r]
+
+[startanime name=mymelo time=500 script=stand]
+[waitaction name=mymelo script=stand]
+
+; キティ出現
+[popchara name=kitty relative=1 x=-5.0 z=-3.7 angle=-90]
+[movechara name=kitty type=1 x=2.0 script=movie_walk neutral=stand time=4500]
+[movecamera type=1 x=-1.4 time=2000]
+[wait time=2300]
+
+[turnchara name=kitty angle=-30 time=300 script=turn_r]
+[waitaction name=kitty script=turn_r]
+
+[startanime name=mymelo time=1500 script=teage]
+[startanime name=kitty time=1500 script=event_onegai]
+[waitaction name=mymelo script=teage]
+[waitaction name=kitty script=event_onegai]
+
+[startanime name=mymelo time=4000 script=event_souzou]
+[startanime name=kitty time=4000 script=question]
+[balloon name=mymelo time=3500]
+[voice voice_key="event_smile" name=mymelo]
+およばれしたから/nきちゃった#o1#
+[wait time=3500]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=event_souzou]
+[waitaction name=kitty script=question]
+
+[startanime name=mymelo time=1500 script=tere]
+[startanime name=kitty time=1500 script=event_unaduku]
+[waitaction name=kitty script=event_unaduku]
+[startanime name=kitty time=4500 script=event_onegai]
+[balloon name=mymelo time=7000]
+キティちゃん、/nよんでくれて/nありがとう#h1#
+[wait time=7000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tere]
+[waitaction name=kitty script=event_onegai]
+[startanime name=kitty time=2000 script=multipurpose_mojimoji]
+[waitaction name=kitty script=multipurpose_mojimoji]

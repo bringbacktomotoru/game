@@ -1,0 +1,111 @@
+return {
+  modeldata = "hangyo_face.mdl"
+  motiondata = "scene01.mot"
+  bnd = [0.0, 1.153499, -0.202795, 0.619396, 0.242853, 0.456648]
+
+  shapesets = {
+    "akubi": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_akubi": 1.0, "uvscroll": [null, null], },
+    "bakusho": { "cheek": 1.0, "e_winkL": 1.0, "e_winkR": 1.0, "m_laugh": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "bakusho2": { "cheek": 1.0, "e_defL": 1.0, "e_defR": 1.0, "e_smile": 0.3, "m_smile": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "beso": { "e_winkL": 1.0, "e_winkR": 1.0, "m_itimonji": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "bikkuri": { "e_bikkuriL": 1.0, "e_bikkuriR": 1.0, "m_akubi": 0.7, "uvscroll": [null, null], },
+    "biku": { "e_bikkuriL": 1.0, "e_bikkuriR": 1.0, "m_o": 1.0, "uvscroll": [null, null], },
+    "blink": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "uvscroll": [null, null], },
+    "def": { "e_defL": 1.0, "e_defR": 1.0, "uvscroll": [null, null], },
+    "bonyari": { "e_defL": 1.0, "e_defR": 1.0, "e_itimonji": 0.45, "uvscroll": [null, null], },
+    "drink": { "e_defL": 1.0, "e_defR": 1.0, "m_o": 0.5, "uvscroll": [null, null], },
+    "drink_blink": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_o": 0.5, "uvscroll": [null, null], },
+    "drink_smile": { "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_o": 0.5, "uvscroll": [null, null], },
+    "drink_wink_r": { "e_defL": 1.0, "e_winkR": 1.0, "m_o": 0.5, "uvscroll": [null, null], },
+    "fan": { "e_defL": 1.0, "e_defR": 1.0, "e_itimonji": 1.0, "m_akubi": 1.0, "uvscroll": [null, null], },
+    "fuman": { "e_sadL": 1.0, "e_sadR": 1.0, "m_angry": 1.0, "uvscroll": [null, null], },
+    "fuman_blink": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_angry": 1.0, "uvscroll": [null, null], },
+    "gu": { "cheek": 1.0, "e_kiraL": 1.0, "e_kiraR": 1.0, "m_itimonji": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "ita": { "e_winkL": 1.0, "e_winkR": 1.0, "m_angry": 0.8, "m_o": 0.75, "uvscroll": [null, null], },
+    "kando": { "cheek": 1.0, "e_kiraL": 1.0, "e_kiraR": 1.0, "m_o": 1.0, "uvscroll": [null, null], },
+    "katamaru": { "e_bikkuriL": 1.0, "e_bikkuriR": 1.0, "m_itimonji": 1.0, "uvscroll": [null, null], },
+    "kiraniko": { "e_kiraL": 1.0, "e_kiraR": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "kirasmile": { "e_kiraL": 1.0, "e_kiraR": 1.0, "m_laugh": 1.0, "uvscroll": [null, null], },
+    "kiri": { "e_angryL": 1.0, "e_angryR": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "kiri2": { "e_angryL": 1.0, "e_angryR": 1.0, "m_laugh": 1.0, "uvscroll": [null, null], },
+    "kiss": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_bikkuri": 0.5, "m_move": 1.0, "uvscroll": [null, null], },
+    "kiss2": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_bikkuri": 1.0, "uvscroll": [null, null], },
+    "kya": { "e_winkL": 1.0, "e_winkR": 1.0, "m_laugh": 1.0, "tearR": 0.1, "uvscroll": [null, null], },
+    "kyomi": { "e_defL": 1.0, "e_defR": 1.0, "m_o": 1.0, "uvscroll": [null, null], },
+    "kyomi_blink": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_o": 1.0, "uvscroll": [null, null], },
+    "manzoku": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_laugh": 1.0, "uvscroll": [null, null], },
+    "meisou": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "meisou_cheek": { "cheek": 1.0, "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_smile": 1.0, "tearR": 0.1, "uvscroll": [null, null], },
+    "mogu": { "e_defL": 1.0, "e_defR": 1.0, "m_bikkuri": 0.4, "m_o": 0.3, "m_smile": 0.6, "uvscroll": [null, null], },
+    "mogu_neru1": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_bikkuri": 0.4, "m_o": 0.3, "m_smile": 0.6, "uvscroll": [null, null], },
+    "mogu_neru2": { "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_angry": 0.6, "uvscroll": [null, null], },
+    "mogu2": { "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_bikkuri": 0.4, "m_o": 0.3, "m_smile": 0.6, "uvscroll": [null, null], },
+    "mogu3": { "cheek": 1.0, "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_bikkuri": 0.4, "m_o": 0.3, "m_smile": 0.6, "uvscroll": [null, null], },
+    "mu": { "e_defL": 1.0, "e_defR": 1.0, "m_itimonji": 1.0, "uvscroll": [null, null], },
+    "mu2": { "e_defL": 1.0, "e_defR": 1.0, "e_itimonji": 1.0, "m_itimonji": 1.0, "uvscroll": [null, null], },
+    "mu3": { "e_defL": 1.0, "e_defR": 1.0, "m_angry": 1.0, "uvscroll": [null, null], },
+    "namida": { "cheek": 1.0, "e_kiraL": 1.0, "e_kiraR": 1.0, "m_akubi": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "namida_blink": { "cheek": 1.0, "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_akubi": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "namida_smile": { "cheek": 1.0, "e_kiraL": 1.0, "e_kiraR": 1.0, "m_laugh": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "namida_smile_blink": { "cheek": 1.0, "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_laugh": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "namida_smile2": { "cheek": 1.0, "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_smile": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "nikawink": { "e_defR": 1.0, "e_winkL": 1.0, "m_laugh": 1.0, "uvscroll": [null, null], },
+    "nimaime": { "e_defR": 1.0, "e_sadL": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "nimaime2": { "e_defL": 1.0, "e_sadR": 1.0, "m_laugh": 1.0, "uvscroll": [null, null], },
+    "nukui": { "cheek": 1.0, "e_close": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_akubi": 1.0, "uvscroll": [null, null], },
+    "ohohoho": { "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_bikkuri": 0.6, "uvscroll": [null, null], },
+    "ohohoho2": { "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_angry": 1.0, "m_bikkuri": 1.0, "uvscroll": [null, null], },
+    "ooi": { "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_akubi": 1.0, "uvscroll": [null, null], },
+    "sad": { "e_sadL": 1.0, "e_sadR": 1.0, "m_itimonji": 1.0, "uvscroll": [null, null], },
+    "sad2": { "e_sadL": 1.0, "e_sadR": 1.0, "m_o": 1.0, "uvscroll": [null, null], },
+    "sad3": { "e_sadL": 1.0, "e_sadR": 1.0, "m_itimonji": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "sagasu": { "e_defL": 1.0, "e_defR": 1.0, "e_itimonji": 0.3, "m_itimonji": 1.0, "uvscroll": [null, null], },
+    "sagasu_loupe": { "e_defR": 1.0, "e_winkL": 1.0, "m_angry": 1.0, "tearR": 0.1, "uvscroll": [null, null], },
+    "smile": { "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "smile2": { "cheek": 1.0, "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "smile3": { "e_winkL": 1.0, "e_winkR": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "smile3_cheek": { "cheek": 1.0, "e_winkL": 1.0, "e_winkR": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "smile4": { "e_defL": 1.0, "e_defR": 1.0, "m_smile": 1.0, "tearR": 0.1, "uvscroll": [null, null], },
+    "smile4_cheek": { "cheek": 1.0, "e_defL": 1.0, "e_defR": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "tear_smile": { "cheek": 1.0, "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_smile": 1.0, "tearL": 1.0, "tearR": 1.0, "uvscroll": [null, null], },
+    "tehepero": { "e_winkL": 1.0, "e_winkR": 1.0, "m_perori": 1.0, "uvscroll": [null, null], },
+    "tehepero_cheek": { "cheek": 1.0, "e_winkL": 1.0, "e_winkR": 1.0, "m_perori": 1.0, "uvscroll": [null, null], },
+    "tehepero_wink": { "e_defL": 1.0, "e_winkR": 1.0, "m_perori": 1.0, "uvscroll": [null, null], },
+    "tere": { "cheek": 1.0, "e_winkL": 1.0, "e_winkR": 1.0, "m_laugh": 1.0, "uvscroll": [null, null], },
+    "waa": { "e_defL": 1.0, "e_defR": 1.0, "m_angry": 0.8, "m_o": 0.75, "uvscroll": [null, null], },
+    "warau": { "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_laugh": 1.0, "uvscroll": [null, null], },
+    "warau_usume": { "e_defL": 1.0, "e_defR": 1.0, "e_smile": 0.55, "m_laugh": 1.0, "uvscroll": [null, null], },
+    "wink_l": { "e_defR": 1.0, "e_winkL": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "wink_r": { "e_defL": 1.0, "e_winkR": 1.0, "m_smile": 1.0, "uvscroll": [null, null], },
+    "yaa": { "e_defL": 1.0, "e_defR": 1.0, "e_smile": 1.0, "m_laugh": 1.0, "uvscroll": [null, null], },
+    "yaba": { "e_winkL": 1.0, "e_winkR": 1.0, "m_itimonji": 1.0, "uvscroll": [null, null], },
+  }
+
+  material = [
+  {
+    name = "hangyo_face_mt"
+    tec = "toon.basic"
+    Ka = 1128481791
+    Kd = 1717987071
+    Ks = 2122219263
+    Ke = 0
+    shiness = 20.0
+    texture0 = "tex/hangyo_face.png"
+    texture3 = #texgen() { width = 128; height = 8; grad([[0.15, 0x9999ccff], [0.28, 0xd9bfccff], [0.53, 0xffffffff]]); }
+  }
+  {
+    name = "hangyo_face_alpha_mt"
+    tec = "toon.basic"
+    Ka = 1128481791
+    Kd = 1717987071
+    Ks = 2122219263
+    Ke = 0
+    shiness = 20.0
+    blend = SK_MIX
+    depthmask = 0
+    fresnel = 0.0
+    texture0 = "tex/hangyo_face.png"
+    texture3 = #texgen() { width = 128; height = 8; grad([[0.15, 0x9999ccff], [0.28, 0xd9bfccff], [0.53, 0xffffffff]]); }
+  }
+  ]
+}

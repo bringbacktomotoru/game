@@ -1,0 +1,50 @@
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+  }
+
+  function start() {
+    deselected();
+  }
+
+  function stop() {
+    fadeColor(0, 0);
+  }
+
+  function deselected() {
+    setBlend(SK_MIX);
+    fadeColor(2130706687, 0);
+    for (;;) {
+      fadeColor(0xcf000077, 800);
+      pass(800);
+      fadeColor(2130706687, 800);
+      pass(800);
+    }
+  }
+
+  function selected() {
+    setBlend(SK_MIX);
+    fadeColor(4145151, 0);
+    for (;;) {
+      fadeColor(8355839, 800);
+
+      pass(800);
+      fadeColor(4145151, 800);
+
+      pass(800);
+    }
+  }
+
+  function selected_rotate() {
+    setBlend(SK_ADD);
+    fadeColor(32512, 0);
+    for (;;) {
+      fadeColor(52992, 800);
+      pass(800);
+      fadeColor(32512, 800);
+      pass(800);
+    }
+  }
+}

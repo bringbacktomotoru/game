@@ -1,0 +1,82 @@
+;
+;----------- テスト選択肢付き -------------
+;イメージチェンジしてみたって言ってくる話
+
+; 作業部屋指定
+[focusroom address={[0,0]}]
+
+; 初期配置
+[popchara name=cinnamon relative=1 x=0 angle=0]
+[movecamera type=1 z=11 y=-1.7]
+; 手振り
+[wait time=500]
+[startanime name=cinnamon time=2000 script=tefuri]
+[balloon name=cinnamon time=5000]
+[wait time=500]ねぇねぇ♪
+[waitaction name=cinnamon script=tefuri]
+[endballoon name=cinnamon]
+[wait time=1300]
+
+[startanime name=cinnamon time=4000 script=kurukuru]
+[balloon name=cinnamon time=5000]
+みてみて～！[r][wait time=1000]どうかなどうかな？
+[waitaction name=cinnamon script=kurukuru]
+[endballoon name=cinnamon]
+
+[wait time=300]
+
+[startanime name=cinnamon time=3000 script=hokori]
+[balloon name=cinnamon time=3000]
+[wait time=500]服を[r]きがえてみたんだぁ～♪
+[waitaction name=cinnamon script=hokori]
+[endballoon name=cinnamon]
+[wait time=1000]
+[branch target={"*select1"} text={"すっごくかっこいい"}]
+[branch target={"*select2"} text={"とっても似合ってる！"}]
+[branch target={"*select3"} text={"あれ？髪の毛きった？"}]
+
+[wait time=2000]
+[s]
+; 分岐処理
+
+*select1
+[startanime name=cinnamon time=5000 script=tere]
+[balloon name=cinnamon time=3000]
+[wait time=500]そんなに褒められると[r]はずかしくなっちゃう～♪
+[waitaction name=cinnamon script=tere]
+[endballoon name=cinnamon]
+[jump target={"*branch_end"}]
+
+
+*select2
+[startanime name=cinnamon time=7500 script=picture_kansou_event script_args={[3,"kiraniko"]}]
+[balloon name=cinnamon time=6000]
+[wait time=1000]ほんと？[r][wait time=2000]やったぁ♪ありがとう！
+[waitaction name=cinnamon script=picture_kansou_event]
+[endballoon name=cinnamon]
+[jump target={"*branch_end"}]
+
+
+*select3
+[startanime name=cinnamon time=6000 script=plant_nagameru_set script_args={[2,"bikkuri"]}]
+[balloon name=cinnamon time=6000]
+ええっ！？[r][wait time=1500]・・・[wait time=1500]髪の毛は[r]かわってないよ！？
+[waitaction name=cinnamon script=plant_nagameru_set]
+[endballoon name=cinnamon]
+[jump target={"*branch_end"}]
+
+
+*branch_end
+[wait time=1000]
+[startanime name=cinnamon time=5300 script=lampstand_manzoku_set script_args={[3,"smile4","manzoku"]}]
+[balloon name=cinnamon time=5000]
+[wait time=500]またぼくと一緒に[r][wait time=1500]お話ししてね～♪
+[waitaction name=cinnamon script=lampstand_manzoku_set]
+[endballoon name=cinnamon]
+[wait time=500]
+[startanime name=cinnamon time=2000 script=tefuri]
+[waitaction name=cinnamon script=tefuri]
+
+[wait time=1000]
+
+

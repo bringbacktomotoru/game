@@ -1,0 +1,23 @@
+model =
+{
+  root = {
+    pm = "restart_sw.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+  }
+
+  function start() {
+    setBlend(SK_ADD);
+    uvscroll(0, -2.5);
+    pass(1000);
+    fadeColor(255, 1000);
+    pass(1000);
+    kill();
+  }
+}

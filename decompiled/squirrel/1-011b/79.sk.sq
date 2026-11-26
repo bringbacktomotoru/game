@@ -1,0 +1,341 @@
+room_settings[1] <- RoomSetting({
+  name = "はじめてのお部屋";
+  size_text = "";
+  parameter_id = 0;
+  desc = "優しい木のぬくもりを感じられるカントリールーム。散りばめられたハートの木枠は見ているだけで気分がうきうき。";
+  series = 8;
+  bg_image_path = "first_room";
+  chara_ids = [1, 2];
+  release_chara_conditions = [null, [8]];
+  release_chara_condition_texts = [
+  "",
+  "管理人さんのおしごと〈2〉/nをクリアしましょう"
+  ];
+
+  room_rects = [[0.0, 0.0, 19.0, 11.0]];
+  floor_path = "/country/floor.pm";
+  wall_settings = [{ path = "/country/wall_L.pm", visible_start_angle = 359, visible_end_angle = 181 },
+  { path = "/country/wall_B.pm", visible_start_angle = 269, visible_end_angle = 91 },
+  { path = "/country/wall_R.pm", visible_start_angle = 179, visible_end_angle = 1 },
+  { path = "/country/wall_F.pm", visible_start_angle = 89, visible_end_angle = 271 }];
+  pillar_paths = ["/country/pillar_FL.pm",
+  "/country/pillar_BL.pm",
+  "/country/pillar_BR.pm",
+  "/country/pillar_FR.pm"];
+
+  init_furnitures = [
+  [8401, 0, 0, 0],
+  [1703, 0, 0, 0],
+  ];
+  first_diary_id = 100;
+})
+
+room_settings[2] <- RoomSetting({
+  name = "メロディのお部屋";
+  size_text = "";
+  parameter_id = 0;
+  desc = "優しい木のぬくもりを感じられるカントリールーム。散りばめられたハートの木枠は見ているだけで気分がうきうき。";
+  series = 8;
+  bg_image_path = "chara_mymelo";
+  chara_ids = [2, 1, 102];
+  release_chara_conditions = [null, [1], [2]];
+  release_chara_condition_texts = [
+  "",
+  "メロディは管理人さん#eq#〈1〉/nをクリアしましょう",
+  "メロディは管理人さん#eq#〈2〉/nをクリアしましょう"
+  ];
+
+  room_rects = [[0.0, 0.0, 20.0, 12.0]];
+  floor_path = "/country_mymelo/floor.pm";
+  wall_settings = [{ path = "/country_mymelo/wall_L.pm", visible_start_angle = 359, visible_end_angle = 181 },
+  { path = "/country_mymelo/wall_B.pm", visible_start_angle = 269, visible_end_angle = 91 },
+  { path = "/country_mymelo/wall_R.pm", visible_start_angle = 179, visible_end_angle = 1 },
+  { path = "/country_mymelo/wall_F.pm", visible_start_angle = 89, visible_end_angle = 271 }];
+  pillar_paths = ["/country_mymelo/pillar_FL.pm",
+  "/country_mymelo/pillar_BL.pm",
+  "/country_mymelo/pillar_BR.pm",
+  "/country_mymelo/pillar_FR.pm"];
+
+  init_furnitures = [
+  [10201, 0, 0, 0],
+  [8009, 7, 5, 0],
+  ];
+  first_diary_id = 200;
+})
+
+room_settings[3] <- RoomSetting({
+  name = "シナモンのお部屋";
+  size_text = "";
+  parameter_id = 0;
+  desc = "ふわふわな雲が浮かぶシナモロールのカフェ風ルーム。ふんわりコーヒーのいい香り。";
+  series = 9;
+  bg_image_path = "chara_cinnamon";
+
+  chara_ids = [102, 101, 105];
+  release_chara_conditions = [null, null, [3]];
+  release_chara_condition_texts = [
+  "",
+  "",
+  "みんなでカフェを開こう〈1〉/nをクリアしましょう"
+  ];
+
+  init_furnitures = [
+  [907, 5, 5, 0],
+  [11201, 0, 0, 0]
+  ];
+  first_diary_id = 300;
+
+  room_rects = [
+  [0.0, 0.0, 20.0, 8.0],
+  [0.0, 0.0, 19.0, 9.0],
+  [0.0, 0.0, 18.0, 10.0],
+  [0.0, 0.0, 17.0, 11.0],
+  [0.0, 0.0, 16.0, 12.0],
+  [0.0, 0.0, 15.0, 13.0],
+  [0.0, 0.0, 14.0, 14.0],
+  [0.0, 0.0, 13.0, 15.0],
+  [0.0, 0.0, 12.0, 16.0]
+  ];
+  floor_path = "/creamycafe/floor.pm";
+  wall_settings = [
+  { path = "/creamycafe/wall_L.pm", visible_start_angle = 359, visible_end_angle = 181 },
+  { path = "/creamycafe/wall_BL.pm", visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = "/creamycafe/wall_B.pm", visible_start_angle = 269, visible_end_angle = 91 },
+  { path = "/creamycafe/wall_BR.pm", visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = "/creamycafe/wall_R.pm", visible_start_angle = 179, visible_end_angle = 1 },
+  { path = "/creamycafe/wall_FR.pm", visible_start_angle = 134, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = "/creamycafe/wall_F.pm", visible_start_angle = 89, visible_end_angle = 271 },
+  { path = "/creamycafe/wall_FL.pm", visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  ];
+  pillar_paths = [
+  "/creamycafe/pillar_LF.pm",
+  "/creamycafe/pillar_LB.pm",
+  null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+  "/creamycafe/pillar_BL.pm",
+  "/creamycafe/pillar_BR.pm",
+  null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+  "/creamycafe/pillar_RB.pm",
+  "/creamycafe/pillar_RF.pm",
+  null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+  "/creamycafe/pillar_FR.pm",
+  "/creamycafe/pillar_FL.pm",
+  null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
+  ];
+})
+
+room_settings[4] <- RoomSetting({
+  name = "キティのお部屋";
+  size_text = "";
+  parameter_id = 0;
+  desc = "アンティークなお花が散りばめられた可愛らしいハローキティルーム。ふんわりローズの香りがしてきそう。";
+  series = 15;
+  bg_image_path = "chara_kitty";
+  chara_ids = [1, 2, 101];
+  release_chara_conditions = [null, [4], [4]];
+  release_chara_condition_texts = [
+  "",
+  "キティの３つのお願いごと〈1〉/nをクリアしましょう",
+  "キティの３つのお願いごと〈1〉/nをクリアしましょう"
+  ];
+
+  init_furnitures = [
+  [9001, 0, 0, 0]
+  ];
+  first_diary_id = 400;
+
+  room_rects = [
+  [0.0, 0.0, 20.0, 8.0],
+  [0.0, 0.0, 19.0, 9.0],
+  [0.0, 0.0, 18.0, 10.0],
+  [0.0, 0.0, 17.0, 11.0],
+  [0.0, 0.0, 16.0, 12.0],
+  [0.0, 0.0, 15.0, 13.0],
+  [0.0, 0.0, 14.0, 14.0],
+  [0.0, 0.0, 13.0, 15.0],
+  [0.0, 0.0, 12.0, 16.0]
+  ];
+  floor_path = "/floweryantique/floor.pm";
+  wall_settings = [
+  { path = "/floweryantique/wall_L.pm", visible_start_angle = 359, visible_end_angle = 181 },
+  { path = "/floweryantique/wall_BL.pm", visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = null, visible_start_angle = 314, visible_end_angle = 136 },
+  { path = "/floweryantique/wall_B.pm", visible_start_angle = 269, visible_end_angle = 91 },
+  { path = "/floweryantique/wall_BR.pm", visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = null, visible_start_angle = 224, visible_end_angle = 46 },
+  { path = "/floweryantique/wall_R.pm", visible_start_angle = 179, visible_end_angle = 1 },
+  { path = "/floweryantique/wall_FR.pm", visible_start_angle = 134, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = null, visible_start_angle = 135, visible_end_angle = 316 },
+  { path = "/floweryantique/wall_F.pm", visible_start_angle = 89, visible_end_angle = 271 },
+  { path = "/floweryantique/wall_FL.pm", visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  { path = null, visible_start_angle = 44, visible_end_angle = 226 },
+  ];
+  pillar_paths = [
+  "/floweryantique/pillar_LF.pm",
+  "/floweryantique/pillar_LB.pm",
+  null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+  "/floweryantique/pillar_BL.pm",
+  "/floweryantique/pillar_BR.pm",
+  null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+  "/floweryantique/pillar_RB.pm",
+  "/floweryantique/pillar_RF.pm",
+  null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+  "/floweryantique/pillar_FR.pm",
+  "/floweryantique/pillar_FL.pm",
+  null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
+  ];
+})
+
+room_settings[5] <- RoomSetting({
+  name = "ミステリーなお部屋";
+  size_text = "";
+  parameter_id = 0;
+  desc = "5部屋目用のやや広い部屋(仮)";
+  series = 56;
+  bg_image_path = "mystery_room";
+
+  chara_ids = [2, 102, 105, 1, 101];
+  release_chara_conditions = [null, null, [5], [6], [7]];
+  release_chara_condition_texts = [
+  "",
+  "",
+  "名探偵メロディにおまかせ〈1〉/nをクリアしましょう",
+  "名探偵メロディにおまかせ〈2〉/nをクリアしましょう",
+  "名探偵メロディにおまかせ〈3〉/nをクリアしましょう"
+  ];
+
+  init_furnitures = [
+  [100004, 0, -5, 270],
+  [1713, 0, -5, 0],
+  [5702, 5, -9, 0],
+  [5701, -10, 5, 270],
+  [5701, -10, 3, 270],
+  ];
+  first_diary_id = 500;
+
+  room_rects = [[0.0, -1.0, 24.0, 18.0]];
+  floor_path = "/country_mysteryroom/floor.pm";
+  wall_settings = [{ path = "/country_mysteryroom/wall_L.pm", visible_start_angle = 359, visible_end_angle = 181 },
+  { path = "/country_mysteryroom/wall_B.pm", visible_start_angle = 269, visible_end_angle = 91 },
+  { path = "/country_mysteryroom/wall_R.pm", visible_start_angle = 179, visible_end_angle = 1 },
+  { path = "/country_mysteryroom/wall_F.pm", visible_start_angle = 89, visible_end_angle = 271 }];
+  pillar_paths = ["/country_mysteryroom/pillar_FL.pm",
+  "/country_mysteryroom/pillar_BL.pm",
+  "/country_mysteryroom/pillar_BR.pm",
+  "/country_mysteryroom/pillar_FR.pm"];
+})

@@ -1,0 +1,30 @@
+{
+	"evening":{
+		"envlights":[
+			{"color":-1515868673,"pitch":32.000000,"head":32.000000,"type":1,"scolor":256,"power":0.000000,"pixellight":false},
+			{"color":-1515869696,"pitch":32.000000,"head":-32.000000,"type":1,"scolor":256,"pixellight":false}
+		],
+		"rimcolor":1296900095,
+		"ambdown":-758588416,
+		"postfx":{"dofblur":1.000000,"bloomc":-1,"dofrange":1.000000,"bloompower":0.100000,"bloomblur":0.100000,"enabled":false,"bloomthrs":0.100000},
+		"ambup":-1684955136,
+		"fog":{"type":0}
+	},
+	"morning":{
+		"envlights":[
+			{"color":-1515870976,"pos":{"x":0,"y":3,"z":0},"pitch":32.000000,"head":0.0,"type":1,"scolor":256,"power":0.000000,"pixellight":false},
+			{"color":-1515870976,"pos":{"x":5.0,"y":3,"z":0},"pitch":32.000000,"head":45.0,"type":1,"scolor":256,"power":0.000000,"pixellight":false},
+			{"color":-1515870976,"pos":{"x":5.0,"y":3,"z":2.5},"pitch":32.000000,"head":90.0,"type":1,"scolor":256,"power":0.000000,"pixellight":false},
+			{"color":-1515870976,"pos":{"x":5.0,"y":3,"z":5.0},"pitch":32.000000,"head":135.0,"type":1,"scolor":256,"power":0.000000,"pixellight":false},
+			{"color":-1515870976,"pos":{"x":5.0,"y":3,"z":5.0},"pitch":32.000000,"head":180.0,"type":1,"scolor":256,"power":0.000000,"pixellight":false},
+			{"color":-1515870976,"pos":{"x":5.0,"y":3,"z":5.0},"pitch":32.000000,"head":225.0,"type":1,"scolor":256,"power":0.000000,"pixellight":false},
+			{"color":-1515870976,"pos":{"x":0,"y":3,"z":2.5},"pitch":32.000000,"head":270.0,"type":1,"scolor":256,"power":0.000000,"pixellight":false},
+			{"color":-1515870976,"pos":{"x":0,"y":3,"z":0},"pitch":32.000000,"head":315.0,"type":1,"scolor":256,"power":0.000000,"pixellight":false},
+		],
+		"rimcolor":-168099841,
+		"postfx":{"type":100,"bloompower":1.200000,"bloomc":-1703937,"bloomblur":0.000000,"bloomthrs":0.500000},
+		"fog":{"type":0},
+		"ambup":-1,
+		"ambdown":1346662655
+	}
+}

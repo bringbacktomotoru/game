@@ -1,0 +1,167 @@
+class SKListAdaptor extends ListAdaptor
+{
+  itemclass = null;
+
+  listselect1 = null;
+  listselect2 = null;
+  listmouseon = null;
+
+  constructor(a = null, lc = null) {
+    super(a);
+    itemclass = lc || ListItem;
+
+    listselect1 = ::getSprite("/system/ui.silver/ui.clp#listselect1");
+    listselect2 = ::getSprite("/system/ui.silver/ui.clp#listselect2");
+    listmouseon = ::getSprite("/system/ui.silver/ui.clp#listmouseon");
+  }
+
+  function getItemView(idx, convertv, parentv, stateonly) {
+    if (!(convertv instanceof itemclass)) {
+      convertv = itemclass();
+    }
+    if (!stateonly) {
+      convertv.setItem(list[idx]);
+    }
+    if (parentv.isSelected(idx)) {
+      if (parentv.focused) {
+        convertv.backsp = clone listselect2;
+      } else {
+        convertv.backsp = clone listselect1;
+      }
+    } else
+    if (parentv.isMouseon(idx)) {
+      convertv.backsp = clone listmouseon;
+    } else {
+      convertv.backsp = null;
+    }
+    convertv.setRect(0, 0, parentv.bnd.w, cellheight);
+    return convertv;
+  }
+
+  function getItemFlags(idx) {
+    local visible = true;
+    local unlock = true;
+    local isdir = (list[idx]["isdir"]) ? true : false;
+    return (visible ? 1 : 0) | (unlock ? 2 : 0) | (isdir ? 128 : 0);
+  }
+}
+
+local typeicons = {
+  file = ::getSprite("/system/ui.silver/icon.clp#file")
+  dir = ::getSprite("/system/ui.silver/icon.clp#folder")
+  sk = ::getSprite("/system/ui.silver/icon.clp#document")
+  ks = ::getSprite("/system/ui.silver/icon.clp#ksdocument")
+  conf = ::getSprite("/system/ui.silver/icon.clp#document")
+  png = ::getSprite("/system/ui.silver/icon.clp#picture")
+  jpg = ::getSprite("/system/ui.silver/icon.clp#picture")
+  ktx = ::getSprite("/system/ui.silver/icon.clp#picture")
+  webp = ::getSprite("/system/ui.silver/icon.clp#picture")
+  wav = ::getSprite("/system/ui.silver/icon.clp#speaker")
+  ogg = ::getSprite("/system/ui.silver/icon.clp#speaker")
+  pm = ::getSprite("/system/ui.silver/icon.clp#polygon")
+  sk3 = ::getSprite("/system/ui.silver/icon.clp#sk3")
+  ptd = ::getSprite("/system/ui.silver/icon.clp#particle")
+  ui = ::getSprite("/system/ui.silver/icon.clp#window")
+  sd = ::getSprite("/system/ui.silver/icon.clp#stagedata")
+  ttf = ::getSprite("/system/ui.silver/icon.clp#text")
+  otf = ::getSprite("/system/ui.silver/icon.clp#text")
+
+  cam = ::getSprite("/system/ui.silver/icon.clp#camera")
+  cha = ::getSprite("/system/ui.silver/icon.clp#chara")
+  nul = ::getSprite("/system/ui.silver/icon.clp#locate")
+  scp = ::getSprite("/system/ui.silver/icon.clp#script")
+  play = ::getSprite("/system/ui.silver/icon.clp#play")
+
+  sysdir = with ::getSprite("/system/ui.silver/icon.clp#folder") { color = 10079487; }
+  alias = with ::getSprite("/system/ui.silver/icon.clp#folder") { color = 0xcc0000ff; }
+};
+
+::typeicons <- typeicons;
+
+function getResourceIcon(r) {
+  if (r["isdir"]) {
+    local f = r["flags"] || 0;
+    if (f & 4096) return typeicons.sysdir;
+    if (f & 8192) return typeicons.alias;
+    return typeicons.dir;
+  } else {
+    if (!r["name"]) return typeicons.file;
+    local n = r.name;
+    local ext = n.substring(n.lastIndexOf(".") + 1).toLowerCase();
+    return typeicons[ext] || typeicons.file;
+  }
+}
+
+function getObjectIcon(o) {
+  if ("getIcon" in o) {
+    return o.getIcon();
+  }
+  if ("icon" in o) {
+    return o.icon;
+  }
+
+  if ("getIconType" in o) {
+    return typeicons[o.getIconType()] || null;
+  }
+  if ("icontype" in o) {
+    return typeicons[o.icontype] || null;
+  }
+  if (o instanceof ::Resource) {
+    return getResourceIcon(o);
+  }
+  return null;
+}
+
+function getObjectName(o) {
+  if ("name" in o) {
+    return o.name;
+  }
+  if ("getName" in o) {
+    return o.getName();
+  }
+  return string(o);
+}
+
+class SKListAdaptor.ListItem extends SKView
+{
+  static deffontattr = FontAttribute(Fonts.ui, 12, 255, SK_FONT_BOLD);
+  backsp = null;
+  icon = null;
+  textbox = null;
+  sp = null;
+
+  constructor() {
+    textbox = TextBox(deffontattr);
+    textbox.x = 28;
+    textbox.align = 3;
+    pickable = false;
+    sp = Sprite();
+    sp.pos = Vector3D();
+    sp.blend = SK_MIX;
+  }
+
+  function setItem(v) {
+    local ic = ::getObjectIcon(v);
+    if (ic) {
+      icon = sp; sp.bnd = ic.bnd; sp.tex0 = ic.tex0; sp.uvmat0 = ic.uvmat0; sp.color0 = ic.color0;
+    } else {
+      icon = null;
+    }
+    textbox.setText(::getObjectName(v));
+  }
+
+  function updateLayout() {
+    if (backsp) backsp.bnd.set(0, 0, bnd.w, bnd.h);
+    textbox.setSize(bnd.w - 8, bnd.h);
+    if (sp) {
+      sp.pos.x = 16.0;
+      sp.pos.y = (bnd.h >> 1) + 0.0;
+    }
+  }
+
+  function render() {
+    skDrawSprite(backsp);
+    skDrawSprite(icon);
+    skDrawTextBox(textbox);
+  }
+}

@@ -1,0 +1,15 @@
+;
+;----------- テスト -------------
+;チュートリアルテスト
+[focusroom address={[0,0]}]
+
+[waitclick]
+[tutorialwindow x=640 y=240]
+チュートリアル3。
+[focusin x=250 y=664 sx=80 sy=80 time=100]
+[wait time=200]
+[waitclick]
+[focusout time=300]
+[hide_tutorialwindow]
+[wait time=400]
+[waitclick]

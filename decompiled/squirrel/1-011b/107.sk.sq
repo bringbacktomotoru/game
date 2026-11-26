@@ -1,0 +1,18 @@
+runsk("/src/ar/ARModule.sk");
+
+if (ENABLE_AR) {
+
+  local os_name = skGetOSName();
+  if (os_name == "iOS") {
+    skLoadAddon("skARKit");
+    runsk("/src/ar/ARModuleIOS.sk");
+  }
+  else if (os_name == "Android") {
+    skLoadAddon("sksmartar");
+    runsk("/src/ar/ARModuleAndroid.sk");
+  }
+}
+
+runsk("/src/ar/ARModelViewer.sk");
+runsk("/src/ar/ARTalkWindowLayer.sk");
+runsk("/src/ar/ARShutterChanceManager.sk");

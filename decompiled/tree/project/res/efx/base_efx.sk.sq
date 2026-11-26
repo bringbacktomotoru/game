@@ -1,0 +1,60 @@
+scriptclass = "SK3DEffectRunner"
+
+script =
+{
+
+  efx = null;
+  focus_efx = null;
+
+  function focusEffectChara() {
+    removeFocusEffect();
+    focus_efx = generate({ view = "/res/efx/ptd/focusEffectChara.ptd", pos = [0, 2.5, 0], connect = true });
+  }
+
+  function shutterChanceChara() {
+    generate({ view = "/res/efx/ptd/focusEffectChara_shutterchance.ptd", pos = [0, 2.5, 0], connect = true });
+  }
+
+  function removeFocusEffect() {
+    if (focus_efx) focus_efx.kill();
+  }
+
+  function approachFurnitureStart() {
+    generate({ view = "/res/efx/ptd/approach_start.ptd", pos = [0, 2.5, 0], connect = true });
+  }
+
+  function startProduct() {
+    generate({ view = "/res/efx/ptd/approach_success.ptd", pos = [0, 2.5, 0], connect = true });
+  }
+
+  function failProduct() {
+    generate({ view = "/res/efx/ptd/approach_failure.ptd", pos = [0, 2.5, 0], connect = true });
+  }
+
+  prop = null;
+  function cos_fork_spoon_start() {
+    prop_end();
+
+    prop + generate({ view = "/res/goods/goods_1/fork.pm", hpb = [0, 0, 0], parts = "hand_item_R", connect = true });
+    prop + generate({ view = "/res/goods/goods_1/spoon.pm", hpb = [180, 0, 0], parts = "hand_item_L", connect = true });
+  }
+
+  function prop_end() {
+    if (!prop) prop = [];
+    foreach (p in prop) {
+      if (p) p.kill();
+    }
+    prop.clear();
+  }
+
+  efx_tap = null;
+  function tapAppeal() {
+    efx_tap = generate({ view = "/res/efx/ptd/tap_appeal.sk3", pos = [0, 0, 0], connect = true });
+  }
+  function tapAppealEnd() {
+    if (efx_tap) {
+      efx_tap.startScript("end");
+      efx_tap = null;
+    }
+  }
+}

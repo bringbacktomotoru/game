@@ -1,0 +1,17 @@
+return {
+  modeldata = "lstraight.mdl"
+  bnd = [-0.012393, 0.036215, 0.249947, 0.343036, 0.230615, 1.160708]
+
+  material = [
+  {
+    name = "lstraight"
+    tec = "decal.def"
+    Ka = 0xffffff00
+    Kd = 0xffffffff
+    Ks = 0xffffff00
+    Ke = 0
+    shiness = 25.0
+    texture0 = "tex/lstraight.png"
+  }
+  ]
+}

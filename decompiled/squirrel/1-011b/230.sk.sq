@@ -1,0 +1,50 @@
+local _isRoom = function(room_layout, floor, room) { return room_layout[floor][room] && room_layout[floor][room] != 0; }
+
+class RoofDecorSetting extends Setting {
+  static LEFT = 1;
+  static OTHER_LEFT = 2;
+  static TOP_RIGHT = 3;
+
+  path = null;
+  cond = -1;
+
+  function getPath() {
+    return "/res" + path;
+  }
+
+  static function calcConditions(room_layout, floor, room) {
+
+    if (!(floor in room_layout)) return null;
+    if (!(room in room_layout[floor])) return null;
+    if (room_layout[floor][room] == 0) return null;
+
+    if (room_layout[floor + 1][room] && room_layout[floor + 1][room] != 0) return null;
+
+    local highest_floor = -1;
+    foreach (f, layout in room_layout) {
+      local calc1 = -1;
+      foreach (uid in layout) {
+        if (uid == 0) continue;
+
+        calc1 = f;
+        break;
+      }
+      if (calc1 == -1) break;
+
+      highest_floor = calc1;
+    }
+
+    local conditions = [];
+    if (room == 0) {
+      conditions + ::RoofDecorSetting.LEFT;
+    }
+    if (room > 0 && !_isRoom(room_layout, floor, room - 1)) {
+      conditions + ::RoofDecorSetting.OTHER_LEFT;
+    }
+    if (floor == highest_floor && !_isRoom(room_layout, floor, room + 1)) {
+      conditions + ::RoofDecorSetting.TOP_RIGHT;
+    }
+
+    return conditions;
+  }
+}

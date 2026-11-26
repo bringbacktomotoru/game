@@ -1,0 +1,120 @@
+class GachaListDialog extends ::Dialog {
+  pnl_gacha_list = null;
+  lbl_gacha_name = null;
+  reclist = null;
+  scroll = null;
+
+  chara_model = null;
+
+  gacha_setting = null;
+
+  scroll_bar = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/GachaListDialog.ui"));
+
+    local _pnl = this.view.findChild("pnl_dialog");
+    this.pnl_gacha_list = _pnl.findChild("pnl_gacha_list");
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dxscale = 0.0;
+    this.pnl_gacha_list.addChild(this.reclist);
+    this.pnl_gacha_list.setBuffer(true);
+
+    _pnl.findChild("lbl_list").setText(::dict.get("gacha_list"));
+    _pnl.findChild("lbl_caution").setText(::dict.get("gacha_list_caution"));
+
+    this.lbl_gacha_name = _pnl.findChild("lbl_gacha_name");
+
+    this.btn_close.findChild("lbl_close").setText(dict.get("close"));
+  }
+
+  function setup(gs) {
+    this.gacha_setting = gs;
+
+    this.lbl_gacha_name.setText(gs.getName());
+
+    this.reclist.clearChildren();
+    local _offset = 0;
+    local _size_y = 0;
+
+    local _cnt = 0;
+
+    local _items = gs.getAllItems();
+    foreach (_idx, _item in _items) {
+      local _view = ::loadSKView("/ui/common/GachaListMenu.ui");
+      local _menu = Menu(_view, _idx);
+
+      local _name;
+      local _sp;
+      local _had = false;
+      local _st;
+      switch (_item.kind) {
+      case ITEM_TYPE_COSTUME:
+        _st = ::gamesetting.costume_settings[_item.id];
+        _name = _st.getName();
+        _sp = _st.getSpriteCostumeIcon();
+        _had = ::gamesession.getUserData().hasCostume(_item.id);
+        break;
+      case ITEM_TYPE_FURNITURE:
+        _st = ::gamesetting.furniture_settings[_item.id];
+        _name = _st.getName();
+        _sp = _st.getIconSpriteUnacquired();
+        break;
+      case ITEM_TYPE_GM:
+        _name = ::dict.get("game_money") + "x" + formatNumberString(_item.num);
+        _sp = Setting.getGMIconSprite();
+        break;
+      }
+      _menu.setName(_name);
+      _menu.setIconSprite(_sp);
+      _menu.alreadyHave(_had);
+
+      if (_cnt == 0) _size_y = _view.bnd.h;
+      _view.pos.y = _offset;
+      _offset += _size_y;
+      _cnt++;
+      this.reclist.addChild(_view);
+    }
+    _offset += _size_y;
+
+    this.reclist.setRect(0, 0, this.pnl_gacha_list.bnd.w, _offset);
+    this.scroll.setScrollRect(this.reclist.bnd);
+
+    if (!this.scroll_bar) this.scroll_bar = ::ScrollBarV(this.pnl_gacha_list.findChild("pnl_scroll_bar"));
+    this.scroll_bar.setup(this.scroll, this.pnl_gacha_list.bnd, true);
+  }
+}
+
+class GachaListDialog.Menu {
+  view = null;
+  lbl_name = null;
+  pnl_icon = null;
+  lbl_already = null;
+
+  constructor(view, idx) {
+    this.view = view;
+    this.lbl_name = this.view.findChild("lbl_name");
+    this.pnl_icon = this.view.findChild("pnl_icon");
+    this.lbl_already = this.view.findChild("lbl_already");
+    this.lbl_already.setVisible(false);
+
+    this.view.findChild("menu_bg_" + (((idx + 1) % 2) + 1)).setVisible(false);
+  }
+
+  function setName(text) {
+    this.lbl_name.setText(text);
+  }
+
+  function setIconSprite(sp) {
+    this.pnl_icon.clearChildren();
+    local _iv = SKImageView(sp);
+    _iv.setRect(0, 0, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+    this.pnl_icon.addChild(_iv);
+  }
+
+  function alreadyHave(b) {
+    this.lbl_already.setText(::dict.get("has_already"));
+    this.lbl_already.setVisible(b);
+  }
+}

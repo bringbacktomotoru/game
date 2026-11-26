@@ -1,0 +1,791 @@
+class ProductionManager {
+  static CAPTURE_EVENT_USE_FURNITURE_RATE = 20;
+
+  time_keeper = null;
+
+  selected_producer = null;
+  furniture_products = null;
+
+  costume_table = null;
+  chara_table = null;
+
+  finished_product_succesful = null;
+
+  constructor() {
+    this.time_keeper = TimeKeeper(this);
+    this.furniture_products = {};
+    this.costume_table = {};
+    this.chara_table = {};
+    init();
+  }
+
+  function init(is_all = true) {
+
+    local ud = ::gamesession.getUserData();
+
+    Table.clear(this.furniture_products);
+    Table.clear(this.costume_table);
+    Table.clear(this.chara_table);
+
+    this.time_keeper.init();
+  }
+
+  function stopUpdate() {
+    this.time_keeper.stopUpdate();
+  }
+  function startUpdate() {
+    this.time_keeper.startUpdate();
+  }
+
+  function updateProductAtServerData() {
+    local ud = ::gamesession.getUserData();
+
+    local ret = ::gamesession.updateProduct();
+    local product_list = ret["production_list"];
+
+    foreach (data in product_list) {
+      local uid = data.uid;
+      local fd = ud.getFurnitureData(uid);
+      fd.clearProduct();
+      switch (data.type) {
+      case ProductData.TYPE_PRODUCT:
+        fd.createProduct(data.costume_id_list, data.room_index);
+        break;
+      case ProductData.TYPE_LEVELUP:
+        fd.createLevelupProductData();
+        break;
+      case ProductData.TYPE_DELIVER:
+        fd.createDeliverProductData(data.id);
+        break;
+      }
+      local pd = fd.getProductData();
+      pd.setState(data.state);
+      pd.setStartTimeAtServer(data.start_time);
+
+      addProductingData(pd);
+    }
+  }
+
+  function deleteUseFurnitureScript(fuid) {
+    local udl = ::gamesession.getUserDataLocal();
+    udl.removeFurnitureActionCharaTable(fuid);
+    ::gamesession.saveUserDataLocal();
+  }
+
+  function deleteProductCostumeList(type, pd) {
+    if (type != ::ProductData.TYPE_PRODUCT) return;
+    local _cos_list = pd.getCostumeIDList();
+    local _room_index = pd.getRoomIndex();
+    foreach (cid in _cos_list) {
+      delete costume_table[cid];
+      local _chara_id = ::gamesetting.costume_settings[cid].getCharaID();
+      local _idx = chara_table[_chara_id].indexOf(_room_index);
+      delete chara_table[_chara_id][_idx];
+    }
+
+  }
+
+  function processFinishedProduct(pd, do_finishscript = true) {
+    local uid = pd.getProducerID();
+
+    deleteUseFurnitureScript(uid);
+    deleteProductCostumeList(pd.getType(), pd);
+    delete this.furniture_products[uid];
+
+    local _ud = ::gamesession.getUserData();
+    local fd = _ud.getFurnitureData(uid);
+    fd.clearProductData();
+
+    local _fm = _getFurnitureModel(uid);
+
+    local _cos_list = pd.getCostumeIDList();
+    local _now = skGetTime();
+    foreach (cid in _cos_list) {
+      local _cm = _getCharaModel(cid);
+      if (_cm) _cm.setLastUseFurniture(_fm, _now);
+      local _chara_data = _ud.getCharacterDataByCostumeId(cid);
+      if (_chara_data) _chara_data.resetWantedFurnitureModel();
+    }
+
+    if (pd instanceof FurnitureProductData) {
+      this.finished_product_succesful = pd.isRewardStateAllEnd();
+    }
+    if (_fm && do_finishscript) _fm.finishUseFurnitureScript(false);
+  }
+
+  function update(dt) {
+    this.time_keeper.update(dt);
+
+    ::tutorial_manager.checkAndStartTutorialAtProduction(finished_product_succesful);
+  }
+
+  function getProductLength(room_idx) {
+    return length(this.furniture_products());
+  }
+
+  function registerFurnitureProduct(furniture_data, costume_id_list = null, room_index = -1) {
+    local uid = furniture_data.getUID();
+
+    if (uid in this.furniture_products) return false;
+    local pd = furniture_data.hasProductData() ? furniture_data.getProductData() : furniture_data.createProductData(costume_id_list, room_index);
+
+    costume_id_list = pd.getCostumeIDList();
+    room_index = pd.getRoomIndex();
+    foreach (cid in costume_id_list) {
+      costume_table[cid] <- room_index;
+      local _chara_id = ::gamesetting.costume_settings[cid].getCharaID();
+      if (!chara_table[_chara_id]) {
+        chara_table[_chara_id] <- [];
+        chara_table[_chara_id] + room_index;
+      } else if (!::contains(chara_table[_chara_id], room_index)) {
+        chara_table[_chara_id] + room_index;
+      }
+    }
+
+    local _ret = _registerProduct(pd, uid);
+    return _ret
+  }
+
+  function _registerProduct(product_data, uid) {
+    furniture_products[uid] <- product_data;
+
+    this.finished_product_succesful = false;
+    return this.time_keeper.addProduct(product_data);
+  }
+
+  function addProductingData(pd) {
+    this.furniture_products[pd.getProducerID()] <- pd;
+    this.time_keeper.addProductingData(pd);
+  }
+
+  function getProductDataByCostumeID(cos_id) {
+    foreach (product in this.furniture_products) {
+      if (!(product instanceof FurnitureProductData)) continue;
+      if (::contains(product.getCostumeIDList(), cos_id)) return product;
+    }
+
+    return null;
+  }
+
+  function isProducting(cos_id, r_id = -1) {
+    local _ud = ::gamesession.getUserData();
+    if (r_id == -2) r_id = _ud.getCurrentRoomIndex();
+
+    if (!(cos_id in costume_table)) return false;
+    if (r_id == -1) return true;
+
+    return costume_table[cos_id] == r_id;
+  }
+
+  function isProductingChara(chara_id, r_id = -1) {
+    local _ud = ::gamesession.getUserData();
+    if (r_id == -2) r_id = _ud.getCurrentRoomIndex();
+
+    if (!(chara_id in chara_table)) return false;
+    if (r_id == -1) return true;
+
+    local _rooms = chara_table[chara_id];
+    return ::contains(_rooms, r_id);
+  }
+
+  function isProductingByRoomID(room_index = -1) {
+    local _ud = ::gamesession.getUserData();
+    if (room_index == -1) room_index = _ud.getCurrentRoomIndex();
+
+    return ::contains(this.costume_table, room_index);
+  }
+
+  function isProductionByState(type, state, room_index = -1) {
+    local _ud = ::gamesession.getUserData();
+
+    foreach (product in furniture_products) {
+      if (type != product.getType()) continue;
+      if (state != product.getState()) continue;
+
+      if (type == ::ProductData.TYPE_PRODUCT && room_index != -1) {
+        return isProductingByRoomID(room_index);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  function getProductDataByCosID(cos_id) {
+    foreach (product in this.furniture_products) {
+      if (!(product instanceof FurnitureProductData)) continue;
+      if (::contains(product.getCostumeIDList(), cos_id)) return product;
+    }
+    return null;
+  }
+
+  function _getCharaModel(cid) {
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof ::SanrioGameScene) {
+      local _cp = _scene.getUI().getCurrentPanel();
+      local _pname = getclassname(getclass(_cp));
+      if (_pname != "ARPanel") {
+        return _scene.getStage().getChara(cid);
+      } else {
+        return _cp.getARCharaModelByCostumeId(cid);
+      }
+    }
+
+    return null;
+  }
+  function _getFurnitureModel(fuid) {
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof ::SanrioGameScene) {
+      local _cp = _scene.getUI().getCurrentPanel();
+      local _pname = getclassname(getclass(_cp));
+      if (_pname != "ARPanel") {
+        return _scene.getStage().getFurnitureModel(fuid) || null;
+      } else {
+        return _cp.getARFurnitureModel(fuid) || null;
+      }
+    }
+
+    return null;
+  }
+
+  function selectProducer(producer) {
+    this.selected_producer = producer;
+  }
+
+  function deselectProducer() {
+    this.selected_producer = null;
+  }
+
+  function hasRewardStateTapData() {
+    foreach (fpd in this.furniture_products) {
+      if (fpd.isRewardStateTap()) return true;
+    }
+    return false;
+  }
+
+  function updateSendPoolTapTime() {
+    this.time_keeper.updateSendPoolTapTime();
+  }
+
+  function addFurnitureTapHapiness() {
+    this.time_keeper.addFurnitureTapHapiness();
+  }
+
+  function cancelProduct(fuid, do_finishscript = true, send_api = true) {
+    this.time_keeper.cancelProduct(fuid, do_finishscript, send_api);
+  }
+  function cancelProductList(fuids, do_finishscript = true) {
+    this.time_keeper.cancelProductList(fuids, do_finishscript);
+  }
+  function cancelProductAll(do_finishscript = false) {
+    local _uids = [];
+    foreach (uid, pd in this.furniture_products) {
+      _uids + uid;
+    }
+    this.time_keeper.cancelProductList(_uids, do_finishscript);
+  }
+
+  function setAPIResponseFunc(func) {
+    this.time_keeper.setAPIResponseFunc(func);
+  }
+
+}
+
+class ProductionManager.TimeKeeper {
+  static INTERVAL_TIME = 1000;
+  interval_id = -1;
+
+  manager = null;
+
+  productings = null;
+  wait_products = null;
+  finished_products = null;
+
+  stop_update = null;
+
+  send_pool_tap_time = null;
+  static WAIT_SEND_POOL = 1500;
+
+  furniture_tap_hapiness = 0;
+
+  func_api_response = null;
+
+  send_pool_thread = null;
+
+  constructor(manager) {
+    this.manager = manager;
+    this.productings = [];
+    this.wait_products = [];
+    this.finished_products = [];
+    init();
+
+    this.stop_update = false;
+    this.send_pool_tap_time = -1;
+  }
+
+  function init() {
+    this.productings.clear();
+    this.wait_products.clear();
+    this.finished_products.clear();
+    this.furniture_tap_hapiness = 0;
+  }
+
+  function stopUpdate() {
+    this.stop_update = true;
+  }
+  function startUpdate() {
+    this.stop_update = false;
+  }
+
+  function update(dt) {
+    if (this.stop_update) return;
+
+    local _now = skGetTime();
+    if (this.send_pool_tap_time > 0 && _now > this.send_pool_tap_time) {
+      _processSendPoolTapRequestThread();
+      this.send_pool_tap_time = -1;
+      return;
+    }
+
+    if (this.interval_id == -1 && (this.productings.len() > 0 || finished_products.len() > 0)) {
+      this.interval_id = setTimeout(function() { this.interval_id = -1; }.bindenv(this), INTERVAL_TIME);
+
+      local _finishes = [];
+
+      local server_time = ::getServerTime();
+      if (productings.len() > 0 && productings[0].isFinished(server_time)) {
+        _finishes + delete this.productings[0];
+        if (this.func_api_response) {
+          func_api_response();
+          this.func_api_response = null;
+        }
+      }
+      local _ud = ::gamesession.getUserData();
+      local _has_bonus = _ud.hasBonusHapinessNum();
+
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof ::SanrioGameScene) {
+        local _cp = _scene.getUI().getCurrentPanel();
+        if (_cp instanceof ::HomeTopPanel) {
+          local _alives = [];
+          local _changes = [];
+
+          foreach (pd in this.productings) {
+            if (pd.getState() != ::ProductData.STATE_PRODUCTING) {
+              _alives + pd;
+              continue;
+            }
+
+            local _last_state = pd.getRewardState();
+            pd.checkNextRewardState(server_time, _has_bonus);
+            if (_last_state != pd.getRewardState()) {
+              switch (pd.getRewardState()) {
+              case ::FurnitureProductData.REWARD_STATE_TAP:
+                _cp.addTapHapinessBalloon(pd);
+                _changes + pd;
+                break;
+              case ::FurnitureProductData.REWARD_STATE_BONUS:
+                _cp.addHapinessProductBalloon(pd);
+                _changes + pd;
+                break;
+              }
+            }
+
+            if (!pd.isRewardStateAllEnd()) {
+              _alives + pd;
+            } else {
+              _finishes + pd;
+            }
+          }
+
+          this.productings = _alives;
+          if (_changes.len() > 0) _processChangeRewardState(_changes);
+        }
+      }
+      if (_finishes.len() > 0) _processFinishProductsRequest(_finishes);
+
+    }
+
+    if (wait_products.len() > 0) {
+      _startWaitProduct();
+    }
+  }
+
+  function cancelProduct(fuid, do_finishscript = true, send_api = true) {
+    foreach (i, pd in this.productings) {
+      if (pd.getProducerID() == fuid) {
+        local list = [];
+        list + delete this.productings[i];
+        if (send_api) {
+          _processFinishProductsRequest(list, do_finishscript);
+        } else {
+          this.manager.processFinishedProduct(pd, do_finishscript);
+        }
+        break;
+      }
+    }
+  }
+
+  function cancelProductList(fuids, do_finishscript = true) {
+    local list = [];
+    foreach (uid in fuids) {
+      foreach (idx, pd in this.productings) {
+        if (pd.getProducerID() == uid) {
+          list + delete this.productings[idx];
+          break;
+        }
+      }
+    }
+    _processFinishProductsRequest(list, do_finishscript);
+  }
+
+  function addProduct(product_data) {
+    if (product_data.getState() == ::ProductData.STATE_WAIT) {
+      return _processStartProductRequest(product_data);
+    } else {
+      this.addProductingData(product_data);
+      return true;
+    }
+    return false;
+  }
+
+  function addProductingData(product_data) {
+    local now = getServerTime();
+    if (product_data.getState() != ProductData.STATE_FINISHED) {
+
+      sortTimeOrder(productings, product_data, now, function(pro1, pro2, now) {
+        return pro1.getRemainTime(now) >= pro2.getRemainTime(now);
+      });
+    } else {
+
+      sortTimeOrder(finished_products, product_data, now, function(pro1, pro2, now) {
+
+        if (getclass(pro1) != FurnitureProductData) return true;
+        if (getclass(pro2) != FurnitureProductData) return false;
+
+        local _t1 = pro1.getTimeout() - now;
+        local _t2 = pro2.getTimeout() - now;
+        return _t1 >= _t2;
+      });
+    }
+  }
+
+  function sortTimeOrder(product_arr, product_data, now, compare_func) {
+    local _added = false;
+    for (local i = 0; i < product_arr.len(); i++) {
+      if (!compare_func(product_arr[i], product_data, now)) continue;
+      product_arr[i] <- product_data;
+      _added = true;
+      break;
+    }
+
+    if (!_added) product_arr + product_data;
+  }
+
+  function completeProduct(product_data) {
+    return _processCompleteProductRequest(product_data);
+  }
+
+  function productShortenTime(product_data) {
+    return _processProductShortenTimeRequest(product_data);
+  }
+
+  function removeProduct(product_data) {
+    return _processCancelProductRequest(product_data);
+  }
+
+  function setAPIResponseFunc(func) {
+    this.func_api_response = func;
+  }
+
+  function updateSendPoolTapTime() {
+    this.send_pool_tap_time = skGetTime() + WAIT_SEND_POOL;
+  }
+
+  function addFurnitureTapHapiness() {
+    this.furniture_tap_hapiness++;
+  }
+
+  function _needCheck() {
+    if (length(this.wait_products) > 0) return true;
+    if (length(this.productings) > 0) return true;
+
+    return false;
+  }
+
+  function _startWaitProduct() {
+    local server_time = ::getServerTime();
+    foreach (pd in wait_products) {
+      pd.startProductAtClient(server_time);
+      this.productings + pd;
+
+      _processStartProductRequest(pd);
+    }
+
+    this.wait_products.clear();
+  }
+
+  function _addFinishProduct(product_data) {
+    if (product_data.state == ::ProductData.STATE_PRODUCTING) {
+      local ret = ::gamesession.finishProduct(product_data.getProducerID());
+      if ("start_time" in ret) {
+        product_data.setStartTimeAtServer(ret["start_time"]);
+        addProductingData(product_data);
+        return;
+      }
+      if ("motion_reward" in ret) {
+        local _b = ret["motion_reward"] > 0 ? true : false;
+        product_data.setMotionRewardFlag(_b);
+      }
+    }
+    product_data.state = ::ProductData.STATE_FINISHED;
+    local now = getServerTime();
+    sortTimeOrder(finished_products, product_data, now, function(pro1, pro2, now) {
+
+      if (getclass(pro1) != FurnitureProductData) return true;
+      if (getclass(pro2) != FurnitureProductData) return false;
+
+      local _t1 = pro1.getTimeout() - now;
+      local _t2 = pro2.getTimeout() - now;
+      return _t1 >= _t2;
+    });
+  }
+
+  function _connect(data) {
+    local res;
+    return res;
+  }
+
+  function _encode(products) {
+    local encode_data;
+
+    return encode_data;
+  }
+
+  function _decode(data) {
+    local decode_data;
+
+    return decode_data;
+  }
+
+  function _processStartProductRequest(product_data) {
+    local ret = null;
+
+    if (product_data instanceof FurnitureProductData) {
+      ret = ::gamesession.registerProduct(product_data.getProducerID(), product_data.getCostumeIDList(), product_data.getRoomIndex());
+    } else if (product_data instanceof FurnitureLevelupData) {
+      ret = ::gamesession.registerLevelupProduct(product_data.getProducerID());
+    } else if (product_data instanceof FurnitureDeliverData) {
+
+    } else {
+
+      println("[ERROR] _processStartProductRequest unknown product !!!!! " + product_data);
+      return false;
+    }
+    if (!ret) return false;
+
+    if (ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      processStartProductResponse(ret, product_data);
+      return true;
+    } else {
+      this.manager.processFinishedProduct(product_data, true);
+      return false;
+    }
+
+  }
+  function processStartProductResponse(ret, product_data) {
+    if (ret["ret"] > 0) {
+      product_data.setStartTimeAtServer(ret.start_time);
+      product_data.setProductTimeAtServer(ret.product_time);
+      product_data.setState(::ProductData.STATE_PRODUCTING);
+      product_data.setRewardStateListAtServer(decodeJSON(ret.reward_states));
+      product_data.setNextStateTime(ret.start_time);
+      addProductingData(product_data);
+
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof ::SanrioGameScene) {
+        local _fd = ::gamesession.getUserData().getFurnitureData(product_data.getProducerID());
+        _scene.getPanelMissionManager().useFurniture(_fd.getID(), product_data.getCostumeIDList());
+      }
+
+      if (this.func_api_response) {
+        func_api_response();
+        this.func_api_response = null;
+      }
+    }
+  }
+
+  function _processFinishProductsRequest(product_list, do_finishscript = true) {
+    local _uids = [];
+    local _taps = [];
+
+    foreach (pd in product_list) {
+      _uids + pd.getProducerID();
+      _taps + pd.getPoolTapNum();
+      pd.resetPoolTapNum();
+    }
+    send_pool_tap_time = -1;
+
+    newthread().start(function() {
+      local _ret = ::gamesession.finishProductList(_uids, _taps);
+
+      if (_ret && _ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+
+        local _scene = ::gamesession.getCurrentScene();
+        if (_scene instanceof ::SanrioGameScene) {
+          local _home_ui = _scene.getUI();
+          _home_ui.updateShopMark(true, true);
+        }
+
+        foreach (pd in product_list) {
+          this.manager.processFinishedProduct(pd, do_finishscript);
+        }
+      }
+    }.bindenv(this), this);
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof SanrioGameScene) {
+      local _cp = _scene.getUI().getCurrentPanel();
+      ::tutorial_manager.checkAndStartTutorialAtTapBalloon(_cp);
+    }
+
+  }
+
+  function _processChangeRewardState(product_list) {
+    local _uids = [];
+    local _new_states = [];
+    foreach (pd in product_list) {
+      _uids + pd.getProducerID();
+      _new_states + pd.getRewardState();
+    }
+
+    newthread().start(function() {
+      local _ret = ::gamesession.changeProductRewardState(_uids, _new_states);
+      if (_ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+
+        if (_ret["finished_uids"]) {
+          local _uids = decodeJSON(_ret["finished_uids"]);
+          foreach (uid in _uids) {
+            foreach (idx, pd in this.productings) {
+              if (uid != pd.getProducerID()) continue;
+              delete this.productings[idx];
+              this.manager.processFinishedProduct(pd);
+              break;
+            }
+          }
+        }
+      }
+    }.bindenv(this), this);
+  }
+
+  function processSendPoolTapRequest(force = false, upd_send_time = true) {
+    if (!force && this.send_pool_thread) return null;
+
+    this.stopUpdate();
+    if (upd_send_time) this.send_pool_tap_time = -1;
+
+    local _uids = [];
+    local _taps = [];
+
+    local _ud = ::gamesession.getUserData();
+
+    foreach (pd in productings) {
+
+      _uids + pd.getProducerID();
+      _taps + pd.getPoolTapNum();
+
+      pd.resetPoolTapNum();
+    }
+    if (this.furniture_tap_hapiness > 0) {
+      _uids + -1;
+      _taps + this.furniture_tap_hapiness;
+    }
+    local _ret = ::gamesession.sendPoolHapiness(_uids, _taps);
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (_ret && _scene instanceof ::SanrioGameScene) {
+      local _home_ui = _scene.getUI();
+      _home_ui.updateShopMark(true, true);
+
+      if (_ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+
+        foreach (idx, uid in _uids) {
+          local _fd = _ud.getFurnitureData(uid);
+          if (!_fd) continue;
+          _scene.getPanelMissionManager().tapHeart(_taps[idx], _fd.getID(), _fd.getProductData().getCostumeIDList());
+        }
+
+        this.furniture_tap_hapiness = 0;
+      }
+    }
+
+    this.startUpdate();
+
+    return _ret;
+  }
+
+  function getSendPoolThread() {
+    return this.send_pool_thread;
+  }
+
+  function _processSendPoolTapRequestThread() {
+    this.send_pool_thread = newthread();
+    this.send_pool_thread.start(function() {
+      processSendPoolTapRequest(true, false);
+      this.send_pool_thread = null;
+    }.bindenv(this), this);
+  }
+
+  function _processCancelProductRequest(product_data) {
+    local ret = ::gamesession.cancelProduct(product_data.getProducerID());
+    if (ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      processCancelProductResponse(ret, product_data);
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+  function processCancelProductResponse(ret, product_data) {
+    local uid = ret.uid;
+    foreach (idx, pd in this.productings) {
+      if (uid != pd.getProducerID()) continue;
+      delete this.productings[idx];
+    }
+    foreach (idx, pd in this.finished_products) {
+      if (uid != pd.getProducerID()) continue;
+      delete this.finished_products[idx];
+    }
+    this.manager.applyCancelProduct(ret);
+
+    if (this.func_api_response) {
+      func_api_response();
+      this.func_api_response = null;
+    }
+  }
+
+  function _processRecieveTimeoutProductRequest(product_data) {
+    local ret = ::gamesession.recieveTimeoutProduct(product_data.getProducerID());
+    if (ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      processRecieveTimeoutProductResponse(ret, product_data);
+
+      return true;
+    }
+    return false;
+  }
+
+  function processRecieveTimeoutProductResponse(ret, product_data) {
+    local uid = ret.uid;
+    foreach (idx, pd in this.finished_products) {
+      if (uid != pd.getProducerID()) continue;
+      delete this.finished_products[idx];
+    }
+
+    this.manager.applyRecieveTimeoutProduct(ret);
+
+    if (this.func_api_response) {
+      func_api_response();
+      this.func_api_response = null;
+    }
+  }
+
+}

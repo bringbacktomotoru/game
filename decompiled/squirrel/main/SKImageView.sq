@@ -1,0 +1,151 @@
+import SKViewPropertyID;
+
+class SKImageView extends SKView
+{
+  icontype = "png";
+
+  sp = null;
+  spcolor = 0xffffffff;
+  imageref = null;
+  align = 9;
+  orgbnd = null;
+  turnx = false;
+
+  constructor(src = null) {
+    if (src instanceof Sprite) {
+      sp = clone src;
+    } else {
+      sp = Sprite(src);
+    }
+    bnd.set(sp.bnd);
+    orgbnd = clone sp.bnd;
+    enabled = false;
+  }
+
+  function setSprite(s) {
+    sp = s;
+    repaint();
+  }
+
+  function updateLayout() {
+    local spbnd = sp.bnd;
+    if (align < 0 || align > 8) {
+      spbnd.set(0, 0, bnd.w, bnd.h);
+    } else {
+
+      switch (align) {
+      case 1: case 4: case 7: spbnd.x = ((bnd.w - orgbnd.w) * 0.5) | 0; break;
+      case 2: case 5: case 8: spbnd.x = bnd.w - orgbnd.w; break;
+      default: spbnd.x = 0; break;
+      }
+
+      switch (align) {
+      case 3: case 4: case 5: spbnd.y = ((bnd.h - orgbnd.h) * 0.5) | 0; break;
+      case 6: case 7: case 8: spbnd.y = bnd.h - orgbnd.h; break;
+      default: spbnd.y = 0; break;
+      }
+      spbnd.w = orgbnd.w;
+      spbnd.h = orgbnd.h;
+    }
+    repaint();
+  }
+
+  function render() {
+    skDrawSprite(sp);
+  }
+
+  function getColor() {
+    return spcolor;
+  }
+
+  function setColor(c) {
+    spcolor = c;
+    sp.color0 = (sp.blend == SK_PMAMIX) ? Math.lerpcolor(spcolor & 255, spcolor, (spcolor & 255) / 255.0) : spcolor;
+  }
+
+  function getProperties() {
+    return #[
+    (SKVP[NAME]),
+    (SKVP[VISIBLE]),
+    (SKVP[IMAGE]),
+    (SKVP[SIZE_STATIC]),
+    (SKVP[PIVOT]),
+    (SKVP[POSITION]),
+    (SKVP[SCALE]),
+    (SKVP[ROTATION]),
+    (SKVP[IMAGECOLOR]),
+    (SKVP[IMAGEBLEND]),
+    (SKVP[IMAGEALIGN]),
+    (SKVP[IMAGESTRETCH]),
+    (SKVP[ENABLED]),
+    (SKVP[USERDATA]),
+    ]
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case IMAGE: return imageref;
+    case IMAGECOLOR: return spcolor;
+    case IMAGEBLEND: return sp.blend;
+    case IMAGESTRETCH:
+      local s = sp.streach;
+      return s ? [s.x | 0, s.y | 0, s.w | 0, s.h | 0, sp.punch ? 1 : 0] : null;
+    case IMAGEALIGN: return align;
+    }
+    return super.getParam(pid);
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case IMAGE:
+      imageref = p0;
+      local s;
+      if (p0 && (s = ::getSprite(p0))) {
+        sp = s;
+        sp.bnd = clone sp.bnd;
+        sp.bnd.x = sp.bnd.y = 0.0;
+        orgbnd << sp.bnd;
+      } else {
+        sp.tex0 = null;
+      }
+      spcolor = sp.color;
+      repaint();
+      break;
+    case IMAGECOLOR:
+      spcolor = Math.lerpcolor(p0, p1, w);
+      sp.color0 = (sp.blend == SK_PMAMIX) ? Math.lerpcolor(spcolor & 255, spcolor, (spcolor & 255) / 255.0) : spcolor;
+      repaint();
+      break;
+    case IMAGEBLEND:
+      sp.blend = p0;
+      sp.color0 = (sp.blend == SK_PMAMIX) ? Math.lerpcolor(spcolor & 255, spcolor, (spcolor & 255) / 255.0) : spcolor;
+      repaint();
+      break;
+    case IMAGESTRETCH:
+      if (!p0) {
+        sp.streach = null;
+        sp.punch = 0;
+      } else {
+        if (sp.streach) {
+          sp.streach.set(p0[0], p0[1], p0[2], p0[3]);
+        } else {
+          sp.streach = Rect2D(p0[0], p0[1], p0[2], p0[3]);
+        }
+        sp.punch = p0[4];
+      }
+      repaint();
+      break;
+    case IMAGEALIGN:
+      align = p0;
+      updateLayout();
+      break;
+    case SCALE:
+      transivec3(p0, p1, w, scale).scale(0.01);
+      if (turnx) scale.x *= -1;
+      matdirty = dorepaint = true;
+      break;
+    default:
+      super.setParam(pid, p0, p1, w);
+    }
+  }
+}

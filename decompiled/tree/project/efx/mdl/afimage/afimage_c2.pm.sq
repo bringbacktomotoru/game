@@ -1,0 +1,17 @@
+return {
+  modeldata = "afimage_c2.mdl"
+  bnd = [-0.0, -0.052494, -0.171249, 0.070546, 2.184768, 2.120173]
+
+  material = [
+  {
+    name = "afimage_c2"
+    tec = "decal.def"
+    Ka = 0xffffff00
+    Kd = 0xffffffff
+    Ks = 0xffffff00
+    Ke = 0
+    shiness = 50.0
+    texture0 = "tex/afimage_c1.png"
+  }
+  ]
+}

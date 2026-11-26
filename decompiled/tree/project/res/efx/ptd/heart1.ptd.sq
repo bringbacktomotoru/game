@@ -1,0 +1,31 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "shot"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 20
+    start = 0, start_spr = 1500
+    life = 5000, life_spr = 1500
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.4, pos_spry = 1.4, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 2.443461, dir_spry = 1.22173, dir_sprz = 0.436332
+    linearbits = 0
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.3, "h": 0.3 }
+  texture = "heart01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = false
+  mod = [
+  { "color": [-256, -1, -256], "classid": "ptcmod_color" },
+  { "xyz": 7, "scale": [0.615385, 1.115385, 0.923077, 0.923077, 0.923077, 0.923077, 0.923077], "classid": "ptcmod_scale" },
+  { "vel": 0.6, "classid": "ptcmod_vel", "vel_spr": 0.0 },
+  ] },
+]

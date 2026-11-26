@@ -1,0 +1,87 @@
+gacha_items_settings[10001] <- GachaItemsSetting({
+  items = [
+  { kind = ITEM_TYPE_FURNITURE, id = 101, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 105, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 107, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 109, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 7801, num = 1, rate = 20, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 7805, num = 1, rate = 20, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 7807, num = 1, rate = 20, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 7809, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 5401, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 5405, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 5407, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 5409, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 8201, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 8205, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 8207, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 8209, num = 1, rate = 20, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 803, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 8401, num = 1, rate = 20, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 8403, num = 1, rate = 35, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 907, num = 1, rate = 20, rank = 5, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 908, num = 1, rate = 35, rank = 5, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 10007, num = 1, rate = 35, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 10008, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 10107, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 10108, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 6605, num = 1, rate = 30, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 6606, num = 1, rate = 30, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 10801, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 10805, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 10806, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 7005, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 7006, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 11201, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 11205, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 11206, num = 1, rate = 20, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1501, num = 1, rate = 20, rank = 5, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1504, num = 1, rate = 30, rank = 5, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1508, num = 1, rate = 30, rank = 5, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 3801, num = 1, rate = 30, rank = 5, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 3808, num = 1, rate = 30, rank = 5, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 9001, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 9008, num = 1, rate = 20, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 9401, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 9408, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1701, num = 1, rate = 15, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1703, num = 1, rate = 15, rank = 3, flag = 0 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1704, num = 1, rate = 15, rank = 3, flag = 0 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1706, num = 1, rate = 15, rank = 3, flag = 0 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1711, num = 1, rate = 10, rank = 3, flag = 0 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1713, num = 1, rate = 10, rank = 3, flag = 0 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1714, num = 1, rate = 10, rank = 3, flag = 0 },
+  { kind = ITEM_TYPE_FURNITURE, id = 1716, num = 1, rate = 10, rank = 3, flag = 0 }
+  ];
+})
+
+gacha_items_settings[10002] <- GachaItemsSetting({
+  items = [
+
+  { kind = ITEM_TYPE_COSTUME, id = 1104001, num = 1, rate = 15, rank = 5, flag = 1 },
+  { kind = ITEM_TYPE_COSTUME, id = 1104002, num = 1, rate = 15, rank = 5, flag = 1 },
+  { kind = ITEM_TYPE_COSTUME, id = 1104102, num = 1, rate = 15, rank = 5, flag = 1 },
+
+  { kind = ITEM_TYPE_COSTUME, id = 402001, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_COSTUME, id = 402002, num = 1, rate = 15, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_COSTUME, id = 402102, num = 1, rate = 15, rank = 4, flag = 1 },
+
+  { kind = ITEM_TYPE_COSTUME, id = 610001, num = 1, rate = 30, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_COSTUME, id = 606002, num = 1, rate = 30, rank = 4, flag = 1 },
+  { kind = ITEM_TYPE_COSTUME, id = 608102, num = 1, rate = 30, rank = 4, flag = 1 },
+
+  { kind = ITEM_TYPE_FURNITURE, id = 1308, num = 1, rate = 40, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 8603, num = 1, rate = 60, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 8701, num = 1, rate = 60, rank = 3, flag = 1 },
+
+  { kind = ITEM_TYPE_FURNITURE, id = 3607, num = 1, rate = 70, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 3608, num = 1, rate = 70, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 9101, num = 1, rate = 70, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 9108, num = 1, rate = 70, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 4201, num = 1, rate = 70, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 4208, num = 1, rate = 70, rank = 3, flag = 1 },
+  { kind = ITEM_TYPE_FURNITURE, id = 3901, num = 1, rate = 80, rank = 3, flag = 0 },
+  { kind = ITEM_TYPE_FURNITURE, id = 3902, num = 1, rate = 80, rank = 3, flag = 0 },
+  { kind = ITEM_TYPE_FURNITURE, id = 3904, num = 1, rate = 80, rank = 3, flag = 0 }
+  ];
+})

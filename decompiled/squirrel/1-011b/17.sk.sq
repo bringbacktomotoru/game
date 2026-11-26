@@ -1,0 +1,276 @@
+event_scene_settings[1] <- ::EventSceneSetting({
+  title = "はじめまして";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["first_chara.ks"];
+})
+
+event_scene_settings[2] <- ::EventSceneSetting({
+  title = "ぴかぴか！";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["s_clean/mymelo.ks"];
+})
+
+event_scene_settings[3] <- ::EventSceneSetting({
+  title = "ぴかぴか！";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["s_clean/purin.ks"];
+})
+
+event_scene_settings[4] <- ::EventSceneSetting({
+  title = "ぴかぴか！";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["s_clean/cinnamon.ks"];
+})
+
+event_scene_settings[5] <- ::EventSceneSetting({
+  title = "ぴかぴか！";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["s_clean/lala.ks"];
+})
+
+event_scene_settings[6] <- ::EventSceneSetting({
+  title = "ぴかぴか！";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["s_clean/kiki.ks"];
+})
+
+event_scene_settings[7] <- ::EventSceneSetting({
+  title = "ぴかぴか！";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["s_clean/mell.ks"];
+})
+
+event_scene_settings[8] <- ::EventSceneSetting({
+  title = "ぴかぴか！";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["s_clean/pocha.ks"];
+})
+
+event_scene_settings[9] <- ::EventSceneSetting({
+  title = "ぴかぴか！";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["s_clean/keroppi.ks"];
+})
+
+event_scene_settings[20] <- ::EventSceneSetting({
+  title = "テストだよ！";
+  type = EventSceneSetting.TYPE_EVENT;
+
+  scripts = ["test_1.ks"];
+})
+
+event_scene_settings[50] <- ::EventSceneSetting({
+  title = "キティーちゃん登場";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["diary/100.ks"];
+})
+event_scene_settings[51] <- ::EventSceneSetting({
+  title = "マイメロ登場";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["new/mymelo.ks"];
+})
+event_scene_settings[52] <- ::EventSceneSetting({
+  title = "シナモロール登場";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["new/cinnamon.ks"];
+})
+
+event_scene_settings[100] <- ::EventSceneSetting({
+  title = "デフォルト_おでかけ行1";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_start_1.ks"];
+})
+
+event_scene_settings[101] <- ::EventSceneSetting({
+  title = "デフォルト_おでかけ行2";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_start_2.ks"];
+})
+
+event_scene_settings[102] <- ::EventSceneSetting({
+  title = "デフォルト_おでかけ行3";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_start_3.ks"];
+})
+
+event_scene_settings[200] <- ::EventSceneSetting({
+  title = "デフォルト_おでかけ帰1";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_end_1.ks"];
+})
+
+event_scene_settings[201] <- ::EventSceneSetting({
+  title = "デフォルト_おでかけ帰2";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_end_2.ks"];
+})
+
+event_scene_settings[202] <- ::EventSceneSetting({
+  title = "デフォルト_おでかけ帰3";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_end_3.ks"];
+})
+
+event_scene_settings[301] <- ::EventSceneSetting({
+  title = "デフォルト_おでかけ行1";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_start_1.ks"];
+})
+
+event_scene_settings[401] <- ::EventSceneSetting({
+  title = "クエスト_おでかけ行1";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_quest_1.ks"];
+})
+
+event_scene_settings[402] <- ::EventSceneSetting({
+  title = "クエスト_おでかけ行2";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_quest_2.ks"];
+})
+
+event_scene_settings[403] <- ::EventSceneSetting({
+  title = "クエスト_おでかけ行3";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_quest_3.ks"];
+})
+
+event_scene_settings[404] <- ::EventSceneSetting({
+  title = "クエスト_おでかけ帰1";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_questend_1.ks"];
+})
+
+event_scene_settings[405] <- ::EventSceneSetting({
+  title = "クエスト_おでかけ帰2";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_questend_2.ks"];
+})
+
+event_scene_settings[406] <- ::EventSceneSetting({
+  title = "クエスト_おでかけ帰3";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["work/work_questend_3.ks"];
+})
+
+event_scene_settings[501] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_汎用_始";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/quest_multi_1.ks"];
+})
+
+event_scene_settings[502] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_汎用_始";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/quest_multi_2.ks"];
+})
+
+event_scene_settings[503] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_汎用_始";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/quest_multi_3.ks"];
+})
+
+event_scene_settings[504] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_汎用_終";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/questend_multi_1.ks"];
+})
+
+event_scene_settings[505] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_汎用_終";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/questend_multi_2.ks"];
+})
+
+event_scene_settings[506] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_汎用_終";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/questend_multi_3.ks"];
+})
+
+event_scene_settings[507] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_ベッド_始";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/bed_1.ks"];
+})
+
+event_scene_settings[508] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_ベッド_始";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/bed_2.ks"];
+})
+
+event_scene_settings[509] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_ベッド_始";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/bed_3.ks"];
+})
+
+event_scene_settings[510] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_ベッド_終";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/bed_end_1.ks"];
+})
+
+event_scene_settings[511] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_ベッド_終";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/bed_end_2.ks"];
+})
+
+event_scene_settings[512] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_ベッド_終";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/bed_end_3.ks"];
+})
+
+event_scene_settings[513] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_植木鉢_始";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/plant_1.ks"];
+})
+
+event_scene_settings[514] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_植木鉢_始";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/plant_2.ks"];
+})
+
+event_scene_settings[515] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_植木鉢_始";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/plant_3.ks"];
+})
+
+event_scene_settings[516] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_植木鉢_終";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/plant_end_1.ks"];
+})
+
+event_scene_settings[517] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_植木鉢_終";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/plant_end_2.ks"];
+})
+
+event_scene_settings[518] <- ::EventSceneSetting({
+  title = "クエスト_おゆうぎ_植木鉢_終";
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/plant_end_3.ks"];
+})
+
+event_scene_settings[1000] <- ::EventSceneSetting({
+  type = EventSceneSetting.TYPE_EVENT;
+  scripts = ["quest_relax/oyugi_motion_get.ks"];
+})

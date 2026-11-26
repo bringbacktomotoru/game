@@ -1,0 +1,110 @@
+with KSEditor {
+  cw <- ::viewWidth;
+  ch <- ::viewHeight;
+
+  function added() {
+    ::loadDictionary();
+    ::loadTalk();
+
+    super.added();
+    if (!webview) {
+      webview = WebView();
+      webview.setType(0);
+      updateLayout();
+      webview.show();
+      local url = sprintf("file:///%S/util/skbuilder/html/codemirror_test.html", skGetBinBaseDir());
+      webview.openURL(url);
+      if (txt) newthread().start(loadtext, this);
+    } else {
+      webview.show();
+    }
+  }
+
+  function _showTalk(ks) {
+    local r = ::getResource("/talk");
+    if (r) r.flush();
+
+    cw = ::viewWidth;
+    ch = ::viewHeight;
+
+    println("--------------------------------------------------")
+    println("--------------------------------------------------")
+    println("--------------------------------------------------")
+    println("--------------------------------------------------")
+    println("cw = " + cw + ", ch = " + ch)
+
+    webview.hide();
+    talktest = TalkTestPanel(this, cw, ch);
+    local talk = talktest.talk;
+    ::rootview.addChild(talktest);
+    local ui_panel_name = rightpanel.f_pnl_name.getText();
+    local scene = ::gamesession.getCurrentScene();
+    if (ui_panel_name != "") {
+
+      talk.insertChild(1, scene);
+
+      local home_ui = ::gamesession.getCurrentScene().getUI();
+      scene.addChild(scene.ui);
+      home_ui.added();
+      home_ui.matdirty = true;
+      home_ui.repaint();
+
+      local cls = getroottable()[ui_panel_name];
+      home_ui.movePanel(cls);
+    }
+
+    local cos_id = rightpanel.f_cos_id.getText();
+    if (cos_id != "") {
+      cos_id = int(cos_id);
+      talk.setMainCostume(cos_id);
+    }
+    local pms_id = rightpanel.f_pms_id.getText();
+    if (pms_id != "") {
+      pms_id = int(pms_id);
+      talk.setDiaryId(pms_id);
+    }
+
+    if (res.path != defineks) {
+      try {
+        talk.jumpscript(defineks, null, true);
+        talk.runscript();
+      } catch (ex) {
+        printexception(ex);
+        goto END;
+      }
+    }
+    try {
+      talk.jumpscript(ks, null, true);
+      talk.runscript();
+    } catch (ex) {
+      printexception(ex);
+      local runner = talk.runner, line = runner.scp.getLine(runner.pc - 1);
+      webview.eval(sprintf("errorLine( %d);", line));
+      webview.eval(sprintf("jumpToLine( %d); jumpToLine( %d); jumpToLine( %d);", line - 8, line + 8, line));
+    }
+    END:
+    ::rootview.removeChild(talktest);
+    webview.show();
+    ::stopBGM();
+  }
+}
+
+with TalkTestPanel {
+  local _updateLayout = TalkTestPanel.updateLayout;
+  function updateLayout() {
+    _updateLayout();
+
+    local w = bnd.w, h = bnd.h;
+    local cw = talkcnt.bnd.w, ch = talkcnt.bnd.h;
+
+    println("TalkTestPanel -----------------------------------------")
+    println("w = " + w + ", cw = " + cw)
+
+    talkcnt.scale << ::DISPLAY_SCALE;
+    talkcnt.setRect((w - cw * ::DISPLAY_SCALE) >> 1, (h - ch * ::DISPLAY_SCALE) >> 1, cw, ch);
+
+    cw = talkcnt.bnd.w * ::DISPLAY_SCALE;
+    ch = talkcnt.bnd.h * ::DISPLAY_SCALE;
+    bordersp.bnd.set(((w - cw) >> 1) - 1, ((h - ch) >> 1) - 1, cw + 2, ch + 2);
+  }
+}

@@ -1,0 +1,67 @@
+;
+;----------- テスト短めイベント -------------
+;掃除したって言ってくる話
+
+; 作業部屋指定
+[focusroom address={[0,0]}]
+
+; 初期配置
+[popchara name=mymelo relative=1 x=0 angle=0]
+[movecamera type=1 z=11 y=-1.7]
+; 手振り
+[wait time=500]
+[startanime name=mymelo time=2000 script=tefuri]
+[balloon name=mymelo time=5000]
+[wait time=500]ねぇねぇ♪
+[waitaction name=mymelo script=tefuri]
+[endballoon name=mymelo]
+[wait time=1300]
+
+[balloon name=mymelo]
+きょうはおへやの[r][wait time=1000]おそうじをしたの♡[wait time=2500]
+[endballoon name=mymelo]
+
+[wait time=1000]
+
+[movecamera type=1 x=-5.5 z=2.0 time=0]
+[rotatecamera head=70 time=0]
+
+[startanime name=mymelo time=3000 script=ketsui]
+[balloon name=mymelo time=3000]
+[wait time=500]どうかしら…？
+[waitaction name=mymelo script=ketsui]
+[endballoon name=mymelo]
+[wait time=500]
+
+[movecamera type=1 x=10.5 time=0]
+[rotatecamera head=-70 time=0]
+
+[startanime name=mymelo time=3000 script=ketsui]
+[balloon name=mymelo time=5000]
+[wait time=1000]ピカピカでしょ？[wait time=2500]
+[waitaction name=mymelo script=ketsui]
+[endballoon name=mymelo]
+
+[wait time=1000]
+[movecamera type=1 x=-5.0 z=-2.0 time=0]
+[rotatecamera head=0.5 time=0]
+[startanime name=mymelo time=7500 script=picture_kansou_event script_args={[0,"kiraniko"]}]
+[balloon name=mymelo]
+[wait time=500]おそうじって[r][wait time=1500]すっきりするから[wait time=1500][r]だいすきなの♡[wait time=2500]
+[waitaction name=mymelo script=picture_kansou_event]
+[endballoon name=mymelo]
+
+[wait time=2000]
+
+[startanime name=mymelo time=5300 script=lampstand_manzoku_set script_args={[3,"smile4","manzoku"]}]
+[balloon name=mymelo time=5000]
+[wait time=500]まためろでぃと[r][wait time=1500]おはなししてね…♡
+[waitaction name=mymelo script=lampstand_manzoku_set]
+[endballoon name=mymelo]
+[wait time=500]
+[startanime name=mymelo time=2000 script=tefuri]
+[waitaction name=mymelo script=tefuri]
+
+[wait time=1000]
+
+

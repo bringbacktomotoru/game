@@ -1,0 +1,1284 @@
+class ARModuleAndroid extends ARModule {
+  static VIDEO_IMAGE_SIZE_LOW = 1;
+  static VIDEO_IMAGE_SIZE_HIGH = 2;
+  static ALIGN_SCENE_COUNT = 1;
+
+  smart = null;
+  recog = null;
+  screen_device = null;
+  workdispatchedlistener = null;
+  cameradevice = null;
+  video_image_listener = null;
+  still_image_listener = null;
+  sensor_device = null;
+  sensor_listener = null;
+  image = null;
+  worker_thread = null;
+  camera_image_transform = null;
+  fovy = 0;
+  video_sizes = null;
+  video_size_no = 0;
+
+  video_image_size_state = 0;
+
+  sensors = null;
+
+  use_old_api = false;
+  is_auto_exposure = false;
+  next_exposure_time = 0;
+
+  result = null;
+
+  smartar_accel_diff = null;
+  smartar_velocity_prev = null;
+  smartar_timestamp_prev = -1;
+
+  model_zoom_rate = 0.0;
+  image_model_zoom_rate = 0.0;
+  camera_device_working = false;
+
+  create_movie_thumbnail = false;
+
+  movie_thumbnail_small = null;
+
+  constructor() {
+    super();
+    if (!::ENABLE_AR) return;
+    initial_state = INITIAL_SUCESS;
+
+    try {
+      smart = sarSmartar.SarSmart("license.sig");
+      if (!smart || smart.sarIsConstructorFailed()) {
+        initial_state = INITIAL_FAILED;
+        return;
+      }
+
+      local recogmode = sarSmartar.SAR_RECOGNITION_MODE_SCENE_MAPPING;
+      local initmode = sarSmartar.SAR_SCENE_MAPPING_INIT_MODE_HFG;
+      recog = sarSmartar.SarRecognizer(smart, recogmode, initmode);
+      if (!recog || recog.sarIsConstructorFailed()) {
+        initial_state = INITIAL_FAILED;
+        return;
+      }
+    } catch (ex) {
+      initial_state = INITIAL_FAILED;
+      printexception(ex);
+    }
+
+    screen_device = sarSmartar.SarScreenDevice(smart);
+
+    smartar_accel_diff = Vector3D();
+    model_zoom_rate = image_model_zoom_rate = 0.0;
+
+    video_image_size_state = VIDEO_IMAGE_SIZE_HIGH;
+  }
+
+  function create() {
+    if (!::ENABLE_AR) return;
+    camera_device_working = true;
+
+    resetCameraDevice();
+
+    local env = {
+      recog = this.recog,
+      workdispatchedlistener = this.workdispatchedlistener
+    }
+    worker_thread = newthread();
+    env.recog = this.recog;
+    env.workdispatchedlistener = this.workdispatchedlistener;
+    worker_thread.start(workerThread.bindenv(env), env);
+
+    local _osname = skGetOSName();
+    if (_osname.equals("Android")) {
+      sensors = ARUtils.Sensors();
+    }
+    _enableSensors();
+  }
+
+  function _enableSensors() {
+    local _osname = skGetOSName();
+    if (!_osname.equals("Android")) return;
+
+    if (ARPanel.SENSOR_ESTIMATE_ENABLED) {
+      sensors.startGravitySensor();
+    }
+  }
+
+  function _disableSensors() {
+    local _osname = skGetOSName();
+    if (!_osname.equals("Android")) return;
+
+    if (ARPanel.SENSOR_ESTIMATE_ENABLED) {
+      sensors.stopGravitySensor();
+    }
+  }
+
+  function onResume() {
+    if (!::ENABLE_AR || camera_device_working) return;
+    resetCameraDevice();
+
+    local env = {
+      recog = this.recog,
+      workdispatchedlistener = this.workdispatchedlistener
+    }
+    worker_thread = newthread();
+    env.recog = this.recog;
+    env.workdispatchedlistener = this.workdispatchedlistener;
+    worker_thread.start(workerThread.bindenv(env), env);
+    local _osname = skGetOSName();
+
+    _enableSensors();
+    camera_device_working = true;
+  }
+
+  function removed() {
+    super.removed();
+    _disableSensors();
+    if (::ENABLE_AR) {
+
+      if (worker_thread) worker_thread.interruptGoto("END");
+      suspend();
+      if (cameradevice) cameradevice.sarStop();
+      suspend();
+      if (sensor_device) sensor_device.sarStop();
+      suspend();
+    }
+    smart = null;
+    recog = null;
+    screen_device = null;
+    workdispatchedlistener = null;
+    cameradevice = null;
+    image = null;
+    video_image_listener = null;
+    sensor_listener = null;
+    camera_image_transform = null;
+    sensors = null;
+    movie_thumbnail_small = null;
+  }
+
+  function onPause() {
+    println("ARModule onPause");
+    if (!::ENABLE_AR || !camera_device_working) return;
+    if (worker_thread) worker_thread.interruptGoto("END");
+    if (cameradevice) cameradevice.sarStop();
+    if (sensor_device) sensor_device.sarStop();
+    suspend();
+    println("ARModule collect garbage");
+    workdispatchedlistener = null;
+    cameradevice = null;
+    sensor_listener = null;
+    camera_image_transform = null;
+    video_image_listener = null;
+    worker_thread = null;
+
+    _disableSensors();
+
+    skCollectGarbage();
+    println("ARModule onPause end");
+    camera_device_working = false;
+  }
+
+  function resetCameraDevice() {
+    workdispatchedlistener = sarSmartar.SarWorkDispatchedListener();
+    workdispatchedlistener.addedListener(recog);
+
+    is_auto_exposure = !use_front_camera;
+
+    local array = [sarSmartar.SAR_INVALID_CAMERA_ID];
+    sarSmartar.SarCameraDevice.sarGetDefaultCameraId(smart, use_front_camera ? sarSmartar.SAR_FACING_FRONT : sarSmartar.SAR_FACING_BACK, array, use_old_api);
+    local _results = sarSmartar.SarCameraDevice.sarIsAndroidCamera2Available(use_front_camera);
+    println("cameraid:" + array[0] + " canUseCamera2:" + _results[0] + " cameraapilevel:" + _results[1] + " hardsupport:" + _results[2]);
+
+    try {
+      if (array[0] != sarSmartar.SAR_INVALID_CAMERA_ID) {
+        cameradevice = sarSmartar.SarCameraDevice(smart, array[0], null, use_old_api);
+      } else {
+        cameradevice = sarSmartar.SarCameraDevice(smart);
+      }
+    } catch (ex) {
+      printexception(ex);
+      cameradevice = null;
+      initial_state = INITIAL_FAILED;
+      return;
+    }
+    _results = sarSmartar.SarCameraDevice.sarIsAndroidCamera2Available(use_front_camera);
+    _results + cameradevice.sarGetAndroidCameraAPIFeature();
+    println("after cameraapilevel:" + _results[1] + " hardsupport:" + _results[2] + " cameraapilevel:" + _results[3][0] + " hardsupport:" + _results[3][1]);
+
+    sensor_device = sarSmartar.SarSensorDevice(smart);
+
+    if (!cameradevice || cameradevice.sarIsConstructorFailed()) {
+      println("device is null.");
+      cameradevice = null;
+      initial_state = INITIAL_FAILED;
+      return;
+    }
+
+    local _ret = 0;
+
+    video_image_listener = sarSmartar.SarCameraImageListener(smart);
+    sensor_listener = sarSmartar.SarSensorListener();
+
+    still_image_listener = sarSmartar.SarCameraImageListener(smart);
+
+    video_image_listener.setRecognizer(recog);
+
+    video_image_listener.setSensorListener(sensor_listener);
+
+    video_image_listener.setWorkDispatchedListener(workdispatchedlistener);
+    video_image_listener.enableDispatch(true);
+
+    local _test = video_image_listener.addedVideoImageListener(cameradevice);
+
+    still_image_listener.addedStillImageListener(cameradevice);
+    sensor_listener.addedSensorListener(sensor_device);
+
+    video_size_no = 0;
+    video_sizes = [];
+    cameradevice.sarGetSupportedVideoImageSize(video_sizes, 32);
+
+    if (video_sizes.len() > 0) {
+      local maxidx = 0;
+      local maxsize = 0;
+
+      local _video_size;
+      switch (video_image_size_state) {
+      case VIDEO_IMAGE_SIZE_LOW: _video_size = [640, 480]; break;
+      case VIDEO_IMAGE_SIZE_HIGH: _video_size = [1280, 720]; break;
+      }
+
+      local _ret = cameradevice.sarSetVideoImageSize(_video_size);
+      println("sarsetVideoImageSize:" + _ret);
+    }
+
+    local _size_array = [];
+    cameradevice.sarGetSupportedStillImageSize(_size_array, 32);
+    if (_size_array.len() > 0) {
+      local maxidx = 0;
+      local maxsize = 0;
+      foreach (i, _size in _size_array) {
+
+        if (maxsize < _size[0] + _size[1] && _size[0] < MAX_IMAGE_SIZE && _size[1] < MAX_IMAGE_SIZE) {
+          if (_size[0] == _size[1]) continue;
+          maxsize = _size[0] + _size[1];
+          maxidx = i;
+        }
+      }
+      println("_size_array[maxidx]:" + _size_array[maxidx][0] + "/" + _size_array[maxidx][1]);
+      still_image_size = _size_array[maxidx];
+      cameradevice.sarSetStillImageSize(_size_array[maxidx]);
+    }
+
+    cameradevice.sarSetStillImageFormat(sarSmartar.SAR_IMAGE_FORMAT_JPEG);
+
+    local _exposure_modes = [];
+    cameradevice.sarGetSupportedExposureMode(_exposure_modes, 2);
+    switch (_exposure_modes.len()) {
+    case 2:
+
+      cameradevice.sarSetExposureMode(is_auto_exposure ? sarSmartar.SAR_EXPOSURE_MODE_CONTINUOUS_AUTO : sarSmartar.SAR_EXPOSURE_MODE_MANUAL);
+      break;
+    case 1:
+      is_auto_exposure = _exposure_modes[0] == sarSmartar.SAR_EXPOSURE_MODE_CONTINUOUS_AUTO;
+      cameradevice.sarSetExposureMode(_exposure_modes[0]);
+      break;
+    }
+
+    if (!is_auto_exposure) next_exposure_time = skGetTime();
+
+    setNearestVideoImageFpsRange(BEST_FPS);
+
+    camera_image_transform = sarSmartar.SarCameraImageTransform();
+    local camera_rots = [];
+    cameradevice.sarGetRotation(camera_rots);
+    local image_sensor_rots = [];
+    cameradevice.sarGetImageSensorRotation(image_sensor_rots);
+
+    camera_image_transform.sarSetCameraFacing(use_front_camera ? sarSmartar.SAR_FACING_FRONT : sarSmartar.SAR_FACING_BACK);
+    camera_image_transform.sarSetCameraRotation(camera_rots[0]);
+    camera_image_transform.sarSetImageSensorRotation(image_sensor_rots[0]);
+
+    local camerainfo = sarSmartar.SarCameraDeviceInfo();
+    cameradevice.sarGetDeviceInfo(camerainfo);
+    recog.sarSetCameraDeviceInfo(camerainfo);
+    local sensorinfo = sarSmartar.SarSensorDeviceInfo();
+    sensor_device.sarGetDeviceInfo(sensorinfo);
+    recog.sarSetSensorDeviceInfo(sensorinfo);
+
+    _ret = cameradevice.sarStart();
+
+    _ret = sensor_device.sarStart();
+
+    first_result = true;
+    zoom = 0.5;
+    sprite_frame = null;
+  }
+
+  function workerThread() {
+    workdispatchedlistener.setThread();
+    local waiter = false;
+    while (true) {
+      waiter = workdispatchedlistener.isDispatch();
+      if (waiter) {
+
+        recog.sarRunWorker();
+
+        workdispatchedlistener.setDispatch(false);
+      }
+      suspend();
+
+    }
+    END:
+    workdispatchedlistener.clearThread();
+    workdispatchedlistener.setDispatch(false);
+    println(" workerThread Finished.");
+  }
+
+  function setNearestVideoImageFpsRange(best_fps) {
+    local fps_range_buffer = [];
+    local fps_range_size = cameradevice.sarGetSupportedVideoImageFpsRange(fps_range_buffer, 32);
+    local cur_near_index = 0;
+    local cur_max_diff = 0.0;
+    foreach (i, fps_range in fps_range_buffer) {
+
+      local max_diff = Math.abs(best_fps - fps_range.max_);
+      local is_almost_same = Math.abs(max_diff - cur_max_diff) < 0.0001;
+      local is_current_min_bigger = fps_range_buffer[cur_near_index].min_ < fps_range.min_;
+      if (i == 0 || max_diff < cur_max_diff || (is_almost_same && is_current_min_bigger)) {
+        cur_near_index = i;
+        cur_max_diff = i;
+      }
+    }
+
+    if (fps_range_size > 0) {
+      println("fps_range_buffer[" + cur_near_index + "]:" + fps_range_buffer[cur_near_index].min_ + "/" + fps_range_buffer[cur_near_index].max_);
+      cameradevice.sarSetVideoImageFpsRange(fps_range_buffer[cur_near_index].min_, fps_range_buffer[cur_near_index].max_);
+    }
+  }
+
+  function adjustPose(_landmark) {
+
+    local _tmppos = Vector3D();
+    local _tmprot = Quaternion();
+    local flag = use_front_camera ? -1 : 1;
+    camera_image_transform.sarAdjustPose(_landmark.position_, result.rotation_, _tmppos, _tmprot);
+    _tmppos *= flag;
+    return [_tmppos, _tmprot];
+  }
+
+  function modifyCoodinateSystem(tmppos) {
+
+    local _v = Vector3D(tmppos.x, tmppos.z, tmppos.y) * coodinate_system_scale;
+    if (camera_image_transform.sarGetCameraImageFlipY()) {
+      _v.x *= -1.0;
+      _v.z *= -1.0;
+    }
+
+    return _v;
+  }
+
+  function changeCamera() {
+
+    use_front_camera = !use_front_camera;
+    restartCameraDevice();
+  }
+
+  function restartCameraDevice(video_state = -1) {
+
+    if (worker_thread) worker_thread.interruptGoto("END");
+
+    cameradevice.sarStop();
+    sensor_device.sarStop();
+    video_image_listener.reset();
+    cameradevice = null;
+    sensor_device = null;
+    recog.sarReset();
+
+    is_thread_working = false;
+
+    if (video_state > 0) video_image_size_state = video_state;
+
+    resetCameraDevice();
+
+    local env = {
+      recog = this.recog,
+      workdispatchedlistener = this.workdispatchedlistener
+    }
+    worker_thread = newthread();
+    env.recog = this.recog;
+    env.workdispatchedlistener = this.workdispatchedlistener;
+    worker_thread.start(workerThread.bindenv(env), env);
+  }
+
+  function changeARMode(is_capture, capture_state) {
+    is_armode = !is_armode;
+
+    workdispatchedlistener.lock();
+    recog.sarReset();
+
+    if (!is_armode) {
+      video_image_listener.enableDispatch(is_armode);
+
+      sensor_device.sarStop();
+      sensor_listener.clearStates();
+    } else {
+      sensor_listener.clearStates();
+      sensor_device.sarStart();
+      video_image_listener.enableDispatch(is_armode);
+
+      if (is_capture && capture_state == ARPanel.CAPTURE_STATE_VIDEO) first_frame = true;
+    }
+    workdispatchedlistener.unlock();
+  }
+
+  function saveImage(model_viewer, panel) {
+    if (isThreadRunning(save_image_thread)) return true;
+    local still_image = still_image_listener.popImage();
+
+    if (still_image) {
+      this.rendering_image = true;
+      save_image_thread.start(processCaptureImage.bindenv(this), this, still_image, model_viewer, panel.displayPicture.bindenv(panel));
+      panel.setShot(false);
+      return true;
+    }
+
+    return panel.isShot();
+  }
+
+  function saveFrame(model_viewer, is_capture) {
+    local _state = super.saveFrame(model_viewer, is_capture);
+    if (_state != STATE_RECORDING) return _state;
+
+    local _capture_num = int(60.0 / movie_writer.fps);
+    if (update_frame_counter == 0) {
+      local _frame_resource = createMovieFrame(first_frame, model_viewer);
+      if (_frame_resource) {
+        movie_writer.setFrameResource(_frame_resource);
+
+        if (first_frame) {
+          this.current_frame = this.begin_frame = skGetTime();
+          this.create_movie_thumbnail = true;
+        }
+        else {
+          try {
+            movie_writer.process();
+          } catch (ex) {
+            printexception(ex);
+            movie_writer = null;
+            return STATE_RECORD_INVALID;
+          }
+        }
+      }
+      first_frame = false;
+    }
+    update_frame_counter = (update_frame_counter + 1) % _capture_num;
+    return STATE_RECORDING;
+  }
+
+  function calcFovy(image, img_rotation, model_viewer, is_capture = false) {
+    local _dest_zoom_rate = is_capture ? image_model_zoom_rate : model_zoom_rate;
+    if (Math.abs(_dest_zoom_rate - this.zoom) < 0.001) return;
+    local _sc = 0.5 + (0.5 * this.zoom);
+    local _rotw = image.getWidth() * _sc;
+    local _roth = image.getHeight() * _sc;
+
+    if (img_rotation == 90 || img_rotation == 270) {
+      local _tmp = _rotw;
+      _rotw = _roth;
+      _roth = _tmp;
+    }
+
+    local _rect = is_capture ? model_viewer.getImageRect() : model_viewer.rect;
+
+    local _image_rate = _rotw * 1.0 / _roth;
+    local _view_rate = _rect.w / _rect.h;
+
+    if (Math.abs(_image_rate - _view_rate) > 0.1) {
+
+      local _merginX = Math.max(0, _rotw - _roth * _rect.w / _rect.h) / 2;
+      local _merginY = Math.max(0, _roth - _rotw * _rect.h / _rect.w) / 2;
+      _rotw = _rotw - _merginX * 2;
+      _roth = _roth - _merginY * 2;
+    }
+
+    local rangeX = Math.min(1.0, _rect.h * _rotw / float(_roth * _rect.w));
+    local rangeY = Math.min(1.0, _rect.w * _roth / float(_rotw * _rect.h));
+
+    local _drawHeight = _roth / rangeY;
+    local _drawHeightRatio = _drawHeight / image.getHeight();
+
+    local _calibrated = [];
+    local _fov_array = [];
+    cameradevice.sarGetFovY(_fov_array, _drawHeightRatio, _calibrated);
+    local fovy = _fov_array[0];
+
+    if (Math.abs(_drawHeightRatio - 1.0) < 0.1 && !_calibrated[0]) {
+      local _fovyTemp = [];
+      local _getfromapi = [];
+
+      if (cameradevice.sarGetFovY(_fovyTemp, int(_rect.w), int(_rect.h), _getfromapi, _calibrated) == 0 && _getfromapi[0]) {
+        fovy = _fovyTemp[0];
+      }
+
+    }
+
+    if (is_capture) {
+      model_viewer.setImagePerspective(fovy, _rect.w, _rect.h);
+      image_model_zoom_rate = this.zoom;
+    } else {
+      model_viewer.setPerspective(fovy, _rect.w, _rect.h);
+      model_zoom_rate = this.zoom;
+    }
+  }
+
+  function createMovieFrame(first_frame, model_viewer) {
+    if (!image) return null;
+
+    local _img_rotation = camera_image_transform.sarGetCameraImageRotation();
+    if (first_frame) {
+      frame_image_view.pos.set(0, 0, 0);
+      frame_image_view.rot.set(0, 0, 0);
+
+      local _param = {
+        image = image,
+        imageview = frame_image_view,
+        img_rotation = _img_rotation,
+        enable_trimtex = false,
+        is_read_texture = false,
+      };
+      if (_img_rotation == 90 || _img_rotation == 270) {
+        _param.render_width <- image.getHeight();
+        _param.render_height <- image.getWidth();
+        pasteImageViewer(_param);
+
+        frame_image_view.setRect(0, 0, image.getWidth(), image.getHeight());
+        switch (_img_rotation) {
+        case 90:
+          if (camera_image_transform.sarGetCameraImageFlipY()) {
+            frame_image_view.rot.set(0, 0, sarSmartar.SAR_ROTATION_270 * Math.DTOR);
+            frame_image_view.pos.set(0, 0, 0);
+            frame_image_view.bnd.w *= -1.0;
+          } else {
+            frame_image_view.pos.set(image.getHeight(), 0, 0);
+          }
+          break;
+        case 270:
+          if (camera_image_transform.sarGetCameraImageFlipY()) {
+            frame_image_view.rot.set(0, 0, sarSmartar.SAR_ROTATION_90 * Math.DTOR);
+            frame_image_view.pos.set(image.getHeight(), image.getWidth(), 0);
+            frame_image_view.bnd.w *= -1.0;
+          } else {
+            frame_image_view.pos.set(0, image.getWidth(), 0);
+          }
+          break;
+        }
+      } else {
+        _param.render_width <- image.getWidth();
+        _param.render_height <- image.getHeight();
+        pasteImageViewer(_param);
+
+        frame_image_view.setRect(0, 0, image.getWidth(), image.getHeight());
+        switch (_img_rotation) {
+        case 0:
+        case 180:
+          if (camera_image_transform.sarGetCameraImageFlipY()) {
+            frame_image_view.pos.set(frame_image_view.bnd.w, 0, 0);
+            frame_image_view.bnd.w *= -1.0;
+          }
+          break;
+        }
+      }
+
+      _img_rotation = calcCurrentDeviceDirection();
+      _updateView(model_viewer, _img_rotation);
+
+      local _sprite = Sprite(sprite_frame);
+
+      local _shader = null;
+
+      if (image.getImageFormat() == sarSmartar.SAR_IMAGE_FORMAT_YCRCB420) {
+        _shader = skFXFindTechnique("arsprite.nv12toRGBA").getShaderSource(0);
+      }
+      else if (image.getImageFormat() == sarSmartar.SAR_IMAGE_FORMAT_YCBCR420) {
+        _shader = skFXFindTechnique("arsprite.nv21toRGBA").getShaderSource(0);
+      }
+
+      _sprite.shadersrc = _shader;
+      _sprite.uvmat0 = _sprite.uvmat1 = Matrix().identity().translate(0.0, 0.0, 0.0).scale(1.0, 1.0, 1.0);
+      _sprite.bnd.x = _sprite.bnd.y = 0;
+      _sprite.bnd.w = image.getWidth();
+      _sprite.bnd.h = image.getHeight();
+
+      frame_image_view.matdirty = true;
+      frame_image_view.setSprite(_sprite);
+
+      deviceRotateView(capture_view, frame_image_view);
+
+      frame_image_view.updateLayout();
+    }
+
+    frame_image_view.sp.tex0 = sprite_frame.tex0;
+    frame_image_view.sp.tex1 = sprite_frame.tex1;
+    frame_image_view.sp.uvmat0 = sprite_frame.uvmat0;
+    frame_image_view.sp.uvmat1 = sprite_frame.uvmat1;
+
+    capture_view.updateMatrixAll();
+
+    local _img_rotation = calcCurrentDeviceDirection();
+    calcFovy(image, _img_rotation, model_viewer, true);
+
+    _img_rotation = calcCurrentDeviceDirection();
+
+    return _createFrameResource(capture_view, model_viewer, _img_rotation);
+
+  }
+
+  function _updateView(model_viewer, img_rotation) {
+    model_viewer.setImageViewerPos(Vector3D(0.0, 0.0, 0.0));
+    model_viewer.setImageViewerRot(Vector3D(0.0, 0.0, 0.0));
+    if (img_rotation == 90 || img_rotation == 270) {
+      capture_view.setRect(0, 0, image.getHeight(), image.getWidth());
+      model_viewer.updateImageRect(Rect2D(0, 0, image.getHeight(), image.getWidth()));
+    } else {
+      capture_view.setRect(0, 0, image.getWidth(), image.getHeight());
+      model_viewer.updateImageRect(Rect2D(0, 0, image.getWidth(), image.getHeight()));
+    }
+
+    model_viewer.updateSceneBound();
+    capture_view.repaint();
+  }
+
+  function _createFrameResource(capture_view, model_viewer, img_rotation = 0) {
+    local _bufflags = 3;
+
+    local _tmp_rotation = img_rotation;
+
+    model_viewer.updateARImageParam(result, is_armode, camera_image_transform.sarGetCameraImageFlipY(), img_rotation);
+    model_viewer.flushTalkWindowPosition();
+
+    if (!load_texture) {
+      load_texture = Texture();
+      load_texture.create(capture_view.bnd.w, capture_view.bnd.h, SK_RGBA, _bufflags, 0);
+
+    }
+    local _sp = null;
+    _sp = Sprite(load_texture);
+    _sp.blend = SK_OFF;
+
+    skSetViewport();
+
+    local _ret_resource = load_texture.id;
+
+    if (!_renderTexture(capture_view, _sp, _bufflags, 1.0)) {
+      _ret_resource = null;
+    } else if (this.create_movie_thumbnail) {
+
+      local _rgbas = [];
+      local _rt = skGetRenderTarget();
+      skSetRenderTarget(load_texture);
+      _rgbas + _readPixels(capture_view);
+
+      local _thumbnail_scale = 0.3;
+      local _thumbnail_texture = Texture();
+      _thumbnail_texture.create(capture_view.bnd.w * _thumbnail_scale, capture_view.bnd.h * _thumbnail_scale, SK_RGBA, _bufflags, 0);
+      this.movie_thumbnail_small = _thumbnail_texture;
+
+      _sp = Sprite(_thumbnail_texture);
+      _sp.blend = SK_OFF;
+      if (_renderTexture(capture_view, _sp, _bufflags, _thumbnail_scale)) {
+
+        skSetRenderTarget(_thumbnail_texture);
+        _rgbas + _readPixels(capture_view, _thumbnail_scale);
+      }
+      skSetRenderTarget(_rt);
+
+      _createMovieThumbnail(_rgbas);
+
+      this.create_movie_thumbnail = false;
+    }
+
+    local _rt = skGetRenderTarget();
+    skSetRenderTarget(load_texture);
+    local _rgba_image = RGBAImage(10, 10);
+    skReadPixels(0, 0, 10, 10, _rgba_image);
+    skSetRenderTarget(_rt);
+    return _ret_resource;
+  }
+
+  function _createMovieThumbnail(rgbas) {
+    this.rendering_image = false;
+    local _thumb_path = ::FilePathManager.getFilePath(::FilePathManager.FILE_TYPE_THUMBNAIL, ::FilePathManager.APPLICATION_MODE_NONE);
+    if (!_thumb_path) {
+      println("can not getFilepath.");
+      return;
+    }
+
+    local _out_l_thumb = FileRef(_thumb_path + cache_counter + "_m_l_thumb.jpg");
+    local _out_s_thumb = FileRef(_thumb_path + cache_counter + "_m_s_thumb.jpg");
+
+    local _env = {
+      _rgba_l = rgbas[0];
+      _rgba_s = rgbas[1];
+      _out_l = _out_l_thumb;
+      _out_s = _out_s_thumb;
+    }
+
+    local _time = skGetTime();
+    try {
+      local _worker_id = workerthread.eval(
+
+      "local jpg_image = vargv[0]._rgba_l.encodeJpeg( 90); " +
+      "jpg_image.pos = 0; " +
+      "vargv[0]._out_l.save( jpg_image); " +
+      "jpg_image = vargv[0]._rgba_s.encodeJpeg( 90); " +
+      "jpg_image.pos = 0; " +
+      "vargv[0]._out_s.save( jpg_image); " +
+      "return skGetWorkerID(); ", _env);
+    } catch (ex) {
+      printexception(ex);
+    }
+
+    this.cache_counter++;
+
+  }
+
+  function calcCurrentDeviceDirection() {
+    local orient = 0;
+    if (accel_vec.length() < 0.01) return -1;
+    if (Math.abs(accel_vec.x) < 0.5) {
+      if (accel_vec.y < 0) orient = 270;
+      else orient = 90;
+    } else {
+      if (accel_vec.x < 0) orient = 180;
+      else orient = 0;
+    }
+    return orient;
+  }
+
+  function processCaptureImage(still_image, model_viewer, displayFunc) {
+
+    local _capture_view = CaptureView();
+
+    _capture_view.matdirty = true;
+    local _image_view = SKImageView();
+    _image_view.setRect(0, 0, still_image.getWidth(), still_image.getHeight());
+    _image_view.setColor(0xffffffff);
+
+    model_viewer.setImageBackView(_image_view);
+    model_viewer.addedImageViewer(_capture_view);
+    model_viewer.registerDir(calcCurrentDeviceDirection());
+
+    local _img_rotation = camera_image_transform.sarGetCameraImageRotation();
+    local _sprite = null;
+    local _param = {
+      image = still_image,
+      imageview = _image_view,
+      img_rotation = _img_rotation,
+      buffer_size = still_image_listener.getBufferSize(),
+      enable_trimtex = false,
+      flip_y = camera_image_transform.sarGetCameraImageFlipY(),
+    };
+    if (_img_rotation == 90 || _img_rotation == 270) {
+      _param.render_width <- still_image.getHeight();
+      _param.render_height <- still_image.getWidth();
+    } else {
+      _param.render_width <- still_image.getWidth();
+      _param.render_height <- still_image.getHeight();
+    }
+    _sprite = pasteImageViewer(_param);
+    _image_view.setSprite(_sprite);
+
+    local _imagew = still_image.getWidth();
+    local _imageh = still_image.getHeight();
+
+    local _v = clone _image_view.rot;
+    local _inc = 0;
+    _v.z *= Math.RTOD;
+    if (Math.abs(_img_rotation - int(_v.z)) > 5) {
+      local _val = (int(_v.z + 5) / 90) * 90;
+      _inc = _val - _img_rotation;
+      _img_rotation = _val;
+
+      local _tmp = _imagew;
+      _imagew = _imageh;
+      _imageh = _tmp;
+    }
+
+    switch (_img_rotation) {
+    case 0:
+    case 180:
+      local _h = (_imageh - _image_view.bnd.h) / 2.0;
+      if (camera_image_transform.sarGetCameraImageFlipY()) {
+        _image_view.pos.set(_image_view.bnd.w - (_imagew - _image_view.bnd.w) / 2.0, _h, 0);
+        _image_view.bnd.w *= -1.0;
+      } else {
+        _image_view.pos.set((_imagew - _image_view.bnd.w) / 2.0, _h, 0);
+      }
+      break;
+    case 90:
+      local _w = (_imagew - _image_view.bnd.w) / 2.0;
+      if (camera_image_transform.sarGetCameraImageFlipY()) {
+        _image_view.rot.set(0, 0, sarSmartar.SAR_ROTATION_270 * Math.DTOR);
+        _image_view.pos.set((_imageh - _image_view.bnd.h) / 2.0, _w, 0);
+        _image_view.bnd.w *= -1.0;
+      } else {
+        _image_view.pos.set(_image_view.bnd.h - (_imageh - _image_view.bnd.h) / 2.0, _w, 0);
+      }
+      break;
+    case 270:
+      local _w = _image_view.bnd.w - (_imagew - _image_view.bnd.w) / 2.0;
+      if (camera_image_transform.sarGetCameraImageFlipY()) {
+        _image_view.rot.set(0, 0, sarSmartar.SAR_ROTATION_90 * Math.DTOR);
+        _image_view.pos.set(_image_view.bnd.h - (_imageh - _image_view.bnd.h) / 2.0, _w, 0);
+        _image_view.bnd.w *= -1.0;
+      } else {
+        _image_view.pos.set((_imageh - _image_view.bnd.h) / 2.0, _w, 0);
+      }
+      break;
+    }
+
+    model_viewer.rebuildTalk(true);
+
+    _img_rotation = calcCurrentDeviceDirection();
+
+    model_viewer.imageViewerMatdirty();
+    local _w = still_image.getWidth();
+    local _h = still_image.getHeight();
+    if (_img_rotation == 90 || _img_rotation == 270) {
+      local _tmp = _w;
+      _w = _h;
+      _h = _tmp;
+    }
+
+    _capture_view.setRect(0, 0, _w, _h);
+    model_viewer.updateImageRect(Rect2D(0, 0, _w, _h));
+    local _rect = model_viewer.getImageRect();
+    model_viewer.setImageViewerPos(Vector3D((_capture_view.bnd.w - _rect.w) / 2.0, (_capture_view.bnd.h - _rect.h) / 2.0, 0.0));
+
+    image_model_zoom_rate = -1.0;
+
+    calcFovy(still_image, _img_rotation, model_viewer, true);
+
+    model_viewer.updateSceneBound();
+
+    deviceRotateView(_capture_view, _image_view);
+
+    _image_view.updateLayout();
+    model_viewer.updateARImageParam(result, is_armode, camera_image_transform.sarGetCameraImageFlipY(), _img_rotation);
+
+    for (local i = 0; i < ALIGN_SCENE_COUNT; i++) {
+      model_viewer.image_sk3dview.updateScene(0);
+    }
+    _image_view.matdirty = true;
+
+    local _small_bal = ::loadSKView("/ui/Balloon.ui");
+    local _big_bal = ::loadSKView("/ui/Balloon_Big.ui");
+    local _big_size = still_image.getWidth() * _small_bal.bnd.w / screenWidth;
+
+    local sc = _big_size / _big_bal.bnd.w;
+
+    model_viewer.flushTalkWindowScale(sc);
+    model_viewer.flushTalkWindowPosition();
+    model_viewer.flushTalkWindowRotation(false, true);
+
+    _capture_view.updateMatrixAll();
+
+    suspend();
+
+    local _bufflags = 3;
+    local _load_texture = Texture();
+    _load_texture.create(_capture_view.bnd.w, _capture_view.bnd.h, SK_RGBA, _bufflags, 0);
+
+    local _sp = Sprite(_load_texture);
+    local _rgbas = [];
+
+    local _rt = skGetRenderTarget();
+
+    if (_renderTexture(_capture_view, _sp, _bufflags)) {
+
+      skSetRenderTarget(_load_texture);
+      _rgbas + _readPixels(_capture_view);
+
+    }
+
+    local _t = skGetTime();
+
+    local _thumbnail_scale = 0.1;
+    local _thumbnail_texture = Texture();
+    _thumbnail_texture.create(_capture_view.bnd.w * _thumbnail_scale, _capture_view.bnd.h * _thumbnail_scale, SK_RGBA, _bufflags, 0);
+
+    _sp = Sprite(_thumbnail_texture);
+    _sp.blend = SK_OFF;
+
+    if (_renderTexture(_capture_view, _sp, _bufflags, _thumbnail_scale)) {
+
+      skSetRenderTarget(_thumbnail_texture);
+      _rgbas + _readPixels(_capture_view, _thumbnail_scale);
+    }
+
+    skSetRenderTarget(_rt);
+    if (_rgbas) {
+      _saveToImage(_rgbas);
+      displayFunc(_load_texture, _thumbnail_texture, cache_counter);
+    }
+
+    still_image_listener.clear();
+
+    model_viewer.removeImageViewer();
+    model_viewer.setImageViewerPos(Vector3D());
+    model_viewer.setImageViewerRot(Vector3D());
+
+    model_viewer.getImageTalkWindow().removeAllTalkWindow();
+  }
+
+  function _saveToImage(_rgbas) {
+    this.rendering_image = false;
+    local _cache_path = ::FilePathManager.getFilePath(::FilePathManager.FILE_TYPE_CACHE_IMAGE, ::FilePathManager.APPLICATION_MODE_NONE);
+    local _thumb_path = ::FilePathManager.getFilePath(::FilePathManager.FILE_TYPE_THUMBNAIL, ::FilePathManager.APPLICATION_MODE_NONE);
+    if (!_cache_path || !_thumb_path) {
+      println("can not getFilepath.");
+      return;
+    }
+
+    local _out_cache = FileRef(_cache_path + cache_counter + ".jpg");
+    local _out_thumb = FileRef(_thumb_path + cache_counter + "_thumb.jpg");
+
+    local _env = {
+      _rgba_cache = _rgbas[0];
+      _rgba_thumb = _rgbas[1];
+      _out_cache = _out_cache;
+      _out_thumb = _out_thumb;
+    }
+
+    local _time = skGetTime();
+    local _sucess = true;
+    try {
+      local _worker_id = workerthread.eval(
+
+      "local jpg_image = vargv[0]._rgba_cache.encodeJpeg( 90); " +
+      "jpg_image.pos = 0; " +
+      "vargv[0]._out_cache.save( jpg_image); " +
+      "jpg_image = vargv[0]._rgba_thumb.encodeJpeg( 90); " +
+      "jpg_image.pos = 0; " +
+      "vargv[0]._out_thumb.save( jpg_image); " +
+      "return skGetWorkerID(); ", _env);
+    } catch (ex) {
+      printexception(ex);
+      _sucess = false;
+    }
+
+    this.cache_counter++;
+
+  }
+
+  function modifyExposure() {
+    if (!is_auto_exposure) {
+      if (next_exposure_time <= skGetTime()) {
+
+        cameradevice.sarRunAutoExposure();
+        next_exposure_time = skGetTime() + 2000;
+      }
+    }
+  }
+
+  function getResult() {
+
+    local _results = [];
+    local _landmarks = [];
+    local _numresults = recog.sarGetResults(_results, 1, _landmarks);
+
+    local array_screen_rot = [];
+    screen_device.sarGetRotation(array_screen_rot);
+
+    camera_image_transform.sarSetScreenRotation(array_screen_rot[0]);
+
+    if (_numresults > 0 && is_armode) {
+      result = _results[0];
+      video_image_listener.setRecognitionState(_results[0].sceneMappingState_);
+      image = video_image_listener.popImage(_results[0], _numresults);
+
+      local pos = Vector3D();
+      local rot = Quaternion();
+
+      camera_image_transform.sarAdjustPose(_results[0].position_, _results[0].rotation_, pos, rot);
+
+      _results[0].setParams(pos, rot);
+    } else {
+      _results[0] = sarSmartar.SarRecognitionResult();
+      image = video_image_listener.popImage();
+    }
+
+    this.landmarks = _landmarks;
+    this.landmarks_adjust = false;
+
+    return _results;
+
+  }
+
+  function calcAccelDiff() {
+    if (!result) return;
+    local _timestamp = result.timestamp_[0];
+    local _timestamp_diff = _timestamp - smartar_timestamp_prev;
+
+    if (_timestamp_diff > 0 && smartar_velocity_prev) {
+      local _diff = result.velocity_ - smartar_velocity_prev;
+      _diff.set(_diff / (_timestamp_diff / 1000.0));
+      _diff.set(_diff.x, _diff.z, _diff.y);
+      smartar_accel_diff.set(_diff);
+    }
+    smartar_timestamp_prev = _timestamp;
+    smartar_velocity_prev = result.velocity_;
+
+    local _v = result.velocity_;
+    local _acc = result.angularVelocity_ * Math.RTOD;
+
+  }
+
+  function getAccelDiff() {
+    return smartar_accel_diff;
+  }
+
+  function pasteImage(image_viewer, model_viewer, half_view) {
+    if (!image || !camera_image_transform) return;
+    local _img_rotation = camera_image_transform.sarGetCameraImageRotation();
+
+    calcFovy(image, _img_rotation, model_viewer, false);
+    local _param = {
+      image = image,
+      imageview = image_viewer,
+      img_rotation = _img_rotation,
+      render_width = ::screenWidth,
+      render_height = ::screenHeight,
+      sprite_frame = sprite_frame,
+      is_read_texture = false
+    };
+    sprite_frame = pasteImageViewer(_param);
+
+    image_viewer.setRect(0, 0, ::screenWidth, ::screenHeight);
+
+    model_viewer.updateRect(Rect2D(0, 0, ::screenWidth, ::screenHeight));
+    model_viewer.setRect(0, 0, ::screenWidth, ::screenHeight);
+
+    model_viewer.pos.x = half_view.w - model_viewer.rect.w / 2.0;
+    model_viewer.pos.y = half_view.h - model_viewer.rect.h / 2.0;
+
+    switch (_img_rotation) {
+    case 0:
+      local _w = half_view.w - model_viewer.rect.w / 2.0;
+      image_viewer.rot.set(0.0, 0.0, 0.0);
+      if (camera_image_transform.sarGetCameraImageFlipY()) {
+        image_viewer.pos.set(_w, half_view.h + image_viewer.bnd.h / 2.0, 0);
+        image_viewer.bnd.h *= -1.0;
+      } else {
+        image_viewer.pos.set(_w, half_view.h - image_viewer.bnd.h / 2.0, 0);
+      }
+      break;
+    case 90:
+      local _h = half_view.h - model_viewer.rect.h / 2.0;
+      if (camera_image_transform.sarGetCameraImageFlipY()) {
+        image_viewer.rot.set(0, 0, sarSmartar.SAR_ROTATION_270 * Math.DTOR);
+        image_viewer.pos.set(half_view.h - image_viewer.bnd.w / 2.0, _h, 0);
+        image_viewer.bnd.w *= -1.0;
+      } else {
+        image_viewer.pos.set(image_viewer.bnd.w / 2.0 + half_view.h, _h, 0);
+      }
+      break;
+    case 180:
+      local _w = image_viewer.bnd.w - (image_viewer.bnd.w / 2.0 - half_view.w);
+      image_viewer.rot.set(0, 0, sarSmartar.SAR_ROTATION_180 * Math.DTOR);
+      if (camera_image_transform.sarGetCameraImageFlipY()) {
+        image_viewer.pos.set(_w, half_view.h - image_viewer.bnd.h / 2.0, 0);
+        image_viewer.bnd.h *= -1.0;
+      } else {
+        image_viewer.pos.set(_w, half_view.h + image_viewer.bnd.h / 2.0, 0);
+      }
+      break;
+    case 270:
+      local _h = image_viewer.bnd.h - (image_viewer.bnd.h / 2.0 - half_view.h);
+      if (camera_image_transform.sarGetCameraImageFlipY()) {
+        image_viewer.rot.set(0, 0, sarSmartar.SAR_ROTATION_90 * Math.DTOR);
+        image_viewer.pos.set(image_viewer.bnd.w / 2.0 + half_view.h, _h, 0);
+        image_viewer.bnd.w *= -1.0;
+      } else {
+        image_viewer.pos.set(half_view.h - image_viewer.bnd.w / 2.0, _h, 0);
+      }
+      break;
+    }
+
+    image_viewer.matdirty = true;
+
+    if (first_result) {
+      local _b = sprite_frame.bnd;
+      local _ib = image_viewer.bnd;
+      image_viewer.setSprite(sprite_frame);
+
+    }
+
+    image_viewer.updateLayout();
+
+    first_result = false;
+
+  }
+
+  function startCaptureImage(accel_vec) {
+    super.startCaptureImage(accel_vec);
+    while (workdispatchedlistener.isDispatch()) suspend();
+    cameradevice.sarCaptureStillImage();
+  }
+
+  function startRecordMovie(model_viewer, accel_vec) {
+    super.startRecordMovie(model_viewer, accel_vec);
+
+    local _filepath = null;
+
+    if (!movie_writer) movie_writer = ARUtils.MovieWriter();
+
+    local _cache_path = ::FilePathManager.getFilePath(::FilePathManager.FILE_TYPE_CACHE_IMAGE, ::FilePathManager.APPLICATION_MODE_NONE);
+    if (!_cache_path) {
+      println("can not getFilepath.");
+      return false;
+    }
+
+    local _path = _cache_path + cache_counter + "." + movie_writer.getFileExtention();
+    movie_writer.setFilePath(_path);
+
+    capture_view.matdirty = true;
+
+    frame_image_view.setRect(0, 0, image.getWidth(), image.getHeight());
+    frame_image_view.setColor(0xffffffff);
+
+    model_viewer.setImageBackView(frame_image_view);
+
+    model_viewer.addedImageViewer(capture_view);
+
+    model_viewer.registerDir(calcCurrentDeviceDirection());
+
+    image_model_zoom_rate = 0.0;
+
+    local _frame_resource = createMovieFrame(true, model_viewer);
+    if (_frame_resource) {
+      movie_writer.setFrameResource(_frame_resource);
+
+      local _rgba_image = RGBAImage(capture_view.bnd.w, capture_view.bnd.h);
+      movie_writer.setFrameResource(_rgba_image);
+      try {
+        movie_writer.init();
+      } catch (ex) {
+        printexception(ex);
+
+        local _msg = ::Message();
+        _msg.setText(::dict.get("can_not_record"));
+        _msg.setFontSize(32);
+        _msg.setPosition(::screenWidth / 2.0, ::screenHeight / 2.0, 0);
+        _msg.setColor(0xffffffff);
+        _msg.stroke();
+        _msg.show();
+        model_viewer.removeImageViewer();
+        return false;
+      }
+      movie_writer.start();
+      update_frame_counter = 0;
+      first_frame = true;
+      return true;
+    }
+    return false;
+  }
+
+  function calcCameraMatrix(camera_pos, viewmat, flipY, targetMat) {
+    local eye = null, f = null, u = null;
+    if (flipY) {
+      eye = Vector3D(-camera_pos.x, camera_pos.z, -camera_pos.y) * coodinate_system_scale;
+      f = eye - (Vector3D(-viewmat[2], viewmat[10], -viewmat[6]));
+      u = Vector3D(-viewmat[1], viewmat[9], -viewmat[5]);
+    } else {
+      eye = Vector3D(camera_pos.x, camera_pos.z, camera_pos.y) * coodinate_system_scale;
+      f = eye - (Vector3D(viewmat[2], viewmat[10], viewmat[6]));
+      u = Vector3D(viewmat[1], viewmat[9], viewmat[5]);
+    }
+
+    return [eye, f, u];
+  }
+
+  function calcProjectionMatrix(result, camera_near, camera_far) {
+
+  }
+
+  function reset() {
+    workdispatchedlistener.lock();
+    recog.sarReset();
+
+    video_image_listener.reset();
+
+    workdispatchedlistener.unlock();
+  }
+
+  function isFlipY() {
+    return camera_image_transform.sarGetCameraImageFlipY();
+  }
+
+  function getCameraImageRotation() {
+    return camera_image_transform.sarGetCameraImageRotation();
+  }
+
+  function isSupported() {
+    return (initial_state == INITIAL_SUCESS);
+  }
+
+  function isLowerVideoImage() {
+    return video_image_size_state == VIDEO_IMAGE_SIZE_LOW;
+  }
+
+  function isRecognized(result) {
+    return result.isRecognized_;
+  }
+
+  function calcRotationFromMagneticGravity(total_gyro_rot) {
+
+    local _go = Quaternion(-total_gyro_rot.x, -total_gyro_rot.y, total_gyro_rot.z, total_gyro_rot.w);
+    local _gvec = sensors.getGravityValue();
+    local _mvec = sensors.getMagneticValue();
+
+    local _flip_y = camera_image_transform.sarGetCameraImageFlipY();
+    local _imgrot = camera_image_transform.sarGetCameraImageRotation();
+
+    if (_flip_y) _imgrot = (_imgrot + 180) % 360;
+
+    switch (_imgrot) {
+    case 0: _mvec.set(_mvec.y, -_mvec.x, _mvec.z); break;
+    case 180: _mvec.set(-_mvec.y, _mvec.x, _mvec.z); break;
+    case 270: _mvec.set(-_mvec.x, -_mvec.y, _mvec.z); break;
+    }
+
+    local _gtmp = Vector3D(_gvec.normalize());
+    local _mtmp = Vector3D(_mvec);
+
+    local _flatnorth = _mvec - (_gvec * _gvec.dot(_mvec));
+
+    local _downvec = Vector3D(0.0, -1.0, 0.0);
+
+    local _co = Quaternion.from2Axis(Vector3D(0, 0, 1.0), _flatnorth.normalize());
+
+    _co.x *= -1.0;
+    _co.y *= -1.0;
+
+    local _adjust = -_co * -_go;
+
+    local _v = _adjust * Vector3D(0.0 1.0, 0.0);
+    if (_v.hasNaN()) return null;
+
+    local _c_hpb = -_co.toMatrix().getHPB() * Math.RTOD;
+    local _g_hpb = -_go.toMatrix().getHPB() * Math.RTOD;
+    local _a_hpb = _adjust.toMatrix().getHPB() * Math.RTOD;
+    println("calcRotationFromMagneticGravity _adjust:" + _a_hpb.x + "/" + _a_hpb.y + "/" + _a_hpb.z);
+
+    return _adjust;
+  }
+
+  function getGravity() {
+    return sensors.getGravityValue();
+  }
+
+  function displayMovieThumbnail(func) {
+    func(null, this.movie_thumbnail_small, this.cache_counter, true);
+  }
+}

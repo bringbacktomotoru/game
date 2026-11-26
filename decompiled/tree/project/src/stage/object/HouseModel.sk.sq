@@ -1,0 +1,302 @@
+class HouseModel extends Model {
+  static FLOOR_LENGTH = 8;
+  static FLOOR_DEPTH = 0.5;
+  static WALL_LENGTH = 8;
+  static WALL_THICKNESS = 0.5;
+  static PILLAR_LENGTH = 0.5;
+
+  pos = null;
+
+  floor = null;
+  walls = null;
+  pillars = null;
+
+  door_pos = null;
+
+  constructor(scene) {
+    super(scene);
+
+    this.pos = Vector3D(0, 0, 0);
+
+    this.walls = [];
+    this.pillars = [];
+
+    this.door_pos = Vector3D();
+  }
+
+  function build(room_id) {
+    release();
+    super.build();
+
+    local room_setting = ::gamesetting.room_settings[room_id];
+    if (!room_setting) {
+      ::errorln("room setting not found : " + room_id);
+    }
+
+    this.floor = ::StageObject(this.scene);
+    this.floor.build(room_setting.getFloorPath());
+    this.floor.addToStage();
+
+    if (this.floor.sk3d.motion) {
+      foreach (k, val in this.floor.sk3d.motion.parts) {
+        if (val.name == "door") {
+          local _p0 = val.bindpose;
+          this.door_pos.set(_p0[12], 0, _p0[14]).transform0(this.floor.sk3d.gmat);
+          break;
+        }
+      }
+    }
+
+    local pillars_idx_max = length(this.pillars) - 1;
+    foreach (idx, wall_setting in room_setting.getWallSettings()) {
+      if (wall_setting.getPath()) {
+        local wall = WallObject(this.scene, idx);
+        wall.build(wall_setting);
+        wall.addToStage();
+        this.walls + wall;
+      }
+      else {
+        this.walls + WallDummyObject(wall_setting, idx);
+      }
+    }
+
+    foreach (pillar_path in room_setting.getPillarPaths()) {
+      if (pillar_path) {
+        local pillar = ::StageObject(this.scene);
+        pillar.build(pillar_path);
+        pillar.addToStage();
+        this.pillars + pillar;
+      }
+      else {
+        this.pillars + null;
+      }
+    }
+
+    ::debugln("house model built, room_id : " + room_id);
+  }
+
+  function release() {
+    super.release();
+
+    if (this.floor) {
+      this.floor.removeFromStage();
+      this.floor = null;
+    }
+    foreach (wall in this.walls) {
+      wall.removeFromStage();
+    }
+    this.walls.clear();
+
+    foreach (pillar in this.pillars) {
+      if (pillar) pillar.removeFromStage();
+    }
+    this.pillars.clear();
+
+    ::debugln("house model released")
+  }
+
+  function getDoorPosition() {
+    return this.door_pos;
+  }
+
+  function applyPos() {}
+  function setPos(pos) {
+    this.pos.set(pos);
+    applyPos();
+  }
+  function setPosXYZ(x, y, z) {
+    this.pos.set(x, y, z);
+    applyPos();
+  }
+  function getPos() {
+    return this.pos;
+  }
+
+  function getFloor() {
+    return this.floor;
+  }
+
+  function getWalls() {
+    return this.walls;
+  }
+
+  function getPillars() {
+    return this.pillars;
+  }
+
+  function applyAngle() {
+    super.applyAngle();
+    this.floor.setAngle(this.angle);
+    this.floor.sk3d.matdirty = true;
+    foreach (_wall in this.walls) {
+      _wall.setAngle(this.angle);
+      if (getclass(_wall) == WallObject) _wall.sk3d.matdirty = true;
+    }
+    foreach (_pillar in pillars) {
+      if (_pillar) {
+        _pillar.setAngle(this.angle);
+        _pillar.sk3d.matdirty = true;
+      }
+    }
+  }
+
+  function setVisible(b) {
+    super.setVisible(b);
+    this.floor.setVisible(b);
+    foreach (w in this.walls) {
+      if (w) w.setVisible(b);
+    }
+    foreach (p in this.pillars) {
+      if (p) p.setVisible(b);
+    }
+  }
+
+  function setFloorVisible(b) {
+    this.floor.setVisible(b);
+  }
+
+  function updateVisibleWall(dir) {
+
+    foreach (pillar in this.pillars) {
+      if (pillar) pillar.setVisible(false);
+    }
+
+    local pillar_num = length(this.pillars);
+    local _prev_visible = false;
+    foreach (wall in this.walls) {
+      local uid = wall.getUID();
+      foreach (idx, obj in this.walls) {
+        if (obj.getUID() != uid) continue;
+
+        if (obj instanceof WallObject) obj.updateVisible(dir);
+        else obj.setVisible(_prev_visible);
+        _prev_visible = obj.isVisible();
+        if (_prev_visible == true) {
+
+          if (this.pillars[idx]) this.pillars[idx].setVisible(true);
+          local _tmp_idx = (idx + 1) % pillar_num;
+          if (this.pillars[_tmp_idx]) this.pillars[_tmp_idx].setVisible(true);
+        }
+      }
+    }
+  }
+
+  function syncWallVisible(hm) {
+    if (!hm) return;
+
+    local _walls = hm.getWalls();
+    local _pillars = hm.getPillars();
+
+    if (_walls.len() != this.walls.len()) return;
+    if (_pillars.len() != this.pillars.len()) return;
+
+    foreach (i, w in this.walls) {
+      w.setVisible(_walls[i].isVisible());
+    }
+    foreach (i, p in this.pillars) {
+      if (p && _pillars[i]) p.setVisible(_pillars[i].isVisible());
+    }
+  }
+}
+
+class HouseModel.WallObject extends ::StageObject {
+  uid = -1;
+
+  start_visible_dir = 0.0;
+  end_visible_dir = 0.0;
+
+  constructor(scene, uid) {
+    super(scene);
+
+    this.uid = uid;
+  }
+
+  function getUID() {
+    return this.uid;
+  }
+
+  function build(wall_setting) {
+    super.build(wall_setting.getPath());
+
+    this.start_visible_dir = wall_setting.getVisibleStartAngle() * Math.DTOR;
+    this.end_visible_dir = wall_setting.getVisibleEndAngle() * Math.DTOR;
+  }
+
+  function updateVisible(dir) {
+    if (this.start_visible_dir == this.end_visible_dir) return true;
+
+    if (this.start_visible_dir < this.end_visible_dir) {
+      local visible = dir >= this.start_visible_dir && dir <= this.end_visible_dir;
+      if (isVisible() != visible) {
+        setVisible(visible);
+      }
+
+      return visible;
+    }
+    else {
+      local visible = dir >= this.start_visible_dir && dir <= Math.PI * 2 || dir >= 0.0 && dir <= this.end_visible_dir;
+      if (isVisible() != visible) {
+        setVisible(visible);
+      }
+
+      return visible;
+    }
+  }
+}
+
+class HouseModel.WallDummyObject {
+  uid = -1;
+  visible = true;
+  start_visible_dir = 0.0;
+  end_visible_dir = 0.0;
+
+  angle = 0.0;
+
+  constructor(wall_setting, uid) {
+    this.uid = uid;
+    this.start_visible_dir = wall_setting.getVisibleStartAngle() * Math.DTOR;
+    this.end_visible_dir = wall_setting.getVisibleEndAngle() * Math.DTOR;
+
+    this.angle = 0.0;
+  }
+
+  function getUID() {
+    return this.uid;
+  }
+
+  function isVisible() {
+    return this.visible;
+  }
+
+  function setVisible(v) {
+    this.visible = v;
+  }
+
+  function setAngle(angle) {
+    this.angle = angle;
+  }
+
+  function removeFromStage() {
+  }
+
+  function updateVisible(dir) {
+    if (this.start_visible_dir == this.end_visible_dir) return true;
+
+    if (this.start_visible_dir < this.end_visible_dir) {
+      local visible = dir >= this.start_visible_dir && dir <= this.end_visible_dir;
+      if (isVisible() != visible) {
+        setVisible(visible);
+      }
+
+      return visible;
+    }
+    else {
+      local visible = dir >= this.start_visible_dir && dir <= Math.PI * 2 || dir >= 0.0 && dir <= this.end_visible_dir;
+      if (isVisible() != visible) {
+        setVisible(visible);
+      }
+
+      return visible;
+    }
+  }
+}

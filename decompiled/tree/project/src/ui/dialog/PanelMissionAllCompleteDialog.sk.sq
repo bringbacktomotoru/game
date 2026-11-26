@@ -1,0 +1,27 @@
+class PanelMissionAllCompleteDialog extends ::Dialog {
+
+  view = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/PanelMissionAllCompleteDialog.ui"));
+
+    this.view.findChild("lbl_desc").setText(::dict.get("pmallclear_atroom"));
+
+    this.btn_ok.findChild("lbl").setText(::dict.get("pmallclear_dialog_goto_roomselct"));
+    this.btn_close.findChild("lbl").setText(::dict.get("close"));
+  }
+
+  function actionevent(e) {
+    e.consume();
+
+    if (e.src == this.btn_ok) {
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof SanrioGameScene) {
+        local _home_ui = _scene.getUI();
+        _home_ui.movePanel(::RoomSelectPanel);
+      }
+    }
+
+    super.actionevent(e);
+  }
+}

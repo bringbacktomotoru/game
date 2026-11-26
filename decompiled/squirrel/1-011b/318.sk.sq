@@ -1,0 +1,96 @@
+class Furniture3DView extends SK3DView {
+  built = false;
+
+  setting = null;
+
+  sk3d = null;
+  obj = null;
+  current_level = 0;
+
+  constructor() {
+    super();
+
+    this.scn.getB3World();
+    local cameraobj = SK3DObject();
+    this.renderer.setCameraObject(cameraobj);
+
+    local env = SK3DEnvironment(::gamesetting.scnenv["morning"]);
+    this.scn.setEnvironment(env);
+    local renderset = ::createRenderSetting({ type = 101 });
+    this.renderer.setRenderSetting(renderset);
+
+    local _passes = this.renderer.passes;
+    foreach (i, _ps in _passes) {
+      if (!renderset.passes[i].clearparam) continue;
+      _ps.clearparam.clearmask = 0;
+      local _setting_param = renderset.passes[i].clearparam;
+      if (_setting_param["color"]) _ps.clearparam.clearmask |= SK_CLEAR_COLOR;
+      if (_setting_param["depth"]) _ps.clearparam.clearmask |= SK_CLEAR_DEPTH;
+      if (_setting_param["stencil"]) _ps.clearparam.clearmask |= SK_CLEAR_STENCIL;
+    }
+
+    local light1 = Light();
+    light1.setDirLight(Vector3D(0, 0.4, -1.0));
+    light1.power = 0.8 / 255.0;
+    light1.pixellight = 1;
+    scn.addLight(light1);
+
+    local light2 = Light();
+    light2.setDirLight(Vector3D(0.0, -0.3, -1.0));
+    light2.power = 0.7 / 255.0;
+    light2.scolor = 0;
+    scn.addLight(light2);
+
+    local env = scn.env;
+    env.ambup = 0xffcc99ff;
+    env.ambdown = 0xccccffff;
+  }
+
+  function updateLayout() {
+
+    local w = bnd.w, h = bnd.h;
+    this.renderer.camera.perspective(30.0, w / h, 1.0, 100.0);
+  }
+
+  function setFurniture(setting, level) {
+    this.setting = setting;
+    this.current_level = level;
+  }
+
+  function clearObjects() {
+    this.scn.clearObjects();
+  }
+
+  function build(rebuild = false) {
+    if (this.built && !rebuild) return;
+
+    this.built = true;
+
+    local _view_idx = setting.getViewIndex(this.current_level);
+    local _camera_view_offsets = this.setting.getCameraViewOffsets();
+    this.renderer.cameraobj.pos.set(0.0, 1, -6.0);
+    if (_camera_view_offsets && _camera_view_offsets[_view_idx]) {
+
+      local _add = Vector3D();
+      _add.x = _camera_view_offsets[_view_idx][0] || 0.0;
+      _add.y = _camera_view_offsets[_view_idx][1] || 0.0;
+      _add.z = _camera_view_offsets[_view_idx][2] || 0.0;
+      this.renderer.cameraobj.pos.add(_add);
+      this.renderer.cameraobj.matdirty = true;
+    }
+    this.renderer.cameraobj.update(0);
+
+    this.obj = ::StageObject(this.scn);
+    local _furn_data = ::FurnitureData().init(-1, setting.getID());
+
+    ::ViewFactory.buildFurnitureModel(this.obj, _furn_data, _view_idx);
+    this.obj.addToStage();
+
+    this.sk3d = this.obj.sk3d;
+    repaint();
+  }
+
+  function getModel() {
+    return this.sk3d;
+  }
+}

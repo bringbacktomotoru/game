@@ -1,0 +1,34 @@
+class RoomSlotSetting extends ::Setting {
+  id = -1;
+  condition_ids = null;
+  unlock_text = null;
+
+  function loadConfAtServer(t) {
+
+    local _setting = RoomSlotSetting();
+    foreach (k, v in t) {
+      switch (k) {
+      case "condition_ids":
+        _setting[k] = decodeJSON(v);
+        break;
+      default:
+        _setting[k] = v;
+      }
+    }
+
+    return _setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (unlock_text) trans + "unlock_text";
+
+    return trans;
+  }
+
+  function getUnlockText() {
+    if (!unlock_text) return "???";
+    return this.unlock_text;
+  }
+}

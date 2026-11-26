@@ -1,0 +1,89 @@
+class AutoScrollPanel {
+  view = null;
+  initial_pos = null;
+
+  speed = 0.0;
+  length = 0;
+
+  scroll_func = null;
+  interval_id = -1;
+
+  constructor(view, speed = 0.03) {
+    this.view = view;
+    this.speed = speed;
+
+    this.initial_pos = Vector3D().set(view.pos);
+
+    local env = {
+      self = this,
+    }
+    this.scroll_func = _defaultScrollMethod.bindenv(env);
+  }
+
+  function reset() {
+    if (this.interval_id != -1) {
+      clearInterval(this.interval_id);
+      this.interval_id = -1;
+    }
+
+    this.view.pos.set(this.initial_pos);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function start() {
+    reset();
+
+    this.interval_id = setInterval(scroll_func, 16);
+  }
+
+  function _defaultScrollMethod(dt) {
+    local _max = Math.max
+
+    local l = 0;
+    local work1 = [[self.view.pos.x, self.view]];
+    local work2 = [];
+    while (length(work1) > 0) {
+      foreach (cmp in work1) {
+        l = _max(l, cmp[0] + cmp[1].bnd.w);
+        foreach (c in cmp[1].children) {
+          work2 + [cmp[0] + cmp[1].pos.x, c];
+        }
+      }
+
+      work1 = work2;
+      work2 = [];
+    }
+
+    local env = {
+      self = self,
+      timer = 0,
+      l = l,
+    }
+    self.scroll_func = self._animeMethod.bindenv(env);
+    self.start();
+
+    local env = {
+      self = self,
+    }
+    self.scroll_func = self._defaultScrollMethod.bindenv(env);
+  }
+
+  function _animeMethod(dt) {
+    timer += dt;
+
+    if (timer < 1000) return;
+
+    local x = self.speed * (timer - 1000);
+    self.view.pos.x = self.initial_pos.x - x;
+    self.view.matdirty = true;
+    self.view.repaint();
+
+    if (x < l) return;
+
+    self.view.pos.x = self.initial_pos.x;
+    self.view.matdirty = true;
+    self.view.repaint();
+    self.start();
+  }
+}

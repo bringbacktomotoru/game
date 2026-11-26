@@ -1,0 +1,40 @@
+gacha_settings[1] <- GachaSetting({
+  gacha_version = 1;
+  name = "オーロラガチャ";
+  desc = "お洋服や家具の入ったガチャです/n何が出るかはお楽しみ#o1#";
+  priority = 5000;
+  type = PRICE_RM;
+  items_id = 10002;
+  banner = "gacha_image_aurora.png";
+  title_logo = "/ui/image/JP/gacha_logo.png";
+  loading_bg = "gacha_image.png";
+  price = [
+  { price = 150, num = 1 },
+  { price = 1350, num = 10 }
+  ];
+
+  limit = -1;
+  enable_visible = 1;
+})
+gacha_settings[2] <- GachaSetting({
+  gacha_version = 1;
+  name = "ハピネスガチャ";
+  desc = "引くごとに必要なハピネスが増えるガチャです/n月はじめにリセットされます";
+  priority = 6000;
+  type = -1;
+  items_id = 10001;
+  banner = "gacha_image_happiness.png";
+  title_logo = "/ui/image/JP/gacha_logo.png";
+  loading_bg = "gacha_image.png";
+  step_price = [
+  { type = PRICE_GM, price = 5000, num = 1 },
+  { type = PRICE_GM, price = 10000, num = 1 },
+  { type = PRICE_GM, price = 30000, num = 1 },
+  { type = PRICE_GM, price = 50000, num = 1 },
+  { type = PRICE_GM, price = 100000, num = 1 }
+  ];
+  step_reset_type = 3;
+
+  limit = -1;
+  enable_visible = 1;
+})

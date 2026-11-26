@@ -1,0 +1,63 @@
+menu_button_settings[1] <- ::MenuButtonSetting({
+  key = "btn_menu_gacha";
+  panel_key = "GachaPanel";
+  name = "ガチャ";
+  icon_id = 1;
+  back_ground_id = 1;
+})
+
+menu_button_settings[2] <- ::MenuButtonSetting({
+  key = "btn_menu_shop";
+  panel_key = "ShopPanel";
+  name = "ショップ";
+  icon_id = 0;
+  back_ground_id = 1;
+})
+
+menu_button_settings[3] <- ::MenuButtonSetting({
+  key = "btn_menu_property";
+  panel_key = "PropertyPanel";
+  name = "もちもの";
+  icon_id = 2;
+  back_ground_id = 2;
+})
+
+menu_button_settings[4] <- ::MenuButtonSetting({
+  key = "btn_menu_team";
+  panel_key = "RoomMemberPanel";
+  name = "おともだち";
+  icon_id = 3;
+  back_ground_id = 3;
+})
+
+menu_button_settings[5] <- ::MenuButtonSetting({
+  key = "btn_menu_layout";
+  panel_key = "RoomEditPanel";
+  name = "家具レイアウト";
+  icon_id = 4;
+  back_ground_id = 3;
+})
+
+menu_button_settings[6] <- ::MenuButtonSetting({
+  key = "btn_menu_room";
+  panel_key = "RoomSelectPanel";
+  name = "お部屋";
+  icon_id = 5;
+  back_ground_id = 3;
+})
+
+menu_button_settings[7] <- ::MenuButtonSetting({
+  key = "btn_menu_option";
+  panel_key = "";
+  name = "設定";
+  icon_id = 6;
+  back_ground_id = 4;
+})
+
+menu_button_settings[8] <- ::MenuButtonSetting({
+  key = "btn_menu_diarycontents";
+  panel_key = "DiaryContentsPanel";
+  name = "おもいで日記";
+  icon_id = 7;
+  back_ground_id = 3;
+})

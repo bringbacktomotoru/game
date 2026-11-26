@@ -1,0 +1,23 @@
+model =
+{
+  root = {
+    pm = "gacha.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+    setHPB(0, -90, 0);
+    setPivot(0, 0, -30);
+  }
+
+  function start() {
+    uvscroll(0.0, 1.4);
+    setBlend(SK_ADD);
+    generate({ view = "gacha_efx.sk3", scale = [1.5, 1.5, 1] });
+  }
+
+}

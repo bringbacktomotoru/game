@@ -1,0 +1,577 @@
+action_settings[0] <- ActionSetting({
+  action_type = 2;
+  action_name = "new";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[1] <- ActionSetting({
+  action_type = 2;
+  action_name = "collect";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[10] <- ActionSetting({
+  action_type = 0;
+  action_name = "stand";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l"];
+})
+
+action_settings[20] <- ActionSetting({
+  action_type = 2;
+  action_name = "walk";
+  frequency = 10;
+  move_speed = 0.011;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l"];
+})
+action_settings[21] <- ActionSetting({
+  action_type = 2;
+  action_name = "dash";
+  frequency = 10;
+  move_speed = 0.016;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l", "command_mayoi"];
+})
+action_settings[22] <- ActionSetting({
+  action_type = 2;
+  action_name = "skip";
+  frequency = 10;
+  move_speed = 0.014;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l", "command_mayoi"];
+})
+
+action_settings[23] <- ActionSetting({
+  action_type = 2;
+  action_name = "multipurpose_skip";
+  frequency = 10;
+  move_speed = 0.014;
+  prev_actions = ["stand", "multipurpose_skip"];
+})
+
+action_settings[30] <- ActionSetting({
+  action_type = 2;
+  action_name = "turn_l";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[40] <- ActionSetting({
+  action_type = 2;
+  action_name = "turn_r";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50] <- ActionSetting({
+  action_type = 1;
+  action_name = "kokeru";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[501] <- ActionSetting({
+  action_type = 2;
+  action_name = "movie_walk";
+  frequency = 10;
+  move_speed = 0.009;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l"];
+})
+action_settings[502] <- ActionSetting({
+  action_type = 2;
+  action_name = "movie_dash";
+  frequency = 10;
+  move_speed = 0.013;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l", "command_mayoi"];
+})
+action_settings[503] <- ActionSetting({
+  action_type = 2;
+  action_name = "movie_skip";
+  frequency = 10;
+  move_speed = 0.011;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l", "command_mayoi"];
+})
+
+action_settings[504] <- ActionSetting({
+  action_type = 2;
+  action_name = "walk_face";
+  frequency = 10;
+  move_speed = 0.009;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l"];
+})
+action_settings[505] <- ActionSetting({
+  action_type = 2;
+  action_name = "dash_face";
+  frequency = 10;
+  move_speed = 0.009;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l"];
+})
+action_settings[506] <- ActionSetting({
+  action_type = 2;
+  action_name = "skip_smile";
+  frequency = 10;
+  move_speed = 0.009;
+  prev_actions = ["stand", "walk", "tefuri", "turn_l"];
+})
+
+action_settings[999] <- ActionSetting({
+  action_type = 0;
+  action_name = "levelupend";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[1000] <- ActionSetting({
+  action_type = 1;
+  action_name = "tefuri";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[1010] <- ActionSetting({
+  action_type = 1;
+  action_name = "gakkari";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[1020] <- ActionSetting({
+  action_type = 1;
+  action_name = "teage";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[1030] <- ActionSetting({
+  action_type = 1;
+  action_name = "ketsui";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[1040] <- ActionSetting({
+  action_type = 1;
+  action_name = "tere";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[1050] <- ActionSetting({
+  action_type = 1;
+  action_name = "kurukuru";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[1060] <- ActionSetting({
+  action_type = 1;
+  action_name = "pyonpyon";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[1070] <- ActionSetting({
+  action_type = 1;
+  action_name = "yokopatapata";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50000] <- ActionSetting({
+  action_type = 3;
+  action_name = "clock_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+action_settings[50009] <- ActionSetting({
+  action_type = 3;
+  action_name = "clock_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50010] <- ActionSetting({
+  action_type = 3;
+  action_name = "picture_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+action_settings[50019] <- ActionSetting({
+  action_type = 3;
+  action_name = "picture_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50020] <- ActionSetting({
+  action_type = 3;
+  action_name = "tv_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+action_settings[50029] <- ActionSetting({
+  action_type = 3;
+  action_name = "tv_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50030] <- ActionSetting({
+  action_type = 0;
+  action_name = "chair_wait";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50040] <- ActionSetting({
+  action_type = 0;
+  action_name = "sofa_wait";
+})
+
+action_settings[50050] <- ActionSetting({
+  action_type = 3;
+  action_name = "electricfan_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+action_settings[50059] <- ActionSetting({
+  action_type = 3;
+  action_name = "electricfan_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50060] <- ActionSetting({
+  action_type = 3;
+  action_name = "plant_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+action_settings[50069] <- ActionSetting({
+  action_type = 3;
+  action_name = "plant_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50070] <- ActionSetting({
+  action_type = 3;
+  action_name = "lampstand_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+action_settings[50079] <- ActionSetting({
+  action_type = 3;
+  action_name = "lampstand_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50080] <- ActionSetting({
+  action_type = 3;
+  action_name = "danro_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+action_settings[50089] <- ActionSetting({
+  action_type = 3;
+  action_name = "danro_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50090] <- ActionSetting({
+  action_type = 3;
+  action_name = "lag_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+action_settings[50099] <- ActionSetting({
+  action_type = 3;
+  action_name = "lag_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50100] <- ActionSetting({
+  action_type = 3;
+  action_name = "bookshelf_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "本を選んで読んだりするよ！";
+})
+action_settings[50109] <- ActionSetting({
+  action_type = 3;
+  action_name = "bookshelf_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50110] <- ActionSetting({
+  action_type = 3;
+  action_name = "bed_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+action_settings[50119] <- ActionSetting({
+  action_type = 3;
+  action_name = "bed_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50120] <- ActionSetting({
+  action_type = 3;
+  action_name = "rockingchair_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50129] <- ActionSetting({
+  action_type = 3;
+  action_name = "rockingchair_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50130] <- ActionSetting({
+  action_type = 3;
+  action_name = "sewingmachine_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50139] <- ActionSetting({
+  action_type = 3;
+  action_name = "sewingmachine_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50140] <- ActionSetting({
+  action_type = 3;
+  action_name = "dressingtable_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50149] <- ActionSetting({
+  action_type = 3;
+  action_name = "dressingtable_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50150] <- ActionSetting({
+  action_type = 3;
+  action_name = "dressingtable_yuka_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50159] <- ActionSetting({
+  action_type = 3;
+  action_name = "dressingtable_yuka_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50160] <- ActionSetting({
+  action_type = 3;
+  action_name = "rockinghorse_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50169] <- ActionSetting({
+  action_type = 3;
+  action_name = "rockinghorse_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50170] <- ActionSetting({
+  action_type = 3;
+  action_name = "piano_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50179] <- ActionSetting({
+  action_type = 3;
+  action_name = "piano_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50180] <- ActionSetting({
+  action_type = 3;
+  action_name = "telephone_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50189] <- ActionSetting({
+  action_type = 3;
+  action_name = "telephone_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50190] <- ActionSetting({
+  action_type = 3;
+  action_name = "fishbowl_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50199] <- ActionSetting({
+  action_type = 3;
+  action_name = "fishbowl_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50200] <- ActionSetting({
+  action_type = 3;
+  action_name = "mirrorfl_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50209] <- ActionSetting({
+  action_type = 3;
+  action_name = "mirrorfl_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[50210] <- ActionSetting({
+  action_type = 3;
+  action_name = "counter_tea_0";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+  desc = "座るよ！";
+})
+action_settings[50219] <- ActionSetting({
+  action_type = 3;
+  action_name = "counter_tea_9";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+})
+
+action_settings[5000] <- ActionSetting({
+  action_type = 0;
+  action_name = "furniture_stand_wait";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+
+  can_interrupt = false;
+})
+
+action_settings[6000] <- ActionSetting({
+  action_type = 0;
+  action_name = "furniture_sit_wait";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+
+  can_interrupt = false;
+})
+
+action_settings[6500] <- ActionSetting({
+  action_type = 0;
+  action_name = "furniture_sit_wait_null";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+
+  can_interrupt = false;
+})
+
+action_settings[7000] <- ActionSetting({
+  action_type = 0;
+  action_name = "furniture_sleep_wait";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+
+  can_interrupt = false;
+})
+
+action_settings[7500] <- ActionSetting({
+  action_type = 0;
+  action_name = "furniture_stand_connect_wait";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+
+  can_interrupt = false;
+})
+
+action_settings[10000] <- ActionSetting({
+  action_type = 4;
+  action_name = "link_aisatsu";
+  frequency = 10;
+  move_speed = 0.0;
+  prev_actions = [];
+
+  wait_action_id = 10;
+})

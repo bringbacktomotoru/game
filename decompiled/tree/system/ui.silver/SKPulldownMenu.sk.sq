@@ -1,0 +1,72 @@
+class SKPulldownMenu extends SKPulldownMenuBase
+{
+  splist = null;
+  sp = null;
+
+  viewenabled = true;
+
+  mgnx = 3;
+  mgny = 4;
+
+  constructor() {
+    super();
+    splist = [
+    ::getSprite("/system/ui.silver/ui.clp#pulldown1"),
+    ::getSprite("/system/ui.silver/ui.clp#pulldown2"),
+    ::getSprite("/system/ui.silver/ui.clp#pulldown3"),
+    ::getSprite("/system/ui.silver/ui.clp#pulldown1"),
+    ];
+    splist[3].color = 0xffffff66;
+    sp = splist[0];
+
+    local a = SKMenuAdaptor();
+    setMenuAdaptor(a);
+  }
+
+  function render() {
+    skDrawSprite(sp);
+  }
+
+  function updateLayout() {
+    foreach (s in splist) {
+      if (s) s.bnd.set(0, 0, bnd.w, bnd.h);
+    }
+    local o = currentitem;
+    if (o) {
+      selectItem(null);
+      selectItem(o);
+    }
+    repaint();
+  }
+
+  function updateComponentState(st) {
+    switch (st) {
+    case 4: sp = splist[0]; break;
+    case 5: sp = splist[1]; break;
+    case 6:
+    case 7: sp = splist[2]; break;
+    default: sp = splist[3]; break;
+    }
+    repaint();
+  }
+
+  function createListView() {
+    return SKListView();
+  }
+
+  function createScrollPane(r) {
+    local p = SKScrollPane(2, 0);
+    p.setRect(r.x, r.y, r.w, r.h);
+    p.setClipAreaColor(0);
+    p.cliparea.buf.blend = SK_MIX;
+    return p;
+  }
+
+  function createMenuBoard(r) {
+    local fig = SKImageView(::getSprite("/system/ui.silver/ui.clp#pulldownboard"));
+    fig.enabled = true;
+    fig.setRect(r.x - mgnx, r.y - mgny, r.w + mgnx * 2, r.h + mgny * 2);
+    return fig;
+  }
+
+}

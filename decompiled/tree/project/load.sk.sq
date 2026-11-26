@@ -1,0 +1,6 @@
+runsk("src/load.sk");
+
+loadGameSetting(::getResource("/conf/init.conf"));
+loadGameSetting(::getResource("/conf/gamesetting.conf"));
+
+setCocosBase("/ui");

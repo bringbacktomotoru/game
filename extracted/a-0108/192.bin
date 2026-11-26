@@ -1,0 +1,237 @@
+{
+  "ID": "31874f7c-ca02-469f-b601-c5fbcbbd94b7",
+  "Version": "2.3.3.0",
+  "Name": "FurnitureItemMaterialList",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 1296,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/game/talk_bg.png",
+              "Plist": ""
+            },
+            "Scale9Width": 506,
+            "Scale9Height": 186,
+            "AnchorPoint": {
+              "ScaleX": 0.6897
+            },
+            "Position": {
+              "X": 350.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.6917,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 1.0118,
+            "RightMargin": -1.0118,
+            "Tag": 193,
+            "ActionTag": -904056413,
+            "Size": {
+              "X": 506.0,
+              "Y": 186.0
+            },
+            "Name": "img_list",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/FurnitureItemMaterialListItem.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 90.0,
+              "Y": 55.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.1779,
+              "Y": 0.2957
+            },
+            "PreSize": {
+              "X": 0.1186,
+              "Y": 0.4785
+            },
+            "LeftMargin": 90.0,
+            "RightMargin": 356.0,
+            "TopMargin": 41.9998,
+            "BottomMargin": 55.0002,
+            "Tag": 580,
+            "ActionTag": -1864392950,
+            "Size": {
+              "X": 60.0,
+              "Y": 89.0
+            },
+            "Name": "pnl_item_1",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/FurnitureItemMaterialListItem.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 180.0,
+              "Y": 55.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.3557,
+              "Y": 0.2957
+            },
+            "PreSize": {
+              "X": 0.1186,
+              "Y": 0.4785
+            },
+            "LeftMargin": 180.0,
+            "RightMargin": 266.0,
+            "TopMargin": 41.9998,
+            "BottomMargin": 55.0002,
+            "Tag": 585,
+            "ActionTag": -178929174,
+            "Size": {
+              "X": 60.0,
+              "Y": 89.0
+            },
+            "Name": "pnl_item_2",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/FurnitureItemMaterialListItem.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 270.0,
+              "Y": 55.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.5336,
+              "Y": 0.2957
+            },
+            "PreSize": {
+              "X": 0.1186,
+              "Y": 0.4785
+            },
+            "LeftMargin": 270.0,
+            "RightMargin": 176.0,
+            "TopMargin": 41.9998,
+            "BottomMargin": 55.0002,
+            "Tag": 590,
+            "ActionTag": 638494338,
+            "Size": {
+              "X": 60.0,
+              "Y": 89.0
+            },
+            "Name": "pnl_item_3",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/FurnitureItemMaterialListItem.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 360.0001,
+              "Y": 55.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.7115,
+              "Y": 0.2957
+            },
+            "PreSize": {
+              "X": 0.1186,
+              "Y": 0.4785
+            },
+            "LeftMargin": 360.0001,
+            "RightMargin": 85.9999,
+            "TopMargin": 41.9998,
+            "BottomMargin": 55.0002,
+            "Tag": 595,
+            "ActionTag": -1097995244,
+            "Size": {
+              "X": 60.0,
+              "Y": 89.0
+            },
+            "Name": "pnl_item_4",
+            "ctype": "ProjectNodeObjectData"
+          }
+        ],
+        "Size": {
+          "X": 506.0,
+          "Y": 186.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../image/game/talk_bg.png",
+        "FurnitureItemMaterialListItem.json"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

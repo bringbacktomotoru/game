@@ -1,0 +1,694 @@
+class ARModule {
+  static BEST_FPS = 30.0;
+  static MAX_IMAGE_SIZE = 4096;
+
+  static STATE_RECORD_INVALID = -1;
+  static STATE_NOT_RECORD = 0;
+  static STATE_RECORDING = 1;
+  static STATE_RECORD_TIMEOUT = 2;
+
+  static INITIAL_FAILED = 0;
+  static INITIAL_SUCESS = 1;
+
+  static COODINATE_SYSTEM_SCALE_MIN = 20;
+  static COODINATE_SYSTEM_SCALE_MAX = 80;
+  static COODINATE_SYSTEM_SCALE_DEFAULT = 50;
+
+  landmarks = null;
+  landmarks_adjust = false;
+
+  is_thread_working = false;
+  capture_view = null;
+  save_image_thread = null;
+  cache_counter = 0;
+
+  movie_writer = null;
+  update_frame_counter = 0;
+  first_frame = null;
+  sprite_frame = null;
+  frame_image_view = null;
+  load_texture = null;
+  begin_frame = null;
+  current_frame = null;
+  record_time_limit = null;
+  rendering_image = false;
+
+  is_armode = true;
+  first_result = false;
+  use_front_camera = false;
+  accel_vec = null;
+  initial_state = null;
+
+  coodinate_system_scale = 0;
+  zoom = 0.5;
+
+  rectangles = null;
+
+  still_image_size = null;
+
+  constructor() {
+    save_image_thread = newthread();
+    capture_view = CaptureView();
+    frame_image_view = SKImageView();
+
+    first_frame = false;
+    first_result = true;
+    use_front_camera = false;
+    this.accel_vec = Vector3D();
+    coodinate_system_scale = COODINATE_SYSTEM_SCALE_DEFAULT;
+  }
+
+  function removed() {
+    save_image_thread = null;
+    capture_view = null;
+    frame_image_view = null;
+    first_frame = null;
+    sprite_frame = null;
+    if (movie_writer) movie_writer.dispose();
+    movie_writer = null;
+
+    load_texture = null;
+  }
+
+  function getRectangle(base_pos, create = false) {
+    if (!landmarks) return null;
+    if (create || !this.rectangles) {
+      _createRectangles();
+    }
+
+    local _nearest_plane_id = -1;
+    local _nearest_length = 99999.0;
+
+    foreach (_idx, _rectangle in rectangles) {
+      local _vtx = _rectangle.getBaseVtx().getPosition();
+      if (Math.abs(_vtx.y - base_pos.y) < _nearest_length) {
+        _nearest_length = Math.abs(_vtx.y - base_pos.y);
+        _nearest_plane_id = _idx;
+      }
+    }
+    if (_nearest_plane_id < 0) return null;
+
+    local _r = this.rectangles[_nearest_plane_id].getBaseVtx().getPosition();
+    return this.rectangles[_nearest_plane_id];
+  }
+
+  function _createRectangles() {
+
+    local _tmppos = Vector3D();
+    local _sorttable = SortTable();
+    foreach (_landmark in landmarks) {
+      if (!landmarks_adjust) {
+        local _array = adjustPose(_landmark);
+
+        _tmppos.set(_array[0]);
+
+        _tmppos = modifyCoodinateSystem(_tmppos);
+        if (_tmppos.length() < 0.0001 && _landmark.getID()) continue;
+        _landmark.setPosition(_tmppos);
+      }
+
+      _sorttable.append(_landmark.getPosition().y, _landmark);
+
+    }
+    landmarks_adjust = true;
+
+    local _vertexes = [];
+    _sorttable.toArray(_vertexes);
+    _sorttable.clear();
+
+    if (_vertexes.len() < 3) return;
+
+    local Y_RANGE = 0.1 * this.coodinate_system_scale;
+
+    local _standards = [];
+    local _planes = [];
+    local _current_plane_idx = 0;
+    local _cnt = 0;
+
+    foreach (_vertex in _vertexes) {
+      if (_cnt == 0) {
+        _sorttable.append(_vertex.getPosition().x, _vertex);
+        _standards + _vertex;
+        _cnt++;
+      } else if (Math.abs(_standards[_current_plane_idx].getPosition().y - _vertex.getPosition().y) <= Y_RANGE) {
+        _sorttable.append(_vertex.getPosition().x, _vertex);
+        _cnt++;
+      } else if (_cnt >= 3) {
+        local _plane = [];
+        _sorttable.toArray(_plane);
+        _sorttable.clear();
+        _planes + _plane;
+        _cnt = 0;
+        _current_plane_idx++;
+      } else {
+
+        _sorttable.clear();
+        _cnt = 0;
+      }
+    }
+
+    if (_cnt >= 3) {
+      local _plane = [];
+      _sorttable.toArray(_plane);
+      _sorttable.clear();
+      _planes + _plane;
+      _cnt = 0;
+    }
+
+    if (!rectangles) rectangles = [];
+    else rectangles.clear();
+
+    foreach (_idx, _plane in _planes) {
+      local _rect_vtx = [];
+      local _corners = [];
+
+      local _min_id = 0;
+      local _max_id = 0;
+
+      foreach (i, _vertex in _plane) {
+        if (_vertex.getPosition().z < _plane[_min_id].getPosition().z) _min_id = i;
+        if (_vertex.getPosition().z > _plane[_max_id].getPosition().z) _max_id = i;
+      }
+
+      local _length = _plane.len();
+      _rect_vtx + _plane[0];
+      _rect_vtx + _plane[_max_id];
+      _rect_vtx + _plane[_length - 1];
+      _rect_vtx + _plane[_min_id];
+
+      foreach (_corner in _rect_vtx) {
+        _corners + _corner.id_;
+      }
+
+      _rect_vtx + _plane[0];
+
+      local _offset_1 = 0;
+      local _offset_2 = 0;
+      local _cr = 0;
+
+      for (local i = 0; i < _length; i++) {
+
+        _cr = _cross(_rect_vtx[_offset_1], _rect_vtx[_offset_1 + 1], _plane[i]);
+        if (i < _max_id && _cr > 0) {
+          _offset_1++;
+          _rect_vtx[_offset_1] <- _plane[i];
+        }
+
+        _cr = _cross(_rect_vtx[1 + _offset_1 + _offset_2], _rect_vtx[2 + _offset_1 + _offset_2], _plane[i]);
+        if (i > _max_id && _cr > 0) {
+          _offset_2++;
+          _rect_vtx[1 + _offset_1 + _offset_2] <- _plane[i];
+        }
+      }
+
+      local _offset_3 = 0;
+      local _offset_4 = 0;
+      for (local i = _length - 1; i >= 0; i--) {
+
+        _cr = _cross(_rect_vtx[_rect_vtx.len() - 3], _rect_vtx[_rect_vtx.len() - 2], _plane[i]);
+        if (i > _min_id && _cr > 0) {
+          _rect_vtx[_rect_vtx.len() - 2] <- _plane[i];
+          _offset_3++;
+        }
+
+        _cr = _cross(_rect_vtx[_rect_vtx.len() - 2], _rect_vtx[_rect_vtx.len() - 1], _plane[i]);
+        if (i < _min_id && _cr > 0) {
+          _rect_vtx[_rect_vtx.len() - 1] <- _plane[i];
+          _offset_4++;
+        }
+      }
+
+      local _length_temp = _rect_vtx.len();
+
+      local _rem1 = _rejoinRectangleProcess1(_offset_1 + 1, 0, _rect_vtx); _offset_1 -= _rem1;
+      local _rem2 = _rejoinRectangleProcess1(_offset_1 + _offset_2 + 2, _offset_1 + 1, _rect_vtx); _offset_2 -= _rem2;
+      local _rem3 = _rejoinRectangleProcess1(_offset_1 + _offset_2 + _offset_3 + 3, _offset_1 + _offset_2 + 2, _rect_vtx); _offset_3 -= _rem3;
+      local _rem4 = _rejoinRectangleProcess1(_rect_vtx.len() - 1, _rect_vtx.len() - (2 + _offset_4), _rect_vtx); _offset_4 -= _rem4;
+      local _rem5 = _rejoinRectangleProcess2(_offset_1 + 1, 0, 0, _rect_vtx); _offset_1 -= _rem5;
+      local _rem6 = _rejoinRectangleProcess2(_offset_1 + _offset_2 + 2, _offset_1 + 1, 0, _rect_vtx); _offset_2 -= _rem6;
+      local _rem7 = _rejoinRectangleProcess2(_offset_1 + _offset_2 + _offset_3 + 3, _offset_1 + _offset_2 + 2, 0, _rect_vtx); _offset_3 -= _rem7;
+      local _rem8 = _rejoinRectangleProcess2(_rect_vtx.len() - 1, _rect_vtx.len() - (2 + _offset_4), 0, _rect_vtx); _offset_4 -= _rem8;
+
+      delete _rect_vtx[_rect_vtx.len() - 1];
+
+      this.rectangles + Rectangle(_rect_vtx, _corners, _standards[_idx]);
+    }
+    foreach (_p in _planes) {
+      _p.clear();
+    }
+    _planes.clear();
+
+  }
+
+  static function _cross(rectangle1, rectangle2, plane_pos) {
+    local _vx1 = rectangle2.getPosition().x - rectangle1.getPosition().x;
+    local _vz1 = rectangle2.getPosition().z - rectangle1.getPosition().z;
+    local _vx2 = plane_pos.getPosition().x - rectangle1.getPosition().x;
+    local _vz2 = plane_pos.getPosition().z - rectangle1.getPosition().z;
+
+    return _vx1 * _vz2 - _vz1 * _vx2;
+  }
+
+  static function _rejoinRectangleProcess1(max_id, min_id, rectangle) {
+    local _cr = 0;
+    local _rem = 0;
+    if (min_id + 1 >= max_id) return 0;
+    for (local i = min_id + 1; i < max_id; i++) {
+      _cr = _cross(rectangle[min_id], rectangle[max_id], rectangle[i]);
+
+      if (_cr < 0) {
+        delete rectangle[i];
+        max_id--;
+        i--;
+        _rem++;
+      }
+    }
+    max_id--;
+    return _rem + _rejoinRectangleProcess1(max_id, min_id, rectangle);
+  }
+
+  static function _rejoinRectangleProcess2(max_id, min_id, cnt, rectangle) {
+    local _cr = 0;
+    local _rem = 0;
+    if (min_id + 1 >= max_id) return 0;
+    for (local i = min_id + 1; i < max_id; i++) {
+
+      _cr = _cross(rectangle[min_id], rectangle[max_id], rectangle[i]);
+
+      if (_cr < 0) {
+        delete rectangle[i];
+        max_id--;
+        i--;
+        _rem++;
+      }
+    }
+    if (cnt % 2 == 0) max_id--;
+    else min_id++;
+    cnt++;
+    return _rem + _rejoinRectangleProcess2(max_id, min_id, cnt, rectangle);
+  }
+
+  function _getParameter(param, attr, d) {
+    return attr in param ? param.attr : d;
+  }
+
+  function pasteImageViewer(param) {
+    local image = param.image;
+    local imageview = param.imageview;
+    local img_rotation = param.img_rotation;
+    local render_width = param.render_width;
+    local render_height = param.render_height;
+    local buffer_size = "buffer_size" in param ? param.buffer_size : 0;
+    local enable_trimtex = "enable_trimtex" in param ? param.enable_trimtex : true;
+    local sprite_frame = "sprite_frame" in param ? param.sprite_frame : null;
+    local is_read_texture = "is_read_texture" in param ? param.is_read_texture : true;
+    local flip_y = "flip_y" in param ? param.flip_y : false;
+
+    local imagew = image.getWidth();
+    local imageh = image.getHeight();
+
+    local _screenwidth = render_width;
+    local _screenheight = render_height;
+
+    local _rgba_image = null;
+
+    if (is_read_texture) {
+
+      local _os_name = skGetOSName();
+      if (_os_name == "Android" && image.getImageFormat() == sarSmartar.SAR_IMAGE_FORMAT_JPEG && buffer_size > 0) {
+
+        local _byte_buffer = image.getByteBuffer(buffer_size);
+        _byte_buffer.pos = 0;
+
+        local _time = skGetTime();
+        _rgba_image = contentloaders[0]("", "jpg", _byte_buffer, null);
+        println("decoding finished:" + (skGetTime() - _time));
+      }
+    }
+    if (img_rotation == 90 || img_rotation == 270) {
+      local _tmp = _screenwidth;
+      _screenwidth = _screenheight;
+      _screenheight = _tmp;
+    }
+
+    local _rect = Rect2D(0, 0, imagew, imageh);
+    local _rotate = false;
+    local _sprite = sprite_frame;
+    if (enable_trimtex) {
+
+      local _w = image.getWidth();
+      local _h = image.getHeight();
+      local _merginX = Math.max(0, _w - _h * _screenwidth / _screenheight) / 2;
+      local _merginY = Math.max(0, _h - _w * _screenheight / _screenwidth) / 2;
+
+      local _trimwidth = imagew - _merginX * 2;
+      local _trimheight = imageh - _merginY * 2;
+
+      _rect.set(0, 0, _trimwidth, _trimheight);
+      local _center = [imagew / 2, imageh / 2];
+      _rect.x = _center[0] - _trimwidth / 2;
+      _rect.y = _center[1] - _trimheight / 2;
+
+      if (!_sprite) {
+        _sprite = Sprite();
+        _sprite.tex0 = Texture();
+        _sprite.tex1 = Texture();
+        local _shader = null;
+        local os_name = skGetOSName();
+        switch (os_name) {
+        case "iOS":
+
+          if (image.getImageFormat() == ARKit.kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
+            _shader = skFXFindTechnique("arsprite.iosYCbCrToRGBA").getShaderSource(0);
+          }
+          break;
+        case "Android":
+          if (image.getImageFormat() == sarSmartar.SAR_IMAGE_FORMAT_YCRCB420) _shader = skFXFindTechnique("arsprite.nv12toRGBA").getShaderSource(0);
+          else if (image.getImageFormat() == sarSmartar.SAR_IMAGE_FORMAT_YCBCR420) _shader = skFXFindTechnique("arsprite.nv21toRGBA").getShaderSource(0);
+          break;
+        }
+        if (!_shader) {
+          println("shader load failed... invalid image format.");
+          return;
+        }
+        _sprite.shadersrc = _shader;
+        _sprite = image.renderSprite(_sprite, _shader);
+
+        if (_sprite.tex1) {
+          println("tex1:" + _sprite.tex1.width + "/" + _sprite.tex1.height);
+        }
+      } else {
+        image.renderSprite(_sprite);
+      }
+
+    } else {
+
+      local _time = skGetTime();
+      if (is_read_texture) {
+
+        if (!sprite_frame) {
+          local _tex = Texture();
+          if (!_rgba_image) _rgba_image = RGBAImage(imagew, imageh);
+          _tex.load(_rgba_image);
+          _sprite = Sprite(_tex);
+        } else {
+          _sprite.tex0.subload(_rgba_image, 0, 0, 0, imagew, imageh, 0, 0);
+        }
+        if (imagew != _rgba_image.width) {
+          _rotate = true;
+        }
+      }
+      println("texture load finished:" + (skGetTime() - _time));
+    }
+
+    local _before = img_rotation;
+    if (_rotate) {
+      local _inc = (90 * (img_rotation == 0 ? -1 : 1));
+
+      _inc *= flip_y ? -1 : 1;
+      img_rotation += _inc;
+      if (img_rotation < 0) img_rotation += 360;
+      local _tmp = _screenheight;
+      _screenheight = _screenwidth;
+      _screenwidth = _tmp;
+      local tmp = imagew;
+      imagew = imageh;
+      imageh = tmp;
+      tmp = _rect.w;
+      _rect.w = _rect.h;
+      _rect.h = tmp;
+    }
+
+    if (_sprite) {
+      if (!_sprite.uvmat0) {
+        _sprite.uvmat0 = Matrix();
+      }
+
+      local _alpha = 0.25 * (1.0 - this.zoom);
+      local _minus_alpha = 1.0 - _alpha * 2;
+      local b = [
+      _alpha * imagew + _rect.x,
+      _alpha * imageh + _rect.y,
+      _minus_alpha * _rect.w,
+      _minus_alpha * _rect.h
+      ];
+      _sprite.setSubBounds(b);
+
+      if (_sprite.tex1) {
+
+        if (!_sprite.uvmat1) {
+          _sprite.uvmat1 = Matrix();
+        }
+        local sx = 1.0 / _sprite.tex1.width;
+        local sy = 1.0 / _sprite.tex1.height;
+        _sprite.uvmat1.identity().translate(b[0] * sx / 2.0, b[1] * sy / 2.0, 0.0).scale(b[2] * sx / 2.0, b[3] * sy / 2.0, 1.0);
+      }
+    }
+
+    if (img_rotation == 90 || img_rotation == 270) {
+      local tstw = _screenwidth;
+      local tsth = _screenheight;
+      imageview.setRect(0, 0, tstw, tsth);
+      imageview.rot.set(0, 0, img_rotation * Math.DTOR);
+    }
+
+    return _sprite;
+  }
+
+  function _renderTexture(capture_view, sprite, bufflags, target_scale = 1.0) {
+    local _fxlist = null;
+    local _time = skGetTime();
+    if (skBeginRender()) {
+      local _rt = skGetRenderTarget();
+      try {
+        skPushRenderStates();
+        skSetRenderTarget(sprite.tex0);
+
+        skClearScreen(SK_CLEAR_DEPTH);
+        capture_view.renderToBufferExtension(sprite, bufflags, _fxlist, target_scale);
+      } catch (ex) {
+        printexception(ex);
+      }
+      skEndRender();
+
+      skSetRenderTarget(_rt);
+      skPopRenderStates();
+      skSetViewport();
+
+      return true;
+    }
+    return false;
+  }
+
+  function _readPixels(capture_view, target_scale = 1.0) {
+    local _time = skGetTime();
+    local _rgba_image = RGBAImage(capture_view.bnd.w, capture_view.bnd.h);
+    skReadPixels(0, 0, capture_view.bnd.w * target_scale, capture_view.bnd.h * target_scale, _rgba_image);
+    return _rgba_image;
+  }
+
+  function waitSaveImageThread() {
+    while (isThreadRunning(save_image_thread)) {
+      suspend();
+    }
+  }
+
+  function deviceRotateView(capture_view, image_view) {
+
+    local _devicedir = calcCurrentDeviceDirection();
+    if (_devicedir != 0) {
+      local _flip_x = (image_view.bnd.w < 0 ? -1 : 1);
+      local _flip_y = (image_view.bnd.h < 0 ? -1 : 1);
+      if (image_view.bnd.w < 0) image_view.pos.set(capture_view.bnd.w, 0, 0);
+      image_view.bnd.x = -image_view.bnd.w / 2.0;
+      image_view.bnd.y = -image_view.bnd.h / 2.0;
+      image_view.rot.z += _devicedir * Math.DTOR;
+
+      local _lx = capture_view.bnd.w / 2.0 - image_view.pos.x;
+      local _ly = capture_view.bnd.h / 2.0 - image_view.pos.y;
+      image_view.pos.x += _lx;
+      image_view.pos.y += _ly;
+    }
+  }
+
+  function isARMode() {
+    return is_armode;
+  }
+
+  function canWriteMovie() {
+    return movie_writer.isEnd();
+  }
+
+  function getLandmarks() {
+    return landmarks;
+  }
+
+  function getInitialState() {
+    return this.initial_state;
+  }
+
+  function getZoomRate() {
+    return this.zoom;
+  }
+
+  function setARMode(mode) {
+    is_armode = mode;
+  }
+
+  function setRecordTimeLimit(limit) {
+    this.record_time_limit = limit;
+  }
+
+  function setCoodinateSystemScale(scale) {
+    this.coodinate_system_scale = scale;
+  }
+
+  function getCoodinateSystemScale() {
+    return this.coodinate_system_scale;
+  }
+
+  function getCacheCount() {
+    return cache_counter;
+  }
+
+  function ProcessingRenderImage() {
+    return this.rendering_image;
+  }
+
+  function getStillImageSize() {
+    return this.still_image_size;
+  }
+
+  function getRecordElapsedTime() {
+    if (!this.current_frame || !this.begin_frame) return 0;
+    return this.current_frame - this.begin_frame;
+  }
+
+  function setZoomRate(zoom) {
+    this.zoom = zoom;
+
+    if (this.zoom > 1.0) this.zoom = 1.0;
+    if (this.zoom <= 0.0) this.zoom = 0.0;
+  }
+
+  function create() {
+
+  }
+
+  function adjustPose(landmark) {
+
+    return [landmark.getPosition()];
+  }
+
+  function modifyCoodinateSystem(tmppos) {
+    return tmppos;
+  }
+
+  function changeCamera() {
+
+  }
+
+  function restartCameraDevice(video_state = -1) {
+
+  }
+
+  function changeARMode(is_capture, capture_state) {
+
+  }
+
+  function saveImage(model_viewer, panel) {
+    return true;
+  }
+
+  function saveFrame(model_viewer, is_capture) {
+    if (!is_capture) return STATE_NOT_RECORD;
+
+    this.current_frame = skGetTime();
+    if (begin_frame && record_time_limit != -1 && this.current_frame - begin_frame >= record_time_limit) {
+      return STATE_RECORD_TIMEOUT;
+    }
+    return STATE_RECORDING;
+  }
+
+  function modifyExposure() {
+
+  }
+
+  function getResult() {
+    return [];
+  }
+
+  function pasteImage(image_viewer, model_viewer, half_view) {
+  }
+
+  function startCaptureImage(accel_vec) {
+    this.accel_vec.set(accel_vec);
+  }
+
+  function startRecordMovie(model_viewer, accel_vec) {
+    this.accel_vec.set(accel_vec);
+    this.begin_frame = null;
+    this.current_frame = null;
+    return false;
+  }
+
+  function calcCameraMatrix(camera_pos, viewmat, flipY) {
+    return [Vector3D(), Vector3D(), Vector3D()];
+  }
+
+  function calcProjectionMatrix(result, width, height, camera_near, camera_far) {
+
+  }
+
+  function calcCurrentDeviceDirection() {
+    local orient = 0;
+    return orient;
+  }
+
+  function reset() {
+
+  }
+
+  function isFlipY() {
+    return false;
+  }
+
+  function getCameraImageRotation() {
+    return 0;
+  }
+
+  function isSupported() {
+    return true;
+  }
+
+  function onResume() {
+
+  }
+
+  function onPause() {
+
+  }
+
+  function isRecognized(result) {
+    return true;
+  }
+
+  function isLowerVideoImage() {
+    return true;
+  }
+
+  function calcRotationFromMagneticGravity(total_gyro_rot) {
+    return null;
+  }
+
+  function getGravity() {
+    return Vector3D();
+  }
+
+  function calcAccelDiff() {
+  }
+
+  function displayMovieThumbnail() {
+
+  }
+}

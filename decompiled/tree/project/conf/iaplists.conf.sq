@@ -1,0 +1,54 @@
+iaplists = {
+  "iOS" = [
+  { id = "cyberstep.cssp.rm120", info = null, pricetxt = null, priceamt = 0 },
+  { id = "cyberstep.cssp.rm480", info = null, pricetxt = "￥480", priceamt = 0 },
+  { id = "cyberstep.cssp.rm960", info = null, pricetxt = "￥960", priceamt = 0 },
+  { id = "cyberstep.cssp.rm1800", info = null, pricetxt = "￥1800", priceamt = 0 },
+  { id = "cyberstep.cssp.rm3600", info = null, pricetxt = "￥3800", priceamt = 0 },
+  { id = "cyberstep.cssp.rm5000", info = null, pricetxt = "￥5000", priceamt = 0 },
+  { id = "cyberstep.cssp.rm9800", info = null, pricetxt = "￥9800", priceamt = 0 },
+
+  { id = "com.cyberstep.cssp.room2", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room3", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room4", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room5", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room2s", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room3s", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room4s", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room5s", info = null, pricetxt = null, priceamt = 0 },
+  ],
+  "Android" = [
+  { id = "cyberstep.cssp.rm120", info = null, pricetxt = null, priceamt = 0 },
+  { id = "cyberstep.cssp.rm480", info = null, pricetxt = "￥480", priceamt = 0 },
+  { id = "cyberstep.cssp.rm960", info = null, pricetxt = "￥960", priceamt = 0 },
+  { id = "cyberstep.cssp.rm1800", info = null, pricetxt = "￥1800", priceamt = 0 },
+  { id = "cyberstep.cssp.rm3600", info = null, pricetxt = "￥3800", priceamt = 0 },
+  { id = "cyberstep.cssp.rm5000", info = null, pricetxt = "￥5000", priceamt = 0 },
+  { id = "cyberstep.cssp.rm9800", info = null, pricetxt = "￥9800", priceamt = 0 },
+
+  { id = "com.cyberstep.cssp.room2", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room3", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room4", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room5", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room4s", info = null, pricetxt = null, priceamt = 0 },
+  { id = "com.cyberstep.cssp.room5s", info = null, pricetxt = null, priceamt = 0 },
+
+  ],
+  "Windows" = [
+  { id = "rm120", info = null, pricetxt = "￥120", priceamt = 0 },
+  { id = "rm480", info = null, pricetxt = "￥480", priceamt = 0 },
+  { id = "rm960", info = null, pricetxt = "￥960", priceamt = 0 },
+  { id = "rm1800", info = null, pricetxt = "￥1800", priceamt = 0 },
+  { id = "rm3600", info = null, pricetxt = "￥3800", priceamt = 0 },
+  { id = "rm5000", info = null, pricetxt = "￥5000", priceamt = 0 },
+
+  { id = "com.cyberstep.cssp.room2", info = null, pricetxt = "￥480", priceamt = 0 },
+  { id = "com.cyberstep.cssp.room3", info = null, pricetxt = "￥960", priceamt = 0 },
+  { id = "com.cyberstep.cssp.room4", info = null, pricetxt = "￥1000", priceamt = 0 },
+  { id = "com.cyberstep.cssp.room5", info = null, pricetxt = "￥2000", priceamt = 0 },
+  { id = "room_sell_2", info = null, pricetxt = "￥0", priceamt = 0 },
+
+  { id = "room_sell_3", info = null, pricetxt = "￥480", priceamt = 0 },
+  { id = "room_sell_4", info = null, pricetxt = "￥480", priceamt = 0 },
+  ],
+}

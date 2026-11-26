@@ -1,0 +1,133 @@
+class MissionSetting extends Setting {
+
+  static TYPE_NUMS_TAPHAPINESS = 1;
+  static TYPE_NUMS_USEFURNITURE = 2;
+  static TYPE_NUMS_TALKFURNITURE = 3;
+  static TYPE_NUMS_TALKCHARA = 4;
+  static TYPE_NUMS_BONUSHAPINESS = 5;
+  static TYPE_GET_GM = 6;
+  static TYPE_CONSUME_GM = 7;
+  static TYPE_GET_NEW_FURNITURE = 8;
+  static TYPE_GET_NEW_COSTUME = 9
+  static TYPE_UNIQUE_TALKKEY = 10;
+
+  static TYPE_HAS_COSTUME = 100;
+  static TYPE_HAS_FURNITURE = 101;
+  static TYPE_LAYOUT_FURNITURE_ID = 102;
+  static TYPE_LAYOUT_FURNITURE_TYPE = 103;
+
+  static PROGRESS_UPDATE = 100;
+
+  id = null;
+  desc = null;
+  detail_desc = null;
+  type = null;
+  value = null;
+  target_str = null;
+  target_list = null;
+  target_and = null;
+  next_id = null;
+
+  function loadConfAtServer(t) {
+    local setting = MissionSetting();
+
+    foreach (k, v in t) {
+      switch (k) {
+      case "target_list":
+        setting[k] = decodeJSON(v);
+        break;
+      case "target_and":
+        setting[k] = v > 0 ? true : false;
+      default:
+        setting[k] = v;
+      }
+    }
+
+    return setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+    if (desc) trans + "desc";
+    if (detail_desc) trans + "detail_desc";
+
+    return trans;
+  }
+
+  function getDesc() {
+    return this.desc;
+  }
+  function getDetailDesc() {
+    return this.detail_desc || this.desc;
+  }
+
+  function hasDetailDesc() {
+    return this.detail_desc ? true : false;
+  }
+
+  function isProgressAdd() {
+    return this.type < PROGRESS_UPDATE ? true : false;
+  }
+  function isTargetAnd() {
+    return this.target_and;
+  }
+
+  function getType() {
+    return this.type;
+  }
+  function getValue() {
+    return this.value;
+  }
+
+  function hasTargetStr() {
+    return this.target_str ? true : false;
+  }
+  function checkTargetStr(str) {
+    return this.target_str == str ? true : false;
+  }
+
+  function getTargetList() {
+    return this.target_list;
+  }
+  function hasTargetList() {
+    return this.target_list ? true : false;
+  }
+
+  function checkTargetList(targets) {
+    local _ret = false;
+    foreach (target in this.target_list) {
+      local _b = false;
+      foreach (t in targets) {
+        if (target.kind != t.kind) continue;
+        if (target.id != t.id) continue;
+        _b = true;
+        break;
+      }
+
+      if (this.target_and && !_b) return false;
+      if (!this.target_and && _b) return true;
+
+      _ret = _b;
+    }
+
+    return _ret;
+  }
+
+  function checkMissionType(type) {
+    return this.type == type ? true : false;
+  }
+
+  function hasNext() {
+    return this.next_id > 0 ? true : false;
+  }
+  function getNextMissionID() {
+    return this.next_id;
+  }
+
+  function needSendProgressAPI() {
+    if (this.type == TYPE_UNIQUE_TALKKEY) return true;
+
+    return false;
+  }
+
+}

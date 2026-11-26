@@ -1,0 +1,493 @@
+{
+  "ID": "da9a6085-2896-498f-9be3-e418d3ff3f03",
+  "Version": "2.3.3.0",
+  "Name": "GetDailyPresentDialog",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 91,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_m.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 10,
+            "Scale9OriginY": 10,
+            "Scale9Width": 688,
+            "Scale9Height": 614,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 105,
+            "ActionTag": -1513223612,
+            "Size": {
+              "X": 708.0,
+              "Y": 634.0
+            },
+            "Name": "img",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/button/button_dialog.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 66,
+            "Scale9OriginY": 33,
+            "Scale9Width": 106,
+            "Scale9Height": 35,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 342.0,
+              "Y": 130.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4831,
+              "Y": 0.205
+            },
+            "PreSize": {
+              "X": 0.3362,
+              "Y": 0.1593
+            },
+            "LeftMargin": 223.0,
+            "RightMargin": 247.0,
+            "TopMargin": 453.5,
+            "BottomMargin": 79.5,
+            "Tag": 103,
+            "Children": [
+              {
+                "FontSize": 36,
+                "LabelText": "OK",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 4,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 119.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.495
+                },
+                "PreSize": {
+                  "X": 0.2479,
+                  "Y": 0.4356
+                },
+                "LeftMargin": 89.5,
+                "RightMargin": 89.5,
+                "TopMargin": 29.0,
+                "BottomMargin": 28.0,
+                "Tag": 104,
+                "ActionTag": -1749104488,
+                "Size": {
+                  "X": 59.0,
+                  "Y": 44.0
+                },
+                "Name": "lbl_ok",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1452305072,
+            "Size": {
+              "X": 238.0,
+              "Y": 101.0
+            },
+            "Name": "btn_ok",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 36,
+            "LabelText": "ログインボーナスゲット！",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 525.0007
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 88,
+              "G": 88,
+              "B": 88
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5085,
+              "Y": 0.8281
+            },
+            "PreSize": {
+              "X": 0.4364,
+              "Y": 0.0568
+            },
+            "LeftMargin": 205.5,
+            "RightMargin": 193.5,
+            "TopMargin": 90.9993,
+            "BottomMargin": 507.0007,
+            "Tag": 102,
+            "ActionTag": 1486932403,
+            "Size": {
+              "X": 309.0,
+              "Y": 36.0
+            },
+            "Name": "lbl",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_deco_down.png",
+              "Plist": ""
+            },
+            "Scale9Width": 476,
+            "Scale9Height": 29,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 359.9996,
+              "Y": 249.9999
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5085,
+              "Y": 0.3943
+            },
+            "PreSize": {
+              "X": 0.6723,
+              "Y": 0.0457
+            },
+            "LeftMargin": 121.9996,
+            "RightMargin": 110.0004,
+            "TopMargin": 369.5001,
+            "BottomMargin": 235.4999,
+            "Tag": 101,
+            "ActionTag": 1098264403,
+            "Size": {
+              "X": 476.0,
+              "Y": 29.0
+            },
+            "Name": "Image_1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_deco_up.png",
+              "Plist": ""
+            },
+            "Scale9Width": 476,
+            "Scale9Height": 29,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 359.9999,
+              "Y": 415.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5085,
+              "Y": 0.6546
+            },
+            "PreSize": {
+              "X": 0.6723,
+              "Y": 0.0457
+            },
+            "LeftMargin": 121.9999,
+            "RightMargin": 110.0001,
+            "TopMargin": 204.5,
+            "BottomMargin": 400.5,
+            "Tag": 100,
+            "ActionTag": -1894400999,
+            "Size": {
+              "X": 476.0,
+              "Y": 29.0
+            },
+            "Name": "Image_2",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 20,
+            "LabelText": "ログインボーナス２日目のプレゼントとして以下のアイテムが贈られました。",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0001,
+              "Y": 485.0008
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 88,
+              "G": 88,
+              "B": 88
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5085,
+              "Y": 0.765
+            },
+            "PreSize": {
+              "X": 0.7782,
+              "Y": 0.0315
+            },
+            "LeftMargin": 84.5001,
+            "RightMargin": 72.4999,
+            "TopMargin": 138.9992,
+            "BottomMargin": 475.0008,
+            "Tag": 106,
+            "ActionTag": -1637057608,
+            "Size": {
+              "X": 551.0,
+              "Y": 20.0
+            },
+            "Name": "lbl_message",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/ImageFile.png",
+              "Plist": ""
+            },
+            "Scale9Width": 46,
+            "Scale9Height": 46,
+            "AnchorPoint": {
+              "ScaleX": 1.0,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 300.0,
+              "Y": 333.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4237,
+              "Y": 0.5252
+            },
+            "PreSize": {
+              "X": 0.065,
+              "Y": 0.0726
+            },
+            "LeftMargin": 254.0,
+            "RightMargin": 408.0,
+            "TopMargin": 278.0,
+            "BottomMargin": 310.0,
+            "Tag": 107,
+            "ActionTag": 1274539770,
+            "Size": {
+              "X": 46.0,
+              "Y": 46.0
+            },
+            "Name": "img_icon",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 48,
+            "LabelText": "× 9999",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "OutlineSize": 3,
+            "OutlineColor": {
+              "R": 111,
+              "G": 59,
+              "B": 59
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 330.0,
+              "Y": 333.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4661,
+              "Y": 0.5252
+            },
+            "PreSize": {
+              "X": 0.4237,
+              "Y": 0.0852
+            },
+            "LeftMargin": 330.0,
+            "RightMargin": 78.0,
+            "TopMargin": 274.0,
+            "BottomMargin": 306.0,
+            "Tag": 108,
+            "ActionTag": 981535432,
+            "Size": {
+              "X": 300.0,
+              "Y": 54.0
+            },
+            "Name": "lbl_value",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 708.0,
+          "Y": 634.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../Default/ImageFile.png",
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/button/button_dialog.png",
+        "../image/dialog/dialog_deco_down.png",
+        "../image/dialog/dialog_deco_up.png",
+        "../image/dialog/dialog_m.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

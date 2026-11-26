@@ -1,0 +1,166 @@
+;
+;----------- 初期登場 -------------
+
+[playbgm bgm="BGM03"]
+[changeroom id=1]
+
+;カメラ初期位置
+[movecamera type=0 x=-2.5 y=2.3 z=7 time=0]
+[rotatecamera pitch=0 head=130 time=0]
+
+;オレンジカントリーチェア
+[popfurniture fname=chair1 id=8401 x=-12 y=2 z=-2 angle=130 relative=true]
+
+;キャラ出現
+[popchara costume=109001 x=-17.5 y=2 z=-4 angle=0 relative=true]
+[startscene]
+[wait time=200]
+
+;右に70度首振り
+[rotatecamera type=1 pitch=0 head=50 time=8000]
+[wait time=7500]
+
+;キャラがカメラに気がつく
+[startanime name=kitty script=uun_set time=700]
+[waitaction name=kitty script=uun_set]
+[wait time=700]
+
+;キャラが振り返る
+[turnchara name=kitty script=turn_r angle=180  time=1000]
+[waitaction name=kitty script=turn_r]
+
+;キャラがカメラに近づく
+[movechara name=kitty type=1 z=0.5 script=movie_walk neutral=stand time=1000]
+[wait time=1000]
+
+;キャラ手振り
+[startanime name=kitty script=tefuri time=2000]
+[voice name=kitty voice_key="e4"]
+[balloon name=kitty time=3000]
+あら#e1# こんにちは#e1#
+[wait time=3000]
+[endballoon name=kitty]
+
+[startanime name=kitty script=kubikashige script_args={[2,"meisou","meisou"]} time=3000]
+[balloon name=kitty time=3500]
+ダニエルに/n
+会いに来たのだけど/n
+いないみたいなの
+[wait time=3500]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+[startanime name=kitty script=stand_end2 script_args={["sad"]} time=3000]
+[balloon name=kitty time=3000]
+あなた/n
+ダニエルのおともだちよね#q1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=pyonpyon]
+
+[startanime name=kitty script=kubikashige script_args={[3,"sad","blink"]} time=3000]
+[balloon name=kitty time=3000]
+彼の行き先を/n
+知ってるかしら#q1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=pyonpyon]
+
+[startanime name=kitty script=mitsuketa_set script_args={["def","blink"]} time=3000]
+[balloon name=kitty time=3000]
+え#q1#/n
+撮影旅行に#q1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=pyonpyon]
+
+[startanime name=kitty script=bou_unaduku_face script_args={[2,"smile"]} time=3000]
+[balloon name=kitty time=3500]
+まあ、そうだったのね#e1#/n
+教えてくれて/n
+ありがとう#e1#
+[wait time=3500]
+[endballoon name=kitty]
+[waitaction name=kitty script=pyonpyon]
+
+[startanime name=kitty script=tefuri time=2000]
+[voice name=kitty voice_key="e2"]
+[balloon name=kitty time=3000]
+はじめまして#e1#/n
+わたし、キティ#o1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=tefuri]
+
+[startanime name=kitty script=uun_set time=3000]
+[balloon name=kitty time=3000]
+あなたのお名前は#q1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=uun_set]
+
+[popdialog target="InputPlayerInfo"]
+
+[startanime name=kitty script=tabetai_set script_args={[3,"kirasmile","kirasmile"]} time=3000]
+[voice name=kitty voice_key="e9"]
+[balloon name=kitty time=3000]
+#playername/n
+っていうのね#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=tabetai_set]
+
+[startanime name=kitty script=teage script_args={["smile","smile"]} time=3000]
+[balloon name=kitty time=3000]
+わたしたちも/n
+おともだちになりましょ#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=teage]
+
+[startanime name=kitty script=sentence_kurukuru 
+ script_args={[{loop_num = 3, face=["smile2", "smile2"]}]} time=3000]
+[voice name=kitty voice_key="e8"]
+[balloon name=kitty time=4000]
+#playername/n
+よろしくね#e1#
+[wait time=4000]
+[endballoon name=kitty]
+[waitaction name=kitty script=tabetai_set]
+[wait time=300]
+[startanime name=kitty script=gakkari_set script_args={[1,"meisou","meisou"]} time=2000]
+[voice name=kitty voice_key="e24"]
+[balloon name=kitty time=3500]
+ふぅ…/n
+ここまで歩いてきたから/n
+ちょっぴり疲れちゃった
+[wait time=3500]
+[endballoon name=kitty]
+[waitaction name=kitty script=gakkari_set]
+
+[startanime name=kitty script=mitsuketa_set script_args={["biku","blink"]} time=3000]
+[balloon name=kitty time=3000]
+え#q1#/n
+椅子にどうぞって#q1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=yokopatapata]
+
+[startanime name=kitty script=yokopatapata time=3000]
+[voice name=kitty voice_key="e7"]
+[balloon name=kitty time=3000]
+わぁ、ありがとう#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=yokopatapata]
+
+[startanime name=kitty script=bou_unaduku_face script_args={[2,"smile"]} time=3000]
+[balloon name=kitty time=3000]
+じゃあ/n
+ちょっとだけ/n
+休ませてもらうね#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=yokopatapata]
+[fadeoutbgm spd=12]
+[wait time=2300]

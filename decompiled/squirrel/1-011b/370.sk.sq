@@ -1,0 +1,418 @@
+class WorkRewardDialog extends ::Dialog {
+  lbl_gm = null;
+  lbl_gm_val = null;
+  img_icon_gm = null;
+  lbl_costume_exp = null;
+  lbl_costume_val = null;
+  img_icon_exp = null;
+
+  lbl_reward_item = null;
+  img_frame = null;
+  roulette = null;
+  pnl_reward = null;
+  tap_text = null;
+
+  reward = null;
+
+  show_thread = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/WorkRewardDialog.ui"));
+    this.lbl_gm_val = this.view.findChild("lbl_gm_val");
+    this.lbl_gm_val.visible = false;
+    this.lbl_costume_val = this.view.findChild("lbl_costume_exp_val");
+    this.lbl_costume_val.visible = false;
+
+    this.pnl_reward = this.view.findChild("pnl_reward");
+    this.roulette = Roulette(this.pnl_reward);
+    this.roulette.setVisible(false);
+    this.view.addChild(this.roulette);
+    this.img_frame = this.view.findChild("img_frame");
+    this.img_frame.visible = false;
+
+    this.lbl_gm = this.view.findChild("lbl_gm");
+    this.lbl_gm.setText(::dict.get("game_money"));
+    this.lbl_gm.visible = false;
+    this.lbl_costume_exp = this.view.findChild("lbl_costume_exp");
+    this.lbl_costume_exp.setText(::dict.get("costume_exp"));
+    this.lbl_costume_exp.visible = false;
+    this.lbl_reward_item = this.view.findChild("lbl_reward_item");
+    this.lbl_reward_item.setText(::dict.get("random_reward"));
+    this.lbl_reward_item.visible = false;
+
+    this.img_icon_gm = this.view.findChild("img_icon_gm");
+    this.img_icon_gm.visible = false;
+    this.img_icon_exp = this.view.findChild("img_icon_exp");
+    this.img_icon_exp.visible = false;
+    this.btn_ok.visible = false;
+
+    this.tap_text = TapText(this.view.findChild("pnl_tap_text"));
+    this.tap_text.setVisible(false);
+
+    this.view.findChild("pnl_mouseevent").addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function showRewardDetail() {
+    local _get = this.reward.rewards[3];
+
+    local _sub_info;
+    if (_get.kind == ITEM_TYPE_MOTION) {
+
+      _sub_info = this.reward.rewards[0].target_id;
+    }
+
+    local dlg = RewardDialog();
+    dlg.setReward(_get.kind, _get.id, _get.num, _sub_info);
+    if (_get.kind == ITEM_TYPE_MOTION) {
+      dlg.setText(::dict.get("rewarddialog_get_specialmotion"));
+    }
+    dlg.show();
+  }
+
+  function mouseevent(e) {
+    switch (e.id) {
+    case MOUSE_CLICKED:
+      this.roulette.tapStop();
+      break;
+    }
+  }
+
+  function setReward(reward) {
+    this.reward = reward;
+    local _rewards = reward.rewards;
+    this.lbl_gm_val.setText(_rewards[2].num);
+    this.lbl_costume_val.setText(_rewards[2].num);
+    this.roulette.setReward(reward);
+  }
+
+  function show() {
+    local _t = newthread();
+    _t.start(startShowFunc, this);
+    super.show();
+  }
+
+  function startShowFunc() {
+
+    sleep(1000);
+    this.lbl_gm.visible = true;
+    this.lbl_gm_val.visible = true;
+    this.img_icon_gm.visible = true;
+
+    sleep(1000);
+    this.lbl_costume_exp.visible = true;
+    this.lbl_costume_val.visible = true;
+    this.img_icon_exp.visible = true;
+
+    sleep(1000);
+    this.roulette.setVisible(true);
+    this.lbl_reward_item.visible = true;
+    this.img_frame.visible = true;
+
+    sleep(1000);
+    this.roulette.startRoulette();
+    this.tap_text.start()
+    while (!this.roulette.isRouletteEnd()) {
+      sleep(100);
+    }
+    if (!this.tap_text.getStopFlag()) this.tap_text.stop();
+
+    sleep(1000);
+    this.showRewardDetail();
+    this.btn_ok.visible = true;
+  }
+
+  function close() {
+    super.close();
+  }
+}
+
+class WorkRewardDialog.Roulette extends SKView {
+  static DISP_CARD_NUM = 5;
+  static LOOP_MSEC = 800;
+  static LOOP_STOP_MSEC = 1500;
+  static MAX_ROLL_NUM = 20;
+  static CARD_SPACE = 10.0;
+
+  static STATE_WAIT = 0;
+  static STATE_START = 1;
+  static STATE_TAP = 3;
+  static STATE_STOP_WAIT = 4;
+  static STATE_STOP = 5;
+  static STATE_END = 6;
+
+  reclist = null;
+  scroll = null;
+  pnl_list = null;
+
+  reward = null;
+  stop_index = -1;
+  state = 0;
+  card_size = 0;
+  update_time = 0;
+  loop_count = 0;
+
+  constructor(pl) {
+    this.pnl_list = pl;
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dyscale = 0.0;
+    this.pnl_list.addChild(this.reclist);
+    this.pnl_list.setBuffer(true);
+    this.scroll.setScrollLocked(true);
+
+    setUpdateFunc(updateFrame);
+  }
+
+  function setReward(reward) {
+    this.reward = reward;
+    this.stop_index = reward.rri;
+    _setList();
+    this.scroll.view.pos.x = -this.card_size / 2.0;
+    this.scroll.view.matdirty = true;
+    this.scroll.view.repaint();
+  }
+
+  function _setList() {
+    this.reclist.clearChildren();
+    local _offset = 0;
+    local _cnt = 0;
+    local _size_x = 0;
+    local _rt = ::gamesetting.costume_action_settings[this.reward.wid].getRewardTable();
+
+    for (local i = 0; i < DISP_CARD_NUM + 2; i++) {
+      foreach (r in _rt) {
+        local _reward = RewardCard(r);
+        _reward.pos.x = _offset;
+        this.reclist.addChild(_reward);
+        _reward.matdirty = true;
+        _reward.repaint();
+
+        _offset += _reward.bnd.w + CARD_SPACE;
+        this.card_size = _reward.bnd.w;
+      }
+    }
+    this.reclist.setRect(0, 0, _offset, this.pnl_list.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+  }
+
+  function setVisible(b) {
+    this.pnl_list.visible = b;
+  }
+
+  function startRoulette() {
+    local _rtl = ::gamesetting.costume_action_settings[this.reward.wid].getRewardTable().len();
+    this.scroll.loop(-(this.card_size + CARD_SPACE) * _rtl, 0, LOOP_MSEC * (float(_rtl) / float(DISP_CARD_NUM)));
+    this.state = STATE_START;
+  }
+
+  function updateFrame(dt) {
+    if (this.state == STATE_END) return;
+
+    if (this.state == STATE_START && this.scroll.getLoopCount() >= MAX_ROLL_NUM) {
+      this.scroll.view.pos.x = -this.card_size / 2.0;
+      this.scroll.view.matdirty = true;
+      this.scroll.view.repaint();
+      this.scroll.loopStop(_getStopNum(), 0, LOOP_STOP_MSEC);
+      this.state = STATE_STOP;
+    }
+
+    if (this.state == STATE_TAP) {
+
+      this.loop_count = this.scroll.getLoopCount();
+      this.state = STATE_STOP_WAIT;
+    }
+    else if (this.state == STATE_STOP_WAIT && this.loop_count != this.scroll.getLoopCount()) {
+
+      this.scroll.view.pos.x = -this.card_size / 2.0;
+      this.scroll.view.matdirty = true;
+      this.scroll.view.repaint();
+      this.scroll.loopStop(_getStopNum(), 0, LOOP_STOP_MSEC);
+      this.state = STATE_STOP;
+    }
+
+    if (this.state == STATE_STOP && !this.scroll.intr) {
+      this.scroll.view.pos.x = -this.card_size / 2.0 + _getStopNum();
+      this.scroll.view.matdirty = true;
+      this.scroll.view.repaint();
+      this.state = STATE_END;
+    }
+  }
+
+  function _getStopNum() {
+    local _rtl = ::gamesetting.costume_action_settings[this.reward.wid].getRewardTable().len();
+    return -(this.card_size + CARD_SPACE) * (_rtl - 3 + this.stop_index);
+  }
+
+  function tapStop() {
+    if (this.state != STATE_START) return;
+    this.state = STATE_TAP;
+  }
+
+  function getState() {
+    return this.state;
+  }
+
+  function isRouletteStop() {
+    return this.state == STATE_STOP;
+  }
+
+  function isRouletteEnd() {
+    return this.state == STATE_END;
+  }
+}
+
+class WorkRewardDialog.Roulette.RewardCard extends SKView {
+  view = null;
+
+  reward = null;
+
+  constructor(reward) {
+    this.reward = reward;
+    this.view = ::loadSKView("/ui/common/RewardCard.ui");
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    addChild(this.view);
+
+    local _btn_item = this.view.findChild("btn_item");
+    local _img_frame1 = _btn_item.findChild("img_frame1");
+    local _img_frame2 = _btn_item.findChild("img_frame2");
+    _img_frame1.visible = true;
+    _img_frame2.visible = false;
+
+    local _pnl_money = _btn_item.findChild("pnl_money_icon");
+    local _img_gm = _pnl_money.findChild("img_gm");
+    local _img_rm1 = _pnl_money.findChild("img_rm1");
+    local _img_rm2 = _pnl_money.findChild("img_rm2");
+
+    local _pnl_icon = _btn_item.findChild("pnl_icon");
+    local _icon;
+    local _sp;
+
+    switch (reward.kind) {
+    case ITEM_TYPE_GM:
+      _pnl_money.visible = true;
+      _img_gm.visible = true;
+      _img_rm1.visible = false;
+      _img_rm2.visible = false;
+      break;
+
+    case ITEM_TYPE_FREERM:
+      _pnl_money.visible = true;
+      _img_gm.visible = false;
+      _img_rm1.visible = true;
+      _img_rm2.visible = true;
+      break;
+
+    case ITEM_TYPE_COSTUME:
+      _pnl_money.visible = false;
+      _icon = ::SKImageView();
+      _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_icon);
+      CostumeIcon(reward.id, _icon, false, false);
+      break;
+
+    case ITEM_TYPE_FURNITURE:
+      _pnl_money.visible = false;
+
+      local _fs = ::gamesetting.furniture_settings[reward.id];
+      if (!_fs) return;
+      _sp = _fs.getIconSpriteUnacquired();
+      _icon = SKImageView(_sp);
+      _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_icon);
+      break;
+
+    case ITEM_TYPE_ITEM:
+      _pnl_money.visible = false;
+
+      break;
+
+    case ITEM_TYPE_MOTION:
+      _pnl_money.visible = false;
+      local _ms = ::gamesetting.costume_motion_settings[reward.id];
+      _sp = _ms.getIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_icon);
+      break;
+    }
+  }
+}
+
+class WorkRewardDialog.TapText {
+  static DEFAULT_COLOR = 0xffff0fff;
+  static FADE_COLOR_TIME = 50;
+
+  pnl_tap_text = null;
+  img_arrow = null;
+  lbl_text = null;
+
+  stop_flag = false;
+  color_mask = 0;
+  color_state = 0;
+  intr = null;
+
+  constructor(p) {
+    this.pnl_tap_text = p;
+    this.img_arrow = p.findChild("img_arrow");
+    this.lbl_text = p.findChild("lbl_text");
+    this.lbl_text.setText(::dict.get("work_reward_roulette_stop"));
+
+    this.color_mask = 255;
+    this.img_arrow.setColor(DEFAULT_COLOR - this.color_mask);
+    this.lbl_text.setColor(DEFAULT_COLOR - this.color_mask);
+  }
+
+  function setVisible(b) {
+    this.pnl_tap_text.visible = b;
+  }
+
+  function start() {
+    setVisible(true);
+    this.stop_flag = false;
+    if (intr) {
+      clearInterval(intr);
+      intr = null;
+    }
+
+    local func = function(dt) {
+      if (this.color_state) {
+        this.color_mask += 17;
+        if (this.color_mask > 255) {
+          this.color_mask = 255;
+          this.color_state = 0;
+          if (this.stop_flag) {
+            setVisible(false);
+            this.intr = null;
+            return undefined;
+          }
+        }
+      }
+      else {
+        this.color_mask -= 17;
+        if (this.color_mask < 0) {
+          this.color_mask = 0;
+          this.color_state = 1;
+        }
+      }
+
+      this.img_arrow.setColor(DEFAULT_COLOR - this.color_mask);
+      this.lbl_text.setColor(DEFAULT_COLOR - this.color_mask);
+    }.bindenv(this);
+    this.intr = setInterval(func, FADE_COLOR_TIME);
+  }
+
+  function stop() {
+    this.stop_flag = true;
+  }
+
+  function getStopFlag() {
+    return this.stop_flag;
+  }
+
+  function removed() {
+    if (this.intr) {
+      clearInterval(this.intr);
+      this.intr = null;
+    }
+  }
+}

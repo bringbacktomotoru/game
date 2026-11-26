@@ -1,0 +1,535 @@
+class CharaFocusPanel extends HomeUI.Panel {
+
+  static need_rank_layer = false;
+  static need_camera = true;
+  static need_camera_rotate = true;
+  static need_camera_default = false;
+  static need_menu_layer = false;
+
+  static show_tapfloor_particle = false;
+  static disable_long_tap = true;
+
+  static need_money_layer = false;
+  static need_panel_name = false;
+  static need_bonus_hapiness_info = false;
+
+  static unique_move_sound = ::SoundConstants.SOUND_BUTTON;
+
+  static TARGET_OFFSET = Vector3D(0, 0.5, 0);
+
+  view = null;
+  talkwindow_layer = null;
+
+  btn_ar = null;
+  btn_skip = null;
+  btn_back = null;
+
+  chara_data = null;
+  costume_data = null;
+
+  mouseevent_layer = null;
+
+  tap_scripts = null;
+  last_tap_script = null;
+
+  sentence_processor = null;
+
+  product_fm = null;
+
+  v_1 = Vector3D();
+  v_2 = Vector3D();
+
+  enable_skip = null;
+
+  focus_mode = null;
+  static MODE_SENTENCETALK = 0;
+  static MODE_TAPTALK = 1;
+  static MODE_PRODUCT = 2;
+
+  thread = null;
+
+  constructor() {
+    local _scene = ::gamesession.getCurrentScene();
+    local _charas = _scene.getStage().getCharacters();
+
+    this.tap_scripts = [
+    "tefuri_talk",
+    "multipurpose_burabura",
+    "multipurpose_pyonpyon",
+    "multipurpose_nazo",
+    "multipurpose_kime"];
+
+    this.sentence_processor = null;
+    this.product_fm = null;
+
+    this.focus_mode = -1;
+
+    this.enable_skip = true;
+  }
+
+  function added() {
+    super.added();
+
+    this.view = ::loadSKView("/ui/CharaFocusPanel.ui");
+    addChild(this.view);
+
+    getHomeUI().updateCameraButtonVisible();
+
+    this.mouseevent_layer = findChild("pnl_mouseevent_layer");
+    registerMouseEventReceiver(this);
+
+    local pnl_talkwindow_layer = findChild("pnl_talkwindow_layer");
+    pnl_talkwindow_layer.pickable = false;
+    this.talkwindow_layer = TalkWindowLayer(pnl_talkwindow_layer);
+    this.talkwindow_layer.setOffset(0, 2.4, 0);
+
+    local _scene = ::gamesession.getCurrentScene();
+    this.chara_data = ::gamesession.getUserData().getCharacterDataByCostumeId(this.costume_data.getID());
+
+    this.btn_ar = this.view.findChild("btn_ar");
+    ::TapButton(this.btn_ar).view.addEventListener(ACTION_EVENT, actionevent_ar);
+    this.btn_ar.setVisible(false);
+
+    this.btn_back = this.view.findChild("btn_focusoff");
+    ::TapButton(this.btn_back).view.addEventListener(ACTION_EVENT, actionevent_back);
+
+    this.btn_skip = this.view.findChild("btn_skip");
+    ::TapButton(this.btn_skip).view.addEventListener(ACTION_EVENT, actionevent_skip);
+    setVisibleSkip(false);
+
+    removeAllTalkWindow();
+
+    local _stage = _scene.getStage();
+    local _cullfunc = function(o) {
+
+      if (!renderer.cameraobj) return true;
+      if (o.parent) {
+        return renderer.cullfilterfunc(o.parent);
+      }
+
+      if (self.product_fm && self.product_fm.obj.sk3d == o) return true;
+      if (o.visible_distance < 0) return true;
+      if (!self.checkInnerAngle(o.pos, renderer.cameraobj.pos)) return false;
+
+      renderer.v_1.set(o.pos).sub(renderer.cameraobj.pos);
+      return int(renderer.v_1.length()) > o.visible_distance ? true : false;
+    }.bindenv({ self = this, renderer = _stage.renderer });
+
+    _stage.setCullFilterFunc(_cullfunc);
+
+    getCharaModel().getObject().startEffect("tapAppealEnd");
+  }
+
+  function checkInnerAngle(pos1, pos2) {
+    local _cm = getCharaModel() || null;
+    if (!_cm) return true;
+
+    local _mpos = _cm.getPos();
+    if (pos1.length() == 0 || pos2.length() == 0) return true;
+    if (_mpos.equals(pos1)) return true;
+
+    v_1.set(pos1).sub(_mpos);
+    v_2.set(pos2).sub(_mpos);
+
+    v_1.y = 0;
+    v_2.y = 0;
+
+    if (v_1.length() == 0 || v_2.length() == 0) return false;
+
+    local _cos = (v_1.x * v_2.x + v_1.z * v_2.z) / (v_1.length() * v_2.length());
+    if (_cos < 0) return true;
+    local _dig = int(Math.acos(_cos) * Math.RTOD);
+
+    if (_dig > 180) _dig -= 360;
+    if (Math.abs(_dig) >= 85) return true;
+
+    return false;
+  }
+
+  function showed() {
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof SanrioGameScene) {
+      local _model = _scene.getStage().getChara(this.costume_data.getID());
+      _model.setAutoAction(false);
+      local _tfuid = _model.getTargetFurnitureUID();
+      if (_tfuid > 0) {
+        _processFocusEvent(MODE_PRODUCT);
+        return;
+      } else if (_model.hasTappedScript()) {
+        _processFocusEvent(MODE_TAPTALK);
+        return;
+      } else {
+        _processFocusEvent(MODE_SENTENCETALK);
+      }
+    }
+  }
+
+  function removed() {
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof SanrioGameScene) {
+      local _model = getCharaModel();
+      if (_model) {
+        local _obj = _model.getObject();
+        _obj.startEffect("removeFocusEffect");
+
+        if (!_model.isFurnitureScriptRunning()) _model.setAutoAction(true);
+      }
+
+      _scene.getStage().setCullFilterFunc(null);
+    }
+
+    if (this.thread) this.thread = null;
+
+    removeAllTalkWindow();
+    removeMouseEventReceiver(this);
+  }
+
+  function setPanelParam(param) {
+    if ("model" in param) {
+      local _model = param.model;
+
+      this.costume_data = _model.getCostumeData();
+
+      local _stage = ::gamesession.getCurrentScene().getStage();
+      if (::tutorial_manager.tutorialThreadRunning()) _stage.setCameraLock(false);
+
+      v_1.set(0, 0, 0);
+      v_1.add(_model.getPos());
+      if (_model.obj.sk3d.parent) {
+        v_1.add(_model.obj.sk3d.parent.pos);
+      }
+
+      local _tfuid = _model.getTargetFurnitureUID();
+      local _target_offset = getTargetOffset();
+      if (_tfuid > 0) {
+        this.product_fm = _stage.getFurnitureModel(_tfuid);
+        local _pos = product_fm.getFurnitureSetting().getTypeSetting().getFocusPOS();
+        if (_pos) _target_offset = Vector3D(_pos[0], _pos[1], _pos[2]);
+      }
+      _stage.trackModel(_model, _target_offset, _getZoomRate());
+
+    }
+
+  }
+
+  function setVisibleUIs(b) {
+    local _home_ui = getHomeUI();
+    _home_ui.showPanelMode(b);
+    _home_ui.setVisibleCameraRotateButton(b);
+    _home_ui.setVisibleScreenshotButton(b);
+    this.btn_back.setVisible(b);
+
+  }
+
+  function setVisibleSkip(b) {
+    this.btn_skip.setEnabled(b);
+    this.btn_skip.setVisible(b);
+    this.enable_skip = b;
+  }
+
+  function getTargetOffset() {
+
+    return TARGET_OFFSET;
+  }
+  function _getZoomRate() {
+    return 12.0;
+  }
+
+  function getARButton() {
+    return btn_ar;
+  }
+
+  function _setVisibleBackButton(b) {
+    this.btn_back.setVisible(b);
+  }
+
+  function mouseDragged(vec_x, vec_y) {
+    super.mouseDragged(vec_x, vec_y);
+  }
+  function longTapped(x, y) {
+  }
+  function doubleTapped() {
+  }
+
+  function actionevent_ar(e) {
+    local param = {};
+    local _cm = getCharaModel();
+    local _fuid = _cm.getTargetFurnitureUID();
+
+    local _cids = null;
+    if (_fuid > 0) {
+      local fd = ::gamesession.getUserData().getFurnitureData(_fuid);
+      _cids = fd.getProductData().getCostumeIDList();
+    } else {
+      _cids = [this.costume_data.getID()];
+    }
+
+    param["taking_id_table"] <- [
+    { cids = _cids, fuid = _fuid }
+    ];
+
+    local _pos = ::gamesession.getCurrentScene().getStage().getChara(this.costume_data.getID()).getPos();
+    local _pos_table = {};
+    _pos_table[this.costume_data.getID()] <- Vector3D(_pos.x, _pos.y, _pos.z);
+    param["chara_pos_table"] <- _pos_table;
+
+    getHomeUI().movePanel(::ARPanel, false, param);
+  }
+  function actionevent_back(e) {
+    getHomeUI().moveTopPanel();
+  }
+
+  function actionevent_skip(e) {
+    if (this.thread) {
+      if (!this.enable_skip) return;
+      this.enable_skip = false;
+      this.btn_skip.setVisible(false);
+      this.thread.interruptGoto("SKIP")
+    }
+  }
+
+  function getCharaModel() {
+    return ::gamesession.getCurrentScene().getStage().getChara(this.costume_data.getID());
+  }
+
+  function _processFocusEvent(mode) {
+    this.focus_mode = mode;
+    switch (this.focus_mode) {
+    case MODE_SENTENCETALK:
+      break;
+    case MODE_TAPTALK:
+      _focusEventTap();
+      break;
+    case MODE_PRODUCT:
+      _focusEventProduct();
+      break;
+    }
+  }
+
+  function _focusEventProduct() {
+    this.thread = newthread();
+    this.thread.start(function() {
+
+      _setVisibleBackButton(false);
+      pass(200);
+
+      local _scene = ::gamesession.getCurrentScene();
+      local _stage = _scene.getStage();
+      local _cw = _stage.camera_work;
+      pass(2000);
+      local _cm = getCharaModel();
+      local _ts = product_fm.getFurnitureSetting().getTypeSetting();
+      local _hpb = _ts.getFocusHPB();
+      local _r = _cm.obj.sk3d.parent ? product_fm.getAngle() * Math.DTOR : _cm.getAngle() * Math.DTOR;
+      local _cw_hpb = _cw.hpb;
+
+      local _h = _hpb[0] + _r - _cw_hpb[0];
+      local _p = _hpb[1] - _cw_hpb[1];
+      local _b = _hpb[2] - _cw_hpb[2];
+
+      local pi = Math.PI;
+
+      if (Math.abs(_h) > pi) {
+        _h += _h < 0 ? pi * 2 : pi * -2;
+      }
+
+      _stage.rotateCameraMove(_h * Math.RTOD, _p * Math.RTOD, _b * Math.RTOD);
+
+      sleep(1000);
+      _cw.setTrackingRate(false);
+
+      local _pm = _scene.getProductionManager();
+      local _ret = product_fm.tapProduct();
+      _pm.stopUpdate();
+
+      if (::tutorial_manager.canSkipFocusTalk()) setVisibleSkip(true);
+
+      while (true) {
+        if (!product_fm.isScriptRunning() || product_fm.getCurrentScriptName() != "tap_product") break;
+        suspend();
+      }
+
+      setVisibleSkip(false);
+
+      if (_ret["bonus_hapiness"] > 0) {
+        parent.showBonusHapiness(_ret["bonus_hapiness"], _ret["bonus_recover_time"]);
+        sleep(2000);
+      }
+
+      product_fm.getFurnitureData().getProductData().endBonusHapiness();
+      _pm.startUpdate();
+
+      ::gamesession.getUserDataLocal().setFocusTalkFlag(true);
+      getHomeUI().moveTopPanel();
+      this.thread = null;
+      return;
+
+      SKIP:
+      if (_ret["bonus_hapiness"] > 0) {
+        parent.showBonusHapiness(_ret["bonus_hapiness"], _ret["bonus_recover_time"]);
+        sleep(2000);
+      }
+
+      product_fm.getFurnitureData().getProductData().endBonusHapiness();
+      product_fm.restartUserFurnitureAction(product_fm.getTargetCostumeTable());
+      _pm.startUpdate();
+
+      ::gamesession.getUserDataLocal().setFocusTalkFlag(true);
+      getHomeUI().moveTopPanel();
+      this.thread = null;
+
+    }.bindenv(this), this);
+  }
+
+  function _focusEventTap() {
+    this.thread = newthread();
+    this.thread.start(function() {
+      _setVisibleBackButton(false);
+      pass(1000);
+      local _cm = getCharaModel();
+      local scp_name = _cm.getTappedScript();
+      _cm.setAutoAction(false);
+      _cm.startTappedScript();
+      _cm.clearTasks(false);
+
+      while (true) {
+        if (!_cm.isScriptRunning() || _cm.getCurrentScriptName() != scp_name) break;
+        suspend();
+      }
+      sleep(200);
+
+      local _setting = _cm.getCharaSentenceListSetting();
+      this.sentence_processor = CharaSentenceProcessor(this, _cm);
+      local ret = this.sentence_processor.setSentenceList(_setting);
+
+      this.sentence_processor.startSentence();
+
+      if (::tutorial_manager.canSkipFocusTalk() && !_setting.isDisableSkip()) setVisibleSkip(true);
+
+      while (this.sentence_processor.isRunningSentenceProcessor()) {
+        suspend();
+      }
+
+      setVisibleSkip(false);
+      sleep(500);
+
+      ::gamesession.getUserData().succesHapinessAction(_cm.getCostumeData().getID());
+
+      _cm.setAutoAction(true);
+      ::gamesession.getUserDataLocal().setFocusTalkFlag(true);
+      getHomeUI().moveTopPanel();
+      this.thread = null;
+      return;
+
+      SKIP:
+      this.sentence_processor.finishProcess();
+      ::gamesession.getUserData().succesHapinessAction(_cm.getCostumeData().getID());
+      this.sentence_processor.finishSentence();
+
+      _cm.setAutoAction(true);
+      ::gamesession.getUserDataLocal().setFocusTalkFlag(true);
+      getHomeUI().moveTopPanel();
+      this.thread = null;
+
+    }.bindenv(this), this);
+  }
+
+  function addTalkWindow(sk3d, talk_key, chara_key, big = false, small = false) {
+    if (!this.costume_data) return;
+    if (this.costume_data.getCharaSetting().getTalkKey() != chara_key) return;
+
+    talkwindow_layer.addTalk(sk3d, talk_key, chara_key);
+  }
+  function removeAllTalkWindow() {
+    talkwindow_layer.removeAllTalkWindow();
+  }
+  function removeTalkWindow(tw) {
+    this.talkwindow_layer.removeTalkWindow(tw);
+  }
+
+  function addTalkWindowForce(sk3d, talk_key, chara_key, big = false, small = false) {
+    if (!this.costume_data) return;
+    if (this.costume_data.getCharaSetting().getTalkKey() != chara_key) return;
+
+    local _ts = this.product_fm.getFurnitureSetting().getTypeSetting();
+    local _b_type = _ts.getBalloonType();
+    local _b_offset = _ts.getBalloonOffset();
+
+    local _tw = this.talkwindow_layer.addTalkWindowForce(sk3d, talk_key, chara_key, false, false, true);
+
+    if (_b_type) {
+      local _tw_img = _tw.view.findChild("img_balloon_bg");
+      local _path = "/ui/image/dialog/" + "img_balloon_bg" + _b_type + ".png";
+      local _sp = ::getSprite(_path);
+      if (!_sp) _sp = ::getSprite("/ui/image/dialog/" + "img_balloon_bg0.png");
+      _sp.blend = SK_MIX;
+      _tw_img.setSprite(_sp);
+      _tw_img.updateLayout();
+    }
+
+    if (_b_offset) {
+      _tw.setFurnitureOffset(_b_offset[0], _b_offset[1]);
+      _tw.setRendererCamera(_tw.scene.getStage().renderer.camera);
+    }
+  }
+  function removeTalkQueue(sk3d) {
+    if (this.talkwindow_layer) this.talkwindow_layer.removeQueue(sk3d);
+  }
+  function addTalkSentence(chara_key, sentence) {
+    local _model = getCharaModel();
+    return this.talkwindow_layer.addTalkSentenceWindow(_model.obj.sk3d, sentence, chara_key, false, false, true);
+  }
+}
+
+class CharaFocusPanel.CharaSentenceProcessor extends ::SentenceProcessor {
+  finished = null;
+
+  constructor(panel, model) {
+    super(panel, model);
+    this.finished = false;
+  }
+
+  function finishProcess() {
+    if (this.finished) return;
+    _finishProcess();
+  }
+
+  function _finishProcess() {
+    if (this.finished) return;
+    local _ud = ::gamesession.getUserData();
+    local _scs = ::gamesetting.getSanrioCharaSettingByNameKey(this.chara_key);
+    this.finished = true;
+
+    local _ret = ::gamesession.communicateChara(this.model.getCostumeID(), this.setting.getID());
+
+    if (_ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof ::SanrioGameScene) {
+        local _pmm = _scene.getPanelMissionManager();
+        _pmm.showTalkChara(_scs.getID(), this.setting.getID(), this.model.getCostumeID());
+      }
+    }
+
+    local _addgm = _ret["add_gm"] || 0;
+    local _bonus_hapiness = _ret["bonus_hapiness"] || 0;
+    if (_addgm > 0) {
+      this.panel.parent.showMoneyUI(true);
+      ::gamesession.getCurrentScene().showGetHapinessEffect(_mdl);
+      sleep(1600);
+      _ud.addGameMoney(_addgm);
+      panel.parent.updateShopMark(true, true);
+    }
+
+    if (_bonus_hapiness > 0) {
+      panel.parent.showBonusHapiness(_bonus_hapiness, _ret["bonus_recover_time"]);
+      sleep(1500);
+    }
+
+    local _chara_id = this.model.getCostumeData().getCharaSetting().getID();
+    local _chara_data = _ud.getCharacterData(_chara_id);
+    _chara_data.setLastFocusTalkTime();
+
+    sleep(400);
+  }
+}

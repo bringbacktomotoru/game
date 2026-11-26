@@ -1,0 +1,30 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "kirakira1"
+  enabled = true
+  aimtype = 1
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 60
+    start = 0, start_spr = 500
+    life = 1000, life_spr = 0
+    posx = 0.0, posy = 8.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 5.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 3.141593
+    linearbits = 128
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.35, "h": 0.35 }
+  texture = "levelup_kira.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = false
+  mod = [
+  { "color": [-14236, -3604636], "classid": "ptcmod_color" },
+  { "xyz": 7, "scale": [0.0, 0.961538, 0.0], "classid": "ptcmod_scale" },
+  ] },
+]

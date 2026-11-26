@@ -1,0 +1,855 @@
+with SK3RightPanel {
+  flbl <- null;
+  f_idf <- null;
+  flbl_angle <- null;
+  f_anglef <- null;
+  f_apply_btn <- null;
+  f_remove_btn <- null;
+  flbl_error_text <- null;
+
+  c_id_error_text <- null;
+  c_apply_btn <- null;
+  c_capture_btn <- null;
+
+  chara_info_list <- null;
+
+  f_obj <- null;
+  c_models <- null;
+
+  scroll <- null;
+  scroll_view <- null;
+
+  talk_viewer <- null;
+
+  sentence_select_cmp <- null;
+
+  constructor <- function(v) {
+
+    pos = Vector3D();
+    scale = Vector3D(1, 1, 1);
+    rot = Vector3D();
+    bnd = Rect2D(0, 0, 10, 10);
+    mat = Matrix();
+
+    ::loadDictionary();
+    ::loadTalk();
+    if (!::READ_TRANS_FILE.equals("JP")) {
+      local dir = ::getResource("/conf/localize/" + ::READ_TRANS_FILE + "/conf/trans");
+      foreach (k, file in dir.getList()) {
+        ::gamesetting.transRunsk(file.path);
+      }
+    }
+
+    viewer = v;
+    this.bnd.w = 290;
+    scroll_view = SKView();
+
+    scroll = SKScrollPane();
+    scroll.setClipAreaColor(0xebeff3ff);
+    scroll.setRect(0, 0, bnd.w, bnd.h - 30);
+    addChild(scroll);
+
+    local filepanel = SKImageView();
+    filepanel.setColor(0xebeff3ff);
+    filepanel.setRect(2, 2, 256, 66);
+    filepanel.setBuffer(true);
+    filepanel.enabled = true;
+    scroll_view.addChild(filepanel);
+
+    local lbl = SKLabelView("FILE :", FontAttribute(Fonts.ui, 12, 255, 0));
+    lbl.setRect(16, 4, 10, 10);
+    filepanel.addChild(lbl);
+
+    filename = SKLabelView("no file", FontAttribute(Fonts.ui, 11, 6697983, 0));
+    filename.setRect(24, 22, 10, 10);
+    filepanel.addChild(filename);
+
+    openbtn = SKLabelButton("OPEN");
+    openbtn.setRect(4, 40, 80, 24);
+    filepanel.addChild(openbtn);
+
+    reloadbtn = SKLabelButton("RELOAD");
+    reloadbtn.setRect(88, 40, 80, 24);
+    filepanel.addChild(reloadbtn);
+
+    editbtn = SKLabelButton("EDIT");
+    editbtn.setRect(172, 40, 80, 24);
+    filepanel.addChild(editbtn);
+
+    local lbl = SKLabelView("SCRIPT CLASS :", FontAttribute(Fonts.ui, 12, 255, 0));
+    lbl.setRect(16, 84, 10, 10);
+    scroll_view.addChild(lbl);
+
+    scpscroll = SKScrollPane();
+    scpscroll.setClipAreaColor(0xebeff3ff);
+    scpscroll.setRect(2, 104, 276, 216);
+    scroll_view.addChild(scpscroll);
+
+    scplist = SKListViewBase();
+
+    scpscroll.setContent(scplist);
+
+    local clbl = SKLabelView("COSTUME ID :", FontAttribute(Fonts.ui, 12, 255, 0));
+    clbl.setRect(16, 350, 10, 10);
+    scroll_view.addChild(clbl);
+
+    local offset = 380;
+    chara_info_list = [];
+    for (local i = 1; i <= 4; i++) {
+      local txt = "COS" + i + " :";
+      local info = CharaInfoPanel(this, txt);
+      info.setRect(16, offset, 250, 50);
+      scroll_view.addChild(info);
+
+      chara_info_list + info;
+      offset += 60;
+    }
+
+    c_apply_btn = SKLabelButton("APPLY");
+    c_apply_btn.setRect(15, offset, 80, 24);
+    scroll_view.addChild(c_apply_btn);
+
+    c_capture_btn = SKLabelButton("CAPTURE");
+    c_capture_btn.setRect(15 + 80, offset, 80, 24);
+    scroll_view.addChild(c_capture_btn);
+
+    offset += 30;
+
+    talk_viewer = TalkViewer(this);
+    talk_viewer.bnd.y = offset;
+    offset += talk_viewer.bnd.h;
+    scroll_view.addChild(talk_viewer);
+
+    this.sentence_select_cmp = SentenceSelectComponent(this);
+    sentence_select_cmp.bnd.y = offset;
+    offset += sentence_select_cmp.bnd.h;
+    scroll_view.addChild(this.sentence_select_cmp);
+
+    scroll_view.setRect(0, 0, this.bnd.w, offset);
+    scroll.setContent(scroll_view);
+
+    c_id_error_text = SKLabelView("", FontAttribute(Fonts.ui, 12, 0xff0000ff, 0));
+    c_id_error_text.setRect(16, this.bnd.h - 20, 10, 10);
+    addChild(c_id_error_text);
+    c_id_error_text.visible = false;
+
+    addEventListener(ACTION_EVENT, actionevent);
+  }
+
+  function updateLayout() {
+    local w = bnd.w, h = bnd.h;
+    if (h > 30) {
+      scroll.setRect(0, 0, w, h - 30);
+
+      c_id_error_text.setRect(16, this.bnd.h - 20, 10, 10);
+    }
+
+  }
+
+  function actionevent(e) {
+    local err_id_text = null;
+    local has_error = false;
+    switch (e.src) {
+    case scplist:
+      if (!viewer.sk3.alive) {
+        viewer.sk3.setSource(viewer.sk3res);
+        viewer.sk3.alive = true;
+        viewer.canvas.setSK3(viewer.sk3);
+      }
+      local name = scplist.getSelectedItem();
+
+      if (f_obj) {
+        viewer.canvas.startScript(name, f_obj);
+      } else if (length(c_models) > 0) {
+        viewer.canvas.startScript(name, c_models);
+      } else {
+        viewer.canvas.startScript(name);
+      }
+
+      break;
+    case reloadbtn:
+      viewer.reloadFile();
+      ::loadTalk();
+      ::loadGameSetting(::getResource("/conf/gamesetting.conf"));
+      break;
+    case openbtn:
+      showOpenDialog();
+      break;
+    case editbtn:
+      {
+        local wp = viewer.file.path.replace(47, 92);
+        local p = popen();
+        p.open("cmd.exe /C \"" + wp + "\"");
+        p.close();
+        break;
+      }
+    case f_apply_btn:
+      f_obj = null;
+      viewer.canvas.removeFurnitureSK3();
+      loadGameSetting(::getResource("/conf/gamesetting.conf"));
+
+      local _fid = int(f_idf.getText());
+      local fs = ::gamesetting.furniture_settings[_fid];
+
+      if (fs == undefined) {
+        flbl_error_text.visible = true;
+        return;
+      } else {
+        flbl_error_text.visible = false;
+      }
+
+      f_obj = ::SK3DObject("/res/furniture" + fs.view_list[0]);
+      f_obj.name = "body";
+      if (fs.script != "") f_obj.setScript(::getResource("/res/furniture" + fs.script));
+
+      f_obj.pos.set(fs.action_pos_x, 0, fs.action_pos_z);
+
+      local _angle = f_anglef.getText() != "" ? int(f_anglef.getText()) : 0;
+      f_obj.rot.setHPB(_angle * Math.PI / 180.0, 0, 0);
+
+      viewer.canvas.addFurnitureSK3(f_obj)
+
+      break;
+    case f_remove_btn:
+      viewer.canvas.removeFurnitureSK3();
+      break;
+    case c_apply_btn:
+      err_id_text = "存在しない衣装IDです。";
+
+      foreach (key, model in c_models) {
+        viewer.canvas.removeModel(model);
+      }
+
+      c_models = {};
+
+      for (local i = 0; i < chara_info_list.len(); i++) {
+        local info = chara_info_list[i];
+        local cos_id = int(info.idf.getText());
+        if (cos_id == 0) continue;
+
+        local cos_setting = ::gamesetting.costume_settings[cos_id];
+        if (cos_setting == undefined) {
+          err_id_text = err_id_text + cos_id + ","
+          has_error = true;
+          continue;
+        }
+
+        local model = ::ViewFactory.createUserCharaView(cos_setting.getCharaID(), cos_setting.getID());
+
+        local chara_setting = ::gamesetting.sanrio_chara_settings[cos_setting.getCharaID()];
+        model.scale << chara_setting.scale;
+
+        local areatype = int(info.areatypef.getText());
+        if (areatype == 0) areatype = ::FurnitureSetting.ACTION_AREA_FRONT;
+        local dist = float(info.distf.getText());
+        local dir = 0;
+
+        switch (areatype) {
+        case ::FurnitureSetting.ACTION_AREA_ALL:
+        case ::FurnitureSetting.ACTION_AREA_FRONT:
+        case ::FurnitureSetting.ACTION_AREA_IGUNORE_BACK:
+          dir = 0 * Math.DTOR;
+          break;
+        case ::FurnitureSetting.ACTION_AREA_SIDE:
+        case ::FurnitureSetting.ACTION_AREA_RIGHT:
+          dir = 90 * Math.DTOR;
+          break;
+        case ::FurnitureSetting.ACTION_AREA_LEFT:
+          dir = 270 * Math.DTOR;
+          break;
+        }
+        local dist_x = dist * Math.sin(dir) * -1;
+        local dist_z = dist * Math.cos(dir) * -1;
+
+        local f_sk3d = viewer.canvas.sk3d;
+        local bone = info.bonef.getText();
+        if (f_sk3d.motion) {
+
+          foreach (k, parts in f_sk3d.motion.parts) {
+            if (parts == undefined) continue;
+            if (parts.name != bone) continue;
+
+            local p0 = parts.bindpose;
+            local v_1 = Vector3D(0, 0, 0).set(p0[12], 0, p0[14]).transform0(f_sk3d.gmat);
+            dist_x += v_1.x;
+            dist_z += v_1.z;
+
+            break;
+          }
+        }
+
+        model.pos.set(dist_x, 0, dist_z);
+        viewer.canvas.addModel(model);
+
+        c_models[bone] <- model;
+      }
+
+      c_models["furni"] <- viewer.canvas.sk3d;
+
+      if (has_error) {
+        c_id_error_text.setText(err_id_text);
+        c_id_error_text.visible = true;
+      } else {
+        c_id_error_text.visible = false;
+      }
+
+      break;
+    case c_capture_btn:
+      viewer.canvas.renderToImage();
+      break;
+    case talk_viewer.t_apply_btn:
+      err_id_text = "selected talk is undefined.";
+      local view = ::gamesession.getCurrentScene();
+      local _talkkey = talk_viewer.t_talk_field.getText();
+      local _charakey = talk_viewer.t_chara_field.getText();
+      local _idx = int(talk_viewer.t_idx_field.getText());
+
+      local talk_list = ::talk.get(_talkkey, _charakey);
+
+      if (!talk_list || _idx < 0 || talk_list.len() <= _idx) has_error = true;
+
+      if (has_error) {
+        c_id_error_text.setText(err_id_text);
+        c_id_error_text.visible = true;
+        return;
+      } else {
+        c_id_error_text.visible = false;
+      }
+
+      local tw = ::TalkWindow(_talkkey, _charakey, false, false, true);
+      tw.view.scale.set(1, 1, 1);
+      tw.setPos(500, 100);
+      view.canvas.addTalk(tw, _idx);
+
+      break;
+    }
+  }
+
+  function actionevent2(e) {
+    e.consume();
+  }
+
+  added_sentence_model <- null;
+  sentence_view <- null;
+  function startSentence(key, id, idx) {
+
+    local sentence_setting = ::gamesetting.chara_sentence_list_settings[id];
+    if (!sentence_setting) return false;
+
+    local sentence_list = sentence_setting.getSentenceList(key);
+    if (!sentence_list) return false;
+
+    local chara_setting = null;
+    foreach (setting in ::gamesetting.sanrio_chara_settings) {
+      if (setting.getNameKey() != key) continue;
+      chara_setting = setting;
+      break;
+    }
+    if (!chara_setting) return false;
+
+    if (this.added_sentence_model) viewer.canvas.removeModel(this.added_sentence_model);
+    foreach (key, model in this.c_models) {
+      viewer.canvas.removeModel(model);
+    }
+    this.c_models = {};
+
+    local model = ::ViewFactory.createUserCharaView(chara_setting.getID(), chara_setting.getDefaultCostumeID());
+    model.scale << chara_setting.scale;
+    viewer.canvas.addModel(model);
+    this.added_sentence_model = model;
+
+    this.c_models["furni"] <- viewer.canvas.sk3d;
+
+    if (!this.sentence_view) {
+      this.sentence_view = ::SK3RightPanel.SentenceView();
+      addChild(sentence_view);
+    }
+    this.sentence_view.startSentence(sentence_list, model, key, idx);
+
+    return true;
+  }
+
+  function getSKRightPanelTexts() {
+    local _ret = {};
+    local _texts = [];
+    foreach (info in chara_info_list) {
+      _texts + info.getTexts();
+    }
+    _ret["chara_info_list"] <- _texts;
+    _ret["talk_viewer"] <- talk_viewer.getTexts();
+    _ret["sentence_select_cmp"] <- sentence_select_cmp.getTexts();
+    return _ret;
+  }
+
+  function loadSaveData() {
+    if (!::workspace.sk3texts || !viewer.sk3res) return;
+    local save_texts = ::workspace.sk3texts[viewer.sk3res.name];
+    if (!save_texts) return;
+
+    local chara_info_texts = save_texts["chara_info_list"];
+    if (chara_info_texts && chara_info_texts.len() == chara_info_list.len()) {
+      local _cnt = 0;
+      foreach (idx, info in chara_info_list) {
+        if (!chara_info_texts[idx]) continue;
+        info.loadTexts(chara_info_texts[idx]);
+      }
+    }
+
+    local talk_viewer_texts = save_texts["talk_viewer"];
+    if (talk_viewer_texts) {
+      talk_viewer.loadTexts(talk_viewer_texts);
+    }
+
+    local sentence_select_cmp_texts = save_texts["sentence_select_cmp"];
+    if (sentence_select_cmp_texts) {
+      sentence_select_cmp.loadTexts(sentence_select_cmp_texts);
+    }
+  }
+}
+
+class TalkViewer extends SKView {
+  t_talk_field = null;
+  t_chara_field = null;
+  t_idx_field = null;
+  t_apply_btn = null;
+
+  constructor(parent) {
+
+    local offset = 0;
+    local _tv_x = 16;
+    local _lbl = SKLabelView("talk_key:", FontAttribute(Fonts.ui, 14, 255, 0));
+    _lbl.setRect(_tv_x, offset, 110, 24);
+    addChild(_lbl);
+    _tv_x += 115;
+    _lbl = SKLabelView("chara_key:", FontAttribute(Fonts.ui, 14, 255, 0));
+    _lbl.setRect(_tv_x, offset, 80, 24);
+    addChild(_lbl);
+    _tv_x += 85;
+    _lbl = SKLabelView("idx:", FontAttribute(Fonts.ui, 14, 255, 0));
+    _lbl.setRect(_tv_x, offset, 20, 24);
+    addChild(_lbl);
+    offset += 24;
+
+    _tv_x = 16;
+    t_talk_field = SKTextField("motion_tefuri1");
+    t_talk_field.setRect(_tv_x, offset, 110, 24);
+    addChild(t_talk_field);
+    _tv_x += 115;
+    t_chara_field = SKTextField("kitty");
+    t_chara_field.setRect(_tv_x, offset, 80, 24);
+    addChild(t_chara_field);
+    _tv_x += 85;
+    t_idx_field = SKTextField("0");
+    t_idx_field.setRect(_tv_x, offset, 20, 24);
+    addChild(t_idx_field);
+    _tv_x += 25;
+
+    t_apply_btn = SKLabelButton("OK");
+    t_apply_btn.setRect(_tv_x, offset, 30, 24);
+    addChild(t_apply_btn);
+
+    _tv_x += 30;
+    offset += 30;
+
+    this.setRect(0, 0, _tv_x, offset);
+  }
+
+  function getTexts() {
+    return { t_talk_field = t_talk_field.getText(), t_chara_field = t_chara_field.getText(), t_idx_field = t_idx_field.getText() };
+  }
+
+  function loadTexts(st) {
+    if (st.t_talk_field) t_talk_field.setText(st.t_talk_field);
+    if (st.t_chara_field) t_chara_field.setText(st.t_chara_field);
+    if (st.t_idx_field) t_idx_field.setText(st.t_idx_field);
+  }
+}
+
+class SK3RightPanel.SentenceView extends SKView {
+  tw_layer = null;
+  thread = null;
+  added_talk_window = null;
+
+  constructor() {
+    this.tw_layer = ::TalkWindowLayer(this);
+  }
+
+  function added() {
+    centerize(0.5, 0.5);
+    this.pos.x = this.parent.bnd.w * 0.5;
+    this.pos.y = this.parent.bnd.h * 0.5;
+    this.matdirty = true;
+    repaint();
+  }
+
+  function startSentence(sentence_list, sk3d, key, idx = -1) {
+
+    this.thread = newthread();
+    this.thread.start(function() {
+      local curr_idx = idx;
+      local end_idx = sentence_list.len();
+      if (idx < 0 || idx > end_idx) {
+        curr_idx = 0;
+      }
+      else {
+        end_idx = idx + 1;
+      }
+
+      local _chara_setting = ::gamesetting.getSanrioCharaSettingByNameKey(key);
+      while (curr_idx < end_idx) {
+        local s = sentence_list[curr_idx];
+        local sentence = s["sentence"];
+        local scp = s["motion"];
+        local args = s["args"];
+        local _voice = s["voice"] || null;
+        local _next_time = s["time"] || ::CharaSentenceListSetting.DEFAULT_NEXT_TIME;
+
+        if (scp) sk3d.startScript(scp, args);
+        local current_tw = this.tw_layer.addTalkSentenceWindowForBuilder(sk3d, sentence, key, curr_idx);
+        local canvas = ::gamesession.getCurrentScene().canvas;
+        if (_voice && _chara_setting) _chara_setting.playVoice(_voice);
+
+        if (this.added_talk_window) {
+          canvas.removeChild(this.added_talk_window);
+        }
+
+        this.added_talk_window = null;
+        if (sentence) {
+          canvas.addChild(current_tw);
+          current_tw.startTalk(sentence);
+          this.added_talk_window = current_tw;
+        }
+
+        curr_idx = curr_idx + 1;
+
+        sleep(800);
+        local cnt = 0;
+        while (true) {
+          if (cnt > _next_time) break;
+
+          sleep(100);
+          cnt += 100;
+        }
+
+        if (current_tw) {
+          current_tw.interruptTalk();
+          current_tw = null;
+          sleep(500);
+        }
+
+        sleep(400);
+        this.thread = null;
+      }
+    }, this);
+  }
+}
+
+class SK3RightPanel.SentenceSelectComponent extends SKView {
+  right_panel = null;
+
+  chara_text_field = null;
+  id_text_field = null;
+  idx_text_field = null;
+  ok_btn = null;
+
+  constructor(right_panel) {
+    this.right_panel = right_panel;
+
+    local posx = 65;
+    local posy = 0;
+
+    local lbl_chara = SKLabelView("chara_key:", FontAttribute(Fonts.ui, 14, 255, 0));
+    lbl_chara.setRect(posx, posy, 80, 24);
+    posx += 85;
+    addChild(lbl_chara);
+
+    local lbl_id = SKLabelView("id:", FontAttribute(Fonts.ui, 14, 255, 0));
+    lbl_id.setRect(posx, posy, 40, 24);
+    posx += 45;
+    addChild(lbl_id);
+
+    local lbl_idx = SKLabelView("idx:", FontAttribute(Fonts.ui, 14, 255, 0));
+    lbl_idx.setRect(posx, posy, 40, 24);
+    posx += 45;
+    addChild(lbl_idx);
+
+    posx = 65;
+    posy += 25;
+
+    this.chara_text_field = SKTextField("kitty");
+    chara_text_field.setRect(posx, posy, 80, 24);
+    addChild(chara_text_field);
+    posx += 85;
+
+    this.id_text_field = SKTextField("1");
+    id_text_field.setRect(posx, posy, 40, 24);
+    addChild(id_text_field);
+    posx += 45;
+
+    this.idx_text_field = SKTextField("-1");
+    idx_text_field.setRect(posx, posy, 40, 24);
+    addChild(idx_text_field);
+    posx += 45;
+
+    this.ok_btn = SKLabelButton("OK");
+    ok_btn.setRect(posx, posy, 30, 24);
+    ok_btn.addEventListener(ACTION_EVENT, actionevent_ok);
+    addChild(ok_btn);
+    posx += 30;
+
+    posy += 30;
+
+    this.setRect(0, 0, posx, posy);
+  }
+
+  function actionevent_ok(e) {
+    e.consume();
+
+    local chara_key = this.chara_text_field.getText();
+    local id = int(this.id_text_field.getText());
+    local idx = int(this.idx_text_field.getText());
+    this.right_panel.startSentence(chara_key, id, idx);
+  }
+
+  function getTexts() {
+    return { chara_text_field = chara_text_field.getText(), id_text_field = id_text_field.getText(), idx_text_field = idx_text_field.getText() };
+  }
+
+  function loadTexts(st) {
+    if (st.chara_text_field) this.chara_text_field.setText(st.chara_text_field);
+    if (st.id_text_field) this.id_text_field.setText(st.id_text_field);
+    if (st.idx_text_field) this.idx_text_field.setText(st.idx_text_field);
+  }
+}
+
+class CharaInfoPanel extends SKView {
+  idf = null;
+  bonef = null;
+  distf = null;
+  areatypef = null;
+
+  constructor(parent, lbl_text) {
+    local cidlbl = SKLabelView(lbl_text, FontAttribute(Fonts.ui, 12, 255, 0));
+    cidlbl.setRect(0, 0, 10, 10);
+    addChild(cidlbl);
+
+    this.idf = SKTextField("ID");
+    idf.setRect(45, 0, 80, 20);
+    addChild(idf);
+    idf.addEventListener(ACTION_EVENT, actionevent2);
+
+    this.bonef = SKTextField("BONEID");
+    bonef.setRect(135, 0, 80, 20);
+    addChild(bonef);
+    bonef.addEventListener(ACTION_EVENT, actionevent2);
+
+    this.areatypef = SKTextField("AREA TYPE");
+    areatypef.setRect(45, 25, 80, 20);
+    addChild(areatypef);
+    areatypef.addEventListener(ACTION_EVENT, actionevent2);
+
+    this.distf = SKTextField("DIST");
+    distf.setRect(135, 25, 80, 20);
+    addChild(distf);
+    distf.addEventListener(ACTION_EVENT, actionevent2);
+  }
+
+  function actionevent2(e) {
+    e.consume();
+  }
+
+  function getTexts() {
+    return { idf = this.idf.getText(), bonef = this.bonef.getText(), areatypef = this.areatypef.getText(), distf = this.distf.getText() };
+  }
+
+  function loadTexts(st) {
+    if (st.idf) this.idf.setText(st.idf);
+    if (st.bonef) this.bonef.setText(st.bonef);
+    if (st.areatypef) this.areatypef.setText(st.areatypef);
+    if (st.distf) this.distf.setText(st.distf);
+  }
+}
+
+class PreviewCanvasKittyEditor extends PreviewCanvas {
+  f_sk3d = null;
+  talkwindow = null;
+
+  constructor(s = null) {
+    super(s);
+
+    talkwindow = null;
+  }
+
+  function addFurnitureSK3(s) {
+    f_sk3d = s;
+    scn.addObject(f_sk3d);
+    f_sk3d.updateMatrix();
+    repaint();
+  }
+
+  function removeFurnitureSK3() {
+    if (!f_sk3d) return;
+    scn.removeObject(f_sk3d);
+  }
+
+  function addModel(sk3d) {
+    scn.addObject(sk3d);
+    sk3d.updateMatrix();
+    repaint();
+  }
+  function removeModel(sk3d) {
+    scn.removeObject(sk3d);
+  }
+
+  function startScript(n, ...) {
+    if (talkwindow) removeChild(talkwindow.view);
+
+    switch (vargc) {
+    case 1: sk3d.startScript(n, vargv[0]); break;
+    case 2: sk3d.startScript(n, vargv[0], vargv[1]); break;
+    case 3: sk3d.startScript(n, vargv[0], vargv[1], vargv[2]); break;
+    default: sk3d.startScript(n); break;
+    }
+
+  }
+
+  function addTalk(tw, idx = -1) {
+    if (talkwindow) removeChild(talkwindow);
+
+    addChild(tw);
+    repaint();
+    if (idx >= 0) tw.startTalk(idx);
+    else tw.startRandomTalk();
+    talkwindow = tw;
+  }
+
+  function updateScene(dt) {
+
+    if (scn.updateScene(dt)) {
+      repaint();
+    }
+
+  }
+}
+
+::SK3DScriptRunner <- class extends ::SK3DScriptRunner {
+  function startTalk(key) {
+
+    local view = ::gamesession.getCurrentScene();
+    local _charakey = chara_setting.talk_key;
+
+    local tw = ::TalkWindow(key, _charakey, false, false, true);
+    tw.view.scale.set(1, 1, 1);
+    tw.setPos(500, 100);
+    view.canvas.addTalk(tw);
+  }
+
+  function startTalkForce(key, small = false) {
+    startTalk(key);
+  }
+}
+
+with SK3Viewer {
+  constructor <- function() {
+
+    pos = Vector3D();
+    scale = Vector3D(1, 1, 1);
+    rot = Vector3D();
+    bnd = Rect2D(0, 0, 10, 10);
+    mat = Matrix();
+
+    canvas = PreviewCanvasKittyEditor();
+    rightpanel = SK3RightPanel(this);
+    timeline = TimelineBar(this);
+
+    addChild(canvas);
+    addChild(rightpanel);
+    addChild(timeline);
+
+    resroot_backup = clone ::resroot.getList();
+
+    timeline.addEventListener(ITEM_EVENT, valueevent);
+
+    ::gamesession.currentscene = this;
+  }
+
+  function updateScene(dt) {
+  }
+
+  function openFile(f) {
+
+    findRootDir(f);
+    file = f;
+    local p = f.path;
+    local i = p.indexOf("/");
+    if (rootres) rootres.flush();
+    rootres = createResource(rootdir);
+    ::resroot.getList().clear();
+    ::resroot.getList().extend(resroot_backup);
+    ::resroot.install(rootres);
+    foreach (r in resroot.getList()) {
+      r.flush();
+    }
+
+    local p2 = ::getRelativePath(rootdir.path, f.path);
+
+    local r = sk3res = rootres.getResource(p2);
+    local s = SK3DObject(r);
+
+    setSK3(s);
+    _loadSaveData()
+  }
+
+  function openResource(r) {
+
+    file = r.file;
+
+    sk3res = r;
+    local s = SK3DObject(r);
+
+    setSK3(s);
+    _loadSaveData()
+  }
+
+  function _loadSaveData() {
+    rightpanel.loadSaveData();
+  }
+}
+
+with SKBuilder {
+
+  local _appevent = SKBuilder.appevent;
+  function appevent(e) {
+    _appevent(e);
+
+    switch (e.id) {
+    case ACTIVESTATE_CHANGED:
+      if (e.keycode == AppActiveState.APPACTIVE_INACTIVE) {
+        printf("DEACTIVATED\n");
+        _savews();
+      }
+      break;
+    }
+  }
+
+  function _savews() {
+    local ws = ::workspace;
+    ws.currentpath <- explorer.currentdir.path;
+    ws.tabs <- [];
+    foreach (t in tabs.tabs) {
+      ws.tabs + t.item.path;
+    }
+    ws.favorites <- [];
+    if (tabs.getSelected()) ws.currenttab <- tabs.getSelected().path;
+
+    ws.sk3texts <- {};
+    foreach (k, v in tabcontents) {
+      if (v instanceof SK3Viewer) {
+        ws.sk3texts[k.name] <- v.rightpanel.getSKRightPanelTexts();
+      }
+    }
+
+    ::saveWorkspaces();
+  }
+
+}

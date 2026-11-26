@@ -1,0 +1,140 @@
+class PlayerAction {
+  constructor() {
+  }
+
+  function startAction(p, e) {
+  }
+
+  function update(dt, p) {
+    if (isActionEnd(p)) {
+      p.endAction();
+      return;
+    }
+
+    p.actiontime -= dt;
+    if (p.actiontime < 0) {
+      local _dt = updateAction(dt - p.actiontime, p);
+      if (isActionEnd(p)) {
+        p.endAction();
+      };
+    }
+    else {
+      updateAction(dt, p);
+    }
+  }
+
+  function updateAction(dt, p) {
+  }
+
+  function isActionEnd(p) {
+    return true;
+  }
+}
+
+class PlayerActionIdle extends PlayerAction {
+
+  function startAction(p, e) {
+    p.startScript(e.script);
+    p.actiontime = e.time;
+  }
+
+  function updateAction(dt, p) {
+    super.updateAction(dt, p);
+  }
+
+  function isActionEnd(p) {
+    return p.actiontime <= 0;
+  }
+}
+
+class PlayerActionScript extends PlayerAction {
+
+  function startAction(p, e) {
+    p.startScript(e.script);
+  }
+
+  function isActionEnd(p) {
+    return !p.sk3d.scprunner.running;
+  }
+}
+
+class PlayerActionMove extends PlayerAction {
+
+  function startAction(p, e) {
+    p.startScript(e.script);
+
+    local spd = e.speed * DASHSPEED_SCALE;
+    p.speed = spd;
+
+    local dx = e.target.x - p.pos.x;
+    local dy = e.target.y - p.pos.y;
+    local dz = e.target.z - p.pos.z;
+    p.actiontime = Math.sqrt(dx * dx + dy * dy + dz * dz) / spd;
+
+    p.action_target = e.target;
+  }
+
+  function updateAction(dt, p) {
+    p.pos.x += (p.action_target.x - p.pos.x) * dt / (p.actiontime + dt);
+    p.pos.y += (p.action_target.y - p.pos.y) * dt / (p.actiontime + dt);
+    p.pos.z += (p.action_target.z - p.pos.z) * dt / (p.actiontime + dt);
+  }
+
+  function isActionEnd(p) {
+    if (p.pos.x == p.action_target.x && p.pos.y == p.action_target.y && p.pos.z == p.action_target.z) {
+      return true;
+    }
+    else if (p.actiontime <= 0) {
+
+      p.pos.set(p.action_target);
+      return true;
+    }
+
+    return false;
+  }
+}
+
+class PlayerActionTurn extends PlayerAction {
+
+  function startAction(p, e) {
+    p.startScript(e.script);
+
+    p.actiontime = "time" in e ? e.time : Math.abs(_calcDirDiff(p.angle, e.target)) * 250 / Math.PI;
+    p.action_target = e.target;
+  }
+
+  function _calcDirDiff(angle, target_angle) {
+    local PI = Math.PI;
+    local PI2 = PI * 2;
+
+    local diff = target_angle - angle;
+    if (diff > PI) {
+      diff = diff % PI2;
+      if (diff > PI) {
+        diff = diff - PI2;
+      }
+    } else if (diff < -PI) {
+      diff = diff % PI2;
+      if (diff < -PI) {
+        diff = diff + PI2;
+      }
+    }
+    return diff;
+  }
+
+  function updateAction(dt, p) {
+    local delta = _calcDirDiff(p.angle, p.action_target) * dt / (p.actiontime + dt);
+    p.setAngle(p.angle + delta);
+  }
+
+  function isActionEnd(p) {
+
+    if (p.actiontime <= 0) {
+
+      p.setAngle(p.action_target);
+      return true;
+    }
+
+    return false;
+  }
+}

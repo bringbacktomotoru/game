@@ -1,0 +1,195 @@
+class CharaWorkLayer {
+  view = null;
+  balloon = null;
+
+  work_manager = null;
+  user_data = null;
+  last_room_index = null;
+
+  constructor(view) {
+    this.view = view;
+
+    this.work_manager = ::gamesession.getCurrentScene().getWorkManager()
+    this.user_data = ::gamesession.getUserData();
+    this.last_room_index = this.user_data.getCurrentRoomIndex();
+
+    this.balloon = Balloon(this);
+    this.view.addChild(this.balloon.view);
+
+    this.view.setUpdateFunc(update.bindenv(this));
+  }
+
+  function update(dt) {
+    local _ridx = this.user_data.getCurrentRoomIndex();
+    if (this.last_room_index != _ridx) {
+      this.last_room_index = _ridx;
+      if (this.balloon) {
+        this.balloon.release();
+      }
+    }
+
+    if (!this.balloon.isActive() && this.work_manager.isFinishedWorks(_ridx)) {
+      this.balloon.build(_ridx);
+    }
+
+    if (this.balloon.isActive()) this.balloon.update(dt);
+  }
+}
+
+class CharaWorkLayer.Balloon {
+  view = null;
+
+  layer = null;
+  camera = null;
+
+  btn = null;
+  tap_btn = null;
+  interval_id = -1;
+  room_index = -1;
+
+  is_get_anime = null;
+
+  pop_pos = null;
+
+  v_1 = null;
+
+  constructor(layer) {
+    this.layer = layer;
+
+    this.view = ::loadSKView("/ui/common/ProductIcon.ui");
+    this.view.centerize(0.5, 1.0);
+
+    local _product_layer = this.view.findChild("pnl_product_layer");
+    _product_layer.pickable = _product_layer.visible = false;
+    local _deliver_layer = this.view.findChild("pnl_deliver_layer");
+    _deliver_layer.pickable = _deliver_layer.visible = false;
+    local _levelup_layer = this.view.findChild("pnl_levelup_layer");
+    _levelup_layer.pickable = _levelup_layer.visible = false;
+
+    this.btn = this.view.findChild("pnl_work_layer");
+    this.tap_btn = ::TapButton(this.btn);
+    this.tap_btn.setTappedJingle(SoundConstants.SOUND_WORK_END, 4500);
+    this.tap_btn.setClickFunc(releaseFunc.bindenv(this), false);
+    this.tap_btn.setRepeatable(false);
+
+    this.btn.findChild("pnl_got").visible = false;
+
+    this.camera = ::gamesession.getCurrentScene().getStage().renderer.camera;
+
+    this.btn.visible = false;
+    this.is_get_anime = false;
+
+    this.v_1 = Vector3D();
+  }
+
+  function build(ridx) {
+    this.room_index = ridx;
+    this.btn.visible = true;
+    this.pop_pos = ::gamesession.getCurrentScene().getStage().getHouseManager().getCurrentRoomDoorPosition();
+    this.interval_id = setInterval(_animebody.bindenv({
+      self = this,
+      timer = 0
+    }), 1);
+  }
+
+  function release() {
+    this.room_index = -1;
+    this.btn.visible = false;
+    this.pop_pos = null;
+    if (this.interval_id != -1) {
+      clearInterval(this.interval_id);
+      this.interval_id = -1;
+    }
+  }
+
+  function update(dt) {
+    if (!this.pop_pos) return;
+
+    local v = this.camera.project(v_1.set(this.pop_pos).add(0, 2.5, 0.0));
+
+    local x = (layer.view.bnd.w - ::screenWidth) / 2.0 + ::screenWidth * v.x;
+    local y = (layer.view.bnd.h - ::screenHeight) / 2.0 + ::screenHeight * v.y;
+    this.view.pos.set(x, y, v.z);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function releaseFunc() {
+    local v = this.camera.project(v_1.set(this.pop_pos).add(-0.5, 2.0, 0.0));
+    local x = ::screenWidth * v.x;
+    local y = ::screenHeight * v.y;
+
+    ::gamesession.getTapViewLayer().addCompleteProductEffect(x, y, 80, 65, "/res/efx/ptd/complete_work.sk3");
+
+    local _scene = ::gamesession.getCurrentScene();
+    local _wm = _scene.getWorkManager();
+    local _wd = _wm.applyWorkedReward(-1, this.room_index);
+    release();
+
+    if (_wd) {
+
+      _scene.updateActiveSanrioCharas();
+
+      local _chara_id = ::gamesetting.costume_settings[_wd.cos_id].getCharaID();
+
+      local _event_id;
+      if (!_wm.hasCostumeRequestReward()) {
+        _event_id = ::gamesetting.costume_action_settings[_wd.w_id].getWorkEndEvent();
+      } else {
+        local _crd_info = _wm.getCostumeRequestDataInfo();
+        local cr_setting = ::gamesetting.costume_request_settings[_crd_info.request_id];
+        _event_id = cr_setting.getCompleteEventID(_crd_info.event_index);
+      }
+      ::event_manager.startEventSceneTalk(_event_id, this, _showWorkReward, _wd.cos_id);
+    }
+  }
+  function _showWorkReward() {
+    local _scene = ::gamesession.getCurrentScene();
+    if (getclass(_scene) != ::SanrioGameScene) return;
+
+    local _talkview = _scene.getUI().getCurrentPanel();
+    _talkview.baseview.findChild("btn_skip").setVisible(false);
+    _scene.getWorkManager().showRewardDialog();
+  }
+
+  function isActive() {
+    return this.btn.visible;
+  }
+
+  function _animebody(dt) {
+    timer += dt;
+
+    if (!self.btn.visible) return;
+
+    local cameraobj_pos_z = ::gamesession.getCurrentScene().stage.renderer.cameraobj.pos.z;
+    local dist = self.pop_pos.z - cameraobj_pos_z;
+
+    local t = timer % 1000;
+    local base_scale = 1.0 + 1.0 * (30.0 + cameraobj_pos_z) / 30.0;
+    local s = base_scale * (1.0 + Math.abs(t - 500) / 10000.0);
+    self.tap_btn.base_scale = s;
+    self.tap_btn.view.scale << s;
+    self.tap_btn.view.matdirty = true;
+    self.tap_btn.view.parent.repaint();
+  }
+
+  function _getanimebody(dt) {
+    this.timer += dt;
+
+    local limit = 750;
+    if (timer < limit) {
+      local posy = int(-100 * (Math.sin(Math.PI / 4.0 + Math.PI / 4.0 * timer / limit) - Math.sin(Math.PI / 4.0)));
+
+      local scalex = Math.cos(Math.PI * timer * 2.0 / limit);
+      return null;
+    }
+
+    if (this.timer < limit + 100) {
+      return null;
+    }
+
+    self.btn.setVisible(false);
+    self.is_get_anime = false;
+    return undefined;
+  }
+}

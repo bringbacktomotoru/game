@@ -1,0 +1,1045 @@
+class MailPanel extends ::HomeUI.Panel {
+  static need_history_clear = true;
+  static need_menu_layer = false;
+  static need_rank_layer = false;
+
+  static NOTICE_URL = "https://www.tomotoru.com/info_list?mode=sp";
+  static NOTICE_URL_EN = "https://www.tomotoru.com/info_list?mode=sp&lang=en";
+
+  static TAB_MAIL = 1;
+  static TAB_NOTICE = 2;
+
+  select = -1;
+
+  tab_list = null;
+
+  pnl_mail = null;
+  pnl_notice = null;
+  mail_initialized = false;
+
+  mail_list = null;
+  notice = null;
+  page_control = null;
+
+  is_mail_open = false;
+
+  function create() {
+    return ::loadSKView("/ui/MailPanel.ui", ::MailPanel);
+  }
+
+  function added() {
+    super.added();
+
+    this.pnl_mail = findChild("pnl_mail");
+    this.pnl_notice = findChild("pnl_notice");
+
+    this.tab_list = TabList(findChild("pnl_tab_on"), findChild("pnl_tab_off"), this);
+    this.mail_list = List(this.pnl_mail.findChild("pnl_mail_list"), this);
+    this.notice = Notice(this.pnl_notice.findChild("notice_region"));
+
+    this.mail_initialized = false;
+
+    local _btn_all_get = findChild("btn_all_get");
+    local _btn_all_delete = findChild("btn_all_delete");
+    ::TapButton(_btn_all_get).view.addEventListener(ACTION_EVENT, actionevent_allget);
+    ::TapButton(_btn_all_delete).view.addEventListener(ACTION_EVENT, actionevent_alldelete);
+
+    ::TapButton(findChild("btn_back")).view.addEventListener(ACTION_EVENT, actionevent_back);
+
+    _btn_all_get.findChild("lbl_all_get").setText(::dict.get("all_get"));
+    _btn_all_delete.findChild("lbl_all_delete").setText(::dict.get("all_delete"));
+    findChild("lbl_desc").setText(::dict.get("mail_caution"));
+
+    this.page_control = PageControl(findChild("pnl_page_control"), this);
+
+    _updateMenu(TAB_MAIL);
+  }
+
+  function removed() {
+    super.removed();
+    this.notice.destructor();
+    this.notice = null;
+    this.pnl_mail = null;
+    this.pnl_notice = null;
+
+    this.mail_list = null;
+    this.page_control = null;
+
+  }
+
+  function _updateMail() {
+
+    local ud = ::gamesession.getUserData();
+    local mails = ud.getMails();
+
+    this.mail_list.setMails(mails);
+    this.mail_list.changePage(0);
+
+    _updatePageControl(length(mails));
+  }
+
+  function _updatePageControl(mail_num) {
+    local page_num = mail_num / MailPanel.List.MAX_ITEM_NUM + (mail_num % MailPanel.List.MAX_ITEM_NUM > 0 ? 0 : -1);
+    this.page_control.setMaxPage(Math.max(page_num, 0));
+  }
+
+  function updateMailNumLabel() {
+    this.tab_list.getTabMail().updateMailNumLabel();
+  }
+
+  function tapMailTab(type) {
+    if (this.select == type) return;
+    _updateMenu(type);
+    ::playSound(::SoundConstants.SOUND_MOVETAB);
+  }
+
+  function _updateMenu(type) {
+    switch (type) {
+    case TAB_MAIL:
+      this.pnl_mail.setVisible(true);
+      this.pnl_notice.setVisible(false);
+      break;
+    case TAB_NOTICE:
+      this.pnl_notice.setVisible(true);
+      this.pnl_mail.setVisible(false);
+      break;
+    }
+    this.select = type;
+    _updateContents();
+    this.tab_list.setTabBg(this.select);
+  }
+
+  function _updateContents() {
+    switch (this.select) {
+    case TAB_MAIL:
+      this.notice.hideWebView();
+      if (this.mail_initialized) return;
+      _updateMail();
+      updateMailNumLabel();
+      this.mail_initialized = true;
+      break;
+    case TAB_NOTICE:
+      local _url = NOTICE_URL;
+      switch (::READ_TRANS_FILE) {
+      case "EN":
+        _url = NOTICE_URL_EN;
+        break;
+      }
+
+      this.notice.showWebView(_url);
+      break;
+    }
+  }
+
+  function openMail(mail_data) {
+    if (this.is_mail_open) return;
+
+    this.is_mail_open = true;
+
+    local dlg = DetailDialog();
+    dlg.show(mail_data, this);
+
+    if (dlg.ret != -2 && !mail_data.isRead()) {
+      local mail_id = mail_data.getMailId();
+      _requestMailReadFlag(mail_id);
+      this.mail_list.mailRead(mail_id);
+    }
+
+    this.is_mail_open = false;
+
+    updateMailNumLabel();
+  }
+
+  function deleteMail(mail_id) {
+    local ret = _requestMailDelete(mail_id);
+    if (ret && ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      this.mail_list.deleteMail(mail_id);
+      this.mail_list.updateViews();
+
+      _updatePageControl(this.mail_list.getMailNum());
+    }
+
+    updateMailNumLabel();
+  }
+
+  function receiveMailItem(mail_id) {
+
+    local ret = _requestItemReceiving(mail_id);
+    if (ret && ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      this.mail_list.itemReceived(mail_id);
+    }
+
+    return ret;
+  }
+
+  function changePage(val) {
+    this.mail_list.changePage(val);
+  }
+
+  static function getMailItemSprite(mail_data) {
+    if (!mail_data.isItemAttached()) return null;
+    return MailPanel.getItemIconSprite(mail_data.getItemKind(), mail_data.getItemID());
+  }
+  static function getItemIconSprite(kind, id) {
+    local _item_icon = null;
+    switch (kind) {
+    case ITEM_TYPE_GM:
+      _item_icon = ::Setting.getGMIconSprite();
+      break;
+    case ITEM_TYPE_ONEROUSRM:
+    case ITEM_TYPE_FREERM:
+      _item_icon = ::Setting.getRMIconSprite();
+      break;
+    case ITEM_TYPE_COSTUME:
+      local _cs = ::gamesetting.costume_settings[id];
+      _item_icon = _cs.getSpriteCostumeIcon();
+      break;
+    case ITEM_TYPE_FURNITURE:
+      local _fs = ::gamesetting.furniture_settings[id];
+      _item_icon = _fs.getIconSpriteUnacquired();
+      break;
+    case ITEM_TYPE_MOTION:
+      local _as = ::gamesetting.costume_motion_settings[id];
+      _item_icon = _as.getIconSprite();
+      break;
+    }
+    return _item_icon;
+  }
+
+  function _requestMailReadFlag(mail_id) {
+    return ::gamesession.setMailReadFlag(mail_id);
+  }
+
+  function _requestMailDelete(mail_id) {
+    return ::gamesession.deleteMail(mail_id);
+  }
+
+  function _requestMailsDelete(start_idx, end_idx) {
+    return ::gamesession.deleteMails(start_idx, end_idx);
+  }
+
+  function _requestItemReceiving(mail_id) {
+    return ::gamesession.receiveMailItem(mail_id);
+  }
+
+  function _requestItemsReceiving(start_idx, end_idx) {
+    return ::gamesession.receiveMailItems(start_idx, end_idx);
+  }
+
+  function actionevent_allget(e) {
+    e.consume();
+
+    local start_idx = this.mail_list.getStartMailIndex();
+    local end_idx = this.mail_list.getEndMailIndex();
+    local ret = _requestItemsReceiving(start_idx, end_idx);
+    if (ret && ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      this.mail_list.itemsReceived(ret.rewards);
+      this.mail_list.updateViews();
+
+      SomeMailReceivedDialog().setup(ret.rewards).show();
+    }
+    else {
+      local dlg = ::loadSKView("/ui/dialog/Dialog_s.ui")
+      dlg.findChild("lbl_text").setText(::dict.get("mail_has_not_any_item"));
+      dlg.findChild("lbl_ok").setText(::dict.get("ok"));
+      ::Dialog(dlg).show();
+    }
+
+    updateMailNumLabel();
+  }
+
+  function actionevent_alldelete(e) {
+    e.consume();
+
+    local dlg = ::loadSKView("/ui/dialog/Dialog_s2.ui")
+    dlg.findChild("lbl_text_title").setText(::dict.get("mail_all_delete_alart"));
+    dlg.findChild("lbl_text").setText(::dict.get("mail_all_delete_condition"));
+    dlg.findChild("lbl_ok").setText(::dict.get("ok"));
+    dlg.findChild("lbl_cancel").setText(::dict.get("cancel"));
+    dlg.findChild("btn_shorten").setVisible(false);
+    local dialog = ::Dialog(dlg);
+    dialog.show();
+    if (dialog.ret != 1) return;
+
+    local start_idx = this.mail_list.getStartMailIndex();
+    local end_idx = this.mail_list.getEndMailIndex();
+    local ret = _requestMailsDelete(start_idx, end_idx);
+    if (ret && ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      this.mail_list.deleteMails(ret.idxes);
+      this.mail_list.updateViews();
+
+      _updatePageControl(this.mail_list.getMailNum());
+    }
+    else {
+      local dlg = ::loadSKView("/ui/dialog/Dialog_s.ui")
+      dlg.findChild("lbl_text").setText(::dict.get("mail_all_delete_falied"));
+      dlg.findChild("lbl_ok").setText(::dict.get("ok"));
+      ::Dialog(dlg).show();
+    }
+
+    updateMailNumLabel();
+  }
+
+  function actionevent_back(e) {
+    getHomeUI().moveTopPanel();
+  }
+}
+
+class MailPanel.TabList {
+  on_list = null;
+  off_list = null;
+
+  tab_notice = null;
+  tab_mail = null;
+
+  pnl_parent = null;
+
+  constructor(on_list, off_list, pnl_parent) {
+    this.on_list = on_list;
+    this.off_list = off_list;
+    this.pnl_parent = pnl_parent;
+    this.off_list.setVisible(false);
+
+    local _tab_mail = ::loadSKView("/ui/common/PanelTab.ui");
+
+    local _offset_x = 860;
+    local _size = _tab_mail.bnd.w;
+    _tab_mail.pos.set(_offset_x, 0.0, 0.0);
+
+    this.on_list.addChild(_tab_mail);
+    this.tab_mail = Tab(_tab_mail, MailPanel.TAB_MAIL, this.pnl_parent);
+    local _tab_notice = ::loadSKView("/ui/common/PanelTab.ui");
+
+    _tab_notice.pos.set(_offset_x - _size, 0.0, 0.0);
+    this.on_list.addChild(_tab_notice);
+    this.tab_notice = Tab(_tab_notice, MailPanel.TAB_NOTICE, this.pnl_parent);
+  }
+
+  function getTabMail() {
+    return tab_mail;
+  }
+
+  function setTabBg(type) {
+    switch (type) {
+    case MailPanel.TAB_MAIL:
+      this.tab_mail.setTabBg(true);
+      this.tab_notice.setTabBg(false);
+      break;
+    case MailPanel.TAB_NOTICE:
+      this.tab_mail.setTabBg(false);
+      this.tab_notice.setTabBg(true);
+      break;
+    }
+  }
+}
+
+class MailPanel.TabList.Tab {
+  type = -1;
+  view = null;
+
+  lbl_name = null;
+  lbl_amount = null;
+  pnl_parent = null;
+  img_tab_on = null;
+  img_tab_off = null;
+  pnl_icon = null;
+
+  constructor(view, type, pnl_parent) {
+    this.view = view;
+    this.type = type;
+
+    this.lbl_name = this.view.findChild("lbl_name");
+    this.lbl_amount = this.view.findChild("lbl_amount");
+    this.lbl_amount.setVisible(type == MailPanel.TAB_MAIL);
+    this.pnl_parent = pnl_parent;
+    this.img_tab_on = this.view.findChild("img_tab_on");
+    this.img_tab_off = this.view.findChild("img_tab_off");
+    this.pnl_icon = this.view.findChild("pnl_icon");
+
+    _setName();
+    _setTabIcon();
+
+    this.view.addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function _setName() {
+    switch (this.type) {
+    case MailPanel.TAB_MAIL: this.lbl_name.setText(::dict.get("mail")); break;
+    case MailPanel.TAB_NOTICE: this.lbl_name.setText(::dict.get("notice")); break;
+    }
+  }
+
+  function updateMailNumLabel() {
+    local _num = ::gamesession.getUserData().getUnreadMailNum(100);
+    this.lbl_amount.setText(_num > 99 ? ::dict.get("nums_plus3", [99]) : "" + _num);
+  }
+
+  function _setTabIcon() {
+    this.pnl_icon.clearChildren();
+    local _sp;
+    switch (this.type) {
+    case MailPanel.TAB_MAIL: _sp = Setting.getMailTabIconSprite(); break;
+    case MailPanel.TAB_NOTICE: _sp = Setting.getNoticeTabIconSprite(); break;
+    }
+    local _iv = SKImageView(_sp);
+    _iv.setRect(0, 0, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+    this.pnl_icon.addChild(_iv);
+  }
+
+  function setTabBg(select) {
+    if (select) {
+      this.img_tab_on.visible = true;
+      this.img_tab_off.visible = false;
+    }
+    else {
+      this.img_tab_on.visible = false;
+      this.img_tab_off.visible = true;
+    }
+    this.view.repaint();
+  }
+
+  function mouseevent(e) {
+    e.consume();
+
+    switch (e.id) {
+    case MOUSE_CLICKED:
+
+      this.pnl_parent.tapMailTab(this.type);
+      break;
+    }
+  }
+}
+
+class MailPanel.List {
+  static MAX_ITEM_NUM = 10;
+  static PADDING_H = 20;
+
+  mail_panel = null;
+
+  mails = null;
+
+  items = null;
+  empty_items = null;
+  page_idx = 0;
+
+  reclist = null;
+  scroll = null;
+  scroll_bar = null;
+
+  pnl_list = null;
+
+  constructor(view, mail_panel) {
+    this.mail_panel = mail_panel;
+
+    this.mails = [];
+    this.items = [];
+    this.empty_items = [];
+
+    this.pnl_list = view.findChild("pnl_list");
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dxscale = 0.0;
+    this.pnl_list.addChild(this.reclist);
+    this.pnl_list.setBuffer(true);
+
+    this.scroll_bar = ::ScrollBarV(view.findChild("pnl_scroll_bar"));
+  }
+
+  function setMails(mails) {
+    this.mails = mails;
+  }
+
+  function getMailNum() {
+    return length(this.mails);
+  }
+
+  function _createItems() {
+
+    local item_num = Math.min(length(this.mails), MAX_ITEM_NUM);
+    for (local i = length(this.items) + length(this.empty_items); i < item_num; i++) {
+      this.empty_items + Item.create(this);
+    }
+  }
+
+  function _getItem(mail_id) {
+    foreach (item in this.items) {
+      if (!item.isThisMailId(mail_id)) continue;
+
+      return item;
+    }
+
+    return null;
+  }
+
+  function _getItemIndex(mail_id) {
+    foreach (idx, item in this.items) {
+      if (!item.isThisMailId(mail_id)) continue;
+
+      return idx;
+    }
+
+    return -1;
+  }
+
+  function getStartMailIndex() {
+    return this.page_idx * MAX_ITEM_NUM;
+  }
+
+  function getEndMailIndex() {
+    return Math.min(length(this.mails) - 1, (this.page_idx + 1) * MAX_ITEM_NUM - 1);
+  }
+
+  function changePage(idx) {
+    this.page_idx = idx;
+    updateViews();
+  }
+
+  function updateViews() {
+    local reclist = this.reclist;
+    reclist.clearChildren();
+
+    _createItems();
+    local start_idx = this.page_idx * MAX_ITEM_NUM;
+    local end_idx = Math.min(length(mails), start_idx + MAX_ITEM_NUM);
+
+    local h = 0;
+    local items = this.items;
+    local empty_items = this.empty_items;
+    local mails = this.mails;
+    for (local i = start_idx; i < end_idx; i++) {
+      local item = items[i % MAX_ITEM_NUM];
+      if (!item) {
+        item = delete empty_items[0];
+        items + item;
+      }
+      reclist.addChild(item);
+
+      local mail_data = mails[i];
+      if (!item.isSameMailData(mail_data)) {
+        item.setupData(mail_data);
+        item.setupView();
+      }
+
+      item.pos.y = h;
+      h += item.bnd.h + PADDING_H;
+    }
+
+    reclist.setRect(0, 0, this.pnl_list.bnd.w, h);
+    this.scroll.setScrollRect(reclist.bnd);
+
+    scroll_bar.setup(this.scroll, this.pnl_list.bnd, true);
+  }
+
+  function openMail(mail_data) {
+    this.mail_panel.openMail(mail_data);
+  }
+
+  function mailRead(mail_id) {
+    this.items[_getItemIndex(mail_id)].updatedFlagConditions();
+  }
+
+  function _receivedItemProcess(mail_idx) {
+    this.items[mail_idx].updatedFlagConditions();
+  }
+
+  function itemReceived(mail_id) {
+    _receivedItemProcess(_getItemIndex(mail_id));
+  }
+
+  function itemsReceived(rewards) {
+    local process = this._receivedItemProcess;
+    foreach (reward in rewards) {
+      process(reward.idx % MAX_ITEM_NUM);
+    }
+  }
+
+  function _deleteMailProcess(mail_idx) {
+    local deleted_item = delete this.items[mail_idx];
+    deleted_item.reflesh();
+    this.empty_items + deleted_item;
+    this.reclist.removeChild(deleted_item);
+  }
+
+  function deleteMail(mail_id) {
+    local mail_idx = _getItemIndex(mail_id);
+    _deleteMailProcess(mail_idx);
+  }
+
+  function deleteMails(mail_idxes) {
+    local process = _deleteMailProcess;
+    foreach (idx in mail_idxes) {
+      process(idx % MAX_ITEM_NUM);
+    }
+
+    updateViews();
+  }
+}
+
+class MailPanel.List.Item extends SKView {
+  list = null;
+
+  mail_id = -1;
+  mail_data = null;
+
+  img_bg = null;
+  img_new = null;
+
+  pnl_reward = null;
+
+  lbl_title = null;
+  lbl_timelimit = null;
+  lbl_received = null;
+
+  constructor() {}
+
+  function create(list) {
+    local item = ::loadSKView("/ui/common/MailListItem.ui", ::MailPanel.List.Item);
+    item.list = list;
+    return item;
+  }
+
+  function added() {
+    this.img_bg = findChild("img_bg");
+    this.img_new = findChild("img_new");
+
+    this.pnl_reward = findChild("pnl_reward");
+
+    this.lbl_title = findChild("lbl_title");
+    this.lbl_timelimit = findChild("lbl_timelimit");
+    this.lbl_received = findChild("lbl_received");
+    this.lbl_received.setText(::dict.get("recieved"));
+
+    local _btn_open = this.findChild("btn_open");
+    _btn_open.findChild("lbl").setText(::dict.get("open"));
+    ::TapButton(_btn_open).view.addEventListener(ACTION_EVENT, actionevent_open);
+  }
+
+  function reflesh() {
+    this.mail_id = -1;
+    this.mail_data = null;
+
+    this.pnl_reward.clearChildren();
+
+    this.lbl_title.setText("");
+    this.lbl_timelimit.setText("");
+  }
+
+  function setupData(mail_data) {
+    this.mail_data = mail_data;
+    this.mail_id = mail_data.getMailId();
+  }
+
+  function setupView() {
+    if (!this.mail_data) return;
+
+    setVisible(true);
+    this.pnl_reward.clearChildren();
+
+    this.lbl_title.setText(this.mail_data.getTitle());
+    this.lbl_timelimit.setText(this.mail_data.getTimelimitText());
+
+    local img
+    if (this.mail_data.isItemAttached()) img = ::SKImageView(::Setting.getItemFrame(mail_data.getItemKind()));
+    else img = ::SKImageView(::Setting.getMailIconSprite());
+
+    img.setRect(0, 0, this.pnl_reward.bnd.w, this.pnl_reward.bnd.h);
+    this.pnl_reward.addChild(img);
+
+    local _item_sp = MailPanel.getMailItemSprite(mail_data);
+    if (_item_sp) {
+      local _item_icon = ::SKImageView(_item_sp);
+      _item_icon.setRect(0, 0, this.pnl_reward.bnd.w * 0.7, this.pnl_reward.bnd.h * 0.7);
+      _item_icon.centerize();
+      _item_icon.pos.set(this.pnl_reward.bnd.w / 2.0, this.pnl_reward.bnd.h / 2.0, 0.0);
+      this.pnl_reward.addChild(_item_icon);
+    }
+
+    updatedFlagConditions();
+  }
+
+  function updatedFlagConditions() {
+
+    this.img_new.setVisible(!this.mail_data.isRead());
+    this.lbl_received.setVisible(this.mail_data.isItemAttached() && !this.mail_data.hasItem());
+
+    repaint();
+  }
+
+  function isThisMailId(mail_id) {
+    return this.mail_id == mail_id;
+  }
+
+  function isSameMailData(mail_data) {
+    return this.mail_data == mail_data;
+  }
+
+  function actionevent_open(e) {
+    e.consume();
+
+    this.list.openMail(this.mail_data);
+  }
+}
+
+class MailPanel.Notice {
+  view = null;
+  web_view = null;
+
+  web_rect = null;
+  constructor(view) {
+    this.view = view;
+
+  }
+
+  function showWebView(url) {
+    if (!url || url.equals("")) return;
+    if (!this.web_view) {
+      this.web_view = WebView();
+      local _parent = this.view.parent;
+      local _offset_x = (::uiWidth - ::screenWidth) / 2.0;
+      local _offset_y = (::uiHeight - ::screenHeight) / 2.0;
+      local _display_scale = ::displayWidth / ::screenWidth;
+      local _x = (_parent.bnd.x + this.view.bnd.x + _parent.pos.x + this.view.pos.x - _offset_x) * _display_scale;
+      local _y = (_parent.bnd.y + this.view.bnd.y + _parent.pos.y + this.view.pos.y - _offset_y) * _display_scale;
+      local _w = this.view.bnd.w * _display_scale;
+      local _h = this.view.bnd.h * _display_scale;
+      this.web_rect = Rect2D(_x, _y, _w, _h);
+    }
+    this.web_view.setType(-1);
+
+    this.web_view.setRect(this.web_rect.x, this.web_rect.y, this.web_rect.w, this.web_rect.h);
+    this.web_view.openURL(url);
+    this.web_view.show();
+  }
+
+  function hideWebView() {
+    if (this.web_view) this.web_view.hide();
+  }
+
+  function destructor() {
+    if (this.web_view) this.web_view.close();
+  }
+}
+
+class MailPanel.DetailDialog extends ::Dialog {
+  mail_panel = null;
+
+  mail_data = -1;
+
+  receive_btn = null;
+
+  lbl_title = null;
+  lbl_message = null;
+  lbl_timelimit = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/MailDialog.ui"));
+
+    local view = this.view;
+    this.lbl_title = view.findChild("lbl_title");
+    this.lbl_message = view.findChild("lbl_message");
+    this.lbl_timelimit = view.findChild("lbl_timelimit");
+
+    local _recieve = view.findChild("btn_receive");
+    _recieve.findChild("lbl").setText(::dict.get("recieve"));
+    this.receive_btn = ReceiveButton(_recieve);
+    this.receive_btn.view.addEventListener(ACTION_EVENT, actionevent_receive);
+    local _delete = view.findChild("btn_delete");
+    _delete.findChild("lbl").setText(::dict.get("delete"));
+    ::TapButton(_delete).view.addEventListener(ACTION_EVENT, actionevent_delete);
+
+    local _delete = view.findChild("btn_close");
+    _delete.findChild("lbl").setText(::dict.get("close"));
+
+  }
+
+  function show(mail_data, panel) {
+    this.mail_panel = panel;
+
+    this.mail_data = mail_data;
+
+    this.lbl_title.setText(this.mail_data.getTitle());
+    this.lbl_message.setText(this.mail_data.getMessage());
+    this.lbl_timelimit.setText(this.mail_data.getTimelimitText());
+
+    receive_btn.setupView(this.mail_data);
+
+    super.show();
+  }
+
+  function actionevent_receive(e) {
+    e.consume();
+
+    if (!this.mail_data.isItemAttached()) {
+      local dlg = ::loadSKView("/ui/dialog/Dialog_s.ui")
+      dlg.findChild("lbl_text").setText(::dict.get("mail_has_not_item"));
+      dlg.findChild("lbl_ok").setText(::dict.get("ok"));
+      ::Dialog(dlg).show();
+      return;
+    }
+    else if (!this.mail_data.hasItem()) {
+      local dlg = ::loadSKView("/ui/dialog/Dialog_s.ui")
+      dlg.findChild("lbl_text").setText(::dict.get("mail_item_already_received"));
+      dlg.findChild("lbl_ok").setText(::dict.get("ok"));
+      ::Dialog(dlg).show();
+      return;
+    }
+
+    local ret = this.mail_panel.receiveMailItem(this.mail_data.getMailId());
+    if (ret && ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      receive_btn.setupView(this.mail_data);
+      close();
+    }
+    else {
+      local dlg = ::loadSKView("/ui/dialog/Dialog_s.ui")
+      dlg.findChild("lbl_text").setText(::dict.get("mail_has_not_any_item"));
+      dlg.findChild("lbl_ok").setText(::dict.get("ok"));
+      ::Dialog(dlg).show();
+    }
+  }
+
+  function actionevent_delete(e) {
+    e.consume();
+
+    local dlg = ::loadSKView("/ui/dialog/Dialog_s2.ui")
+    if (this.mail_data.hasItem()) {
+      dlg.findChild("lbl_text_title").setText(::dict.get("mail_has_item_delete"));
+    }
+    else {
+      dlg.findChild("lbl_text_title").setText(::dict.get("mail_not_has_item_delete"));
+    }
+    dlg.findChild("lbl_text").setText("");
+    dlg.findChild("btn_shorten").setVisible(false);
+    dlg.findChild("lbl_ok").setText(::dict.get("ok"));
+    dlg.findChild("lbl_cancel").setText(::dict.get("cancel"));
+    local dialog = ::Dialog(dlg);
+    dialog.show();
+    if (dialog.ret != 1) return;
+
+    this.mail_panel.deleteMail(this.mail_data.getMailId());
+    ret = -2;
+    close();
+  }
+}
+
+class MailPanel.DetailDialog.ReceiveButton extends ::TapButton {
+
+  img_ng = null;
+  img_ok = null;
+  pnl_item = null;
+  pnl_reward = null;
+  lbl_received = null;
+
+  constructor(view) {
+    super(view);
+
+    this.img_ng = view.findChild("img_ng");
+    this.img_ok = view.findChild("img_ok");
+    this.pnl_item = view.findChild("pnl_item");
+    this.pnl_reward = view.findChild("pnl_reward");
+    this.lbl_received = view.findChild("lbl_received");
+    this.lbl_received.setText(::dict.get("recieved"));
+  }
+
+  function clearView() {
+    this.pnl_reward.clearChildren();
+  }
+
+  function setupView(mail_data) {
+    clearView();
+
+    if (mail_data.isItemAttached()) {
+      this.pnl_item.setVisible(true);
+
+      if (mail_data.hasItem()) {
+        this.img_ng.setVisible(false);
+        this.img_ok.setVisible(true);
+
+        local img = ::SKImageView(::Setting.getItemFrame(mail_data.getItemKind()));
+        img.setRect(0, 0, this.pnl_reward.bnd.w, this.pnl_reward.bnd.h);
+        this.pnl_reward.addChild(img);
+
+        local _item_sp = MailPanel.getMailItemSprite(mail_data);
+        if (_item_sp) {
+          local _item_icon = ::SKImageView(_item_sp);
+          _item_icon.setRect(0, 0, this.pnl_reward.bnd.w * 0.7, this.pnl_reward.bnd.h * 0.7);
+          _item_icon.centerize();
+          _item_icon.pos.set(this.pnl_reward.bnd.w / 2.0, this.pnl_reward.bnd.h / 2.0, 0.0);
+          this.pnl_reward.addChild(_item_icon);
+        }
+
+        this.lbl_received.setVisible(false);
+      }
+      else {
+        this.img_ng.setVisible(true);
+        this.img_ok.setVisible(false);
+
+        local img = ::SKImageView(::Setting.getItemFrame(mail_data.getItemKind()));
+        img.setRect(0, 0, this.pnl_reward.bnd.w, this.pnl_reward.bnd.h);
+        this.pnl_reward.addChild(img);
+
+        local _item_sp = MailPanel.getMailItemSprite(mail_data);
+        if (_item_sp) {
+          local _item_icon = ::SKImageView(_item_sp);
+          _item_icon.setRect(0, 0, this.pnl_reward.bnd.w * 0.7, this.pnl_reward.bnd.h * 0.7);
+          _item_icon.centerize();
+          _item_icon.pos.set(this.pnl_reward.bnd.w / 2.0, this.pnl_reward.bnd.h / 2.0, 0.0);
+          this.pnl_reward.addChild(_item_icon);
+        }
+
+        this.lbl_received.setVisible(true);
+      }
+    }
+    else {
+      this.pnl_item.setVisible(false);
+      this.img_ng.setVisible(true);
+      this.img_ok.setVisible(false);
+    }
+  }
+}
+
+class MailPanel.PageControl {
+  mail_panel = null;
+
+  max_page = 0;
+  curr_page = -1;
+
+  lbl_max_page = null;
+  lbl_curr_page = null;
+
+  constructor(view, mail_panel) {
+    this.mail_panel = mail_panel;
+
+    this.lbl_max_page = view.findChild("lbl_max_page");
+    this.lbl_curr_page = view.findChild("lbl_curr_page");
+    view.findChild("lbl_slash").setText(::dict.get("only_slash"));
+
+    ::TapButton(view.findChild("btn_prev")).view.addEventListener(ACTION_EVENT, actionevent_prev);
+    ::TapButton(view.findChild("btn_next")).view.addEventListener(ACTION_EVENT, actionevent_next);
+  }
+
+  function setMaxPage(val) {
+    this.max_page = val;
+    this.lbl_max_page.setText(this.max_page + 1);
+
+    if (this.curr_page == -1) {
+      changePage(0);
+    }
+
+    if (this.curr_page > this.max_page) {
+      changePage(this.max_page);
+    }
+  }
+
+  function changePage(new_page) {
+    if (new_page == this.curr_page) return;
+    if (new_page > this.max_page) return;
+
+    this.curr_page = new_page;
+    this.lbl_curr_page.setText(this.curr_page + 1);
+
+    _pageChanged();
+  }
+
+  function _pageChanged() {
+    this.mail_panel.changePage(this.curr_page);
+  }
+
+  function actionevent_prev(e) {
+    e.consume();
+
+    changePage(Math.max(0, this.curr_page - 1));
+  }
+
+  function actionevent_next(e) {
+    e.consume();
+
+    changePage(Math.min(this.max_page, this.curr_page + 1));
+  }
+}
+
+class MailPanel.SomeMailReceivedDialog extends ::Dialog {
+  reclist = null;
+  scroll = null;
+  scroll_bar = null;
+
+  pnl_list = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/SomeMailReceivedDialog.ui"));
+
+    local pnl = this.view.findChild("pnl");
+    this.pnl_list = pnl.findChild("pnl_list");
+
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dxscale = 0.0;
+    this.pnl_list.addChild(this.reclist);
+    this.pnl_list.setBuffer(true);
+
+    this.scroll_bar = ::ScrollBarV(pnl.findChild("pnl_scroll_bar"));
+  }
+
+  function setup(rewards) {
+    local reclist = this.reclist;
+    reclist.clearChildren();
+
+    local h = 0;
+    foreach (reward in rewards) {
+      local item = Item.create();
+      item.pos.y = h;
+      reclist.addChild(item);
+      item.setup(reward);
+
+      h += item.bnd.h;
+    }
+
+    reclist.setRect(0, 0, this.pnl_list.bnd.w, h);
+    this.scroll.setScrollRect(reclist.bnd);
+
+    scroll_bar.setup(this.scroll, this.pnl_list.bnd, true);
+
+    return this;
+  }
+}
+
+class MailPanel.SomeMailReceivedDialog.Item extends SKView {
+
+  pnl_reward = null;
+  lbl_name = null;
+
+  constructor() {}
+
+  function create() {
+    local item = ::loadSKView("/ui/common/SomeMailReceivedListItem.ui", ::MailPanel.SomeMailReceivedDialog.Item);
+    item.created();
+    return item;
+  }
+
+  function created() {
+    this.pnl_reward = findChild("pnl_reward");
+    this.lbl_name = findChild("lbl_name");
+  }
+
+  function reflesh() {
+    this.pnl_reward.clearChildren();
+    this.lbl_name.setText("");
+  }
+
+  function setup(reward) {
+    reflesh();
+
+    local img = ::SKImageView(::Setting.getItemFrame(reward.kind));
+    img.setRect(0, 0, this.pnl_reward.bnd.w, this.pnl_reward.bnd.h);
+    this.pnl_reward.addChild(img);
+    local _item_sp = MailPanel.getItemIconSprite(reward.kind, reward.id);
+    if (_item_sp) {
+      local _item_icon = ::SKImageView(_item_sp);
+      _item_icon.setRect(0, 0, this.pnl_reward.bnd.w * 0.7, this.pnl_reward.bnd.h * 0.7);
+      _item_icon.centerize();
+      _item_icon.pos.set(this.pnl_reward.bnd.w / 2.0, this.pnl_reward.bnd.h / 2.0, 0.0);
+      this.pnl_reward.addChild(_item_icon);
+    }
+
+    this.lbl_name.setText(::Setting.getItemName(reward.kind, reward.id, reward.num));
+  }
+}

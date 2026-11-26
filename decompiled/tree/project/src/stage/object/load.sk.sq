@@ -1,0 +1,19 @@
+foreach (f_name in [
+"StageObject.sk"
+
+"Model.sk"
+"ProducerModel.sk"
+"CharaModel.sk"
+"FurnitureModel.sk"
+"RoomModel.sk"
+"UIModel.sk"
+"ARModel.sk"
+"ARCharaModel.sk"
+"ARFurnitureModel.sk"
+"AROriginModel.sk"
+"AREffectModel.sk"
+
+"HouseModel.sk"
+]) {
+  runsk("/src/stage/object/" + f_name);
+}

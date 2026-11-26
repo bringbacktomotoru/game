@@ -1,0 +1,37 @@
+local r_1 = Rect2D();
+
+class SKMaskView extends SKView
+{
+  lastbnd = null;
+
+  constructor() {
+    lastbnd = Rect2D();
+  }
+
+  function updateVisibles() {
+    local gbnd = getWindowRect(r_1) * mat;
+
+    foreach (c in children) {
+      r_1.set(0.0, 0.0, c.bnd.w, c.bnd.h);
+      local cbnd = r_1 * c.mat;
+      c.visible = gbnd.contacts(cbnd);
+    }
+
+  }
+
+  function getVisibles(a = null, mgn = 0) {
+    if (!a) a = [];
+    local gbnd = (getWindowRect(r_1) * mat) | mgn;
+    foreach (c in children) {
+      r_1.set(0.0, 0.0, c.bnd.w, c.bnd.h);
+      local cbnd = r_1 * c.mat;
+      if (gbnd.contacts(cbnd)) a + c;
+    }
+    return a;
+  }
+
+  function render() {
+    updateVisibles();
+  }
+
+}

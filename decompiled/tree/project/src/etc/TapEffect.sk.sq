@@ -1,0 +1,180 @@
+class TapEffectView extends SK3DView {
+  ptd = null;
+  ptd_longtap = null;
+
+  particle_scale = null;
+
+  constructor() {
+    super();
+    this.enabled = false;
+    setRect(0.0, 0.0, ::screenWidth, ::screenHeight);
+
+    local env = scn.env;
+    env.ambup = 0xffcc99ff;
+    env.ambdown = 0xccccffff;
+
+    local stage_env = ::gamesetting.stageenv["grassland"];
+    if (stage_env["light1"]) {
+      this.scn.addLight(_generateLight(stage_env.light1));
+    }
+    if (stage_env["light2"]) {
+      this.scn.addLight(_generateLight(stage_env.light2));
+    }
+    if (stage_env["ambient"]) {
+      local env = this.scn.env;
+      env.ambup = stage_env.ambient[0];
+      env.ambdown = stage_env.ambient[1];
+    }
+
+    this.particle_scale = { x = 1.0, y = 1.0, z = 1.0 };
+
+  }
+
+  function updateLayout() {
+    local w = bnd.w;
+    local h = bnd.h;
+
+    local cameraobj = SK3DObject();
+    this.renderer.setCameraObject(cameraobj);
+    this.renderer.cameraobj.pos.set(0.0, 0.0, -20.0);
+    this.renderer.cameraobj.rot.setHPB(0, 0, 0);
+    this.renderer.camera.perspective(40.0, float(w) / h, 1.0, 100.0);
+    this.renderer.cameraobj.update(0);
+    repaint();
+  }
+
+  function _generateLight(t) {
+    if (!t) return null;
+    local li = Light();
+    local dir = t.dir;
+    li.setDirLight(Vector3D(dir[0], dir[1], dir[2]));
+    li.color = t["color"] || 0xffffffff;
+    li.scolor = t["scolor"] || 0xffffffff;
+    li.power = (t["power"] || 0.8) / 255.0;
+    li.pixellight = t["pixellight"] || 0;
+    return li;
+  }
+
+  function addCompleteProductEffect(sx, sy, gx, gy, res = "/res/efx/ptd/efx_get_gm.sk3") {
+    local sv = renderer.camera.unproject(Vector3D(sx / ::screenWidth, sy / ::screenHeight, 0.0));
+
+    local obj = SK3DObject(res);
+    obj.pos.set(sv);
+    this.scn.addObject(obj);
+
+    local gv = renderer.camera.unproject(Vector3D(gx / ::screenWidth, gy / ::screenHeight, 0.0));
+    local v = gv.sub(sv);
+
+    local _v = renderer.camera.project(Vector3D(v.x, v.y, v.z));
+    local x = ::displayWidth * _v.x;
+    local y = ::displayHeight * _v.y;
+
+    obj.startScript("start", v.x, v.y, v.z);
+
+  }
+
+  function addGetHapinessEffect(sx, sy) {
+    local sv = renderer.camera.unproject(Vector3D(sx / ::screenWidth, sy / ::screenHeight, 0.0));
+
+    local gx = 1100;
+    local gy = 50;
+
+    local res = "/res/efx/ptd/complete_product.sk3";
+    local obj = SK3DObject(res);
+    obj.pos.set(sv);
+    this.scn.addObject(obj);
+
+    local gv = renderer.camera.unproject(Vector3D(gx / ::screenWidth, gy / ::screenHeight, 0.0));
+    local v = gv.sub(sv);
+
+    local _v = renderer.camera.project(Vector3D(v.x, v.y, v.z));
+    local x = ::displayWidth * _v.x;
+    local y = ::displayHeight * _v.y;
+
+    obj.startScript("start", v.x, v.y, v.z);
+
+  }
+
+  function addTapEffect(x, y) {
+
+    if (ptd) ptd.kill();
+
+    ptd = ::SK3DObject();
+    ptd.billboard = true;
+    ptd.scale.set(0.05, 0.05, 0.05);
+
+    local v = renderer.camera.unproject(Vector3D(x / ::displayWidth, y / ::displayHeight, 0.0));
+    ptd.pos.set(v);
+    ptd.matdirty = true;
+    this.scn.addObject(ptd);
+
+    ptd.setParticle(getParticleEffect(::getResource("/res/efx/ptd/tap_effect.ptd")));
+    ptd.startParticle();
+  }
+
+  function killTapEffect(dt = 0) {
+    if (ptd) ptd.kill(dt);
+    ptd = null;
+  }
+
+  function addLongTapEffect(x, y) {
+    if (ptd_longtap) ptd_longtap.kill();
+
+    ptd_longtap = ::SK3DObject();
+    ptd_longtap.billboard = true;
+    ptd_longtap.scale.set(0.05, 0.05, 0.05);
+
+    local v = renderer.camera.unproject(Vector3D(x / ::displayWidth, y / ::displayHeight, 0.0));
+    ptd_longtap.pos.set(v);
+    ptd_longtap.matdirty = true;
+    this.scn.addObject(ptd_longtap);
+
+    ptd_longtap.setParticle(getParticleEffect(::getResource("/res/efx/ptd/longtap_efx.ptd")));
+    ptd_longtap.startParticle();
+  }
+  function killLongTapEffect(dt = 0) {
+    if (ptd_longtap) ptd_longtap.kill(dt);
+    ptd_longtap = null;
+  }
+
+  function setParticleScale(x, y, z) {
+    this.particle_scale.x = x;
+    this.particle_scale.y = y;
+    this.particle_scale.z = z;
+  }
+
+  function addParticle(x, y, p) {
+    local _efx = getParticleEffect(::getResource(p));
+    local _v = renderer.camera.unproject(Vector3D(x / ::displayWidth, y / ::displayHeight, 0.0));
+    local _ptd = ::SK3DObject();
+    _ptd.billboard = true;
+    _ptd.scale.set(this.particle_scale.x, this.particle_scale.y, this.particle_scale.z);
+    this.scn.addObject(_ptd);
+    _ptd.pos.set(_v);
+    _ptd.matdirty = true;
+    _ptd.setParticle(_efx);
+    _ptd.startParticle();
+  }
+
+  function addParticleFromUI(x, y, p, scale = 1.0) {
+    local _ds = getDisplayScale();
+    local epx = (x - (::uiWidth / 2.0 - ::screenWidth / 2.0)) * _ds;
+    local epy = (y - (::uiHeight / 2.0 - ::screenHeight / 2.0)) * _ds;
+
+    local _v = renderer.camera.unproject(Vector3D(epx / ::displayWidth, epy / ::displayHeight, 0.0));
+    local _ptd = ::SK3DObject(p);
+    _ptd.billboard = true;
+    _ptd.scale.set(scale, scale, scale);
+    _ptd.pos.set(_v);
+    _ptd.matdirty = true;
+    this.scn.addObject(_ptd);
+
+    if (p.endsWith(".ptd")) {
+      _ptd.startParticle();
+    } else {
+      _ptd.startScript("start");
+    }
+
+  }
+
+}

@@ -1,0 +1,202 @@
+class ValueGauge extends Slider {
+
+  lbl_value = null;
+  lbl_max_value = null;
+
+  value = 0;
+  max_value = 0;
+
+  constructor(base_view) {
+    super(base_view, false);
+
+    this.lbl_value = base_view.findChild("lbl_value");
+    this.lbl_max_value = base_view.findChild("lbl_max_value");
+  }
+
+  function init(v, max) {
+    this.value = v;
+    this.max_value = max;
+
+    local gauge_value = max_value > 0 ? value / float(max_value) : 1.0;
+    super.setValue(gauge_value);
+
+    if (lbl_value) lbl_value.setText(value);
+    if (lbl_max_value) lbl_max_value.setText(max_value);
+  }
+
+  function add(v) {
+    this.setCurrentValue(v + this.value);
+  }
+
+  function setCurrentValue(v) {
+    this.value = Math.min(v, this.max_value);
+    super.setValue(this.value / float(this.max_value));
+
+    if (this.lbl_value) this.lbl_value.setText(this.value);
+  }
+}
+
+class GlowingValueGauge extends ValueGauge {
+  function add(v, animtime = 1000) {
+    if (animtime <= 0) {
+      this.setCurrentValue(v + this.value);
+    } else {
+      if (this.value >= this.max_value) return;
+
+      local env = {
+        self = this,
+        value = this.value,
+        add_value = v,
+        max_value = this.max_value,
+        time = 0,
+        animtime = animtime;
+      }
+
+      this.baseview.startMethod(function() {
+        local _delt_add = add_value / float(animtime);
+        local _v = value;
+
+        while (time < animtime) {
+          local dt = Math.min(16, animtime - time);
+          _v += dt * _delt_add;
+          self.setCurrentValue(_v);
+
+          sleep(dt);
+          time += dt;
+        }
+        self.setCurrentValue(value + add_value);
+      }.bindenv(env))
+    }
+  }
+
+  function isAnimating() {
+    return this.baseview.isMethodRunning();
+  }
+}
+
+class GrowingValueGauge2Line extends Slider2Line {
+
+  value = 0;
+  max_value = 0;
+  pre_value = 0;
+
+  constructor(base_view) {
+    super(base_view, false);
+  }
+
+  function init(v, max, pre_v) {
+    this.value = v;
+    this.max_value = max;
+    this.pre_value = pre_v;
+
+    _setValue();
+  }
+
+  function add(v, animtime = 1000) {
+
+    if (animtime <= 0) {
+      setCurrentValue(v + this.value);
+    } else {
+      if (this.value >= this.max_value) return;
+
+      local env = {
+        self = this,
+        value = this.value,
+        add_value = v,
+        max_value = this.max_value,
+        time = 0,
+        animtime = animtime;
+      }
+
+      this.baseview.startMethod(function() {
+        local _delt_add = add_value / float(animtime);
+        local _v = value;
+
+        while (time < animtime) {
+          local dt = Math.min(16, animtime - time);
+          _v += dt * _delt_add;
+          self.setCurrentValue(_v);
+
+          sleep(dt);
+          time += dt;
+        }
+        self.setCurrentValue(value + add_value);
+      }.bindenv(env))
+    }
+  }
+
+  function setCurrentValue(v) {
+    this.value = Math.min(v, this.max_value);
+    _setValue();
+  }
+
+  function setPredictValue(v) {
+    this.pre_value = Math.min(v, this.max_value);
+    _setValue();
+  }
+
+  function applyAddPredictValue(animtime = 1000) {
+    local v = this.pre_value - this.value;
+    this.add(v, animtime);
+  }
+
+  function _setValue() {
+    local gauge_v = this.max_value > 0 ? this.value / float(this.max_value) : 1.0;
+    local gauge_v_pre = this.max_value > 0 ? this.pre_value / float(this.max_value) : 1.0;
+    super.setValue(gauge_v, gauge_v_pre);
+  }
+
+  function isAnimating() {
+    return this.baseview.isMethodRunning();
+  }
+}
+
+class SlideValueGauge {
+  view = null;
+  knob = null;
+
+  left = 0.0;
+  bar_length = 0;
+
+  prev_pos = 0.0;
+  clamp_remainder = 0.0;
+
+  value = 0;
+  max_value = 0;
+
+  constructor(view) {
+    this.view = view;
+    this.knob = view.findChild("knob");
+
+    this.left = knob.pos.x;
+    this.bar_length = view.findChild("bar_base").bnd.w;
+
+    value = 0;
+    max_value = 100;
+  }
+
+  function setMaxValue(val) {
+    this.max_value = val;
+  }
+
+  function setValue(val) {
+    this.prev_pos = 0.0;
+    this.clamp_remainder = 0.0;
+
+    value = val;
+
+    local ratio = value * 1.0 / max_value;
+    _knobDragged(Math.clamp(ratio, 0.0, 1.0) * this.bar_length);
+  }
+
+  function _knobDragged(delta) {
+    local dx = clamp_remainder + delta;
+    local pos = Math.clamp(knob.pos.x + dx, left, left + bar_length);
+    this.clamp_remainder = knob.pos.x + dx - pos;
+    if (knob.pos.x != pos) {
+      knob.pos.x = pos;
+      knob.matdirty = true;
+
+    }
+  }
+}

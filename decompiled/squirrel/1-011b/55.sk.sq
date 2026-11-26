@@ -1,0 +1,42 @@
+tutorial_settings[1].title = "Welcome to tomotoru!"
+tutorial_settings[1].text_list = ["Please select the/n[First Room]."]
+
+tutorial_settings[3].text_list = ["Tap on Kitty.", "Right now there's a mark above her head/nindicating she'd like to use some furniture.", "Tap Kitty again and she will begin to use the furniture."]
+
+tutorial_settings[4].text_list = ["When friends are relaxing,/nthey'll become more content and/n#u2#Happiness will be created.", "Tap on the #u2#Happiness/nwhen it enlarges to obtain it.", "Tap a lot and/ncollect a lot of #u2#Happiness!"]
+
+tutorial_settings[5].text_list = ["Oh? There's a #u1# mark over Hello Kitty's head.",
+"We call that the  #u1# Friendship mark.",
+"When you see the #u1#Frienship mark, Kitty wants to talk to you! /nTap the mark to listen to what she has to say."]
+
+tutorial_settings[6].title = "Buy Furniture in the Shop"
+tutorial_settings[6].text_list = ["In order to make your room more comfortable,/nyou can place new furniture.", "Please tap the /n[Menu] button.", "Next, please tap the/n[Shop] button.", "In the Shop, you can use the #u2#Happiness/nyou have collected to buy costumes and furniture.", "First, please/ntry purchasing the/n[Pink Cafe Plant]."]
+
+tutorial_settings[7].title = "Place the Purchased Furniture"
+
+tutorial_settings[8].text_list = ["In the furniture layout screen,/nyou can place new furniture and rearrance previously placed furniture.", "Please place the [Pink Cafe Plant]/nwherever you please."]
+
+tutorial_settings[9].text_list = ["Try placing the/n[Pink Cafe Plant].", "Please tap the/n[Menu] button.", "Next, tap the/n[Inventory] button.", "Tap the /n[Pink Cafe Plant.]"]
+
+tutorial_settings[10].text_list = ["Wonderful layout!", "Now, please tap the [Return]/nbutton in the lower left corner."]
+
+tutorial_settings[11].text_list = ["Received a diary from Daniel.", "[Memory Diary] has been written on/nthis journal by a friend.", "There are various events going on in your room,/nso be sure to use the Memory Diary a lot!", "Please tap the [Event]/nbutton on the bottom left.", "Then tap one [Event Piece]/nbutton.", "By completing the details written here,/nyou can obtain 1 Event piece.", "Collect all of the Event Pieces/nin order to start an event in your room.", "Let's try to collect/nEvent Pieces!"]
+
+tutorial_settings[12].title = "Find your Friends' interests"
+tutorial_settings[12].text_list = ["When you tap on pieces of furniture,/nyou can find which of your friends/nare interested in the piece.", "Let's try giving the /n[Pink Cafe Plant] a tap.", "It seems that Kitty is/ninterested in the [Pink Cafe Plant].", "Moreover, if you continue to tap the piece,/nKitty will use the piece of furniture."]
+
+tutorial_settings[13].title = "Check the Event Piece"
+tutorial_settings[13].text_list = ["You got the details for an event piece!", "Tap the [Event] button in the botttom right/nto confirm the details."]
+
+tutorial_settings[14].title = "Memory Diary"
+
+tutorial_settings[15].title = "Let's take pictures of your Friends!"
+tutorial_settings[15].text_list = ["Clothes and Poses can now be/npurchased in the Shop.", "Let's purchase some/nclothes for a friend.", "Please tap the/n[Menu] button.", "Next, tap the/n[Shop] button.", "Now, tap the/n[Clothes] tab.", "Let's buy the/n[Hello Kitty Face] T shirt."]
+
+tutorial_settings[16].text_list = ["Event Piece was obtained.", "Collect the [Event Pieces] in this way/nuntil you have them all!"]
+
+tutorial_settings[1001].title = "About Clothes"
+
+tutorial_settings[1002].title = "About common Happiness"
+
+tutorial_settings[1003].title = "Cancel furniture use"

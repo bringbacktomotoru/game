@@ -1,0 +1,30 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "GROUP1"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 2
+    start = 0, start_spr = 150
+    life = 400, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.4, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 1.553343, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.5, "h": 0.5, "axis": 0 }
+  texture = "smoke03.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 5.06, "vel_spr": 0.96 },
+  { "classid": "ptcmod_acc", "coord": 0, "acc_spr": 0.0, "acc": -1.0, "axisid": 1 },
+  { "classid": "ptcmod_scale", "scale": [0.0, 0.307692, 1.0, 1.846154, 2.0, 1.153846], "xyz": 7 },
+  { "classid": "ptcmod_color", "color": [-9985, -10112] },
+  ] },
+]

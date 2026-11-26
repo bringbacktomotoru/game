@@ -1,0 +1,489 @@
+class WorkRewardRouletteDialog extends ::Dialog {
+  lbl_title = null;
+  img_box = null;
+  img_frame = null;
+  roulette = null;
+  pnl_reward = null;
+  tap_text = null;
+
+  reward = null;
+
+  show_thread = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/WorkRewardRouletteDialog.ui"));
+
+    this.pnl_reward = this.view.findChild("pnl_reward");
+    this.roulette = Roulette(this.pnl_reward);
+    this.roulette.setVisible(false);
+    this.view.addChild(this.roulette);
+    this.img_box = this.view.findChild("img_box");
+    this.img_box.visible = false;
+    this.img_frame = this.view.findChild("img_frame");
+    this.img_frame.visible = false;
+
+    this.lbl_title = this.view.findChild("lbl_title");
+    this.lbl_title.setText(::dict.get("work_reward_roulette_title"));
+    this.lbl_title.visible = false;
+
+    this.tap_text = TapText(this.view.findChild("pnl_tap_text"));
+    this.tap_text.setVisible(false);
+
+    this.view.findChild("pnl_mouseevent").addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function showRewardDetail() {
+    local _get = this.reward.rewards[3];
+    local _dlg;
+    if (_get.kind == ITEM_TYPE_MOTION) {
+
+      local _cid = this.reward.rewards[0].target_id;
+      _dlg = ::MotionViewDialog();
+      _dlg.setCostume(_cid);
+      _dlg.setMotion(_get.id);
+    }
+    else {
+      _dlg = ::SimpleDialog();
+    }
+    _dlg.lbl_msg.setText(::Setting.getItemName(_get.kind, _get.id, _get.num));
+    _dlg.show();
+  }
+
+  function mouseevent(e) {
+    switch (e.id) {
+    case MOUSE_CLICKED:
+      this.roulette.tapStop();
+      this.tap_text.stop();
+      break;
+    }
+  }
+
+  function setReward(reward) {
+    this.reward = reward;
+    local _rewards = reward.rewards;
+    this.roulette.setReward(reward);
+  }
+
+  function show() {
+    local _t = newthread();
+    _t.start(startShowFunc, this);
+    super.show();
+  }
+
+  function startShowFunc() {
+
+    this.roulette.setVisible(true);
+    this.lbl_title.visible = true;
+    this.img_box.visible = true;
+    this.img_frame.visible = true;
+
+    sleep(1000);
+    this.roulette.startRoulette();
+    this.tap_text.start()
+    while (!this.roulette.isRouletteEnd()) {
+      sleep(100);
+    }
+    if (!this.tap_text.getStopFlag()) this.tap_text.stop();
+
+    sleep(2500);
+    close();
+  }
+}
+
+class WorkRewardRouletteDialog.Roulette extends SKView {
+  static DISP_CARD_NUM = 5;
+  static LOOP_MSEC = 800;
+  static LOOP_STOP_MSEC = 1500;
+  static MAX_ROLL_NUM = 20;
+  static CARD_SPACE = 10.0;
+  static STOP_DISTANCE = 700.0;
+
+  static STATE_WAIT = 0;
+  static STATE_START = 1;
+  static STATE_TAP = 3;
+  static STATE_STOP_START = 4;
+  static STATE_STOP_WAIT = 5;
+  static STATE_STOP = 6;
+  static STATE_END = 7;
+
+  static SOUND_TYPE_STOP = 0;
+  static SOUND_TYPE_TIMER = 1;
+  static SOUND_TYPE_DISTANCE = 2;
+  static SOUND_INTERVAL_FAST = 200;
+  static SOUND_INTERVAL_SLOW = 600;
+
+  reclist = null;
+  scroll = null;
+  pnl_list = null;
+
+  reward = null;
+  stop_index = -1;
+  state = 0;
+  card_size = 0;
+  update_time = 0;
+  loop_count = 0;
+
+  interval_id = null;
+  before_pos_x = 0.0;
+  before_time = 0.0;
+  scroll_distance = 0.0;
+  sound_interval = 0.0;
+  sound_type = 0;
+
+  constructor(pl) {
+    this.pnl_list = pl;
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dyscale = 0.0;
+    this.pnl_list.addChild(this.reclist);
+    this.pnl_list.setBuffer(true);
+    this.scroll.setScrollLocked(true);
+
+    this.sound_type = SOUND_TYPE_TIMER;
+    this.sound_interval = SOUND_INTERVAL_FAST;
+
+    setUpdateFunc(updateFrame);
+  }
+
+  function removed() {
+    super.removed();
+    if (interval_id) {
+      clearInterval(interval_id);
+      interval_id = null;
+    }
+  }
+
+  function setReward(reward) {
+    this.reward = reward;
+    this.stop_index = reward.rri;
+    _setList();
+    this.scroll.view.pos.x = -this.card_size / 2.0;
+    this.scroll.view.matdirty = true;
+    this.scroll.view.repaint();
+  }
+
+  function _setList() {
+    this.reclist.clearChildren();
+    local _offset = 0;
+    local _cnt = 0;
+    local _size_x = 0;
+    local _rt = ::gamesetting.costume_action_settings[this.reward.wid].getRewardTable();
+
+    for (local i = 0; i < DISP_CARD_NUM + 2; i++) {
+      foreach (r in _rt) {
+        local _reward = RewardCard(r);
+        _reward.pos.x = _offset;
+        this.reclist.addChild(_reward);
+        _reward.matdirty = true;
+        _reward.repaint();
+
+        this.card_size = _reward.bnd.w * 0.90625;
+        _offset += this.card_size + CARD_SPACE;
+      }
+    }
+    this.reclist.setRect(0, 0, _offset, this.pnl_list.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+  }
+
+  function setVisible(b) {
+    this.pnl_list.visible = b;
+  }
+
+  function startRoulette() {
+    local _rtl = ::gamesetting.costume_action_settings[this.reward.wid].getRewardTable().len();
+    this.scroll.loop(-(this.card_size + CARD_SPACE) * _rtl, 0, LOOP_MSEC * (float(_rtl) / float(DISP_CARD_NUM)));
+    this.state = STATE_START;
+
+    before_pos_x = scroll.view.pos.x;
+
+    interval_id = setInterval(function() {
+      local _dist = Math.abs(scroll.view.pos.x - before_pos_x);
+      local _rtl = ::gamesetting.costume_action_settings[this.reward.wid].getRewardTable().len();
+      if (_dist >= LOOP_MSEC * (float(_rtl) / float(DISP_CARD_NUM))) {
+        _dist -= LOOP_MSEC * (float(_rtl) / float(DISP_CARD_NUM));
+      }
+      scroll_distance += _dist;
+      before_pos_x = scroll.view.pos.x;
+      local _cnt = 0;
+      while (scroll_distance >= (this.card_size + CARD_SPACE)) {
+        _cnt++;
+        scroll_distance -= (this.card_size + CARD_SPACE);
+      }
+      if (_cnt > 0 && sound_type == SOUND_TYPE_DISTANCE) {
+        ::playSound(SoundConstants.SOUND_WORK_ROULETTE);
+      }
+
+      local _time = skGetTime();
+      if (_time - before_time >= sound_interval) {
+        if (sound_type == SOUND_TYPE_TIMER) {
+          ::playSound(SoundConstants.SOUND_WORK_ROULETTE);
+        }
+        before_time = _time;
+      }
+
+    }.bindenv(this), 1);
+  }
+
+  function updateFrame(dt) {
+    if (this.state == STATE_END) return;
+
+    if (this.state == STATE_START && this.scroll.getLoopCount() >= MAX_ROLL_NUM) {
+      this.scroll.view.pos.x = -this.card_size / 2.0;
+      this.scroll.view.matdirty = true;
+      this.scroll.view.repaint();
+      this.scroll.loopStop(_getStopNum(), 0, LOOP_STOP_MSEC);
+      this.state = STATE_STOP;
+    }
+
+    if (this.state == STATE_TAP) {
+
+      this.loop_count = this.scroll.getLoopCount();
+      this.state = STATE_STOP_START;
+    }
+    else if (this.state == STATE_STOP_START && this.loop_count != this.scroll.getLoopCount()) {
+      this.scroll.view.pos.x = -this.card_size / 2.0;
+      this.scroll.setBlock([1, 1]);
+      this.scroll.view.matdirty = true;
+      this.scroll.view.repaint();
+      this.scroll.movfunc = checkMove.bindenv({ roulette = this });
+      this.scroll.loop(_getStopNum(), 0, LOOP_STOP_MSEC);
+      this.loop_count = this.scroll.getLoopCount();
+    }
+    else if (this.state == STATE_STOP_WAIT) {
+      this.scroll.view.matdirty = true;
+      this.scroll.view.repaint();
+      this.scroll.loopStopSlowy(-STOP_DISTANCE, 0, LOOP_STOP_MSEC);
+      this.state = STATE_STOP;
+      this.scroll.movfunc = null;
+
+      this.sound_type = SOUND_TYPE_DISTANCE;
+      this.sound_interval = SOUND_INTERVAL_SLOW;
+    }
+
+    if (this.state == STATE_STOP && !this.scroll.intr) {
+      this.scroll.view.pos.x = -this.card_size / 2.0 + _getStopNum();
+      this.scroll.view.matdirty = true;
+      this.scroll.view.repaint();
+      this.state = STATE_END;
+      this.sound_type = SOUND_TYPE_STOP;
+
+      clearInterval(interval_id);
+      interval_id = null;
+    }
+
+  }
+
+  function checkMove(env) {
+    local _total_dist = Math.abs(env.p0.x - env.p1.x);
+    local _now = Math.abs(env.view.pos.x - env.p1.x);
+    if (_now < ::WorkRewardRouletteDialog.Roulette.STOP_DISTANCE) {
+      roulette.state = ::WorkRewardRouletteDialog.Roulette.STATE_STOP_WAIT;
+    }
+  }
+
+  function _getStopNum() {
+    local _rtl = ::gamesetting.costume_action_settings[this.reward.wid].getRewardTable().len();
+
+    local _center = (DISP_CARD_NUM / 2 + 1);
+    local _size = this.card_size + CARD_SPACE;
+    local _dis = _size * (this.stop_index - _center);
+    while (_dis < STOP_DISTANCE) {
+      _dis += _size * _rtl;
+
+    }
+    return -_dis;
+  }
+
+  function tapStop() {
+    if (this.state != STATE_START) return;
+    this.state = STATE_TAP;
+  }
+
+  function getState() {
+    return this.state;
+  }
+
+  function isRouletteStop() {
+    return this.state == STATE_STOP;
+  }
+
+  function isRouletteEnd() {
+    return this.state == STATE_END;
+  }
+}
+
+class WorkRewardRouletteDialog.Roulette.RewardCard extends SKView {
+  static REWARD_ROTATE = 0;
+  static MONEY_ROTATE = 35;
+  static MOTION_ROTATE = 25;
+
+  view = null;
+
+  reward = null;
+
+  constructor(reward) {
+    this.reward = reward;
+    this.view = ::loadSKView("/ui/common/WorkRewardCard.ui");
+    this.view.scale(0.90625);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    addChild(this.view);
+
+    local _btn_item = this.view.findChild("btn_item");
+    _btn_item.findChild("pnl_rank").visible = false;
+    _btn_item.findChild("pnl_get").visible = false;
+
+    local _pnl_icon = _btn_item.findChild("pnl_icon");
+    local _lbl_value = _btn_item.findChild("lbl_value");
+    local _icon;
+    local _sp;
+
+    local _frame_sp = ::Setting.getItemFrame(reward.kind);
+    if (_frame_sp) {
+      local _frame = SKImageView(_frame_sp);
+      _frame.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      ::rotateSKView(_frame, REWARD_ROTATE, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_frame);
+    }
+
+    local icon_rate = 0.6;
+    local offset_x = _pnl_icon.bnd.w * (1 - icon_rate) / 2;
+    local offset_y = _pnl_icon.bnd.h * (1 - icon_rate) / 2;
+
+    switch (reward.kind) {
+    case ITEM_TYPE_GM:
+      _sp = ::Setting.getGMIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(offset_x, offset_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      ::rotateSKView(_icon, MONEY_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      _pnl_icon.addChild(_icon);
+
+      _lbl_value.visible = true;
+      _lbl_value.setText(::dict.get("nums_kakeru", [reward.num]));
+      break;
+
+    case ITEM_TYPE_FREERM:
+      _sp = ::Setting.getRMIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(offset_x, offset_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      ::rotateSKView(_icon, MONEY_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      _pnl_icon.addChild(_icon);
+
+      _lbl_value.visible = true;
+      _lbl_value.setText(::dict.get("nums_kakeru", [reward.num]));
+      break;
+
+    case ITEM_TYPE_COSTUME:
+      _lbl_value.visible = false;
+      _icon = ::SKImageView();
+      _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_icon);
+      CostumeIcon(reward.id, _icon, false, false);
+      break;
+
+    case ITEM_TYPE_FURNITURE:
+      _lbl_value.visible = false;
+
+      local _fs = ::gamesetting.furniture_settings[reward.id];
+      if (!_fs) return;
+      _sp = _fs.getIconSpriteUnacquired();
+      _icon = SKImageView(_sp);
+      _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_icon);
+      break;
+
+    case ITEM_TYPE_ITEM:
+      _lbl_value.visible = false;
+
+      break;
+
+    case ITEM_TYPE_MOTION:
+      _lbl_value.visible = false;
+      local _ms = ::gamesetting.costume_motion_settings[reward.id];
+      _sp = _ms.getIconSprite();
+      _icon = SKImageView(_sp);
+      _icon.setRect(offset_x, offset_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      ::rotateSKView(_icon, MOTION_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+      _pnl_icon.addChild(_icon);
+      break;
+    }
+  }
+}
+
+class WorkRewardRouletteDialog.TapText {
+  static DEFAULT_COLOR = 0xffff0fff;
+  static FADE_COLOR_TIME = 50;
+
+  pnl_tap_text = null;
+  img_arrow = null;
+  lbl_text = null;
+
+  stop_flag = false;
+  color_mask = 0;
+  color_state = 0;
+  intr = null;
+
+  constructor(p) {
+    this.pnl_tap_text = p;
+    this.img_arrow = p.findChild("img_arrow");
+    this.lbl_text = p.findChild("lbl_text");
+    this.lbl_text.setText(::dict.get("work_reward_roulette_stop"));
+
+    this.color_mask = 255;
+    this.img_arrow.setColor(DEFAULT_COLOR - this.color_mask);
+    this.lbl_text.setColor(DEFAULT_COLOR - this.color_mask);
+  }
+
+  function setVisible(b) {
+    this.pnl_tap_text.visible = b;
+  }
+
+  function start() {
+    setVisible(true);
+    this.stop_flag = false;
+    if (intr) {
+      clearInterval(intr);
+      intr = null;
+    }
+
+    local func = function(dt) {
+      if (this.color_state) {
+        this.color_mask += 34;
+        if (this.color_mask > 255) {
+          this.color_mask = 255;
+          this.color_state = 0;
+          if (this.stop_flag) {
+            setVisible(false);
+            this.intr = null;
+            return undefined;
+          }
+        }
+      }
+      else {
+        this.color_mask -= 34;
+        if (this.color_mask < 0) {
+          this.color_mask = 0;
+          this.color_state = 1;
+        }
+      }
+
+      this.img_arrow.setColor(DEFAULT_COLOR - this.color_mask);
+      this.lbl_text.setColor(DEFAULT_COLOR - this.color_mask);
+    }.bindenv(this);
+    this.intr = setInterval(func, FADE_COLOR_TIME);
+  }
+
+  function stop() {
+    this.stop_flag = true;
+  }
+
+  function getStopFlag() {
+    return this.stop_flag;
+  }
+
+  function removed() {
+    if (this.intr) {
+      clearInterval(this.intr);
+      this.intr = null;
+    }
+  }
+}

@@ -1,0 +1,170 @@
+;
+;----------- 初期登場 -------------
+[playbgm bgm="BGM03"]
+[changeroom id=1]
+
+;オレンジカントリーベッド
+[popfurniture fname=bed2 id=8407 x=-3.5 y=0 z=-2.5 angle=180]
+;オレンジカントリーチェア
+[popfurniture fname=chair1 id=8401 x=5 y=0 z=1.5 angle=0]
+;オレンジカントリーテーブル
+[popfurniture fname=table1 id=8402 x=5 y=0 z=-1.5 angle=0]
+;ピンクカフェプラント
+[popfurniture fname=plant1 id=10806 x=0 y=0 z=-4.5 angle=180]
+;オレンジまんまるラグ
+[popfurniture fname=rug1 id=1703 x=5 y=0 z=-1.5 angle=0]
+
+
+[focusdoor]
+
+; カメラ初期位置
+[movecamera type=0 z=20 y=6 x=0 time=0]
+[rotatecamera pitch=10 head=180]
+
+[startscene]
+
+[wait time=200]
+[rotatecamera type=0 pitch=10 head=177 time=6000]
+
+; キャラ出現
+[popchara costume=109001 z=4 x=-3 angle=-45 relative=true]
+[startanime name=kitty time=700 script=bookshelf_mitsuketa]
+[waitaction name=kitty script=bookshelf_mitsuketa]
+
+; 移動
+[movechara name=kitty type=1 x=20 z=-30  script=movie_dash neutral=stand time=7000]
+[wait time=7000]
+
+; キャラきょろきょろ
+[startanime name=kitty time=2000 script=bookshelf_sagasu_set script_args={[1]}]
+[wait time=3000]
+[waitaction name=kitty script=bookshelf_sagasu_set]
+
+; キャラスタンド
+[startanime name=kitty time=1000 script=stand_short]
+[wait time=1000]
+[waitaction name=kitty script=stand_short]
+
+; カメラをキャラにフォーカス
+[movecamera type=0 z=11 y=4.3 x=-6.3 time=2000]
+[rotatecamera type=1 pitch=0 head=-35 time=2000]
+[turnchara name=kitty angle=140 time=1000 script=turn_r]
+[waitaction name=kitty script=turn_r]
+
+; キャラぴょんぴょん
+[startanime name=kitty time=2000 script=pyonpyon_set script_args={[3,"smile","smile"]}]
+[voice voice_key="e8" name=kitty]
+[balloon name=kitty time=3000]
+Hee hee,/n
+This room is starting/n
+to look really nice!
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=pyonpyon_set]
+
+[movecamera type=1 z=0 y=-1 x=0 time=1000]
+[rotatecamera type=1 pitch=-5 head=0 time=1000]
+[wait time=500]
+
+; キャラえっへん
+[startanime name=kitty time=3000 script=munehari script_args={["smile",1]}]
+[balloon name=kitty time=3000]
+#playername,/n
+have I become/n
+a good room manager#q1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=munehari]
+
+; キャラうふふ
+[startanime name=kitty time=3000 script=hatena2_set script_args={[1,"meisou"]}]
+[balloon name=kitty time=3000]
+I think the room needs/n
+a bit more furniture#o1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=hatena2_set]
+
+; キャラくびかしげ
+[startanime name=kitty time=3733 script=kubikashige script_args={[3,"def"]}]
+[balloon name=kitty time=3000]
+What kind of room/n
+does #playername/n
+want to make#q1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+[diarybranch]
+[wait time=3000];
+[s]
+
+*branch1
+; キャラグッド
+[startanime name=kitty time=3000 script=cos_bishi]
+[balloon name=kitty time=3000]
+[voice voice_key="e14" name=kitty]
+That sounds lovely#o1#/n
+I was thinking that too#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=cos_bishi]
+
+; キャラうなづく
+[startanime name=kitty time=3000 script=event_unaduku]
+[balloon name=kitty time=3000]
+As expected, a cute room/n
+would be best#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=event_unaduku]
+
+[jump target={"*branch_end"}]
+
+*branch2
+; キャラきょとん
+[startanime name=kitty time=3733 script=bookshelf_nayamu_set script_args={[3,"kyomi","blink"]}]
+[balloon name=kitty time=3000]
+[voice voice_key="e25" name=kitty]
+That's true./n
+I really like/n
+cute rooms, but
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+; キャラポーズ
+[startanime name=kitty time=3000 script=ketsui2 script_args={[1,"kirasmile"]}]
+[balloon name=kitty time=3000]
+I want to make/n
+a cool room too#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=ketsui2]
+
+
+[jump target={"*branch_end"}]
+
+
+
+*branch_end
+; キャラ共通 手揚げ
+[startanime name=kitty time=3000 script=event_onegai2 script_args={["kya"]}]
+[balloon name=kitty time=3000]
+[voice voice_key="e8" name=kitty]
+I'll help you make your room,/n
+so let's have lots of fun#e1#/n
+#playername
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=event_onegai2]
+
+[startanime name=kitty time=1000 script=stand_end2 script_args={["smile"]}]
+[wait time=1000]
+[waitaction name=kitty script=stand_end2]
+
+[fadeoutbgm spd=12]
+[wait time=2300]
+[jump target={"*end"}]
+
+*end

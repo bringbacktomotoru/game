@@ -1,0 +1,29 @@
+;
+;----------- テスト -------------
+;チュートリアルテスト
+; ct:文字クリア
+; r:改行
+
+;[focusroom address={[0,0]}]
+
+[tutorialwindow x=480 y=240]
+"キャラ名"から"ジェム"を貰ったよ！
+[enablebuttonall enable = false]
+[waitclick]
+[r]この"ジェム"を使って家具を買ってみよう。
+[waitclick]
+[enable enable=false]
+[enablebutton type = 2 target={["btn_menu_shop"]} enable = true]
+[visible_tutorialwindow visible=false]
+[focusin x=621 y=1212 sx=80 sy=80 time=100]
+[wait time=300]
+[visible_tutorialwindow visible=true]
+[ct]このボタンをタップしてね！
+[waitactionevent target="btn_menu_shop"]
+[enablebuttonall enable = true];画面遷移してからenablebuttonはマズいくさい
+[enable enable=true]
+;ここから先別画面
+[hide_tutorialwindow]
+[wait time=500]
+[focusout time=300]
+[wait time=800]

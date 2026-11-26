@@ -1,0 +1,20 @@
+model =
+{
+  root = {
+    pm = "efxline.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function start() {
+    uvscroll(4, 0);
+    pass(200);
+
+    pass(200);
+    kill();
+  }
+
+}

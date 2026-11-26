@@ -1,0 +1,2870 @@
+{
+  "ID": "7e21661c-4b82-4666-87cc-7731530095c4",
+  "Version": "2.3.3.0",
+  "Name": "menu_niji",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 138,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "worldmap/WorldMapBase.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 210,
+            "ActionTag": -1418002465,
+            "Size": {
+              "X": 1280.0,
+              "Y": 720.0
+            },
+            "Name": "dummy",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/KobanPanel.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 797.9999,
+              "Y": 622.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.6234,
+              "Y": 0.8639
+            },
+            "PreSize": {
+              "X": 0.25,
+              "Y": 0.1111
+            },
+            "LeftMargin": 797.9999,
+            "RightMargin": 162.0,
+            "TopMargin": 18.0,
+            "BottomMargin": 622.0,
+            "Tag": 304,
+            "ActionTag": -668924050,
+            "Size": {
+              "X": 320.0,
+              "Y": 80.0
+            },
+            "Name": "pnl_koban",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/shop/waku.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 2,
+            "Scale9OriginY": 2,
+            "Scale9Width": 252,
+            "Scale9Height": 252,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 327.9999,
+              "Y": 523.9998
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2562,
+              "Y": 0.7278
+            },
+            "PreSize": {
+              "X": 0.3125,
+              "Y": 0.2778
+            },
+            "LeftMargin": 127.9999,
+            "RightMargin": 752.0001,
+            "TopMargin": 96.0002,
+            "BottomMargin": 423.9998,
+            "Tag": 227,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/shop/lbl_headline.png",
+                  "Plist": "image/ss_shop.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 32.0005,
+                  "Y": 106.0007
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.08,
+                  "Y": 0.53
+                },
+                "PreSize": {
+                  "X": 0.12,
+                  "Y": 0.86
+                },
+                "LeftMargin": 8.0005,
+                "RightMargin": 343.9995,
+                "TopMargin": 7.9993,
+                "BottomMargin": 20.0007,
+                "Tag": 273,
+                "ActionTag": -1147454408,
+                "Size": {
+                  "X": 48.0,
+                  "Y": 172.0
+                },
+                "Name": "lbl_bargen_66",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 32,
+                "LabelText": "クンショー",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 154.5102,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3863,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.2825,
+                  "Y": 0.18
+                },
+                "LeftMargin": 154.5102,
+                "RightMargin": 132.4898,
+                "TopMargin": 47.9999,
+                "BottomMargin": 116.0001,
+                "Tag": 275,
+                "ActionTag": -1276666264,
+                "Size": {
+                  "X": 113.0,
+                  "Y": 36.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 104.0,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.26,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.16,
+                  "Y": 0.32
+                },
+                "LeftMargin": 72.0,
+                "RightMargin": 264.0,
+                "TopMargin": 33.9999,
+                "BottomMargin": 102.0001,
+                "CallBackType": "Click",
+                "Tag": 299,
+                "ActionTag": -131474469,
+                "Size": {
+                  "X": 64.0,
+                  "Y": 64.0
+                },
+                "Name": "image",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 20,
+                "LabelText": "ステージクリアで仲間になったスシニンジャに\nなんと経験値+300の大ボーナス！",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 70.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 77,
+                  "G": 77,
+                  "B": 77
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.175,
+                  "Y": 0.235
+                },
+                "PreSize": {
+                  "X": 0.7925,
+                  "Y": 0.2
+                },
+                "LeftMargin": 70.0,
+                "RightMargin": 13.0,
+                "TopMargin": 133.0,
+                "BottomMargin": 27.0,
+                "Tag": 717,
+                "ActionTag": -857652124,
+                "Size": {
+                  "X": 317.0,
+                  "Y": 40.0
+                },
+                "Name": "lbl_name_0",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/niji.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 330.0,
+                  "Y": 134.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.825,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.05,
+                  "Y": 0.15
+                },
+                "LeftMargin": 320.0,
+                "RightMargin": 60.0,
+                "TopMargin": 51.0,
+                "BottomMargin": 119.0,
+                "Tag": 718,
+                "ActionTag": -261378505,
+                "Size": {
+                  "X": 20.0,
+                  "Y": 30.0
+                },
+                "Name": "icon_niji",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 28,
+                "LabelText": "40",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 347.9998,
+                  "Y": 134.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 34,
+                  "G": 34,
+                  "B": 144
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.87,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.1025,
+                  "Y": 0.16
+                },
+                "LeftMargin": 347.9998,
+                "RightMargin": 11.0002,
+                "TopMargin": 50.0,
+                "BottomMargin": 118.0,
+                "Tag": 719,
+                "ActionTag": 271176882,
+                "Size": {
+                  "X": 41.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 905087639,
+            "Size": {
+              "X": 400.0,
+              "Y": 200.0
+            },
+            "Name": "pnl_1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/shop/waku.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 2,
+            "Scale9OriginY": 2,
+            "Scale9Width": 252,
+            "Scale9Height": 252,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 683.0002,
+              "Y": 523.9998
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5336,
+              "Y": 0.7278
+            },
+            "PreSize": {
+              "X": 0.2422,
+              "Y": 0.2778
+            },
+            "LeftMargin": 528.0002,
+            "RightMargin": 441.9998,
+            "TopMargin": 96.0002,
+            "BottomMargin": 423.9998,
+            "Tag": 720,
+            "Children": [
+              {
+                "FontSize": 32,
+                "LabelText": "ヨビリン",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 104.5102,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3371,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.3161,
+                  "Y": 0.18
+                },
+                "LeftMargin": 104.5102,
+                "RightMargin": 107.4898,
+                "TopMargin": 47.9999,
+                "BottomMargin": 116.0001,
+                "Tag": 722,
+                "ActionTag": -271262139,
+                "Size": {
+                  "X": 98.0,
+                  "Y": 36.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 54.0,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1742,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.2065,
+                  "Y": 0.32
+                },
+                "LeftMargin": 22.0,
+                "RightMargin": 224.0,
+                "TopMargin": 33.9999,
+                "BottomMargin": 102.0001,
+                "CallBackType": "Click",
+                "Tag": 723,
+                "ActionTag": 655736870,
+                "Size": {
+                  "X": 64.0,
+                  "Y": 64.0
+                },
+                "Name": "image",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "貴重なグラビティ能力を+3！",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 46.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 77,
+                  "G": 77,
+                  "B": 77
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1484,
+                  "Y": 0.235
+                },
+                "PreSize": {
+                  "X": 0.7323,
+                  "Y": 0.1
+                },
+                "LeftMargin": 46.0,
+                "RightMargin": 37.0,
+                "TopMargin": 143.0,
+                "BottomMargin": 37.0,
+                "Tag": 724,
+                "ActionTag": 840397989,
+                "Size": {
+                  "X": 227.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name_0",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/niji.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 240.0003,
+                  "Y": 134.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.7742,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.0645,
+                  "Y": 0.15
+                },
+                "LeftMargin": 230.0003,
+                "RightMargin": 59.9997,
+                "TopMargin": 51.0,
+                "BottomMargin": 119.0,
+                "Tag": 725,
+                "ActionTag": 2849522,
+                "Size": {
+                  "X": 20.0,
+                  "Y": 30.0
+                },
+                "Name": "icon_niji",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 28,
+                "LabelText": "40",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 258.0002,
+                  "Y": 134.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 34,
+                  "G": 34,
+                  "B": 144
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8323,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.1323,
+                  "Y": 0.16
+                },
+                "LeftMargin": 258.0002,
+                "RightMargin": 10.9998,
+                "TopMargin": 50.0,
+                "BottomMargin": 118.0,
+                "Tag": 726,
+                "ActionTag": -607032928,
+                "Size": {
+                  "X": 41.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 462754228,
+            "Size": {
+              "X": 310.0,
+              "Y": 200.0
+            },
+            "Name": "pnl_2",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/shop/waku.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 2,
+            "Scale9OriginY": 2,
+            "Scale9Width": 252,
+            "Scale9Height": 252,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 992.9992,
+              "Y": 523.9998
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7758,
+              "Y": 0.7278
+            },
+            "PreSize": {
+              "X": 0.2422,
+              "Y": 0.2778
+            },
+            "LeftMargin": 837.9992,
+            "RightMargin": 132.0007,
+            "TopMargin": 96.0002,
+            "BottomMargin": 423.9998,
+            "Tag": 727,
+            "Children": [
+              {
+                "FontSize": 32,
+                "LabelText": "ドラゴンゾウ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 104.5102,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3371,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.4742,
+                  "Y": 0.18
+                },
+                "LeftMargin": 104.5102,
+                "RightMargin": 58.4898,
+                "TopMargin": 47.9999,
+                "BottomMargin": 116.0001,
+                "Tag": 728,
+                "ActionTag": 1066833140,
+                "Size": {
+                  "X": 147.0,
+                  "Y": 36.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 54.0,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1742,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.2065,
+                  "Y": 0.32
+                },
+                "LeftMargin": 22.0,
+                "RightMargin": 224.0,
+                "TopMargin": 33.9999,
+                "BottomMargin": 102.0001,
+                "CallBackType": "Click",
+                "Tag": 729,
+                "ActionTag": -1159703100,
+                "Size": {
+                  "X": 64.0,
+                  "Y": 64.0
+                },
+                "Name": "image",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "バトル/アクション能力+5！",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 77,
+                  "G": 77,
+                  "B": 77
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1613,
+                  "Y": 0.235
+                },
+                "PreSize": {
+                  "X": 0.6839,
+                  "Y": 0.1
+                },
+                "LeftMargin": 50.0,
+                "RightMargin": 48.0,
+                "TopMargin": 143.0,
+                "BottomMargin": 37.0,
+                "Tag": 730,
+                "ActionTag": -854852953,
+                "Size": {
+                  "X": 212.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name_0",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/niji.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 240.0003,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.7742,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.0645,
+                  "Y": 0.15
+                },
+                "LeftMargin": 230.0003,
+                "RightMargin": 59.9997,
+                "TopMargin": 90.9998,
+                "BottomMargin": 79.0002,
+                "Tag": 731,
+                "ActionTag": -1764383318,
+                "Size": {
+                  "X": 20.0,
+                  "Y": 30.0
+                },
+                "Name": "icon_niji",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 28,
+                "LabelText": "40",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 258.0,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 34,
+                  "G": 34,
+                  "B": 144
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8323,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.1323,
+                  "Y": 0.16
+                },
+                "LeftMargin": 258.0,
+                "RightMargin": 11.0,
+                "TopMargin": 89.9998,
+                "BottomMargin": 78.0002,
+                "Tag": 732,
+                "ActionTag": -987623125,
+                "Size": {
+                  "X": 41.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1312162142,
+            "Size": {
+              "X": 310.0,
+              "Y": 200.0
+            },
+            "Name": "pnl_3",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/shop/waku.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 2,
+            "Scale9OriginY": 2,
+            "Scale9Width": 252,
+            "Scale9Height": 252,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 288.0047,
+              "Y": 324.001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.225,
+              "Y": 0.45
+            },
+            "PreSize": {
+              "X": 0.25,
+              "Y": 0.2778
+            },
+            "LeftMargin": 128.0047,
+            "RightMargin": 831.9953,
+            "TopMargin": 295.999,
+            "BottomMargin": 224.001,
+            "Tag": 733,
+            "Children": [
+              {
+                "FontSize": 32,
+                "LabelText": "ゴールドスター",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 104.5102,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3266,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.4938,
+                  "Y": 0.18
+                },
+                "LeftMargin": 104.5102,
+                "RightMargin": 57.4898,
+                "TopMargin": 47.9999,
+                "BottomMargin": 116.0001,
+                "Tag": 734,
+                "ActionTag": 656559431,
+                "Size": {
+                  "X": 158.0,
+                  "Y": 36.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 54.0,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1688,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.2,
+                  "Y": 0.32
+                },
+                "LeftMargin": 22.0,
+                "RightMargin": 234.0,
+                "TopMargin": 33.9999,
+                "BottomMargin": 102.0001,
+                "CallBackType": "Click",
+                "Tag": 735,
+                "ActionTag": -406187234,
+                "Size": {
+                  "X": 64.0,
+                  "Y": 64.0
+                },
+                "Name": "image",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "スコアボーナスが+12！",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 70.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 77,
+                  "G": 77,
+                  "B": 77
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2188,
+                  "Y": 0.235
+                },
+                "PreSize": {
+                  "X": 0.5437,
+                  "Y": 0.1
+                },
+                "LeftMargin": 70.0,
+                "RightMargin": 76.0,
+                "TopMargin": 143.0,
+                "BottomMargin": 37.0,
+                "Tag": 736,
+                "ActionTag": 395560746,
+                "Size": {
+                  "X": 174.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name_0",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/niji.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 240.0003,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.75,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.0625,
+                  "Y": 0.15
+                },
+                "LeftMargin": 230.0003,
+                "RightMargin": 69.9997,
+                "TopMargin": 90.9998,
+                "BottomMargin": 79.0002,
+                "Tag": 737,
+                "ActionTag": -46052444,
+                "Size": {
+                  "X": 20.0,
+                  "Y": 30.0
+                },
+                "Name": "icon_niji",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 28,
+                "LabelText": "40",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 258.0,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 34,
+                  "G": 34,
+                  "B": 144
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8062,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.1281,
+                  "Y": 0.16
+                },
+                "LeftMargin": 258.0,
+                "RightMargin": 21.0,
+                "TopMargin": 89.9998,
+                "BottomMargin": 78.0002,
+                "Tag": 738,
+                "ActionTag": -1778681787,
+                "Size": {
+                  "X": 41.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -1359570065,
+            "Size": {
+              "X": 320.0,
+              "Y": 200.0
+            },
+            "Name": "pnl_4",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/shop/waku.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 2,
+            "Scale9OriginY": 2,
+            "Scale9Width": 252,
+            "Scale9Height": 252,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 988.0097,
+              "Y": 324.0011
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7719,
+              "Y": 0.45
+            },
+            "PreSize": {
+              "X": 0.25,
+              "Y": 0.2778
+            },
+            "LeftMargin": 828.0097,
+            "RightMargin": 131.9902,
+            "TopMargin": 295.9989,
+            "BottomMargin": 224.0011,
+            "Tag": 739,
+            "Children": [
+              {
+                "FontSize": 32,
+                "LabelText": "キンノツヅラ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 104.5102,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3266,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.4594,
+                  "Y": 0.18
+                },
+                "LeftMargin": 104.5102,
+                "RightMargin": 68.4898,
+                "TopMargin": 47.9999,
+                "BottomMargin": 116.0001,
+                "Tag": 740,
+                "ActionTag": -1849833593,
+                "Size": {
+                  "X": 147.0,
+                  "Y": 36.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 54.0,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1688,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.2,
+                  "Y": 0.32
+                },
+                "LeftMargin": 22.0,
+                "RightMargin": 234.0,
+                "TopMargin": 33.9999,
+                "BottomMargin": 102.0001,
+                "CallBackType": "Click",
+                "Tag": 741,
+                "ActionTag": -79840384,
+                "Size": {
+                  "X": 64.0,
+                  "Y": 64.0
+                },
+                "Name": "image",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "コバンボーナスが+12！",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 70.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 77,
+                  "G": 77,
+                  "B": 77
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2188,
+                  "Y": 0.235
+                },
+                "PreSize": {
+                  "X": 0.5469,
+                  "Y": 0.1
+                },
+                "LeftMargin": 70.0,
+                "RightMargin": 75.0,
+                "TopMargin": 143.0,
+                "BottomMargin": 37.0,
+                "Tag": 742,
+                "ActionTag": 1664003846,
+                "Size": {
+                  "X": 175.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name_0",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/niji.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 240.0003,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.75,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.0625,
+                  "Y": 0.15
+                },
+                "LeftMargin": 230.0003,
+                "RightMargin": 69.9997,
+                "TopMargin": 90.9998,
+                "BottomMargin": 79.0002,
+                "Tag": 743,
+                "ActionTag": -1812834426,
+                "Size": {
+                  "X": 20.0,
+                  "Y": 30.0
+                },
+                "Name": "icon_niji",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 28,
+                "LabelText": "40",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 258.0,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 34,
+                  "G": 34,
+                  "B": 144
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8062,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.1281,
+                  "Y": 0.16
+                },
+                "LeftMargin": 258.0,
+                "RightMargin": 21.0,
+                "TopMargin": 89.9998,
+                "BottomMargin": 78.0002,
+                "Tag": 744,
+                "ActionTag": 1540468444,
+                "Size": {
+                  "X": 41.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -1608791560,
+            "Size": {
+              "X": 320.0,
+              "Y": 200.0
+            },
+            "Name": "pnl_5",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/shop/waku.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 2,
+            "Scale9OriginY": 2,
+            "Scale9Width": 252,
+            "Scale9Height": 252,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 278.0047,
+              "Y": 124.001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2172,
+              "Y": 0.1722
+            },
+            "PreSize": {
+              "X": 0.2344,
+              "Y": 0.2778
+            },
+            "LeftMargin": 128.0047,
+            "RightMargin": 851.9953,
+            "TopMargin": 495.999,
+            "BottomMargin": 24.001,
+            "Tag": 745,
+            "Children": [
+              {
+                "FontSize": 32,
+                "LabelText": "パンプキン",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 104.5102,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3484,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.4133,
+                  "Y": 0.18
+                },
+                "LeftMargin": 104.5102,
+                "RightMargin": 71.4898,
+                "TopMargin": 47.9999,
+                "BottomMargin": 116.0001,
+                "Tag": 746,
+                "ActionTag": 933634242,
+                "Size": {
+                  "X": 124.0,
+                  "Y": 36.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 54.0,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.18,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.2133,
+                  "Y": 0.32
+                },
+                "LeftMargin": 22.0,
+                "RightMargin": 214.0,
+                "TopMargin": 33.9999,
+                "BottomMargin": 102.0001,
+                "CallBackType": "Click",
+                "Tag": 747,
+                "ActionTag": -1667659892,
+                "Size": {
+                  "X": 64.0,
+                  "Y": 64.0
+                },
+                "Name": "image",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 20,
+                "LabelText": "身に着けると、チーム全体の\nEXPボーナスが+15！",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 49.9999,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 77,
+                  "G": 77,
+                  "B": 77
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1667,
+                  "Y": 0.235
+                },
+                "PreSize": {
+                  "X": 0.73,
+                  "Y": 0.2
+                },
+                "LeftMargin": 49.9999,
+                "RightMargin": 31.0001,
+                "TopMargin": 133.0,
+                "BottomMargin": 27.0,
+                "Tag": 748,
+                "ActionTag": -771637290,
+                "Size": {
+                  "X": 219.0,
+                  "Y": 40.0
+                },
+                "Name": "lbl_name_0",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/niji.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 220.0005,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.7333,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.0667,
+                  "Y": 0.15
+                },
+                "LeftMargin": 210.0005,
+                "RightMargin": 69.9995,
+                "TopMargin": 90.9998,
+                "BottomMargin": 79.0002,
+                "Tag": 749,
+                "ActionTag": -968260693,
+                "Size": {
+                  "X": 20.0,
+                  "Y": 30.0
+                },
+                "Name": "icon_niji",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 28,
+                "LabelText": "40",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 238.0001,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 34,
+                  "G": 34,
+                  "B": 144
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.7933,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.1367,
+                  "Y": 0.16
+                },
+                "LeftMargin": 238.0001,
+                "RightMargin": 20.9999,
+                "TopMargin": 89.9998,
+                "BottomMargin": 78.0002,
+                "Tag": 750,
+                "ActionTag": 699052904,
+                "Size": {
+                  "X": 41.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -1269361497,
+            "Size": {
+              "X": 300.0,
+              "Y": 200.0
+            },
+            "Name": "pnl_6",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/shop/waku.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 2,
+            "Scale9OriginY": 2,
+            "Scale9Width": 252,
+            "Scale9Height": 252,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 598.0059,
+              "Y": 124.0013
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4672,
+              "Y": 0.1722
+            },
+            "PreSize": {
+              "X": 0.2656,
+              "Y": 0.2778
+            },
+            "LeftMargin": 428.0059,
+            "RightMargin": 511.9941,
+            "TopMargin": 495.9987,
+            "BottomMargin": 24.0013,
+            "Tag": 751,
+            "Children": [
+              {
+                "FontSize": 32,
+                "LabelText": "コバンチャージ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 204,
+                  "G": 204,
+                  "B": 102
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 104.5102,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3074,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.4824,
+                  "Y": 0.18
+                },
+                "LeftMargin": 104.5102,
+                "RightMargin": 71.4898,
+                "TopMargin": 47.9999,
+                "BottomMargin": 116.0001,
+                "Tag": 752,
+                "ActionTag": -634963881,
+                "Size": {
+                  "X": 164.0,
+                  "Y": 36.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 54.0,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1588,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.1882,
+                  "Y": 0.32
+                },
+                "LeftMargin": 22.0,
+                "RightMargin": 254.0,
+                "TopMargin": 33.9999,
+                "BottomMargin": 102.0001,
+                "CallBackType": "Click",
+                "Tag": 753,
+                "ActionTag": 45559593,
+                "Size": {
+                  "X": 64.0,
+                  "Y": 64.0
+                },
+                "Name": "image",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 20,
+                "LabelText": "コバン不足の方はこちらをどうぞ！\n買う毎にコバンの量が増えていきます！",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 30.0004,
+                  "Y": 47.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 102,
+                  "G": 102,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0882,
+                  "Y": 0.235
+                },
+                "PreSize": {
+                  "X": 0.8735,
+                  "Y": 0.2
+                },
+                "LeftMargin": 30.0004,
+                "RightMargin": 12.9996,
+                "TopMargin": 132.9999,
+                "BottomMargin": 27.0001,
+                "Tag": 754,
+                "ActionTag": 1915254486,
+                "Size": {
+                  "X": 297.0,
+                  "Y": 40.0
+                },
+                "Name": "lbl_name_0",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/niji.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 260.0009,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.7647,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.0588,
+                  "Y": 0.15
+                },
+                "LeftMargin": 250.0009,
+                "RightMargin": 69.9991,
+                "TopMargin": 90.9998,
+                "BottomMargin": 79.0002,
+                "Tag": 755,
+                "ActionTag": 1235681348,
+                "Size": {
+                  "X": 20.0,
+                  "Y": 30.0
+                },
+                "Name": "icon_niji",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 28,
+                "LabelText": "40",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 278.0006,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 34,
+                  "G": 34,
+                  "B": 144
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8176,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.1206,
+                  "Y": 0.16
+                },
+                "LeftMargin": 278.0006,
+                "RightMargin": 20.9994,
+                "TopMargin": 89.9998,
+                "BottomMargin": 78.0002,
+                "Tag": 756,
+                "ActionTag": -1751978119,
+                "Size": {
+                  "X": 41.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "×1000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 204,
+                  "G": 204,
+                  "B": 102
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 84.0,
+                  "Y": 172.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2471,
+                  "Y": 0.86
+                },
+                "PreSize": {
+                  "X": 0.2059,
+                  "Y": 0.12
+                },
+                "LeftMargin": 84.0,
+                "RightMargin": 186.0,
+                "TopMargin": 16.0,
+                "BottomMargin": 160.0,
+                "Tag": 757,
+                "ActionTag": -522871705,
+                "Size": {
+                  "X": 70.0,
+                  "Y": 24.0
+                },
+                "Name": "lbl_kobangain",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1472146849,
+            "Size": {
+              "X": 340.0,
+              "Y": 200.0
+            },
+            "Name": "pnl_7",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/shop/waku.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 2,
+            "Scale9OriginY": 2,
+            "Scale9Width": 252,
+            "Scale9Height": 252,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 958.0,
+              "Y": 124.0014
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7484,
+              "Y": 0.1722
+            },
+            "PreSize": {
+              "X": 0.2969,
+              "Y": 0.2778
+            },
+            "LeftMargin": 768.0,
+            "RightMargin": 132.0,
+            "TopMargin": 495.9986,
+            "BottomMargin": 24.0014,
+            "Tag": 758,
+            "Children": [
+              {
+                "FontSize": 32,
+                "LabelText": "アカイマガタマ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "G": 102,
+                  "B": 153
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 154.5099,
+                  "Y": 134.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.4066,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.45,
+                  "Y": 0.18
+                },
+                "LeftMargin": 154.5099,
+                "RightMargin": 54.4901,
+                "TopMargin": 47.9999,
+                "BottomMargin": 116.0001,
+                "Tag": 759,
+                "ActionTag": 1418447545,
+                "Size": {
+                  "X": 171.0,
+                  "Y": 36.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 103.9998,
+                  "Y": 134.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2737,
+                  "Y": 0.67
+                },
+                "PreSize": {
+                  "X": 0.1684,
+                  "Y": 0.32
+                },
+                "LeftMargin": 71.9998,
+                "RightMargin": 244.0002,
+                "TopMargin": 33.9998,
+                "BottomMargin": 102.0002,
+                "CallBackType": "Click",
+                "Tag": 760,
+                "ActionTag": 1158128733,
+                "Size": {
+                  "X": 64.0,
+                  "Y": 64.0
+                },
+                "Name": "image",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 20,
+                "LabelText": "身に着けると、ゲームに不参加でも\nEXPが50%も貰えちゃいます！",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 80.0001,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 153,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2105,
+                  "Y": 0.235
+                },
+                "PreSize": {
+                  "X": 0.7053,
+                  "Y": 0.2
+                },
+                "LeftMargin": 80.0001,
+                "RightMargin": 31.9999,
+                "TopMargin": 133.0,
+                "BottomMargin": 27.0,
+                "Tag": 761,
+                "ActionTag": -607860769,
+                "Size": {
+                  "X": 268.0,
+                  "Y": 40.0
+                },
+                "Name": "lbl_name_0",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/niji.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 310.0003,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8158,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.0526,
+                  "Y": 0.15
+                },
+                "LeftMargin": 300.0003,
+                "RightMargin": 59.9997,
+                "TopMargin": 90.9998,
+                "BottomMargin": 79.0002,
+                "Tag": 762,
+                "ActionTag": -1805164078,
+                "Size": {
+                  "X": 20.0,
+                  "Y": 30.0
+                },
+                "Name": "icon_niji",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 28,
+                "LabelText": "40",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 200,
+                  "G": 200,
+                  "B": 200
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 328.0001,
+                  "Y": 94.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 34,
+                  "G": 34,
+                  "B": 144
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8632,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.1079,
+                  "Y": 0.16
+                },
+                "LeftMargin": 328.0001,
+                "RightMargin": 10.9999,
+                "TopMargin": 89.9998,
+                "BottomMargin": 78.0002,
+                "Tag": 763,
+                "ActionTag": 1090196261,
+                "Size": {
+                  "X": 41.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/shop/lbl_reco.png",
+                  "Plist": "image/ss_shop.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5542,
+                  "ScaleY": 0.4849
+                },
+                "Position": {
+                  "X": 34.0,
+                  "Y": 104.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0895,
+                  "Y": 0.52
+                },
+                "PreSize": {
+                  "X": 0.1263,
+                  "Y": 0.86
+                },
+                "LeftMargin": 7.3984,
+                "RightMargin": 324.6016,
+                "TopMargin": 7.4028,
+                "BottomMargin": 20.5972,
+                "Tag": 765,
+                "ActionTag": 1827571086,
+                "Size": {
+                  "X": 48.0,
+                  "Y": 172.0
+                },
+                "Name": "lbl_reco_10",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": 774361123,
+            "Size": {
+              "X": 380.0,
+              "Y": 200.0
+            },
+            "Name": "pnl_8",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/shop/bg_niji.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 638.0,
+              "Y": 300.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4984,
+              "Y": 0.4167
+            },
+            "PreSize": {
+              "X": 0.2969,
+              "Y": 0.2139
+            },
+            "LeftMargin": 448.0,
+            "RightMargin": 452.0,
+            "TopMargin": 343.0,
+            "BottomMargin": 223.0,
+            "Tag": 326,
+            "ActionTag": 2077060026,
+            "Size": {
+              "X": 380.0,
+              "Y": 154.0
+            },
+            "Name": "bg_niji_23",
+            "ctype": "SpriteObjectData"
+          }
+        ],
+        "Size": {
+          "X": 1280.0,
+          "Y": 720.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../common/KobanPanel.json",
+        "../Default/ImageFile.png",
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/shop/bg_niji.png",
+        "../image/shop/waku.png",
+        "../image/ss_icon.plist",
+        "../image/ss_icon.png",
+        "../image/ss_shop.plist",
+        "../image/ss_shop.png",
+        "../worldmap/WorldMapBase.json"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

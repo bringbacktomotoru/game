@@ -1,0 +1,53 @@
+parentcoord <- false
+currentgroup <- 1
+groups <- [
+with ParticleGroupData() {
+  name = "mf"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 16
+    start = 0, start_spr = 0
+    life = 200, life_spr = 100
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 1.308997, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 0.244346, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.3, "h": 0.3, "axis": 0 }
+  texture = "water.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 9.53, "vel_spr": 0.0 },
+  { "classid": "ptcmod_acc", "coord": 0, "acc_spr": 0.0, "acc": -0.336, "axisid": 1 },
+  { "classid": "ptcmod_color", "color": [-8907521, -15066369, -15066624] },
+  { "classid": "ptcmod_scale", "scale": [2.0, 0.5], "xyz": 7 },
+  ] },
+with ParticleGroupData() {
+  name = "GROUP1"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 20
+    start = 0, start_spr = 1000
+    life = 880, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.2, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.7, "h": 0.7, "axis": 0 }
+  texture = "water.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_color", "color": [-10081537, -14145281, -14145536] },
+  { "classid": "ptcmod_scale", "scale": [1.307692, 0.461538, 0.961538, 0.461538, 0.807692, 0.269231, 0.538462, 0.153846], "xyz": 7 },
+  { "classid": "ptcmod_follow", "k1": 0.0, "k0": 0.1 },
+  ] },
+]

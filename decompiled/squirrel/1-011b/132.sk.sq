@@ -1,0 +1,224 @@
+class Action
+{
+  finished = false;
+
+  function finish() {
+  }
+}
+
+class VisibleAction extends Action
+{
+  delay = 0;
+
+  view = null;
+
+  constructor(v, d) {
+    view = v;
+    delay = d;
+
+    view.visible = 0;
+    view.repaint();
+    view.startMethod(method, this);
+  }
+
+  function method() {
+    sleep(delay);
+
+    view.visible = 1;
+    view.repaint();
+    finished = true;
+  }
+}
+
+class MoveAction extends Action
+{
+  predelay = 0;
+  time = 0;
+  dx = 0;
+  dy = 0;
+  ease = null;
+
+  view = null;
+
+  constructor(v, x, y, t, d = 0, e = 0.5) {
+    view = v;
+    dx = x;
+    dy = y;
+    time = t;
+    predelay = d;
+    if (typeof(e) <= SS_FLOAT) {
+      ease = Easing.easeIn(e).easing;
+    } else {
+      ease = e;
+    }
+
+    view.startMethod(method, this);
+  }
+
+  function method() {
+    sleep(predelay);
+
+    local t = 0;
+    local x0 = view.pos.x;
+    local y0 = view.pos.y;
+    local x1 = x0 + dx;
+    local y1 = y0 + dy;
+    local e = ease;
+    while (t < time) {
+      local w = e((t + 0.0) / time);
+      view.pos.x = Math.lerp(x0, x1, w);
+      view.pos.y = Math.lerp(y0, y1, w);
+      view.matdirty = 1;
+      view.repaint();
+      sleep(10);
+      t += 10;
+    }
+
+    view.pos.x = x1;
+    view.pos.y = y1;
+    view.matdirty = 1;
+    view.repaint();
+    finished = true;
+  }
+}
+
+class MoveinAction extends Action
+{
+  predelay = 0;
+  time = 0;
+  offsetx = 0;
+  offsety = 0;
+  pow = 0.5;
+
+  view = null;
+  x0 = 0.0;
+  y0 = 0.0;
+
+  constructor(v, offsx, offsy, t, d = 0, p = 0.5) {
+    view = v;
+    offsetx = offsx;
+    offsety = offsy;
+    time = t;
+    predelay = d;
+    pow = p;
+
+    x0 = view.pos.x;
+    y0 = view.pos.y;
+    view.pos.x += offsx;
+    view.pos.y += offsy;
+    view.matdirty = 1;
+    view.repaint();
+    view.startMethod(method, this);
+  }
+
+  function method() {
+    sleep(predelay);
+
+    local t = 0;
+    local x1 = x0 + offsetx;
+    local y1 = y0 + offsety;
+    while (t < time) {
+      local w = Math.pow((t + 0.0) / time, pow);
+      view.pos.x = Math.lerp(x1, x0, w);
+      view.pos.y = Math.lerp(y1, y0, w);
+      view.matdirty = 1;
+      view.repaint();
+      sleep(10);
+      t += 10;
+    }
+
+    view.pos.x = x0;
+    view.pos.y = y0;
+    view.matdirty = 1;
+    view.repaint();
+    finished = true;
+  }
+
+}
+
+class MoveoutAction extends Action
+{
+  predelay = 0;
+  time = 0;
+  offsetx = 0;
+  offsety = 0;
+  pow = 0.5;
+
+  view = null;
+  x0 = 0.0;
+  y0 = 0.0;
+
+  constructor(v, offsx, offsy, t, d = 0, p = 0.5) {
+    view = v;
+    offsetx = offsx;
+    offsety = offsy;
+    time = t;
+    predelay = d;
+    pow = p;
+
+    x0 = view.pos.x;
+    y0 = view.pos.y;
+    view.matdirty = 1;
+    view.repaint();
+    view.startMethod(method, this);
+  }
+
+  function method() {
+    sleep(predelay);
+
+    local t = 0;
+    local x1 = x0 + offsetx;
+    local y1 = y0 + offsety;
+    while (t < time) {
+      local w = Math.pow((t + 0.0) / time, pow);
+      view.pos.x = Math.lerp(x0, x1, w);
+      view.pos.y = Math.lerp(y0, y1, w);
+      view.matdirty = 1;
+      view.repaint();
+      sleep(10);
+      t += 10;
+    }
+
+    view.pos.x = x1;
+    view.pos.y = y1;
+    view.matdirty = 1;
+    view.repaint();
+    finished = true;
+  }
+
+}
+
+class PopAction extends Action
+{
+  view = null;
+
+  constructor(v) {
+    view = v;
+    view.startMethod(method, this);
+  }
+
+  function method() {
+    local en = view.enabled;
+    view.enabled = false;
+    view.setBuffer(true);
+    local sp = view.buf;
+    local ct = sp.colormat = Matrix();
+    local T = 60;
+    for (local i = 0; i < T; i++) {
+      ct[12] = ct[13] = ct[14] = (i * 0.1) % 1.0;
+      view.scale << Math.min(1.4, (i + 1) * 0.2);
+      view.rot.z = 0.2 * Math.sin(i);
+      view.matdirty = true;
+      view.parent.repaint();
+      sleep(16);
+    }
+    view.scale << 1.0;
+    view.rot.z = 0.0;
+    view.matdirty = true;
+    view.setBuffer(false);
+    view.parent.repaint();
+
+    suspend();
+    view.enabled = en;
+  }
+}

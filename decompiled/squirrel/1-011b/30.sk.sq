@@ -1,0 +1,132 @@
+item_settings[1] <- ItemSetting({
+  name = "時短30分";
+  desc = "待ち時間を30分短縮します。";
+  path = "item.png";
+
+  kind = ItemSetting.SHORTEN_TIME;
+  type = ItemSetting.TYPE_ONCE;
+  targets = [ITEM_TYPE_COSTUME, ITEM_TYPE_FURNITURE];
+  value = 30;
+})
+
+item_settings[10] <- ItemSetting({
+  name = "衣装EXP+100";
+  desc = "衣装の経験値を100増やします";
+  path = "item.png";
+
+  kind = ItemSetting.ADD;
+  type = ItemSetting.TYPE_ONCE;
+  targets = [ITEM_TYPE_COSTUME_EXP];
+  value = 100;
+})
+
+item_settings[11] <- ItemSetting({
+  name = "家具EXP+100";
+  desc = "家具の経験値を100増やします";
+  path = "item.png";
+
+  kind = ItemSetting.ADD;
+  type = ItemSetting.TYPE_ONCE;
+  targets = [ITEM_TYPE_FURNITURE_EXP];
+  value = 100;
+})
+
+item_settings[12] <- ItemSetting({
+  name = "お部屋EXP+100";
+  desc = "お部屋の経験値を100増やします";
+  path = "item.png";
+
+  kind = ItemSetting.ADD;
+  type = ItemSetting.TYPE_ONCE;
+  targets = [ITEM_TYPE_ROOM_EXP];
+  value = 100;
+})
+
+item_settings[20] <- ItemSetting({
+  name = "元気+10";
+  desc = "元気値を10回復します。";
+  path = "item.png";
+
+  kind = ItemSetting.ADD;
+  type = ItemSetting.TYPE_ONCE;
+  targets = [ITEM_TYPE_HEALTH];
+  value = 10;
+})
+
+item_settings[30] <- ItemSetting({
+  name = "お出かけEXP10％10分";
+  desc = "取得経験値を10分間10％増加させます。";
+  path = "item.png";
+
+  kind = ItemSetting.BOOST;
+  targets = [ITEM_TYPE_COSTUME_EXP, ITEM_TYPE_FURNITURE_EXP, ITEM_TYPE_ROOM_EXP];
+  type = ItemSetting.TYPE_PERIOD;
+  slot = ItemSetting.SLOT_WORK;
+  value = 10;
+  time = 10;
+})
+
+item_settings[31] <- ItemSetting({
+  name = "お出かけGM10%10分";
+  desc = "取得GMを10分間10％増加させます。";
+  path = "item.png";
+
+  kind = ItemSetting.BOOST;
+  targets = [ITEM_TYPE_GM];
+  type = ItemSetting.TYPE_PERIOD;
+  slot = ItemSetting.SLOT_WORK;
+  value = 10;
+  time = 10;
+})
+
+item_settings[32] <- ItemSetting({
+  name = "お出かけGM10%3回";
+  desc = "取得GMを3回まで10％増加させます。";
+  path = "item.png";
+
+  kind = ItemSetting.BOOST;
+  targets = [ITEM_TYPE_GM];
+  type = ItemSetting.TYPE_COUNT;
+  slot = ItemSetting.SLOT_WORK;
+  value = 10;
+  time = 3;
+})
+
+item_settings[40] <- ItemSetting({
+  name = "お遊戯元気値30%10分";
+  desc = "元気値の回復量を10分間30％上昇させます。";
+  path = "item.png";
+
+  kind = ItemSetting.BOOST;
+  targets = [ITEM_TYPE_HEALTH];
+  type = ItemSetting.TYPE_PERIOD;
+  slot = ItemSetting.SLOT_PRODUCT;
+  value = 30;
+  time = 10;
+})
+
+item_settings[41] <- ItemSetting({
+  name = "お遊戯EXP30%10分";
+  desc = "取得経験値を10分間30％上昇させます。";
+  path = "item.png";
+
+  kind = ItemSetting.BOOST;
+  targets = [ITEM_TYPE_COSTUME_EXP, ITEM_TYPE_FURNITURE_EXP, ITEM_TYPE_ROOM_EXP];
+  type = ItemSetting.TYPE_PERIOD;
+  slot = ItemSetting.SLOT_PRODUCT;
+  value = 30;
+  time = 10;
+})
+
+item_settings[42] <- ItemSetting({
+  name = "お遊戯EXP30%3回";
+  desc = "取得経験値を3回まで30％上昇させます。";
+  path = "item.png";
+
+  kind = ItemSetting.BOOST;
+  targets = [ITEM_TYPE_COSTUME_EXP, ITEM_TYPE_FURNITURE_EXP, ITEM_TYPE_ROOM_EXP];
+  type = ItemSetting.TYPE_COUNT;
+  slot = ItemSetting.SLOT_PRODUCT;
+  value = 30;
+  time = 3;
+})

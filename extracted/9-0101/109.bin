@@ -1,0 +1,30 @@
+;----------- クエスト_おゆうぎ_汎用_終 -------------
+
+; ドア指定
+[focusdoor]
+
+; カメラ初期位置
+[movecamera type=1 z=-20 y=2.3 time=0]
+[rotatecamera pitch=0]
+
+; キャラ出現
+[popchara z=-9 angle=0 relative=true]
+[wait time=200]
+
+; キャラ手振り
+[startanime time=2000 script=tefuri]
+[waitaction script=tefuri]
+
+[startanime time=4000 script=work_end_event]
+[balloon time=6000]
+[talk talk_key = "quest_relax_end_1_1" index=0]
+[wait time=6000]
+[endballoon]
+[waitaction script=work_end_event]
+
+[startanime time=6500 script=event_relaxend]
+[balloon time=6000]
+[talk talk_key = "quest_relax_end_1_2" index=0]
+[wait time=6000]
+[endballoon]
+[waitaction script=event_relaxend]

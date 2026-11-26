@@ -1,0 +1,134 @@
+class CostumeLevelUpRewardDialog extends ::Dialog {
+  lbl_title = null;
+  lbl_health_maxup = null;
+  lbl_health = null;
+
+  img_health_bar = null;
+  bar_pos = null;
+  bar_max_width = 0;
+
+  scroll = null;
+  reclist = null;
+  pnl_list = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/CostumeLevelUpRewardDialog.ui"));
+
+    this.lbl_title = this.view.findChild("lbl_title");
+    this.lbl_health_maxup = this.view.findChild("lbl_health_maxup");
+    local _pnl_bar_health = this.view.findChild("pnl_bar_health");
+    this.lbl_health = _pnl_bar_health.findChild("lbl_health");
+
+    this.img_health_bar = _pnl_bar_health.findChild("bar");
+    this.bar_max_width = float(this.img_health_bar.bnd.w);
+    this.bar_pos = { x = 0, y = 0 };
+    this.bar_pos.x = this.img_health_bar.pos.x - this.bar_max_width / 2.0;
+    this.bar_pos.y = this.img_health_bar.pos.y - this.img_health_bar.bnd.h / 2.0;
+
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dyscale = 0.0;
+
+    this.pnl_list = this.view.findChild("pnl_list");
+    this.pnl_list.addChild(this.reclist);
+    this.pnl_list.setBuffer(true);
+
+    this.view.findChild("lbl_text").setText(::dict.get("costume_levelup_get_reward"));
+    this.view.findChild("lbl_text_recover_health").setText(::dict.get("recover_full_health"));
+    this.view.findChild("lbl_text_maxhealth_up").setText(::dict.get("max_health_up_text"));
+    this.btn_ok.findChild("lbl_ok").setText(::dict.get("ok"));
+
+    setShowSE(::SoundConstants.SOUND_LEVELUP_RESULT_CHARA);
+  }
+
+  function setData(cs, lv, uplv) {
+
+    this.lbl_title.setText(::dict.get("costume_levelup_num", [lv]));
+
+    local _max = cs.getMaxHealth(lv);
+    local _old_max = cs.getMaxHealth(lv - uplv);
+    local _val = _max - _old_max;
+    this.lbl_health_maxup.setText(::dict.get("nums_up", [_val]));
+    this.lbl_health.setText(::dict.get("nums_plus2", [_old_max, _val]));
+    local _ratio = float(_old_max) / float(_max);
+    local _w = this.bar_max_width * _ratio;
+    if (_w <= 0) {
+      this.img_health_bar.visible = false;
+    }
+    else {
+      this.img_health_bar.visible = true;
+      if (_w < 20) _w = 20.0;
+      if (_w > this.bar_max_width) _w = this.bar_max_width;
+      this.img_health_bar.setRect(this.bar_pos.x, this.bar_pos.y, _w, this.img_health_bar.bnd.h);
+    }
+
+    this.reclist.clearChildren();
+    local _offset = 0;
+    local _motions = cs.getLevelUpReleaseMotionsID(lv - uplv + 1, lv);
+    if (_motions) {
+      for (local i = 0; i < _motions.len(); i++) {
+        local _item = MotionCard(cs.getID(), _motions[i]);
+        _item.pos.x = _offset;
+        this.reclist.addChild(_item);
+        _item.matdirty = true;
+        _item.repaint();
+        _offset += _item.bnd.w;
+      }
+    }
+
+    this.reclist.setRect(0, 0, _offset, this.pnl_list.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd)
+    this.scroll.centered(true);
+  }
+}
+
+class CostumeLevelUpRewardDialog.MotionCard extends SKView {
+  static REWARD_ROTATE = 0;
+  static MOTION_ROTATE = 25;
+
+  view = null;
+
+  motion_id = -1;
+  costume_id = -1;
+
+  constructor(cid, mid) {
+    this.motion_id = mid;
+    this.costume_id = cid;
+    this.view = ::loadSKView("/ui/common/MotionCard.ui");
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    addChild(this.view);
+
+    local _btn_item = this.view.findChild("btn_item");
+    ::TapButton(_btn_item, false).view.addEventListener(ACTION_EVENT, actionevent_desc);
+
+    local _pnl_icon = _btn_item.findChild("pnl_icon");
+    local _icon;
+    local _sp;
+
+    local _frame_sp = ::Setting.getItemFrame(ITEM_TYPE_MOTION);
+    if (_frame_sp) {
+      local _frame = SKImageView(_frame_sp);
+      _frame.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      ::rotateSKView(_frame, REWARD_ROTATE, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+      _pnl_icon.addChild(_frame);
+    }
+
+    local icon_rate = 0.6;
+    local offset_x = _pnl_icon.bnd.w * (1 - icon_rate) / 2;
+    local offset_y = _pnl_icon.bnd.h * (1 - icon_rate) / 2;
+
+    local _ms = ::gamesetting.costume_motion_settings[mid];
+    _sp = _ms.getIconSprite();
+    _icon = SKImageView(_sp);
+    _icon.setRect(offset_x, offset_y, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+    ::rotateSKView(_icon, MOTION_ROTATE, _pnl_icon.bnd.w * icon_rate, _pnl_icon.bnd.h * icon_rate);
+    _pnl_icon.addChild(_icon);
+  }
+
+  function actionevent_desc(e) {
+    local dlg = ::RewardDialog();
+    dlg.setReward(ITEM_TYPE_MOTION, this.motion_id, 1, this.costume_id);
+    dlg.setText(::dict.get("rewarddialog_get_specialmotion"));
+    dlg.show();
+  }
+}

@@ -1,0 +1,12 @@
+// UIScript created by ItemListPanelWide.ui 
+
+function init() {
+	$pnl_item_list.anime(5, 5, 0);
+}
+function show() {
+	$pnl_item_list.anime(5, 10, 20);
+}
+
+function hide() {
+	$pnl_item_list.anime(10, 5, 20);
+}

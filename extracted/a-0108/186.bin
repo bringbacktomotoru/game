@@ -1,0 +1,423 @@
+{
+  "ID": "c0db0b80-2901-4070-abaf-9eea2dc624f0",
+  "Version": "2.3.3.0",
+  "Name": "FriendRequestDialog",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 91,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/dlg_mul.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 10,
+            "Scale9OriginY": 10,
+            "Scale9Width": 12,
+            "Scale9Height": 12,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": -6.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": -0.0067
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "TopMargin": 6.0001,
+            "BottomMargin": -6.0001,
+            "UserData": "{\"blend\":4}",
+            "Tag": 93,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/base/dlg_add2.png",
+                  "Plist": "image/ss_base.plist"
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 10,
+                "Scale9OriginY": 13,
+                "Scale9Width": 12,
+                "Scale9Height": 16,
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 6.0,
+                  "Y": 6.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0094,
+                  "Y": 0.0067
+                },
+                "PreSize": {
+                  "X": 0.9811,
+                  "Y": 0.0467
+                },
+                "LeftMargin": 6.0,
+                "RightMargin": 6.0,
+                "TopMargin": 852.0,
+                "BottomMargin": 6.0,
+                "UserData": "{\"blend\":3}",
+                "Tag": 96,
+                "ActionTag": 119426944,
+                "Size": {
+                  "X": 624.0,
+                  "Y": 42.0
+                },
+                "Name": "img_add2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/base/dlg_add1.png",
+                  "Plist": "image/ss_base.plist"
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 10,
+                "Scale9OriginY": 27,
+                "Scale9Width": 12,
+                "Scale9Height": 28,
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 5.9996,
+                  "Y": 811.0023
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0094,
+                  "Y": 0.9011
+                },
+                "PreSize": {
+                  "X": 0.9811,
+                  "Y": 0.0911
+                },
+                "LeftMargin": 5.9996,
+                "RightMargin": 6.0004,
+                "TopMargin": 6.9977,
+                "BottomMargin": 811.0023,
+                "UserData": "{\"blend\":3}",
+                "Tag": 97,
+                "ActionTag": 2015265506,
+                "Size": {
+                  "X": 624.0,
+                  "Y": 82.0
+                },
+                "Name": "img_add1",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 814809629,
+            "Size": {
+              "X": 636.0,
+              "Y": 900.0
+            },
+            "Name": "mul",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 50,
+            "LabelText": "承認待ち一覧",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 317.9996,
+              "Y": 830.0009
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.9222
+            },
+            "PreSize": {
+              "X": 0.4528,
+              "Y": 0.0556
+            },
+            "LeftMargin": 173.9996,
+            "RightMargin": 174.0004,
+            "TopMargin": 44.9991,
+            "BottomMargin": 805.0009,
+            "Tag": 178,
+            "ActionTag": -207992577,
+            "Size": {
+              "X": 288.0,
+              "Y": 50.0
+            },
+            "Name": "lbl_title",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_bw2.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 10,
+            "Scale9OriginY": 17,
+            "Scale9Width": 12,
+            "Scale9Height": 18,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 570.0,
+              "Y": 40.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.8962,
+              "Y": 0.0444
+            },
+            "PreSize": {
+              "X": 0.0629,
+              "Y": 0.0444
+            },
+            "LeftMargin": 550.0,
+            "RightMargin": 46.0,
+            "TopMargin": 840.0,
+            "BottomMargin": 20.0,
+            "Tag": 242,
+            "Children": [
+              {
+                "FontSize": 36,
+                "LabelText": "×",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 4,
+                "OutlineColor": {
+                  "R": 214,
+                  "G": 72,
+                  "B": 72
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 21.0001,
+                  "Y": 22.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.525,
+                  "Y": 0.55
+                },
+                "PreSize": {
+                  "X": 0.75,
+                  "Y": 1.1
+                },
+                "LeftMargin": 6.0001,
+                "RightMargin": 3.9999,
+                "TopMargin": -4.0,
+                "Tag": 243,
+                "ActionTag": -1215413128,
+                "Size": {
+                  "X": 30.0,
+                  "Y": 44.0
+                },
+                "Name": "lbl",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1243994285,
+            "Size": {
+              "X": 40.0,
+              "Y": 40.0
+            },
+            "Name": "btn_cancel",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 318.0001,
+              "Y": 420.001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.4667
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.7889
+            },
+            "LeftMargin": 0.0001,
+            "RightMargin": -0.0001,
+            "TopMargin": 124.999,
+            "BottomMargin": 65.001,
+            "Tag": 101,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "common/FriendRequestListItem.json",
+                  "Plist": ""
+                },
+                "StretchWidthEnable": false,
+                "StretchHeightEnable": false,
+                "InnerActionSpeed": 1.0,
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 35.0003,
+                  "Y": 550.0002
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": true,
+                "PrePosition": {
+                  "X": 0.055,
+                  "Y": 0.7746
+                },
+                "PreSize": {
+                  "X": 0.8962,
+                  "Y": 0.2254
+                },
+                "LeftMargin": 35.0003,
+                "RightMargin": 30.9997,
+                "TopMargin": -0.0002,
+                "BottomMargin": 550.0002,
+                "Tag": 102,
+                "ActionTag": 1415314680,
+                "Size": {
+                  "X": 570.0,
+                  "Y": 160.0
+                },
+                "Name": "dummy",
+                "ctype": "ProjectNodeObjectData"
+              }
+            ],
+            "ActionTag": 898694494,
+            "Size": {
+              "X": 636.0,
+              "Y": 710.0
+            },
+            "Name": "pnl_list",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 636.0,
+          "Y": 900.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/ss_base.plist",
+        "../image/ss_base.png",
+        "FriendRequestListItem.json"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

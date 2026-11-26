@@ -1,0 +1,23 @@
+model =
+{
+  root = {
+    pm = "barrier.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+  }
+
+  function start() {
+    setBlend(SK_ADD);
+    uvscroll(0, -3);
+    pass(300);
+    fadeColor(255, 100);
+    pass(100);
+    kill();
+  }
+}

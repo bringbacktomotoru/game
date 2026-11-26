@@ -1,0 +1,41 @@
+runsk("/res/anime/base.sk");
+
+model =
+{
+
+  body = { pm = "../clothes/default/pocha.pm" }
+  face = { pm = "../facial/pocha_face.pm" parentname = "body" shadowbones = "body" }
+  r_hand = { pm = "../hand/pocha/paR.pm" parentname = "body" shadowbones = "body" }
+  l_hand = { pm = "../hand/pocha/paL.pm" parentname = "body" shadowbones = "body" }
+
+  body = { pm = "../clothes/default/mello.pm" }
+  face = { pm = "../facial/mello_face.pm" parentname = "body" shadowbones = "body" }
+  r_hand = { pm = "../hand/mello/paR.pm" parentname = "body" shadowbones = "body" }
+  l_hand = { pm = "../hand/mello/paL.pm" parentname = "body" shadowbones = "body" }
+}
+
+with script {
+
+  function setup() {
+    setCharaSetting(::gamesetting.sanrio_chara_settings[107]);
+    morphFace("def", 0);
+    changeHand("pa", "pa");
+    sk3d.setMotion(getMotionData(::getResource("/res/anime/scene01.mot")));
+  }
+
+  function first_chara_select() {
+    hyahho_set(3);
+    ketsui(2);
+  }
+
+  function drink_stand() {
+
+    drink_stand_set(80);
+  }
+
+  function drink_walk() {
+
+    drink_walk_set(80);
+  }
+
+}

@@ -1,0 +1,112 @@
+import ModifiersMask;
+
+class SKButtonBase extends SKView
+{
+  firstdelaytime = 300;
+  repeatdelaytime = 60;
+
+  repeatmode = 0;
+  actioncmd = null;
+  consumeonpress = false;
+
+  mousestate = 0;
+  repeattime = 1;
+  intervalid = null;
+
+  function enableStateChanged(b) {
+    updateButtonState(mousestate | (b * 4));
+    repaint();
+  }
+
+  function processEvent(e) {
+    switch (e.id) {
+    case MOUSE_ENTERED:
+      mousestate |= 1;
+      updateButtonState(mousestate | (isEnabled() * 4));
+      repaint();
+      break;
+    case MOUSE_EXITED:
+      mousestate &= 0xfffffffe;
+      updateButtonState(mousestate | (isEnabled() * 4));
+      repaint();
+      break;
+    case MOUSE_PRESSED:
+      if (!e.isMouseDown(BUTTON1_MASK)) break;
+      mousestate |= 2;
+      if (mousestate & 1) {
+        switch (repeatmode) {
+        case 1:
+          postActionEvent(actioncmd, 1, e.modifiers);
+          repeattime = 1;
+          intervalid = setTimeout(firstdelay.bindenv(this), firstdelaytime);
+          break;
+        case 2:
+          postValueEvent(actioncmd, 1, e.modifiers);
+          repeattime = 1;
+          intervalid = setTimeout(firstdelay.bindenv(this), firstdelaytime);
+          break;
+        }
+      }
+      updateButtonState(mousestate | (isEnabled() * 4));
+      repaint();
+      if (consumeonpress) return false;
+      break;
+    case MOUSE_RELEASED:
+      if (!e.isMouseDown(BUTTON1_MASK)) break;
+    case MOUSE_CANCELLED:
+      mousestate &= 0xfffffffd;
+      switch (repeatmode) {
+      case 1:
+        clearInterval(intervalid);
+        break;
+      case 2:
+        clearInterval(intervalid);
+        postActionEvent(actioncmd, 1, e.modifiers);
+        break;
+      default:
+        if (mousestate & 1) {
+          postActionEvent(actioncmd, 1, e.modifiers);
+        }
+        break;
+      }
+      updateButtonState(mousestate | (isEnabled() * 4));
+      repaint();
+      if (consumeonpress) return false;
+      break;
+    }
+    return super.processEvent(e);
+  }
+
+  function updateButtonState(st) {}
+
+  function firstdelay() {
+    if (mousestate & 1) {
+      if (repeatmode == 1) {
+        postActionEvent(actioncmd,++repeattime, 0);
+      } else {
+        postValueEvent(actioncmd,++repeattime, 0);
+      }
+    }
+    intervalid = setInterval(repeatfunc.bindenv(this), repeatdelaytime);
+  }
+
+  function repeatfunc() {
+    if (mousestate & 1) {
+      if (repeatmode == 1) {
+        postActionEvent(actioncmd,++repeattime, 0);
+      } else {
+        postValueEvent(actioncmd,++repeattime, 0);
+      }
+    }
+  }
+
+  function postValueEvent(cmd = null, count = 1, modifiers = 0) {
+    local e = Event();
+    e.id = VALUE_CHANGED;
+    e.src = this;
+    e.actioncmd = cmd;
+    e.count = count;
+    e.modifiers = modifiers;
+    ::rootview.postEvent(e);
+  }
+}

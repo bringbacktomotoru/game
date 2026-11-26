@@ -1,0 +1,9 @@
+foreach (f_name in [
+"StageScene.sk"
+"ModelViewScene.sk"
+
+"object/load.sk"
+"action/load.sk"
+]) {
+  runsk("/src/stage/" + f_name);
+}

@@ -1,0 +1,17 @@
+return {
+  modeldata = "pillar_BL.mdl"
+  bnd = [11.994664, 4.390162, 11.979307, 0.64038, 4.381677, 0.62895]
+
+  material = [
+  {
+    name = "room_mt"
+    tec = "shading.basic"
+    Ka = 0xfffffffd
+    Kd = 0xffffffff
+    Ks = 0xdbdbdbff
+    Ke = 0
+    shiness = 20.0
+    texture0 = "/res/room/creamycafe/tex/creamycafe.png"
+  }
+  ]
+}

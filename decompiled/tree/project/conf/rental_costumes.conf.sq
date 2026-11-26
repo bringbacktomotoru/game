@@ -1,0 +1,17 @@
+rental_costume_settings[1] <- ::RentalCostumeSetting({
+  costume_id = 202001;
+  time = 30;
+  price = 500;
+})
+
+rental_costume_settings[2] <- ::RentalCostumeSetting({
+  costume_id = 204001;
+  time = 60;
+  price = 600;
+})
+
+rental_costume_settings[3] <- ::RentalCostumeSetting({
+  costume_id = 207001;
+  time = 600;
+  price = 700;
+})

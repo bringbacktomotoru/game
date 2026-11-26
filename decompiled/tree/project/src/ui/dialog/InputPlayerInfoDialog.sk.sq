@@ -1,0 +1,125 @@
+class InputPlayerInfoDialog extends ::Dialog {
+  static MAX_NAME_LENGTH = 8;
+  static NAME_INVALID_LENGTH = -1;
+  static NAME_INVALID_DISABLE_WORD = -2;
+
+  controller = null;
+  input_name = null;
+
+  lbl_error = null;
+  lbl_input_name = null;
+  btn_input_name = null;
+
+  pnl_female = null;
+  pnl_male = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/InputPlayerInfoDialog.ui"));
+
+    this.lbl_input_name = this.view.findChild("lbl_inputname");
+    this.btn_input_name = this.view.findChild("btn_input_name");
+    ::TapButton(this.btn_input_name).view.addEventListener(ACTION_EVENT, actionevent_input);
+
+    this.input_name = "";
+    this.lbl_input_name.setText(this.input_name);
+
+    this.view.findChild("lbl_name").setText(::dict.get("name_input_name"));
+
+    this.view.addEventListener(TEXTINPUT_EVENT, textinputevent);
+
+    this.lbl_error = this.view.findChild("lbl_error");
+    this.lbl_error.setVisible(false);
+
+    this.controller = ::CheckBoxController(::CheckBoxController.TYPE_ONLY);
+
+    this.pnl_female = this.view.findChild("pnl_checkbox_female");
+
+    this.controller.addCheckBoxButton(this.pnl_female, this.pnl_female.findChild("img_check"));
+
+    this.pnl_male = this.view.findChild("pnl_checkbox_male");
+
+    this.controller.addCheckBoxButton(this.pnl_male, this.pnl_male.findChild("img_check"));
+
+    this.controller.checkButton(this.pnl_female);
+
+    this.view.findChild("lbl_title").setText(::dict.get("player_input_title"));
+    this.view.findChild("lbl_desc").setText(::dict.get("player_input_desc"));
+
+    this.pnl_female.findChild("lbl").setText(::dict.get("sex_female"));
+    this.pnl_male.findChild("lbl").setText(::dict.get("sex_male"));
+
+    this.btn_ok.findChild("lbl").setText(::dict.get("ok"));
+  }
+
+  function actionevent_input(e) {
+    e.consume();
+    this.btn_input_name.requestFocus();
+    skStartTextEdit({ text = this.lbl_input_name.getText(), maxlen = MAX_NAME_LENGTH });
+  }
+
+  function textinputevent(e) {
+    e.consume();
+    if (e.id != TEXTINPUT_DONE) return;
+
+    local s = string(e.actioncmd);
+    if (length(s) > MAX_NAME_LENGTH) {
+      s = s.substring(0, MAX_NAME_LENGTH);
+    }
+    this.lbl_input_name.setText(s);
+    this.input_name = s;
+  }
+
+  function actionevent(e) {
+    e.consume();
+
+    switch (e.src) {
+    case this.btn_ok:
+      if (skGetOSName() == "Windows") this.input_name = "CSはなこ";
+      if (!_checkNameLength(this.input_name)) {
+        _setError(NAME_INVALID_LENGTH);
+        return;
+      }
+
+      local _sex = SEX_NONE;
+      local _checked = this.controller.getCheckedButtonViews()[0];
+      switch (_checked) {
+      case this.pnl_female: _sex = SEX_FEMALE; break;
+      case this.pnl_male: _sex = SEX_MALE; break;
+      }
+
+      local _ret = ::gamesession.inputPlayerInfo(this.input_name, _sex);
+      if (_ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+        ::gamesession.getUserData().setPlayerInfo(this.input_name, _sex);
+      } else {
+        _setError(NAME_INVALID_DISABLE_WORD);
+        return;
+      }
+
+      break;
+    }
+
+    super.actionevent(e);
+  }
+
+  function _checkNameLength(s) {
+    if (length(s) < 2) return false;
+    if (length(s) > 8) return false;
+
+    return true;
+  }
+
+  function _setError(invalid) {
+    local _txt = "";
+    switch (invalid) {
+    case NAME_INVALID_LENGTH:
+      _txt = ::dict.get("name_input_invalid_length");
+      break;
+    case NAME_INVALID_DISABLE_WORD:
+      _txt = ::dict.get("name_input_invalid_word");
+      break;
+    }
+
+    this.lbl_error.setText(_txt);
+    this.lbl_error.setVisible(true);
+  }
+}

@@ -1,0 +1,298 @@
+class WorkEventRewardDialog extends ::Dialog {
+  kind = null;
+  id = null;
+  num = null;
+  sub_info = null;
+
+  cmp = null;
+
+  view = null;
+  pnl_furniture = null;
+  pnl_costume = null;
+  pnl_motion = null;
+  pnl_rmgm = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/WorkEventRewardDialog.ui"));
+
+    this.view.findChild("lbl_get").setText(::dict.get("get"));
+
+    this.pnl_furniture = this.view.findChild("pnl_furniture");
+    this.pnl_costume = this.view.findChild("pnl_costume");
+    this.pnl_motion = this.view.findChild("pnl_motion");
+    this.pnl_rmgm = this.view.findChild("pnl_rmgm");
+
+    this.pnl_furniture.visible = false;
+    this.pnl_costume.visible = false;
+    this.pnl_motion.visible = false;
+    this.pnl_rmgm.visible = false;
+  }
+
+  function setReward(kind, id, num = 1, sub_info = null) {
+    this.kind = kind;
+    this.id = id;
+    this.num = num;
+    this.sub_info = sub_info;
+
+    switch (this.kind) {
+    case ITEM_TYPE_FREERM:
+      this.pnl_rmgm.setVisible(true);
+      cmp = RMComponent(this.pnl_rmgm);
+      break;
+    case ITEM_TYPE_GM:
+      this.pnl_rmgm.setVisible(true);
+      cmp = GMComponent(this.pnl_rmgm);
+      break;
+    case ITEM_TYPE_COSTUME:
+      this.pnl_costume.setVisible(true);
+      cmp = CostumeComponent(this.pnl_costume);
+      break;
+    case ITEM_TYPE_FURNITURE:
+      this.pnl_furniture.setVisible(true);
+      cmp = FurnitureComponent(this.pnl_furniture);
+      break;
+    case ITEM_TYPE_MOTION:
+      this.pnl_motion.setVisible(true);
+      cmp = MotionComponent(this.pnl_motion);
+      break;
+    }
+    cmp.setData(id, num, sub_info);
+  }
+
+  function setSound(work_id, reward_index) {
+    local _item = ::gamesetting.costume_action_settings[work_id].getReward(reward_index);
+
+    switch (_item.rank) {
+    case 1:
+      this.sound = SoundConstants.SOUND_WORK_RESULT_RARE;
+      break;
+    case 2:
+      this.sound = SoundConstants.SOUND_WORK_RESULT_SR;
+      break;
+    case 0:
+    default:
+      this.sound = SoundConstants.SOUND_WORK_RESULT_NORMAL;
+      break;
+    }
+
+    setShowJingle(this.sound, 1000);
+  }
+}
+
+class ModelViewComponent {
+  sk3dview = null;
+  pnl_scene = null;
+
+  obj = null;
+  last_x = null;
+  angle = null;
+
+  constructor(pnl_slide) {
+    angle = 0;
+    pnl_slide.findChild("lbl_slide").setText(::dict.get("rewarddialog_slide_desc"))
+  }
+
+  function _set3DScene() {
+    this.sk3dview.setRect(0, 0, this.pnl_scene.bnd.w, this.pnl_scene.bnd.h);
+    this.pnl_scene.addChild(this.sk3dview);
+
+    pnl_scene.addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function mouseevent(e) {
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.last_x = e.x;
+      break;
+    case MOUSE_DRAGGED:
+      local diff = e.x - this.last_x;
+      this.angle -= diff;
+      this.obj.setAngle(angle);
+      this.last_x = e.x;
+      break;
+    case MOUSE_RELEASED:
+      break;
+    }
+  }
+}
+
+class WorkEventRewardDialog.FurnitureComponent extends ModelViewComponent {
+  lbl_name = null;
+  pnl_seriesicon = null;
+
+  constructor(view) {
+    super(view.findChild("pnl_slide"));
+    println("pnl_slide = " + (view.findChild("pnl_slide")))
+
+    this.lbl_name = view.findChild("lbl_furniturename");
+    this.pnl_seriesicon = view.findChild("pnl_seriesicon");
+
+    this.pnl_scene = view.findChild("pnl_view");
+    this.sk3dview = ::Furniture3DView();
+
+    _set3DScene();
+  }
+
+  function setData(id, num, sub_info) {
+    local setting = ::gamesetting.furniture_settings[id];
+
+    this.sk3dview.setFurniture(setting, 1);
+    this.sk3dview.build(true);
+    this.obj = this.sk3dview.obj;
+
+    this.lbl_name.setText(setting.getName());
+
+    local _ss = setting.getSeriesSetting();
+    local _icon = SKImageView();
+    _icon.setSprite(_ss.getIconSprite());
+    _icon.setRect(0, 0, this.pnl_seriesicon.bnd.w, this.pnl_seriesicon.bnd.h);
+    this.pnl_seriesicon.addChild(_icon);
+  }
+}
+
+class WorkEventRewardDialog.CostumeComponent extends ModelViewComponent {
+  lbl_name = null;
+  lbl_charaname = null;
+  pnl_rare = null;
+
+  constructor(view) {
+    super(view.findChild("pnl_slide"));
+
+    this.lbl_name = view.findChild("lbl_costumename");
+    this.lbl_charaname = view.findChild("lbl_charaname");
+    this.pnl_rare = view.findChild("pnl_rare");
+
+    this.pnl_scene = view.findChild("pnl_view");
+    this.sk3dview = ::Chara3DView();
+
+    _set3DScene();
+  }
+
+  function setData(id, num, sub_info) {
+    local setting = ::gamesession.costume_settings[id];
+
+    this.sk3dview.setCostumeId(id);
+    this.sk3dview.build(true);
+    this.obj = this.sk3dview.obj;
+
+    this.lbl_name.setText(setting.getName());
+
+    local cs = ::gamesetting.sanrio_chara_settings[setting.getCharaID()];
+    this.lbl_charaname.setText(cs.getName());
+
+    local _icon = SKImageView();
+    _icon.setSprite(::Setting.getRarityIconSprite(setting.getGrade()));
+    _icon.setRect(0, 0, this.pnl_rare.bnd.w, this.pnl_rare.bnd.h);
+    this.pnl_rare.addChild(_icon);
+  }
+}
+
+class WorkEventRewardDialog.MotionComponent extends ModelViewComponent {
+  scp_name = null;
+
+  lbl_name = null;
+  pnl_icon = null;
+
+  constructor(view) {
+    super(view.findChild("pnl_slide"));
+
+    this.lbl_name = view.findChild("lbl_motionname");
+    this.pnl_icon = view.findChild("pnl_motionicon");
+
+    view.findChild("lbl_text").setText(::dict.get("rewarddialog_get_specialmotion"));
+
+    this.pnl_scene = view.findChild("pnl_view");
+    this.sk3dview = ::Chara3DView();
+
+    _set3DScene();
+  }
+
+  function setData(id, num, sub_info) {
+    local cos_setting = ::gamesetting.costume_settings[sub_info];
+    local motion_setting = ::gamesetting.costume_motion_settings[id];
+
+    this.sk3dview.setCostumeId(sub_info);
+    this.sk3dview.build(true);
+    this.obj = this.sk3dview.obj;
+
+    this.lbl_name.setText(motion_setting.getDesc());
+
+    local _icon = SKImageView();
+    _icon.setSprite(motion_setting.getIconSprite());
+    _icon.setRect(0, 0, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+    this.pnl_icon.addChild(_icon);
+
+    local name_last_pos = this.lbl_name.getLastCharPos();
+    this.pnl_icon.pos.x = name_last_pos[0] + 20;
+    this.pnl_icon.matdirty = true;
+    this.pnl_icon.repaint();
+
+    this.scp_name = motion_setting.getActionName();
+    _startMotionAnime();
+  }
+
+  function _startMotionAnime() {
+    newthread().start(function() {
+      while (true) {
+        this.sk3dview.charaScript(this.scp_name);
+        sleep(1000);
+        while (this.sk3dview.isScriptRunning() && this.sk3dview.getCurrentScriptName() == this.scp_name) { suspend() };
+        sleep(1000);
+      }
+    }, this);
+  }
+}
+
+class MoneyComponent {
+  static REWARD_ROTATE = 0;
+  static MONEY_ROTATE = 35;
+
+  lbl_val = null;
+  pnl_icon = null;
+
+  constructor(view) {
+    this.lbl_val = view.findChild("lbl_rmgm");
+    this.pnl_icon = view.findChild("pnl_icon");
+  }
+
+  function _setFrameImage(kind) {
+    local _frame_sp = ::Setting.getItemFrame(kind);
+    if (_frame_sp) {
+      local _frame = SKImageView(_frame_sp);
+      _frame.setRect(0, 0, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+      ::rotateSKView(_frame, REWARD_ROTATE, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+      this.pnl_icon.insertChild(0, _frame);
+    }
+  }
+
+  function _setData(txt, sp) {
+    this.lbl_val.setText(txt);
+
+    local icon_rate = 0.6;
+    local off_x = this.pnl_icon.bnd.w * (1 - icon_rate) / 2;
+    local off_y = this.pnl_icon.bnd.h * (1 - icon_rate) / 2;
+
+    local _icon = SKImageView();
+    _icon.setSprite(sp);
+    _icon.setRect(off_x, off_x, this.pnl_icon.bnd.w * icon_rate, this.pnl_icon.bnd.h * icon_rate);
+    ::rotateSKView(_icon, MONEY_ROTATE, this.pnl_icon.bnd.w * icon_rate, this.pnl_icon.bnd.h * icon_rate);
+    this.pnl_icon.addChild(_icon);
+  }
+}
+
+class WorkEventRewardDialog.RMComponent extends MoneyComponent {
+  function setData(id, num, sub_info) {
+    local txt = ::Setting.getItemName(ITEM_TYPE_FREERM, -1, num);
+    local sp = ::Setting.getRMIconSprite();
+    _setFrameImage(ITEM_TYPE_FREERM);
+    _setData(txt, sp);
+  }
+}
+class WorkEventRewardDialog.GMComponent extends MoneyComponent {
+  function setData(id, num, sub_info) {
+    local txt = ::Setting.getItemName(ITEM_TYPE_GM, -1, num);
+    local sp = ::Setting.getGMIconSprite();
+    _setFrameImage(ITEM_TYPE_GM);
+    _setData(txt, sp);
+  }
+}

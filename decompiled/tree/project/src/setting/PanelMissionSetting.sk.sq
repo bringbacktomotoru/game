@@ -1,0 +1,141 @@
+class PanelMissionSetting extends Setting {
+  id = null;
+
+  mission_id_list = null;
+  illust_piece_list = null;
+  illust_path = null;
+  rewards = null;
+
+  diary_id = null;
+  room_id = null;
+  conditions = null;
+  condition_text = null;
+  visible_conditions = null;
+  period = null;
+  priority = null;
+
+  function loadConfAtServer(t) {
+    local setting = PanelMissionSetting();
+
+    foreach (k, v in t) {
+      switch (k) {
+      case "mission_id_list":
+      case "illust_piece_list":
+        local _str_arr = decodeJSON(v);
+        local _list = [];
+        foreach (idx, str in _str_arr) {
+          _list + decodeJSON(str);
+        }
+        setting[k] = _list;
+        break;
+      case "conditions":
+      case "visible_conditions":
+      case "period":
+
+        setting[k] = decodeJSON(v);
+        break;
+
+      default:
+        setting[k] = v;
+      }
+    }
+    return setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (condition_text) trans + "condition_text";
+    return trans;
+  }
+
+  function getID() {
+    return this.id;
+  }
+  function getName() {
+    return getDiarySetting().getName();
+  }
+  function getDiaryName() {
+    return getDiarySetting().getName();
+  }
+
+  function getDiaryID() {
+    return this.diary_id;
+  }
+  function getDiarySetting() {
+    return ::gamesetting.diary_settings[this.diary_id];
+  }
+
+  function getDiaryWriterName(idx = -1) {
+
+    return getDiarySetting().getDiaryWriterName(idx);
+  }
+  function getDiaryTextColor(idx = -1) {
+
+    return getDiarySetting().getDiaryTextColor(idx);
+  }
+
+  function getDiaryTitle(idx = -1) {
+
+    return getDiarySetting().getDiaryTitle(idx);
+  }
+  function getDiary(idx = -1) {
+
+    return getDiarySetting().getDiary(idx);
+  }
+  function getMissionIDList() {
+    return this.mission_id_list;
+  }
+  function getMissionIDByIndex(idx) {
+    local _idx1 = idx / this.mission_id_list.len();
+    local _idx2 = idx - (this.mission_id_list.len() * _idx1);
+    return this.mission_id_list[_idx1][_idx2] || -1;
+  }
+
+  function getPriority() {
+    return this.priority;
+  }
+
+  function getEventPath() {
+
+    return getDiarySetting().getEventPath();
+  }
+
+  function getSpriteIllustPiece(idx1, idx2) {
+    local _path = this.illust_piece_list[idx1][idx2];
+    local _sp = ::getSprite(_path);
+    if (_sp) _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  function getRoomID() {
+    return this.room_id;
+  }
+
+  function getReplyKey() {
+
+    return getDiarySetting().getReplyKey();
+  }
+  function getReplyTextKeys() {
+
+    return getDiarySetting().getReplyTextKeys();
+  }
+  function getIndexReplyTextKey(key) {
+
+    return getDiarySetting().getIndexReplyTextKey(key);
+  }
+
+  function checkConditions() {
+    if (!this.conditions) return true;
+    return ::checkCondition(this.conditions, ::gamesetting.panel_mission_condition_settings);
+  }
+
+  function checkVisibleConditions() {
+    if (!this.visible_conditions) return true;
+    return ::checkCondition(this.visible_conditions, ::gamesetting.panel_mission_condition_settings);
+  }
+
+  function getConditionText() {
+    return this.condition_text;
+  }
+}

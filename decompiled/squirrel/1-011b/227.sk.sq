@@ -1,0 +1,65 @@
+class PropSetting extends ::Setting {
+  id = -1;
+  name = null;
+  prop_script = null;
+  stand_motion = -1;
+  walk_motion = -1;
+  dash_motion = -1;
+  prop_motion_list = null;
+
+  function loadConfAtServer(t) {
+    local _setting = PropSetting();
+    foreach (k, v in t) {
+      switch (k) {
+      case "prop_motion_list":
+        _setting[k] = decodeJSON(v);
+        break;
+      default:
+        _setting[k] = v;
+      }
+    }
+
+    return _setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (name) trans + "name";
+
+    return trans;
+  }
+
+  function getID() {
+    return this.id;
+  }
+
+  function getName() {
+    if (!this.name) return "";
+    return this.name;
+  }
+
+  function getPropScript() {
+    return this.prop_script;
+  }
+
+  function getStandMotion() {
+    if (this.stand_motion != -1) return this.stand_motion;
+    return DEFAULT_ACTION_STAND;
+  }
+
+  function getWalkMotion() {
+    if (this.walk_motion != -1) return this.walk_motion;
+    return DEFAULT_ACTION_WALK;
+  }
+
+  function getDashMotion() {
+    if (this.dash_motion != -1) return this.dash_motion;
+    return DEFAULT_ACTION_DASH;
+  }
+
+  function getMotionList() {
+    if (!this.prop_motion_list) return [];
+    return this.prop_motion_list;
+  }
+}

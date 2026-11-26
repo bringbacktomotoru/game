@@ -1,0 +1,126 @@
+class SKExpandPanel extends SKView
+{
+  static deffontattr = FontAttribute(Fonts.ui, 12, 255, 0);
+  static bigfontattr = FontAttribute(Fonts.ui, 14, 255, SK_FONT_BOLD);
+
+  barh = 22;
+  tribtn = null;
+  bb = null;
+  label = null;
+  panelbase = null;
+  panel = null;
+  expanded = false;
+  big = false;
+
+  constructor(txt = "", bi = false, space = 40) {
+    bb = SKImageListButton([
+    ::getSprite("/system/ui.silver/ui.clp#expandbar1"),
+    ::getSprite("/system/ui.silver/ui.clp#expandbar2"),
+    ::getSprite("/system/ui.silver/ui.clp#expandbar3"),
+    ::getSprite("/system/ui.silver/ui.clp#expandbar1"),
+    ]);
+    big = bi;
+    barh = big ? 28 : 20;
+    panelbase = SKImageView(::getSprite("/system/ui.silver/ui.clp#expandpanel"));
+    panelbase.enabled = true;
+
+    label = SKLabelView(txt, big ? bigfontattr : deffontattr);
+    label.setRect(space, 0, 128, barh);
+    label.textbox.align = 3;
+    tribtn = SKExpandTriangleButton();
+    tribtn.setRect(0, 0, barh, barh);
+    addChild(panelbase);
+    addChild(bb);
+    addChild(label);
+    addChild(tribtn);
+
+    panelbase.setBuffer(true);
+    panelbase.visible = false;
+    label.enabled = false;
+    tribtn.enabled = false;
+
+    bb.addEventListener(ACTION_EVENT, actionevent);
+
+    local pp = SKView(); pp.setRect(0, 0, 100, 400);
+    setPanel(pp);
+  }
+
+  function setTitle(txt) {
+    label.setText(txt);
+  }
+
+  function setPanel(p) {
+    if (panel) panelbase.removeChild(panel);
+    panel = p;
+    p.pos.x = 6;
+    panelbase.insertChild(0, p);
+
+    if (expanded) {
+      panelbase.visible = true;
+      revalidate();
+    } else {
+      panelbase.visible = false;
+
+    }
+  }
+
+  function updateHeight() {
+    if (panel && expanded) {
+      panelbase.setRect(0, barh, bnd.w, panel.bnd.h);
+      bnd.h = barh + panel.bnd.h;
+    } else {
+      bnd.h = barh;
+    }
+  }
+
+  function actionevent(e) {
+    if (e.src == bb) {
+      setExpanded(!expanded);
+      e.consume();
+    }
+  }
+
+  function setRect(x, y, w, h, px = 0, py = 0) {
+    if (expanded) {
+      h = barh + panel.bnd.h;
+    } else {
+      h = barh;
+    }
+    super.setRect(x, y, w, h, px, py);
+    panel.setRect(6, 0, w - 6, panel.bnd.h);
+  }
+
+  function updateLayout() {
+    local w = bnd.w, h = bnd.h;
+    bb.setRect(0, 0, w, barh);
+  }
+
+  function revalidate() {
+    updateHeight();
+    super.revalidate();
+  }
+
+  function setExpanded(b) {
+    if (b) {
+      expand();
+    } else {
+      shrink();
+    }
+  }
+
+  function expand() {
+    tribtn.expand();
+    expanded = true;
+    updateHeight();
+    panelbase.visible = true;
+    revalidate();
+  }
+
+  function shrink() {
+    tribtn.shrink();
+    expanded = false;
+    updateHeight();
+    panelbase.visible = false;
+    super.revalidate();
+  }
+}

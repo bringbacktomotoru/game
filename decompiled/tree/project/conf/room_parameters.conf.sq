@@ -1,0 +1,20 @@
+room_parameter_settings[0] <- ::RoomParameterSetting({
+  chara_params = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+  furniture_params = [999, 999, 999, 999, 999, 999, 999, 999, 999, 999],
+  rarity_params = [999, 999, 999, 999, 999, 999, 999, 999, 999, 999],
+  work_params = [3, 3, 3, 3, 4, 4, 5, 5, 5, 6],
+});
+
+room_parameter_settings[1] <- ::RoomParameterSetting({
+  chara_params = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+  furniture_params = [999, 999, 999, 999, 999, 999, 999, 999, 999, 999],
+  rarity_params = [999, 999, 999, 999, 999, 999, 999, 999, 999, 999],
+  work_params = [3, 3, 3, 3, 4, 4, 5, 5, 5, 6],
+});
+
+room_parameter_settings[2] <- ::RoomParameterSetting({
+  chara_params = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+  furniture_params = [999, 999, 999, 999, 999, 999, 999, 999, 999, 999],
+  rarity_params = [999, 999, 999, 999, 999, 999, 999, 999, 999, 999],
+  work_params = [3, 3, 3, 3, 4, 4, 5, 5, 5, 6],
+});

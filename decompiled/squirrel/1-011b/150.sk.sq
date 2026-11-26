@@ -1,0 +1,314 @@
+local _createRenderSetting = createRenderSetting;
+createRenderSetting <- function(t) {
+  local type = t["type"] || 0;
+  switch (type) {
+  case 1:
+    {
+      return {
+        targets = {
+          colortex = [VP_SIZE, VP_SIZE, SK_RGBA, 2]
+          halftex = [VP_HALF, VP_HALF, SK_RGBA, 0]
+          quattex = [VP_QUAT, VP_QUAT, SK_RGBA, 0]
+          eighthtex = [VP_EIGHTH, VP_EIGHTH, SK_RGBA, 0]
+        }
+        passes = [
+        {
+          cls = "MainRenderPass"
+          clearparam = { color = 286331391, depth = 1.0 }
+          target = "colortex"
+        },
+        {
+          cls = "BloomBlurImagePass"
+          src1 = "colortex"
+          src2 = "halftex"
+          src3 = "quattex"
+          target = "eighthtex"
+
+          color = t["bloomc"] || 0xffffffff
+          thrs = t["bloomthrs"] || 0.4
+          blur = t["bloomblur"] || 0.1
+          power = t["bloompower"] || 0.5
+        },
+        {
+          cls = "FXMixImagePass"
+          src1 = "colortex"
+          src2 = "eighthtex"
+          target = null
+
+        }
+        ]
+      }
+    }
+  case 2:
+    {
+
+    }
+  case 100:
+    return {
+      targets = {
+        colortex = [VP_SIZE, VP_SIZE, SK_RGBA, 2]
+        halftex = [VP_HALF, VP_HALF, SK_RGBA, 0]
+        quattex = [VP_QUAT, VP_QUAT, SK_RGBA, 0]
+        eighthtex = [VP_EIGHTH, VP_EIGHTH, SK_RGBA, 0]
+      }
+      passes = [
+      {
+        cls = "BackSpriteRenderPass"
+        clearparam = { color = 286331136, depth = 1.0 }
+        target = "colortex"
+
+      },
+      {
+        cls = "BloomBlurImagePass"
+        src1 = "colortex"
+        src2 = "halftex"
+        src3 = "quattex"
+        target = "eighthtex"
+
+        color = t["bloomc"] || 0xffffffff
+        thrs = t["bloomthrs"] || 0.4
+        blur = t["bloomblur"] || 0.1
+        power = t["bloompower"] || 0.5
+      },
+      {
+        cls = "FXMixImageRGBAPass"
+        src1 = "colortex"
+        src2 = "eighthtex"
+        target = null
+      }
+      ]
+    }
+  case 101:
+    return {
+      targets = {
+      }
+      passes = [
+      {
+        clearparam = { depth = 1.0 }
+        cls = "MainRenderPass"
+      }
+      ]
+    }
+  case 102:
+    return {
+      targets = {
+        colortex = [VP_SIZE, VP_SIZE, SK_RGBA, 2]
+        halftex = [VP_HALF, VP_HALF, SK_RGBA, 0]
+        quattex = [VP_QUAT, VP_QUAT, SK_RGBA, 0]
+        eighthtex = [VP_EIGHTH, VP_EIGHTH, SK_RGBA, 0]
+      }
+      passes = [
+      {
+        cls = "BackSpriteRenderPass"
+        clearparam = { color = 286331136, depth = 1.0 }
+        target = "colortex"
+
+      },
+      {
+        cls = "BloomBlurImagePass"
+        src1 = "colortex"
+        src2 = "halftex"
+        src3 = "quattex"
+        target = "eighthtex"
+
+        color = t["bloomc"] || 0xffffffff
+        thrs = t["bloomthrs"] || 0.4
+        blur = t["bloomblur"] || 0.1
+        power = t["bloompower"] || 0.5
+      },
+      {
+        cls = "FXMixImageRGBAPassFromSKBuilder"
+        src1 = "colortex"
+        src2 = "eighthtex"
+        target = null
+      }
+      ]
+    }
+  }
+
+  return {
+    targets = {
+    }
+    passes = [
+    {
+      cls = "MainRenderPass"
+    }
+    ]
+  }
+}
+
+with SK3DRenderer {
+  v_1 <- Vector3D();
+
+  sprite_pass <- null;
+  offsmat <- null;
+
+  constructor <- function() {
+    targets = {};
+    passes = [];
+    local p = MainRenderPass();
+    p.renderer = this;
+    passes + p;
+    finalvp = [0, 0, 0, 0];
+
+    camera = Camera();
+    camera.perspective(40.0, 1.0, 0.1, 100.0);
+    camera.lookat(Vector3D(0, 2, -8), Vector3D(0, 1, 0));
+
+    cullfilterfunc = function(o) {
+      if (!cameraobj) return true;
+      if (o.parent) {
+        return cullfilterfunc(o.parent);
+      }
+      v_1.set(o.pos).sub(cameraobj.pos);
+      return v_1.length() >= o.visible_distance ? true : false;
+    }.bindenv(this);
+  }
+
+  function setCullFilterFunc(func = null) {
+    if (func) {
+      cullfilterfunc = func;
+    } else {
+      cullfilterfunc = function(o) {
+        if (!cameraobj) return true;
+        if (o.parent) {
+          return cullfilterfunc(o.parent);
+        }
+        v_1.set(o.pos).sub(cameraobj.pos);
+        return v_1.length() >= o.visible_distance ? true : false;
+      }.bindenv(this);
+    }
+  }
+
+  function setBackView(iv) {
+    if (!sprite_pass) {
+      foreach (p in passes) {
+        if (!p instanceof BackSpriteRenderPass) continue;
+        sprite_pass = p;
+        break;
+      }
+    }
+    sprite_pass.setBackView(iv);
+  }
+
+  function setOffsetMatrix(mat) {
+    offsmat = mat;
+  }
+}
+
+class SK3DRenderer.BackSpriteRenderPass extends SK3DRenderer.MainRenderPass {
+  back_imageview = null;
+
+  function setBackView(iv) {
+    back_imageview = iv;
+  }
+
+  function render() {
+    local scn = renderer.scn;
+    local old, oldvp;
+    renderer.setTarget(target);
+
+    if (clearparam) {
+      skClearScreen(clearparam);
+    }
+
+    if (back_imageview) {
+      skPushRenderStates();
+      local _vp = [0, 0, 0, 0];
+      skGetViewport(_vp);
+      skSetViewport(renderer.oldvp);
+      skPopMatrix(SK_PROJECTION, SK_VIEW, SK_WORLD);
+
+      local _pvp = [0, 0, 0, 0];
+      skGetViewport(_pvp);
+
+      local _wm = Matrix();
+      skGetMatrix(SK_WORLD, _wm);
+      local _trans = _wm.getTranslation();
+      back_imageview.updateMatrix();
+      local _mat = back_imageview.mat;
+      if (renderer.offsmat) {
+        _mat = renderer.offsmat * back_imageview.mat;
+      }
+
+      skSetMatrix(SK_WORLD, _mat);
+      local _scale = back_imageview.mat.getScale();
+      local _sp = back_imageview.sp;
+
+      skDrawSprite(_sp);
+      local oldvp = renderer.oldvp;
+
+      local _cp = ClearParam();
+      _cp.clearmask = 2;
+      _cp.depth = 1.0;
+      skClearScreen(_cp);
+
+      skSetMatrix(SK_WORLD, _wm);
+
+      skSetViewport(_vp);
+      skPushMatrix(SK_WORLD, SK_VIEW, SK_PROJECTION);
+      skPopRenderStates();
+    }
+
+    local cam = getCamera();
+    local env = scn.env;
+    env.znear = cam.znear;
+    env.zfar = cam.zfar;
+    skSetCamera(cam);
+    if (scn.env["computeParams"]) scn.env.computeParams();
+    skBindEnvironment(scn.env);
+
+    skPushRenderStates();
+
+    local objs = scn.cull(cam, visiblemask, renderer.cullfilterfunc);
+
+    beginPass();
+    foreach (n in objs) {
+      if (n.mesh) drawMesh(n);
+      else if (n.ptc) drawParticle(n);
+    }
+    endPass();
+    skClearLightParameters();
+    skPopRenderStates();
+  }
+}
+
+class SK3DRenderer.FXMixImageRGBAPass extends SK3DRenderer.FXMixImagePass
+{
+  constructor() {
+  }
+
+  function setPassSetting(ps) {
+    super.setPassSetting(ps);
+    m.tec = skFXFindTechnique("arsprite.fxmix_RGBA");
+
+    m.blend = SK_PMAMIX;
+  }
+}
+
+class SK3DRenderer.FXMixImageRGBAPassFromSKBuilder extends SK3DRenderer.FXMixImagePass
+{
+  constructor() {
+  }
+
+  function setPassSetting(ps) {
+    super.setPassSetting(ps);
+    m.tec = skFXFindTechnique("arsprite.fxmix_RGBA");
+    m.alphatest = 1;
+    m.alpharef = 0.5;
+    m.blend = SK_PMAMIX;
+  }
+}
+
+class SK3DRenderer.FXMixImageBGRAPass extends SK3DRenderer.FXMixImagePass
+{
+  constructor() {
+  }
+
+  function setPassSetting(ps) {
+    super.setPassSetting(ps);
+    m.tec = skFXFindTechnique("arsprite.fxmix_BGRA");
+
+    m.blend = SK_PMAMIX;
+  }
+}

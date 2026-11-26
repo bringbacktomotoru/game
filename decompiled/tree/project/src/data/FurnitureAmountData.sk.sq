@@ -1,0 +1,100 @@
+class FurnitureAmountData {
+  id = -1;
+  layout_uids = null;
+  property_uids = null;
+  tap_gm = 0;
+  maxinum_uid = null;
+
+  constructor(fid) {
+    this.id = fid;
+    this.layout_uids = [];
+    this.property_uids = [];
+  }
+
+  function getID() {
+    return this.id;
+  }
+
+  function getSetting() {
+    return ::gamesetting.furniture_settings[this.id];
+  }
+
+  function getSeries() {
+    return getSetting().getSeries();
+  }
+
+  function getLayoutUids() {
+    return this.layout_uids;
+  }
+
+  function getLayoutAmount() {
+    return this.layout_uids.len();
+  }
+
+  function getPropertyUids() {
+    return this.property_uids;
+  }
+
+  function getPropertyAmount() {
+    return this.property_uids.len();
+  }
+
+  function getFurnitureAmount() {
+    return this.layout_uids.len() + this.property_uids.len();
+  }
+
+  function addFurniture(fuid, calc = true) {
+    if (maxinum_uid < fuid) {
+      maxinum_uid = fuid;
+    }
+    if (this.property_uids.indexOf(fuid) >= 0 || this.layout_uids.indexOf(fuid) >= 0) return;
+    this.property_uids + fuid;
+    if (calc) updateTapGM();
+  }
+
+  function removeFurniture(fuid, calc = true) {
+    local _idx = this.property_uids.indexOf(fuid);
+    if (_idx >= 0) {
+      delete this.property_uids[_idx];
+    }
+    else {
+      _idx = this.layout_uids.indexOf(fuid);
+      if (_idx >= 0) {
+        delete this.layout_uids[_idx];
+      }
+    }
+    if (calc) updateTapGM();
+  }
+
+  function editLayoutFurniture(fuid, layout) {
+    if (layout) {
+
+      local _idx = this.property_uids.indexOf(fuid);
+      if (_idx < 0) return;
+      this.layout_uids + delete this.property_uids[_idx];
+    }
+    else {
+
+      local _idx = this.layout_uids.indexOf(fuid);
+      if (_idx < 0) return;
+      this.property_uids + delete this.layout_uids[_idx];
+    }
+  }
+
+  function getBaseTapGM() {
+    return getSetting().getBaseTapGM();
+  }
+
+  function getTapGM() {
+    return this.tap_gm;
+  }
+
+  function updateTapGM() {
+    this.tap_gm = getSetting().calcTapGM(getFurnitureAmount());
+  }
+
+  function getMaxinumUid() {
+    return this.maxinum_uid;
+  }
+
+}

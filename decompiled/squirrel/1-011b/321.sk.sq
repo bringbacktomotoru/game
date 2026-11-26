@@ -1,0 +1,11 @@
+foreach (f_name in [
+"CircleMaskView.sk"
+"Furniture3DView.sk"
+
+"Chara3DView.sk"
+"WebPanel.sk"
+"House3DView.sk"
+
+]) {
+  runsk("/src/ui/component/" + f_name);
+}

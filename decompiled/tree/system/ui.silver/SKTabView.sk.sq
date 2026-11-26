@@ -1,0 +1,204 @@
+class SKTabView extends SKScrollPane
+{
+  itemclass = null;
+  cellheight = 24;
+  maxheight = 72;
+
+  tabs = null;
+  selectedidx = -1;
+  tabgroup = null;
+
+  flags = 3;
+
+  constructor(lc = null) {
+    super(2, 0);
+    bordersize[3] = 2;
+    itemclass = lc || TabItem;
+    tabgroup = CheckboxGroup();
+    tabs = [];
+    cliparea.sp = ::getSprite("/system/ui.silver/ui.clp#tabback");
+    setContent(SKView());
+
+    addEventListener(ACTION_EVENT, actionevent);
+
+  }
+
+  function addTab(item) {
+    local v = itemclass(item, flags);
+    v.group = tabgroup;
+    tabs + v;
+    content.addChild(v);
+    fit(bnd.w);
+    updateLayout();
+    if (parent) parent.revalidate();
+    if (length(tabs) == 1) {
+      v.setSelected(true);
+    }
+  }
+
+  function closeTab(item) {
+    foreach (i, v in tabs) {
+      if (v.item == item) {
+        delete tabs[i];
+        content.removeChild(v);
+        if (length(tabs) > 0) {
+          tabs[Math.max(i - 1, 0)].setSelected(true);
+        }
+        fit(bnd.w);
+        updateLayout();
+        if (parent) parent.revalidate();
+        return;
+      }
+    }
+  }
+
+  function selectTab(item) {
+    foreach (v in tabs) {
+      if (v.item == item) {
+        v.setSelected(true);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function getSelectedIndex() {
+    foreach (i, v in tabs) {
+      if (v.isSelected()) return i;
+    }
+    return null;
+  }
+
+  function setSelectedIndex(i) {
+    tabs[i].setSelected(i);
+  }
+
+  function getSelected() {
+    foreach (v in tabs) {
+      if (v.isSelected()) return v.item;
+    }
+    return null;
+  }
+
+  function updateLayout() {
+    fit(bnd.w);
+    bnd.h = ((content.bnd.h > maxheight) ? maxheight : content.bnd.h) + bordersize[3];
+    super.updateLayout();
+  }
+
+  function updateValues() {
+    super.updateValues();
+  }
+
+  function fit(w) {
+
+    local x = 0.0, y = 0.0;
+    foreach (i, v in tabs) {
+      if (x + v.bnd.w > w) {
+        x = 0.0;
+        y += cellheight;
+      }
+      v.pos(x, y, 0.0);
+      v.matdirty = true;
+      x += v.bnd.w;
+    }
+    content.bnd.set(0, 0, w - 24, y + cellheight);
+    content.repaint();
+  }
+
+  function actionevent(e) {
+    local src = e.src;
+    if (src["group"] == tabgroup) {
+      if (e.actioncmd == "closetab") {
+        postItemEvent(ITEM_REMOVED, src.item);
+        closeTab(src.item);
+        local selitem = getSelected();
+        if (selitem) postItemEvent(ITEM_SELECTED, selitem);
+      } else {
+        postItemEvent(ITEM_SELECTED, src.item);
+      }
+    }
+    e.consume();
+  }
+
+  function postItemEvent(id, i) {
+    local e = Event();
+    e.id = id;
+    e.src = this;
+    e.actioncmd = i;
+    ::rootview.postEvent(e);
+  }
+}
+
+class SKTabView.TabItem extends SKToggleButtonBase
+{
+  static deffontattr = FontAttribute(Fonts.ui, 12, 255, 0);
+  item = null;
+  splist = null;
+  sp = null;
+  textbox = null;
+  closebtn = null;
+
+  constructor(v, flags) {
+    splist = [
+    ::getSprite("/system/ui.silver/ui.clp#borderbg1"),
+    ::getSprite("/system/ui.silver/ui.clp#togbtn12"),
+    ::getSprite("/system/ui.silver/ui.clp#togbtn13"),
+    ::getSprite("/system/ui.silver/ui.clp#togbtn14"),
+    ];
+    sp = splist[0]; sp.color = 1717987071;
+    item = v;
+    textbox = TextBox(deffontattr);
+    textbox.x = 8;
+    textbox.align = 3;
+    textbox.setSize(100, 24);
+    if (v instanceof Resource) {
+      textbox.setText(v.name);
+    } else {
+      textbox.setText(string(v));
+    }
+    bnd.set(0, 0, textbox.strwidth(0, textbox.length) + 36, 24);
+    foreach (s in splist) {
+      s.bnd.set(0, 0, bnd.w + 1, bnd.h);
+    }
+    if (flags & 1) {
+      closebtn = SKIconButton(::getSprite("/system/ui.silver/ui.clp#close"));
+      closebtn.setRect(bnd.w - 23, 3, 18, 18);
+      closebtn.consumeonpress = true;
+      addChild(closebtn);
+      closebtn.visible = false;
+
+      closebtn.addEventListener(ACTION_EVENT, closeevent);
+    }
+  }
+
+  function render() {
+    skDrawSprite(sp);
+    skDrawTextBox(textbox);
+  }
+
+  function updateComponentState() {
+    if (viewenabled) {
+      if (selected) {
+        sp = splist[2];
+        if (closebtn) closebtn.visible = true;
+      } else
+      if (mousein) {
+        sp = splist[1];
+        if (closebtn) closebtn.visible = true;
+      } else {
+        sp = splist[0];
+        if (closebtn) closebtn.visible = false;
+      }
+    } else {
+      sp = splist[3];
+      if (closebtn) closebtn.visible = false;
+    }
+    repaint();
+  }
+
+  function closeevent(e) {
+    e.consume();
+    postActionEvent("closetab");
+  }
+}

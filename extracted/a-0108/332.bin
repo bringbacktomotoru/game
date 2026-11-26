@@ -1,0 +1,134 @@
+{
+  "ID": "75634826-dc3e-458f-8703-c930e7369d8b",
+  "Version": "2.3.3.0",
+  "Name": "TalkWindow",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 377,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/game/talk_bg.png",
+              "Plist": ""
+            },
+            "Scale9Width": 506,
+            "Scale9Height": 186,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 128.1319,
+              "Y": 47.6149
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5025,
+              "Y": 0.5012
+            },
+            "PreSize": {
+              "X": 0.9922,
+              "Y": 0.9789
+            },
+            "LeftMargin": 1.6319,
+            "RightMargin": 0.3681,
+            "TopMargin": 0.8851,
+            "BottomMargin": 1.1149,
+            "Tag": 378,
+            "ActionTag": 1015977371,
+            "Size": {
+              "X": 253.0,
+              "Y": 93.0
+            },
+            "Name": "img_bg",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 20,
+            "LabelText": "あいうえおかきくけこ\nさしすせそたちつてと",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 127,
+              "G": 127,
+              "B": 127
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 128.546,
+              "Y": 53.4468
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5041,
+              "Y": 0.5626
+            },
+            "PreSize": {
+              "X": 0.6196,
+              "Y": 0.5053
+            },
+            "LeftMargin": 49.546,
+            "RightMargin": 47.454,
+            "TopMargin": 17.5532,
+            "BottomMargin": 29.4468,
+            "Tag": 379,
+            "ActionTag": -2032636140,
+            "Size": {
+              "X": 158.0,
+              "Y": 48.0
+            },
+            "Name": "lbl_text",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 255.0,
+          "Y": 95.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/game/talk_bg.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

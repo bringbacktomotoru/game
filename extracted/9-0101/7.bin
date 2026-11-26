@@ -1,0 +1,475 @@
+
+;----------- 初期登場 -------------
+[playbgm bgm="BGM05"]
+[changeroom id=2]
+
+;使用する家具
+
+;キューティプリンセスラグ
+[popfurniture fname=bed2 id=6004 x=-2 y=0 z=4.5 angle=180]
+;ピンクプリンセスチェア
+[popfurniture fname=chair1 id=10201 x=3 y=0 z=-3 angle=-120]
+;ピンクプリンセスチェア
+[popfurniture fname=chair2 id=10201 x=7 y=0 z=-3 angle=120]
+;ももいろハイキングテーブル（仮）
+[popfurniture fname=table1 id=12602 x=5 y=0 z=-1.5 angle=0]
+;キューティープリンセストルソー
+[popfurniture fname=book1 id=6005 x=-8 y=0 z=4.5 angle=145]
+;チェリードールハウススタンドランプ
+[popfurniture fname=rug1 id=14205 x=-6 y=0 z=5.5 angle=120]
+
+;↓↓↓↓↓↓;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[startscene]
+
+[focusdoor]
+
+[movecamera type=1 x=9.5 y=2.1 z=4 time=0]
+[rotatecamera pitch=0 head=200]
+
+; マイメロ出現　テーブルのある場所あたりに
+[popchara costume=1012002 z=-5.5 x=6 angle=200 relative=true]
+[startanime name=mymelo time=700 script=cookie_tray script_args={[3,"tere","tere"]}]
+[waitaction name=mymelo script=bookshelf_mitsuketa]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"tere","tere"]}]
+[balloon name=mymelo time=3000]
+[voice name=mymelo voice_key="e13_2"]
+Melody did it~#e1#/n
+Look,/n
+#playername#o1#
+[startanime name=kitty time=2000 script=yokoyure_set2 script_args={[3,"smile"]}]
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"smile4_cheek","smile4_cheek"]}]
+[balloon name=mymelo time=3000]
+Melody finally/n
+baked the cookies#e2#
+;[startanime name=kitty time=2000 script=stand_end2 script_args={["def"]}]
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=yokoyure_set2]
+
+; キティ出現
+[popchara costume=1005001 z=-5.5 x=8.5 angle=160 relative=true]
+[startanime name=kitty time=700 script=bookshelf_mitsuketa]
+[waitaction name=kitty script=bookshelf_mitsuketa]
+
+;二人をうつす
+[movecamera type=1 x=-2.2 y=0.21 z=1.5 time=0]
+[rotatecamera pitch=0 head=180]
+[wait time=800]
+
+; キティアクション
+[startanime name=kitty time=2000 script=kubikashige script_args={[3,"nimaime"]}]
+[balloon name=kitty time=3000]
+Melody probably/n
+messed up before/n
+because you were nervous.
+
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+; 扉の前にシナモン出現
+[popchara costume=101102 x=0 z=-1 angle=0 relative=true]
+[startanime name=cinnamon time=700 script=bookshelf_mitsuketa]
+[waitaction name=cinnamon script=bookshelf_mitsuketa]
+
+; キティアクション
+[startanime name=kitty time=2000 script=munehari script_args={["smile",3]}]
+[balloon name=kitty time=3000]
+[voice name=kitty voice_key="e8"]
+If you stay relaxed/n
+when you bake,/n
+then you won't make mistakes#h1#
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"tehepero","tehepero"]}]
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=munehari]
+
+; キティアクション
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile2"]}]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"tere","tere"]}]
+[wait time=1500]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=tefuri_set2 script_args={[3,"ohohoho2","ohohoho2"]}]
+[balloonoffset y=-0.5]
+[balloon name=cinnamon time=3000]
+[voice name=cinnamon voice_key="e8"]
+Hey there#e1#/n
+
+;カメラをドアとシナモンにフォーカス
+[focusdoor]
+[movecamera type=1 x=-0.5 y=1.8 z=-11 time=0]
+[rotatecamera pitch=0 head=0]
+
+[wait time=500]
+
+I came to play#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[movechara name=cinnamon x=0 z=-1 script=walk_face script_args={["smile"]} neutral=stand time=1000]
+[wait time=1000]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=mitsuketa_set script_args={["biku","def"]}]
+[wait time=1500]
+[waitaction name=cinnamon script=tefuri]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[balloon name=cinnamon time=3000]
+So you're/n
+#playername,/n
+right#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tabetai_set]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=cos_bishi]
+[balloon name=cinnamon time=3000]
+[voice name=cinnamon voice_key="e2"]
+Nice to meet you./n
+I'm Cinnamon#o1#/n
+Let's be friends#e1#
+[startanime name=kitty time=2000 script=yokoyure_set2 script_args={[3,"def"]}]
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"def","blink"]}]
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri]
+
+[wait time=600]
+
+[turnchara name=cinnamon script=walk_face angle=-30 script_args={["smile"]} time=180]
+[wait time=180]
+
+[movechara name=cinnamon x=20 z=-18 script=walk_face script_args={["smile"]} neutral=stand time=4000]
+
+[wait time=800]
+
+[rotatecamera pitch=0 head=20 time=2500]
+
+[turnchara name=kitty script=walk_face script_args={["smile"]} angle=140 time=300]
+[waitaction name=kitty script=walk_face script_args={["smile"]}]
+
+[turnchara name=mymelo script=turn_r angle=170 time=300]
+[waitaction name=mymelo script=turn_r]
+
+[startanime name=kitty time=2000 script=yokoyure_set2 script_args={[3,"smile"]}]
+[waitaction name=kitty script=yokoyure_set2]
+
+[startanime name=mymelo script=cookie_tray script_args={[3,"smile","smile"]}]
+[waitaction name=mymelo script=cookie_tray]
+
+[wait time=500]
+
+;カメラ初期位置
+[focusdoor]
+[movecamera type=1 x=6 y=2.3 z=5.5 time=0]
+[rotatecamera pitch=0 head=180]
+
+[wait time=1500]
+
+[turnchara name=cinnamon script=walk_face angle=200 script_args={["smile"]} time=300]
+[wait time=300]
+
+[startanime name=kitty time=2000 script=teage]
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"kya","kya"]}]
+[startanime name=cinnamon time=2000 script=teage]
+
+[wait time=1500]
+
+[startanime name=kitty time=2000 script=yokoyure_set2 script_args={[3,"smile"]}]
+
+[turnchara name=cinnamon script=walk_face angle=220 script_args={["smile"]} time=300]
+[wait time=300]
+
+[startanime name=cinnamon script=stand_short]
+[waitaction name=cinnamon script=stand_short]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"kirasmile","manzoku"]}]
+[balloonoffset]
+[balloon name=mymelo time=3000]
+[voice name=mymelo voice_key="e76_1"]
+Cinnamon#e1#/n
+Thanks for coming#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+;シナモンにフォーカス
+[charavisible name=mymelo visible=false]
+[movecamera type=1 x=-2.5 y=-0.5 z=-3.7 time=0]
+[wait time=800]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=mitsuketa_set script_args={["kirasmile","biku"]}]
+[balloonoffset x=1.0 y=-0.8]
+[balloon name=cinnamon time=3000 type=1]
+Oooh#e1#Cookies#e1#/n
+They look good#e1#
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"def","blink"]}]
+[startanime name=kitty time=2000 script=yokoyure_set2 script_args={[3,"def"]}]
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri]
+
+;三人をうつす
+[movecamera type=1 x=2.5 y=0.5 z=3.7 time=0]
+[charavisible name=mymelo visible=true]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=yokoyure_set2 script_args={[1,"warau"]}]
+[balloonoffset]
+[balloon name=mymelo time=3000]
+There's lots of cookies,/n
+so have as many as you like#e1#
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"smile","smile"]}]
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=pyonpyon_set script_args={[3,"kya","kya"]}]
+[balloon name=cinnamon time=3000]
+[voice name=cinnamon voice_key="e13_1"]
+Yaaay#e1#/n
+Thank you#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=pyonpyon_set]
+
+
+;↓↓↓↓↓↓;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;場面切り替え開始
+[shutterstart]
+
+；シナモン表情指定
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"def","blink"]}]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["mogu3"]}]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile"]}]
+[wait time=1500]
+
+;場面切り替え終了
+[shutterend]
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=tere_2 script_args={["mogu3","mogu3",5]}]
+[balloon name=cinnamon time=3000]
+[voice name=cinnamon voice_key="e11"]
+Mmmm#e1#/n
+Delicious#e1#
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"smile","smile"]}]
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tere_2]
+
+;キティにフォーカス
+[charavisible name=mymelo visible=false]
+[movecamera type=1 x=2 y=-0.5 z=-3.7 time=0]
+[wait time=800]
+
+; キティアクション
+[startanime name=kitty time=2000 script=mitsuketa_set script_args={["biku","def"]}]
+[balloonoffset x=-1.8 y=-0.8]
+[balloon name=kitty time=4000 type=2]
+[voice name=kitty voice_key="e76_1"]
+Oh yeah, Cinnamon#e1#/n
+Will you/n
+help us#q1#
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"yaa","yaa"]}]
+[startanime name=cinnamon time=2000 script=yokoyure_set2 script_args={[1,"def"]}]
+[wait time=4000]
+
+;三人をうつす
+[movecamera type=1 x=-2 y=0.5 z=3.7 time=0]
+[charavisible name=mymelo visible=true]
+;シナモンアクション
+[startanime name=cinnamon time=2000 script=uun2_set script_args={[3,"kyomi"]}]
+[wait time=1500]
+[endballoon name=kitty]
+[waitaction name=kitty script=mitsuketa_set]
+[waitaction name=cinnamon script=uun2_set]
+
+; キティアクション
+[startanime name=kitty time=2000 script=kurukuru_set script_args={[3,"smile2","smile2"]}]
+[balloonoffset]
+[balloon name=kitty time=4000]
+We want to make/n
+this room look like/n
+a room for a princess#e1#
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"kiraniko","kiraniko"]}]
+[wait time=4000]
+[endballoon name=kitty]
+
+;シナモンにフォーカス
+[charavisible name=mymelo visible=false]
+[movecamera type=1 x=-2.5 y=-0.5 z=-3.7 time=0]
+[wait time=800]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[balloonoffset x=1.0 y=-0.8]
+[balloon name=cinnamon time=3000 type=1]
+[voice name=cinnamon voice_key="e14"]
+Wow#e1# That sounds/n
+like a lot of fun#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tabetai_set]
+[wait time=800]
+
+;三人をうつす
+[movecamera type=1 x=2.5 y=0.5 z=3.7 time=0]
+[charavisible name=mymelo visible=true]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=munehari script_args={["warau",3]}]
+[balloonoffset]
+[balloon name=cinnamon time=3000]
+You gave me cookies, so/n
+I'll help you as a thank you#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=munehari]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cookie_tray script_args={[3,"tere","tere"]}]
+[balloon name=mymelo time=3000]
+Oh, Cinnamon#e1#/n
+Thank you so much#e1#
+[startanime name=kitty time=2000 script=bou_unaduku_face script_args={[2,"smile"]}]
+[wait time=3000]
+[endballoon name=mymelo]
+
+[turnchara name=cinnamon script=walk_face angle=180 script_args={["smile"]} time=300]
+[wait time=300]
+[startanime name=cinnamon time=0 script=stand_end2 script_args={["smile"]}]
+[startanime name=mymelo time=0 script=stand_end2 script_args={["def"]}]
+
+;シナモンにフォーカス
+[charavisible name=mymelo visible=false]
+[charavisible name=kitty visible=false]
+[movecamera type=1 x=-2.3 y=-0.5 z=-3.5 time=0]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=kubikashige script_args={[3,"yaa"]}]
+[balloonoffset x=1.0 y=-0.8]
+[balloon name=cinnamon time=3000 type=1]
+[voice name=cinnamon voice_key="e76_1"]
+Hey, #playername,/n
+what can I do/n
+to help out#q1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=kubikashige]
+
+
+[diarybranch]
+[wait time=2000];
+[s]
+
+
+*branch1
+; シナモン
+[startanime name=cinnamon time=2000 script=pyonpyon_set script_args={[3,"ohohoho2","ohohoho2"]}]
+[balloonoffset x=1.0 y=-0.8]
+[balloon name=cinnamon time=3000 type=1]
+[voice name=cinnamon voice_key="e8"]
+Ok#e1# Leave it to me#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=pyonpyon_set]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=munehari script_args={["kiri2",3]}]
+[balloon name=cinnamon time=3000 type=1]
+I might be/n
+a bit small, but/n
+I'm still a boy#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=kubikashige]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=cos_bishi]
+[balloon name=cinnamon time=3000 type=1]
+[voice name=cinnamon voice_key="e80_1"]
+So I can help move/n
+some heavy furniture#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=kubikashige]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=banzai]
+[balloon name=cinnamon time=3000 type=1]
+#playername,/n
+let's all/n
+work hard together#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=kubikashige]
+
+[jump target={"*end"}]
+
+
+*branch2
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=pyonpyon_set script_args={[3,"ohohoho2","ohohoho2"]}]
+[balloonoffset x=1.0 y=-0.8]
+[balloon name=cinnamon time=3000 type=1]
+[voice name=cinnamon voice_key="e8"]
+Ok#e1# Leave it to me#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=kubikashige]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=hyahho_set script_args={[2]}]
+[balloon name=cinnamon time=3000 type=1]
+I can help decorate/n
+in high places#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=kubikashige]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=yokopatapata_set script_args={[3,"kiri2"]}]
+[balloon name=cinnamon time=3000 type=1]
+[voice name=cinnamon voice_key="e80_1"]
+Because I can/n
+flap my ears/n
+and fly#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=kubikashige]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=cos_bishi]
+[balloon name=cinnamon time=3000 type=1]
+Let me know/n
+if there are any places/n
+#playername can't reach#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=kubikashige]
+
+[jump target={"*end"}]
+
+*end
+[fadeoutbgm spd=12]
+[wait time=2300]

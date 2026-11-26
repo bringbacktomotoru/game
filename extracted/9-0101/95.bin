@@ -1,0 +1,35 @@
+
+; ドア指定
+[focusdoor]
+
+; カメラ初期位置
+[movecamera type=1 z=-20 y=2.3 time=0]
+[rotatecamera pitch=0]
+
+; キャラ出現
+[popchara z=-9 angle=0 relative=true]
+[wait time=200]
+
+; キャラ手振り
+[startanime time=2000 script=tefuri]
+[waitaction script=tefuri]
+
+; キャラ伸び
+[startanime time=4500 script=event_relax_bed2]
+[balloon time=5500]
+[talk talk_key = "quest_relax_start_chair_1_1" index=3]
+[wait time=5500]
+[endballoon]
+[waitaction script=event_relax_bed2]
+[wait time=500]
+; 照れ
+[startanime time=5500 script=event_relax_bed]
+[balloon time=5500]
+[talk talk_key = "quest_relax_start_chair_1_2" index=3]
+[wait time=5500]
+[endballoon]
+[waitaction script=event_relax_bed]
+
+[startanime time=800 script=event_unaduku]
+[waitaction script=event_unaduku]
+[wait time=800]

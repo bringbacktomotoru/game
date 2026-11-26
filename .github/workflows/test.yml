@@ -1,0 +1,126 @@
+name: Tomotoru Offline CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_emulator:
+        description: 'Also run Android emulator smoke test'
+        type: boolean
+        required: false
+        default: true
+      wait_seconds:
+        description: 'Seconds to wait post-launch in emulator'
+        required: false
+        default: '90'
+      api_level:
+        description: 'Emulator API level'
+        required: false
+        default: '30'
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Unit, Protocol & APK Patcher Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install -e ".[sxr,dev]"
+
+      - name: Run pytest suite
+        run: pytest -v
+
+      - name: Smoke-test APK patcher
+        run: |
+          python tools/patcher/patch_apk.py \
+            apk/tomotoru_v1.0.4.apk \
+            http://10.0.2.2:5000 \
+            -o /tmp/tomotoru_offline.apk
+          ls -lh /tmp/tomotoru_offline.apk
+
+  emulator-test:
+    name: Android Emulator Smoke Test (API ${{ github.event.inputs.api_level || '30' }})
+    needs: test
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_emulator == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      WAIT_SECONDS: ${{ github.event.inputs.wait_seconds || '90' }}
+      API_LEVEL: ${{ github.event.inputs.api_level || '30' }}
+      TARGET: google_apis
+      ARCH: x86_64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install -e ".[sxr]"
+
+      - name: Patch APK for emulator host loopback
+        run: |
+          python tools/patcher/patch_apk.py \
+            apk/tomotoru_v1.0.4.apk \
+            http://10.0.2.2:5000 \
+            -o /tmp/tomotoru_offline.apk
+
+      - name: Start mock server
+        run: |
+          mkdir -p /tmp/emulator_diagnostics
+          nohup python -m tools.server.mock --host 0.0.0.0 --port 5000 \
+            > /tmp/emulator_diagnostics/mock_server.log 2>&1 &
+          sleep 2
+          curl -sf http://127.0.0.1:5000/health
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ env.API_LEVEL }}
+          target: ${{ env.TARGET }}
+          arch: ${{ env.ARCH }}
+          force-avd-creation: false
+          emulator-options: >-
+            -no-snapshot-save -no-window -gpu swiftshader_indirect
+            -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: >
+            PKG=com.cyberstep.sanriocharacters
+            ACT=com.cyberstep.sanriocharacters.SanrioActivity
+            WAIT_SEC=${{ env.WAIT_SECONDS }}
+            bash .github/scripts/emulator_test.sh
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostics-${{ github.run_id }}
+          path: /tmp/emulator_diagnostics/
+          retention-days: 7

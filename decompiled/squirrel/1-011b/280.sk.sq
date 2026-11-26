@@ -1,0 +1,23 @@
+with PMShapeEditor {
+  function updateShapes(p, sel = null) {
+    shapenames = ["default"];
+
+    local _sort_keys = ::getTableKeys(p.shapesets);
+    _sort_keys.sort();
+
+    foreach (v in _sort_keys) {
+      if (v != "default") {
+        shapenames + v;
+      }
+    }
+    shapeselect.setMenu(shapenames);
+    local i = shapenames.indexOf(sel);
+    if (i >= 0) {
+      shapeselect.setIndex(i);
+      shapetf.setText(sel);
+    } else {
+      shapeselect.setIndex(0);
+      shapetf.setText("");
+    }
+  }
+}

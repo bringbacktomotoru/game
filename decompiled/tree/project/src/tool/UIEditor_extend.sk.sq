@@ -1,0 +1,5 @@
+with SKEditorRootView {
+
+  function generatePtd(path, x = 0, y = 0) {
+  }
+}

@@ -1,0 +1,18 @@
+return {
+  modeldata = "floor.mdl"
+  motiondata = "door.mot"
+  bnd = [-2.5e-05, 0.25, 1.1e-05, 12.500025, 0.250002, 10.500012]
+
+  material = [
+  {
+    name = "room_mt"
+    tec = "shading.basic"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 2139062271
+    Ke = 0
+    shiness = 20.0
+    texture0 = "tex/country_mysteryroom.png"
+  }
+  ]
+}

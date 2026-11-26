@@ -1,0 +1,116 @@
+class PackageCheckScene extends ::GameScene
+{
+  static RESULT_PACKAGECHECK_DOWNLOAD = 1;
+  static RESULT_PACKAGECHECK_LATEST = 0;
+  static RESULT_PACKAGECHECK_MAINTENANCE = -1;
+  static RESULT_PACKAGECHECK_NEED_STOREUPDATE = -2;
+  static RESULT_PACKAGECHECK_ERROR_NETWORK = -3;
+
+  baseview = null;
+
+  msg = null;
+  icon_con = null;
+
+  state = 0;
+
+  updator = null;
+
+  constructor() {
+    setRect(0, 0, ::screenWidth, ::screenHeight);
+  }
+
+  function updateLayout() {
+  }
+
+  function setupScene() {
+  }
+
+  function loadScene() {
+    this.baseview = ::loadSKView("/ui/title/PackageCheck.ui");
+    this.baseview.bnd.x = (::screenWidth - ::uiWidth) / 2.0;
+    this.baseview.bnd.y = (::screenHeight - ::uiHeight) / 2.0;
+    addChild(this.baseview);
+
+    this.msg = this.baseview.findChild("lbl_msg");
+    this.msg.setText(::dict.get("update_check"));
+    this.icon_con = this.baseview.findChild("img_connect");
+
+    repaint();
+    suspend();
+
+    repaint();
+    this.baseview.repaint();
+    matdirty = 1;
+    this.baseview.matdirty = 1;
+
+    this.icon_con.setUpdateFunc(function(dt) {
+      rot.z = rot.z + dt * 0.01;
+      matdirty = 1;
+      repaint();
+    });
+  }
+
+  function startScene() {
+    newthread().start(checkPackage, this);
+    repaint();
+  }
+
+  function endScene() {
+  }
+
+  function releaseScene() {
+  }
+
+  function quitRequested(e) {
+    printf("PackageCheckScene.quitRequested().\n");
+  }
+
+  function checkPackage() {
+    updator = PackageUpdator();
+    sleep(100);
+    local b = RESULT_PACKAGECHECK_LATEST;
+
+    try {
+      b = updator.check();
+    } catch (ex) {
+      printexception(ex);
+      icon_con.visible = false;
+
+      ::gamesession.showSimpleConfirmDialog(::dict.get("network_error_message"), ::dict.get("network_error_caution"));
+      icon_con.visible = true;
+      return checkPackage();
+    }
+
+    switch (b) {
+    case RESULT_PACKAGECHECK_DOWNLOAD:
+      icon_con.visible = false;
+      msg.setText(::dict.get("update_download"));
+      msg.repaint();
+      ::playSound("ui/done.wav");
+      sleep(500);
+      ::gamesession.changeDownloadScene(updator);
+      break;
+    case RESULT_PACKAGECHECK_LATEST:
+    case RESULT_PACKAGECHECK_MAINTENANCE:
+      sleep(100);
+      icon_con.visible = false;
+      msg.setText(::dict.get("update_checked"));
+      msg.repaint();
+      ::playSound("sousa/1511.wav");
+      sleep(500);
+      ::gamesession.changeCopyRightScene();
+      break;
+    case RESULT_PACKAGECHECK_NEED_STOREUPDATE:
+    case RESULT_PACKAGECHECK_ERROR_NETWORK:
+      sleep(2000);
+      icon_con.visible = true;
+      return checkPackage();
+      break;
+    }
+
+    return 0;
+  }
+
+  function updateScene(dt) {
+  }
+}

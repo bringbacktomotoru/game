@@ -1,0 +1,551 @@
+series_settings[1] <- SeriesSetting({
+  name = "クリームウッド";
+})
+
+series_settings[2] <- SeriesSetting({
+  name = "ノーブルクラシック";
+})
+
+series_settings[3] <- SeriesSetting({
+  name = "ロマンティックアイアン";
+})
+
+series_settings[4] <- SeriesSetting({
+  name = "ゴシックワルツ";
+})
+
+series_settings[5] <- SeriesSetting({
+  name = "シェルバスタイム";
+})
+
+series_settings[6] <- SeriesSetting({
+  name = "コーラルラビット";
+})
+
+series_settings[7] <- SeriesSetting({
+  name = "インダストリアルヴィンテージ";
+})
+
+series_settings[8] <- SeriesSetting({
+  name = "ハニーカントリー";
+})
+
+series_settings[9] <- SeriesSetting({
+  name = "ミントラテ";
+})
+
+series_settings[10] <- SeriesSetting({
+  name = "ボーダーマリンビーチ";
+})
+
+series_settings[11] <- SeriesSetting({
+  name = "リラックススカンジナビア";
+})
+
+series_settings[12] <- SeriesSetting({
+  name = "レトロポップダイナー";
+})
+
+series_settings[13] <- SeriesSetting({
+  name = "スカイサーカス";
+})
+
+series_settings[14] <- SeriesSetting({
+  name = "コスモシックライブラリー";
+})
+
+series_settings[15] <- SeriesSetting({
+  name = "カメリオフラワー";
+})
+
+series_settings[16] <- SeriesSetting({
+  name = "レイニーピクニック";
+})
+
+series_settings[17] <- SeriesSetting({
+  name = "まんまるラグ";
+})
+
+series_settings[18] <- SeriesSetting({
+  name = "サニーウッド";
+})
+
+series_settings[19] <- SeriesSetting({
+  name = "ローズカントリー";
+})
+
+series_settings[20] <- SeriesSetting({
+  name = "ハッピーリボン";
+})
+
+series_settings[21] <- SeriesSetting({
+  name = "マイメロディ";
+})
+
+series_settings[22] <- SeriesSetting({
+  name = "ポムポムプリン";
+})
+
+series_settings[23] <- SeriesSetting({
+  name = "シナモロール";
+})
+
+series_settings[24] <- SeriesSetting({
+  name = "ララ";
+})
+
+series_settings[25] <- SeriesSetting({
+  name = "キキ";
+})
+
+series_settings[26] <- SeriesSetting({
+  name = "けろけろけろっぴ";
+})
+
+series_settings[27] <- SeriesSetting({
+  name = "ウィッシュミーメル";
+})
+
+series_settings[28] <- SeriesSetting({
+  name = "ポチャッコ";
+})
+
+series_settings[29] <- SeriesSetting({
+  name = "マイスウィートピアノ";
+})
+
+series_settings[30] <- SeriesSetting({
+  name = "リトルフォレストフェロォ";
+})
+
+series_settings[31] <- SeriesSetting({
+  name = "クロミ";
+})
+
+series_settings[32] <- SeriesSetting({
+  name = "バッドばつ丸";
+})
+
+series_settings[33] <- SeriesSetting({
+  name = "ぼんぼんりぼん";
+})
+
+series_settings[34] <- SeriesSetting({
+  name = "ハンギョドン";
+})
+
+series_settings[35] <- SeriesSetting({
+  name = "みんなのたあ坊";
+})
+
+series_settings[36] <- SeriesSetting({
+  name = "ハニーラテ";
+})
+
+series_settings[37] <- SeriesSetting({
+  name = "グレープラビット";
+})
+
+series_settings[38] <- SeriesSetting({
+  name = "アイリスフラワー";
+})
+
+series_settings[39] <- SeriesSetting({
+  name = "フェイス";
+})
+
+series_settings[40] <- SeriesSetting({
+  name = "ノワールフラワー";
+})
+
+series_settings[41] <- SeriesSetting({
+  name = "ライムフラワー";
+})
+
+series_settings[42] <- SeriesSetting({
+  name = "クリームフラワー";
+})
+
+series_settings[43] <- SeriesSetting({
+  name = "セピアフラワー";
+})
+
+series_settings[44] <- SeriesSetting({
+  name = "サクララテ";
+})
+
+series_settings[45] <- SeriesSetting({
+  name = "ベリーラテ";
+})
+
+series_settings[46] <- SeriesSetting({
+  name = "ショコララテ";
+})
+
+series_settings[47] <- SeriesSetting({
+  name = "ビターラテ";
+})
+
+series_settings[48] <- SeriesSetting({
+  name = "ダークラビット";
+})
+
+series_settings[49] <- SeriesSetting({
+  name = "グラスラビット";
+})
+
+series_settings[50] <- SeriesSetting({
+  name = "クリームラビット";
+})
+
+series_settings[51] <- SeriesSetting({
+  name = "セピアラビット";
+})
+
+series_settings[52] <- SeriesSetting({
+  name = "ピーチウッド";
+})
+
+series_settings[53] <- SeriesSetting({
+  name = "ライムウッド";
+})
+
+series_settings[54] <- SeriesSetting({
+  name = "セピアウッド";
+})
+
+series_settings[55] <- SeriesSetting({
+  name = "モノクロウッド";
+})
+
+series_settings[56] <- SeriesSetting({
+  name = "ミルキーカントリー";
+})
+
+series_settings[57] <- SeriesSetting({
+  name = "セピアカントリー";
+})
+
+series_settings[58] <- SeriesSetting({
+  name = "シックカントリー";
+})
+
+series_settings[59] <- SeriesSetting({
+  name = "グラスカントリー";
+})
+
+series_settings[60] <- SeriesSetting({
+  name = "ローズプリンセス";
+})
+
+series_settings[61] <- SeriesSetting({
+  name = "ゴシックプリンセス";
+})
+
+series_settings[62] <- SeriesSetting({
+  name = "アイリスプリンセス";
+})
+
+series_settings[63] <- SeriesSetting({
+  name = "ミントプリンセス";
+})
+
+series_settings[64] <- SeriesSetting({
+  name = "クリームプリンセス";
+})
+
+series_settings[65] <- SeriesSetting({
+  name = "セピアプリンセス";
+})
+
+series_settings[66] <- SeriesSetting({
+  name = "ピーチカフェ";
+})
+
+series_settings[67] <- SeriesSetting({
+  name = "サニーカフェ";
+})
+
+series_settings[68] <- SeriesSetting({
+  name = "モードカフェ";
+})
+
+series_settings[69] <- SeriesSetting({
+  name = "スミレカフェ";
+})
+
+series_settings[70] <- SeriesSetting({
+  name = "ミントカフェ";
+})
+
+series_settings[71] <- SeriesSetting({
+  name = "オールドカフェ";
+})
+
+series_settings[72] <- SeriesSetting({
+  name = "クリームプディング";
+})
+
+series_settings[73] <- SeriesSetting({
+  name = "ホイッププディング";
+})
+
+series_settings[74] <- SeriesSetting({
+  name = "チョコプディング";
+})
+
+series_settings[75] <- SeriesSetting({
+  name = "ダークプディング";
+})
+
+series_settings[76] <- SeriesSetting({
+  name = "ライムプディング";
+})
+
+series_settings[77] <- SeriesSetting({
+  name = "ショコラドール";
+})
+
+series_settings[78] <- SeriesSetting({
+  name = "イエローウッド";
+})
+
+series_settings[79] <- SeriesSetting({
+  name = "オレンジウッド";
+})
+
+series_settings[80] <- SeriesSetting({
+  name = "ピンクウッド";
+})
+
+series_settings[81] <- SeriesSetting({
+  name = "グリーンウッド";
+})
+
+series_settings[82] <- SeriesSetting({
+  name = "ブラウンウッド";
+})
+
+series_settings[83] <- SeriesSetting({
+  name = "ブラックウッド";
+})
+
+series_settings[84] <- SeriesSetting({
+  name = "オレンジカントリー";
+})
+
+series_settings[85] <- SeriesSetting({
+  name = "ピンクカントリー";
+})
+
+series_settings[86] <- SeriesSetting({
+  name = "イエローカントリー";
+})
+
+series_settings[87] <- SeriesSetting({
+  name = "ブラウンカントリー";
+})
+
+series_settings[88] <- SeriesSetting({
+  name = "ブラックカントリー";
+})
+
+series_settings[89] <- SeriesSetting({
+  name = "ブルーカントリー";
+})
+
+series_settings[90] <- SeriesSetting({
+  name = "ピンクフラワー";
+})
+
+series_settings[91] <- SeriesSetting({
+  name = "パープルフラワー";
+})
+
+series_settings[92] <- SeriesSetting({
+  name = "ブラックフラワー";
+})
+
+series_settings[93] <- SeriesSetting({
+  name = "グリーンフラワー";
+})
+
+series_settings[94] <- SeriesSetting({
+  name = "イエローフラワー";
+})
+
+series_settings[95] <- SeriesSetting({
+  name = "ブラウンフラワー";
+})
+
+series_settings[96] <- SeriesSetting({
+  name = "ピンクラテ";
+})
+
+series_settings[97] <- SeriesSetting({
+  name = "パープルラテ";
+})
+
+series_settings[98] <- SeriesSetting({
+  name = "ブラウンラテ";
+})
+
+series_settings[99] <- SeriesSetting({
+  name = "ブラックラテ";
+})
+
+series_settings[100] <- SeriesSetting({
+  name = "ブルーラテ";
+})
+
+series_settings[101] <- SeriesSetting({
+  name = "オレンジラテ";
+})
+
+series_settings[102] <- SeriesSetting({
+  name = "ピンクプリンセス";
+})
+
+series_settings[103] <- SeriesSetting({
+  name = "ブラックプリンセス";
+})
+
+series_settings[104] <- SeriesSetting({
+  name = "パープルプリンセス";
+})
+
+series_settings[105] <- SeriesSetting({
+  name = "ブループリンセス";
+})
+
+series_settings[106] <- SeriesSetting({
+  name = "イエロープリンセス";
+})
+
+series_settings[107] <- SeriesSetting({
+  name = "ブラウンプリンセス";
+})
+
+series_settings[108] <- SeriesSetting({
+  name = "ピンクカフェ";
+})
+
+series_settings[109] <- SeriesSetting({
+  name = "オレンジカフェ";
+})
+
+series_settings[110] <- SeriesSetting({
+  name = "ブラックカフェ";
+})
+
+series_settings[111] <- SeriesSetting({
+  name = "パープルカフェ";
+})
+
+series_settings[112] <- SeriesSetting({
+  name = "ブルーカフェ";
+})
+
+series_settings[113] <- SeriesSetting({
+  name = "ブラウンカフェ";
+})
+
+series_settings[114] <- SeriesSetting({
+  name = "ピンクラビット";
+})
+
+series_settings[115] <- SeriesSetting({
+  name = "パープルラビット";
+})
+
+series_settings[116] <- SeriesSetting({
+  name = "ブラックラビット";
+})
+
+series_settings[117] <- SeriesSetting({
+  name = "グリーンラビット";
+})
+
+series_settings[118] <- SeriesSetting({
+  name = "イエローラビット";
+})
+
+series_settings[119] <- SeriesSetting({
+  name = "セピアラビット";
+})
+
+series_settings[120] <- SeriesSetting({
+  name = "コーラルピクニック";
+})
+
+series_settings[121] <- SeriesSetting({
+  name = "オータムピクニック";
+})
+
+series_settings[122] <- SeriesSetting({
+  name = "スミレピクニック";
+})
+
+series_settings[123] <- SeriesSetting({
+  name = "レモンピクニック";
+})
+
+series_settings[124] <- SeriesSetting({
+  name = "キャメルピクニック";
+})
+
+series_settings[126] <- SeriesSetting({
+  name = "ピンクピクニック";
+})
+
+series_settings[130] <- SeriesSetting({
+  name = "ブラウンピクニック";
+})
+
+series_settings[136] <- SeriesSetting({
+  name = "グラスリボン";
+})
+
+series_settings[137] <- SeriesSetting({
+  name = "ベリーリボン";
+})
+
+series_settings[138] <- SeriesSetting({
+  name = "ノワールリボン";
+})
+
+series_settings[139] <- SeriesSetting({
+  name = "クリームリボン";
+})
+
+series_settings[140] <- SeriesSetting({
+  name = "チョコリボン";
+})
+
+series_settings[141] <- SeriesSetting({
+  name = "ミントドール";
+})
+
+series_settings[142] <- SeriesSetting({
+  name = "チェリードール";
+})
+
+series_settings[143] <- SeriesSetting({
+  name = "アイリスドール";
+})
+
+series_settings[144] <- SeriesSetting({
+  name = "ダスクドール";
+})
+
+series_settings[145] <- SeriesSetting({
+  name = "ミルクドール";
+})
+
+series_settings[146] <- SeriesSetting({
+  name = "ピンクリボン";
+})
+
+series_settings[1001] <- SeriesSetting({
+  name = "お部屋シリーズテスト(仮)";
+})

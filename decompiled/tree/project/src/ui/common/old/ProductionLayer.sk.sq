@@ -1,0 +1,519 @@
+class ProductionLayer {
+  production_manager = null;
+  balloons = null;
+  info_view = null;
+  select_view = null;
+
+  furniture_models = null;
+
+  view = null;
+  tap_view = null;
+
+  sort_table = SortTable();
+  last_room_index = null;
+
+  user_data = null;
+  furniture_layout_manager = null;
+
+  constructor(view) {
+    this.view = view;
+    this.balloons = {};
+    this.info_view = InfoView(this);
+
+    local game_scene = ::gamesession.getCurrentScene();
+    this.production_manager = game_scene.production_manager;
+
+    this.view.setUpdateFunc(update.bindenv(this));
+
+    this.user_data = ::gamesession.getUserData();
+    this.last_room_index = this.user_data.getCurrentRoomIndex();
+    this.furniture_layout_manager = game_scene.getStage().house_manager.getFurnitureLayoutManager()
+    this.furniture_models = this.furniture_layout_manager.getFurnitureModels();
+  }
+
+  function setTapView(view) {
+    this.tap_view = view;
+    foreach (bl in this.balloons) {
+      bl.changeTapLayer(this.tap_view);
+    }
+  }
+
+  function update(dt) {
+    local room_index = this.user_data.getCurrentRoomIndex();
+    if (this.last_room_index != room_index) {
+      releaseAllBalloons();
+      this.furniture_models = this.furniture_layout_manager.getFurnitureModels();
+      this.last_room_index = room_index;
+    }
+
+    foreach (balloon in this.balloons) {
+      balloon.setReady(true);
+    }
+
+    foreach (uid, product_data in this.production_manager.furniture_products) {
+      if (!product_data.isFinishedAtState()) continue;
+
+      local _model = this.furniture_models[uid] || null;
+      if (!_model) continue;
+
+      local bl = this.balloons[_model];
+      if (!bl) bl = buildBalloon(_model);
+      bl.setReady(false);
+    }
+
+    foreach (model, balloon in this.balloons) {
+      if (balloon.isReady() || !balloon.model) {
+        releaseBalloon(model);
+        continue;
+      }
+
+      balloon.update(dt);
+    }
+
+    foreach (key, balloon in this.balloons) {
+      if (balloon.tap_btn.is_release_animating) continue;
+      local idx = this.view.removeChild(balloon.view);
+      this.sort_table.append(balloon.view.pos.z, balloon);
+    }
+    local sorted_balloons = this.sort_table.toArray([]);
+    for (local i = length(sorted_balloons) - 1; i >= 0; i--) {
+      local balloon = sorted_balloons[i];
+      this.view.addChild(balloon.view);
+    }
+    this.sort_table.clear();
+
+    if (this.production_manager.selected_producer) {
+      local model = this.production_manager.selected_producer;
+      if (model.hasProductData()) {
+
+        this.info_view.show(model);
+        this.info_view.update(dt);
+      } else {
+        this.info_view.hide();
+
+      }
+
+    }
+    else {
+      this.info_view.hide();
+
+    }
+  }
+
+  function buildBalloon(producer) {
+    local balloon = this.balloons[producer];
+    if (balloon) return;
+
+    balloon = Balloon(this, this.tap_view);
+    balloon.build(producer);
+    this.view.addChild(balloon.view);
+    this.balloons[producer] <- balloon;
+
+    return balloon;
+  }
+
+  function getTopPanel() {
+    return this.view.parent.parent;
+  }
+
+  function balloonTapped(model) {
+
+    local _furniture_data = model.getFurnitureData();
+    local p_type = _furniture_data.getProductData().getType();
+    local ret = this.production_manager.completeProduct(_furniture_data.getUID());
+    local _pop_deliver_msg = false;
+    if (ret) {
+
+      switch (p_type) {
+      case ::ProductData.TYPE_DELIVER:
+        model.startEffect(::FurnitureModel.SCRIPT_COMPLETE_DELIVERY);
+        _pop_deliver_msg = true;
+        break;
+      case ::ProductData.TYPE_LEVELUP: model.startEffect(::FurnitureModel.SCRIPT_COMPLETE_LEVELUP); break;
+      }
+      releaseBalloon(model);
+
+      local game_scene = ::gamesession.getCurrentScene();
+      if (!(game_scene instanceof SanrioGameScene)) return;
+      local _stage = game_scene.getStage();
+      local _home_ui = game_scene.getUI();
+
+      if (p_type == ::ProductData.TYPE_DELIVER) _stage.processCharasDeliverScript();
+
+      local _screen_pos = _stage.renderer.camera.project(model.getPos());
+      _screen_pos.x *= ::displayWidth;
+      _screen_pos.y *= ::displayHeight;
+
+      local _v = _screen_pos - Vector3D(::displayWidth / 2.0, ::displayHeight / 2.0, 0.0);
+
+      local _v1 = clone model.getPos() - _stage.camera_work.camera.pos;
+      local _v2 = clone _stage.camera_work.dist;
+      local _cos_theta = _v1.dot(_v2) / (_v1.length() * _v2.length());
+      local _dist = _v1.length() * _cos_theta;
+      local _v3 = -_v2.normalize() * _dist;
+
+      local _fix = clone model.getPos();
+
+      _stage.camera_work.setTrackingPointer();
+      _stage.camera_work.setDistXYZ(_v3.x, _v3.y, _v3.z, false);
+
+      _stage.camera_work.input_lock = false;
+      _stage.camera_work.setTargetXYZ(_fix.x, _fix.y, _fix.z, false);
+
+      if (getclass(_home_ui.getCurrentPanel()) != ::HomeTopPanel && ::HomeTopPanel.need_camera_record) {
+
+        if (_stage.camera_work.hasCameraRecordsFromClassname(getclassname(::HomeTopPanel))) {
+          _stage.camera_work.setTempRecordCamera(getclassname(::HomeTopPanel));
+        }
+      }
+
+      _processLevelupFurniturePerformance(p_type, model);
+      game_scene.getUI().movePanel(::HomeTopPanel);
+
+      if (_pop_deliver_msg) {
+        ::gamesession.messagelayer.closeAllMessage();
+        local _message = ::Message();
+        _message.setMsec(3 * 1000);
+        _message.setText(::dict.get("furniture_deliver_end"));
+        _message.setFontSize(32);
+        _message.setPosition(::screenWidth / 2.0, ::screenHeight / 2.0);
+        _message.show();
+      }
+    }
+  }
+
+  function _processLevelupFurniturePerformance(p_type, model) {
+    if (p_type != ::ProductData.TYPE_LEVELUP) return;
+    local game_scene = ::gamesession.getCurrentScene();
+    if (!(game_scene instanceof SanrioGameScene)) return;
+    local _home_ui = game_scene.getUI();
+
+    _home_ui.setEventStopper(true);
+    ::playJingle(SoundConstants.SOUND_LEVELUP_FURNITURE, 4000);
+
+    while (model.isEffectRunning(::FurnitureModel.SCRIPT_COMPLETE_LEVELUP)) { suspend(); };
+    sleep(1000);
+    _home_ui.setEventStopper(false);
+    local dlg = ::FurnitureLevelupResultDialog(model.getFurnitureData().getUID());
+    dlg.show();
+
+  }
+
+  function releaseBalloon(key) {
+    local deleted_balloon = delete this.balloons[key];
+    if (!deleted_balloon) return;
+
+    this.view.removeChild(deleted_balloon.view);
+    deleted_balloon.release();
+  }
+  function releaseAllBalloons() {
+    foreach (key, balloon in this.balloons) {
+      this.view.removeChild(balloon.view);
+      balloon.release();
+    }
+    this.balloons = {};
+  }
+
+  function showGetProductRewardFurniture(uid, exp, old_exp) {
+    local model = this.furniture_models[uid] || null;
+    if (!model) return;
+
+    local _fd = model.getFurnitureData();
+    local _offset = _fd.getSetting().getTextOffset();
+    if (!_offset) _offset = [FurnitureSetting.TEXT_OFFSET_DEFAULT_X, FurnitureSetting.TEXT_OFFSET_DEFAULT_Y];
+
+    local v = ::GetProductRewardFurniture(this.view, exp, old_exp);
+    v.setPositionOffset(_offset[0], _offset[1]);
+    v.setModel(model);
+    v.showAnime();
+  }
+
+  function getBallon(pm) {
+    return this.balloons[pm];
+  }
+}
+
+class ProductionLayer.Balloon {
+  layer = null;
+  tap_layer = null;
+  camera = null;
+  model = null;
+
+  is_ready = false;
+  camera_work = null;
+
+  tap_btn = null;
+  interval_id = -1;
+
+  base_scale = 1;
+
+  view = null;
+  pnl_product_layer = null;
+  pnl_deliver_layer = null;
+  pnl_levelup_layer = null;
+  pnl_work_layer = null;
+
+  btn = null;
+  pnl_got = null;
+  img_icon_gm = null;
+  lbl_reward = null;
+
+  is_get_anime = false;
+  v_1 = Vector3D();
+
+  efx_obj = null;
+
+  constructor(layer, tap_layer) {
+    this.layer = layer;
+    this.tap_layer = tap_layer;
+  }
+
+  function build(model) {
+    this.model = model;
+
+    this.view = ::loadSKView("/ui/common/ProductIcon.ui");
+
+    this.view.centerize(0.5, 1.0);
+
+    this.pnl_product_layer = this.view.findChild("pnl_product_layer");
+    this.pnl_deliver_layer = this.view.findChild("pnl_deliver_layer");
+    this.pnl_levelup_layer = this.view.findChild("pnl_levelup_layer");
+    this.pnl_work_layer = this.view.findChild("pnl_work_layer");
+
+    local _furniture_data = model.getFurnitureData();
+    local _product_data = _furniture_data.getProductData();
+
+    local _btn = null;
+    switch (_product_data.getType()) {
+    case ::ProductData.TYPE_PRODUCT: _btn = this.view.findChild("pnl_product_layer"); break;
+    case ::ProductData.TYPE_DELIVER: _btn = this.view.findChild("pnl_deliver_layer"); break;
+    case ::ProductData.TYPE_LEVELUP: _btn = this.view.findChild("pnl_levelup_layer"); break;
+    }
+    local _layers = [this.pnl_product_layer, this.pnl_deliver_layer, this.pnl_levelup_layer, this.pnl_work_layer];
+    foreach (_layer in _layers) {
+      local _enable = _layer == _btn;
+      _layer.setEnabled(_enable);
+      _layer.pickable = _layer.visible = _enable;
+    }
+
+    this.pnl_product_layer.findChild("img_icon_motion").setVisible(_product_data.hasMotionReward());
+
+    this.btn = SKView();
+    this.btn.setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    this.btn.centerize(0.5, 1.0);
+    if (this.tap_layer) this.tap_layer.addChild(this.btn);
+
+    this.tap_btn = ::TapButton(this.btn);
+    this.tap_btn.setClickFunc(releaseFunc.bindenv(this), false);
+    if (_product_data.getType() == ::ProductData.TYPE_PRODUCT) this.tap_btn.setTappedSE(SoundConstants.SOUND_PRODUCT_END);
+    if (_product_data.getType() == ::ProductData.TYPE_DELIVER) this.tap_btn.setTappedSE(SoundConstants.SOUND_DELIVER_END);
+    this.tap_btn.setRepeatable(false);
+
+    this.pnl_got = _btn.findChild("pnl_got");
+    this.img_icon_gm = this.pnl_got.findChild("icon_gm");
+    this.lbl_reward = this.pnl_got.findChild("lbl_reward");
+
+    this.pnl_got.visible = false;
+    this.pnl_got.matdirty = true;
+    this.pnl_got.repaint();
+
+    local stage = ::gamesession.getCurrentScene().getStage();
+    this.camera = stage.renderer.camera;
+    this.camera_work = stage.getCameraWork();
+
+    setInterval(_animebody.bindenv({
+      self = this,
+      timer = 0
+    }), 1);
+  }
+
+  function changeTapLayer(layer) {
+    this.btn.removeFromParent();
+    this.tap_layer = layer;
+    this.tap_layer.addChild(this.btn);
+  }
+
+  function release() {
+    this.model = null;
+    if (this.interval_id != -1) {
+      clearInterval(this.interval_id);
+      this.interval_id = -1;
+    }
+
+    this.view = null;
+    this.pnl_got = null;
+    this.img_icon_gm = null;
+    this.lbl_reward = null;
+  }
+
+  function setReady(b) {
+    this.is_ready = b;
+  }
+
+  function isReady() {
+    return this.is_ready;
+  }
+
+  function update(dt) {
+    if (!this.model) return;
+
+    local _add_y = 0.7 * base_scale * base_scale;
+    local v = this.camera.project(v_1.set(this.model.getPos()).add(0.0, _add_y, 0.0));
+
+    local x = ::screenWidth * v.x;
+    local y = ::screenHeight * v.y;
+    this.view.pos.set(x, y, 0);
+    this.view.matdirty = true;
+    this.view.repaint();
+
+    this.btn.pos.set(x, y, 0);
+    this.btn.matdirty = true;
+    this.btn.repaint();
+  }
+
+  function releaseFunc() {
+    newthread().start(function() {
+      local prodcut_state = model.getProductState();
+      if (prodcut_state == ::ProductData.STATE_FINISHED) {
+        this.btn.setVisible(false);
+
+        this.is_get_anime = true;
+
+        local v = this.camera.project(v_1.set(this.model.getPos()).add(-1.0, 3.0, 0.0));
+        local x = ::screenWidth * v.x;
+        local y = ::screenHeight * v.y;
+        local _product_data = model.getProductData();
+        local _res;
+        switch (_product_data.getType()) {
+        case ProductData.TYPE_PRODUCT:
+          _res = "/res/efx/ptd/complete_product.sk3";
+          local _cos_list = _product_data.getCostumeIDList();
+          local _stage = ::gamesession.getCurrentScene().getStage();
+          local _now = skGetTime();
+          foreach (cid in _cos_list) {
+            local _cm = _stage.getChara(cid);
+            if (_cm) _cm.setLastUseFurniture(model, _now);
+          }
+          break;
+        case ProductData.TYPE_LEVELUP: _res = "/res/efx/ptd/complete_levelup.sk3"; break;
+        case ProductData.TYPE_DELIVER: _res = "/res/efx/ptd/complete_deliver.sk3"; break;
+        }
+
+        ::gamesession.getTapViewLayer().addCompleteProductEffect(x, y, 80, 65, _res);
+        this.view.setVisible(false);
+
+        ::gamesession.getCurrentScene().getUI().resetSelectInfo();
+
+      }
+      this.layer.balloonTapped(this.model);
+    }, this);
+  }
+
+  function _animebody(dt) {
+    timer += dt;
+    if (!self.model) return;
+
+    local cameraobj_pos_z = ::gamesession.getCurrentScene().stage.renderer.cameraobj.pos.z;
+    local dist = self.camera_work.getDistLength();
+
+    local t = timer % 1000;
+    local base_scale = 1.0 + 1.0 * (35.0 - dist) / 35.0;
+
+    local s = base_scale * (1.0 + Math.abs(t - 500) / 10000.0);
+    self.base_scale = base_scale;
+    self.view.scale << s;
+    self.view.repaint();
+
+  }
+
+  function _getanimebody(dt) {
+    this.timer += dt;
+
+    local limit = 750;
+    if (timer < limit) {
+      local posy = int(-100 * (Math.sin(Math.PI / 4.0 + Math.PI / 4.0 * timer / limit) - Math.sin(Math.PI / 4.0)));
+      self.img_icon_gm.pos.y = posy;
+      self.lbl_reward.pos.y = posy;
+
+      local scalex = Math.cos(Math.PI * timer * 2.0 / limit);
+      self.img_icon_gm.scale.set(scalex, 1.0, 1.0);
+
+      self.img_icon_gm.matdirty = true;
+      self.img_icon_gm.repaint();
+      self.lbl_reward.matdirty = true;
+      self.lbl_reward.repaint();
+      return null;
+    }
+
+    self.img_icon_gm.pos.y = int(-100 * (Math.sin(Math.PI / 2.0) - Math.sin(Math.PI / 4.0)));
+    self.img_icon_gm.scale.set(1.0, 1.0, 1.0);
+    self.img_icon_gm.matdirty = true;
+    self.img_icon_gm.repaint();
+
+    if (this.timer < limit + 100) {
+      return null;
+    }
+
+    self.pnl_got.setVisible(false);
+    self.view.setVisible(false);
+
+    self.is_get_anime = false;
+    return undefined;
+  }
+}
+
+class ProductionLayer.InfoView extends ::ProductingInfo {
+  layer = null;
+  camera = null;
+  v_1 = Vector3D();
+
+  constructor(layer) {
+    super(layer.view);
+
+    this.layer = layer;
+    this.camera = ::gamesession.getCurrentScene().getStage().renderer.camera;
+  }
+
+  function show(model) {
+    if (this.product_data == model.getProductData()) return;
+
+    setData(model);
+    this.view.setVisible(true);
+  }
+  function hide() {
+    this.model = null;
+    this.product_data = null;
+
+    this.view.setVisible(false);
+
+    this.time_label = null;
+    this.lbl_name.setText("");
+    this.lbl_health("");
+  }
+
+  function updateRemain() {
+    if (!this.product_data) {
+      hide();
+      return;
+    }
+
+    super.updateRemain();
+  }
+
+  function update(dt) {
+    if (!this.model) return;
+
+    if (this.product_data.getState() != ::ProductData.STATE_PRODUCTING) {
+      hide();
+      return;
+    }
+
+    local v = camera.project(v_1.set(this.model.getPos()));
+
+    local x = (layer.view.bnd.w - ::screenWidth) / 2.0 + ::screenWidth * v.x + 20;
+    local y = (layer.view.bnd.h - ::screenHeight) / 2.0 + ::screenHeight * v.y - 30;
+    this.view.pos.set(x, y, v.z);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+}

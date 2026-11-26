@@ -1,0 +1,27 @@
+shop_sale_settings[1] <- ShopSaleSetting({
+  text = "リリース記念セール中！";
+  price_type = PRICE_CASH;
+  iap_id = 100;
+})
+
+shop_sale_settings[2] <- ShopSaleSetting({
+  text = "リリース記念セール中！";
+  price_type = PRICE_CASH;
+  iap_id = 101;
+})
+
+shop_sale_settings[3] <- ShopSaleSetting({
+  text = "リリース記念セール中！";
+  price_type = PRICE_CASH;
+  iap_id = 102;
+})
+
+shop_sale_settings[4] <- ShopSaleSetting({
+  text = "リリース記念セール中！";
+  price_type = PRICE_CASH;
+  iap_id = 103;
+})
+
+shop_sale_settings[5] <- ShopSaleSetting({
+  text = "リリース記念セール中！";
+})

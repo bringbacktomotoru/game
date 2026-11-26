@@ -1,0 +1,14 @@
+// UIScript created by CharaAppealIcon.ui 
+function init() {
+	$img_icon.anime(5,5,0);
+}
+
+function blink() {
+	for(;;) {
+		$img_icon.anime(5,15,20);
+		pass(800);
+	}
+	
+}
+// UIScript created by CharaAttractIcon.ui 
+

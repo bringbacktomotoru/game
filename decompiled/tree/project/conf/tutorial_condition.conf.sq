@@ -1,0 +1,91 @@
+tutorial_condition_settings[1] <- ConditionSetting({
+  condition = {
+    tutorial = [1]
+  }
+})
+
+tutorial_condition_settings[2] <- ConditionSetting({
+  condition = {
+    add_chara_appeal_balloon = [6]
+  }
+})
+
+tutorial_condition_settings[3] <- ConditionSetting({
+  condition = {
+    add_chara_appeal_balloon = [3, 4]
+  }
+})
+
+tutorial_condition_settings[4] <- ConditionSetting({
+  condition = {
+    tutorial = [5]
+  }
+})
+
+tutorial_condition_settings[5] <- ConditionSetting({
+  condition = {
+    shop_buy = [1]
+  }
+})
+
+tutorial_condition_settings[6] <- ConditionSetting({
+  condition = {
+    tutorial = [7, 9]
+  }
+})
+
+tutorial_condition_settings[7] <- ConditionSetting({
+  condition = {
+    has_room_furniture_amount = [1, 3],
+    tutorial_not_end = [8]
+  }
+  is_and = true;
+})
+
+tutorial_condition_settings[8] <- ConditionSetting({
+  condition = {
+    tutorial = [9]
+  }
+})
+
+tutorial_condition_settings[9] <- ConditionSetting({
+  condition = {
+    end_panelmission = [100]
+  }
+})
+
+tutorial_condition_settings[10] <- ConditionSetting({
+  condition = {
+    end_panelmission = [101]
+  }
+})
+
+tutorial_condition_settings[11] <- ConditionSetting({
+  condition = {
+    rank = [2]
+  }
+})
+
+tutorial_condition_settings[12] <- ConditionSetting({
+  condition = {
+    furniture_layout_num = [3]
+  }
+})
+
+tutorial_condition_settings[13] <- ConditionSetting({
+  condition = {
+    tutorial = [11]
+  }
+})
+
+tutorial_condition_settings[14] <- ConditionSetting({
+  condition = {
+    tutorial = [12]
+  }
+})
+
+tutorial_condition_settings[15] <- ConditionSetting({
+  condition = {
+    tutorial = [13]
+  }
+})

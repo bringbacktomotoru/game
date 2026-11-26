@@ -1,0 +1,38 @@
+runsk("/res/goods/goods_base.sk")
+
+with model {
+  body <- {
+    pm = "book.pm"
+  }
+
+}
+
+with script {
+
+  function start() {
+    anime(1, 1, 0, false);
+    fadeColor(255, 0);
+    fadeColor(0xffffffff, 300);
+    pass(300);
+  }
+
+  function open() {
+    anime(1, 2, 5, false);
+    pass(200);
+
+  }
+
+  function close() {
+    anime(2, 3, 3, false);
+    pass(333);
+
+    anime(4, 4, 0, false);
+  }
+
+  function end() {
+    setBlend(SK_MIX);
+    fadeColor(0xffffff00, 300);
+    pass(300);
+  }
+
+}

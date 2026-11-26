@@ -1,0 +1,2782 @@
+{
+  "ID": "9c730cc6-b1e0-409a-b92f-c8a3cda7217c",
+  "Version": "2.3.3.0",
+  "Name": "WorldMapLayout",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 227,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/nameplate_big.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9OriginX": 178,
+            "Scale9OriginY": 30,
+            "Scale9Width": 186,
+            "Scale9Height": 32,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 1223.9817
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.9562
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.0719
+            },
+            "TopMargin": 10.0183,
+            "BottomMargin": 1177.9817,
+            "Tag": 459,
+            "Children": [
+              {
+                "FontSize": 32,
+                "LabelText": "すしたろう",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 32.0,
+                  "Y": 72.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0444,
+                  "Y": 0.7826
+                },
+                "PreSize": {
+                  "X": 0.1708,
+                  "Y": 0.413
+                },
+                "LeftMargin": 32.0,
+                "RightMargin": 565.0,
+                "TopMargin": 1.0,
+                "BottomMargin": 53.0,
+                "Tag": 618,
+                "ActionTag": 647143837,
+                "Size": {
+                  "X": 123.0,
+                  "Y": 38.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "BackColorAlpha": 102,
+                "ComboBoxIndex": 1,
+                "SingleColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 124.0,
+                  "Y": 32.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1722,
+                  "Y": 0.3478
+                },
+                "PreSize": {
+                  "X": 0.3889,
+                  "Y": 0.6522
+                },
+                "LeftMargin": -16.0,
+                "RightMargin": 456.0,
+                "TopMargin": 30.0,
+                "BottomMargin": 2.0,
+                "Tag": 872,
+                "Children": [
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/btn/bar_frame.png",
+                      "Plist": "image/ss_btn.plist"
+                    },
+                    "Scale9Enable": true,
+                    "Scale9OriginX": 44,
+                    "Scale9OriginY": 9,
+                    "Scale9Width": 46,
+                    "Scale9Height": 10,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 147.9998,
+                      "Y": 30.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5286,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.7143,
+                      "Y": 0.4667
+                    },
+                    "LeftMargin": 47.9998,
+                    "RightMargin": 32.0002,
+                    "TopMargin": 16.0,
+                    "BottomMargin": 16.0,
+                    "Tag": 621,
+                    "Children": [
+                      {
+                        "FileData": {
+                          "Type": "MarkedSubImage",
+                          "Path": "image/btn/bar190.png",
+                          "Plist": "image/ss_btn.plist"
+                        },
+                        "BlendFunc": {
+                          "Src": 1,
+                          "Dst": 771
+                        },
+                        "AnchorPoint": {},
+                        "Position": {
+                          "X": 4.9998,
+                          "Y": 6.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "CColor": {
+                          "G": 51,
+                          "B": 0
+                        },
+                        "IconVisible": false,
+                        "PrePosition": {
+                          "X": 0.025,
+                          "Y": 0.2143
+                        },
+                        "PreSize": {
+                          "X": 0.95,
+                          "Y": 0.5714
+                        },
+                        "LeftMargin": 4.9998,
+                        "RightMargin": 5.0002,
+                        "TopMargin": 6.0,
+                        "BottomMargin": 6.0,
+                        "Tag": 543,
+                        "ActionTag": 1903183272,
+                        "Size": {
+                          "X": 190.0,
+                          "Y": 16.0
+                        },
+                        "Name": "bar",
+                        "ctype": "SpriteObjectData"
+                      }
+                    ],
+                    "ActionTag": -710059505,
+                    "Size": {
+                      "X": 200.0,
+                      "Y": 28.0
+                    },
+                    "Name": "bar_lp",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FontSize": 18,
+                    "LabelText": "10 / 20",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/MICROSBE.TTF",
+                      "Plist": ""
+                    },
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineSize": 2,
+                    "OutlineColor": {
+                      "G": 51,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 68.0007,
+                      "Y": 29.9986
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.2429,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.3071,
+                      "Y": 0.4
+                    },
+                    "LeftMargin": 68.0007,
+                    "RightMargin": 125.9993,
+                    "TopMargin": 18.0014,
+                    "BottomMargin": 17.9986,
+                    "Tag": 622,
+                    "ActionTag": -517207433,
+                    "Size": {
+                      "X": 86.0,
+                      "Y": 24.0
+                    },
+                    "Name": "lbl_lp",
+                    "ctype": "TextObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/btn/btn_plus.png",
+                      "Plist": "image/ss_btn.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 770,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 240.7592,
+                      "Y": 30.2278
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.8599,
+                      "Y": 0.5038
+                    },
+                    "PreSize": {
+                      "X": 0.0929,
+                      "Y": 0.4333
+                    },
+                    "LeftMargin": 227.7592,
+                    "RightMargin": 26.2408,
+                    "TopMargin": 16.7722,
+                    "BottomMargin": 17.2278,
+                    "Tag": 873,
+                    "ActionTag": 2096402587,
+                    "Size": {
+                      "X": 26.0,
+                      "Y": 26.0
+                    },
+                    "Name": "btn_plus_11",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FontSize": 15,
+                    "LabelText": "あと0:00",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineColor": {},
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 190.0,
+                      "Y": 30.0001
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.6786,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.2286,
+                      "Y": 0.2833
+                    },
+                    "LeftMargin": 158.0,
+                    "RightMargin": 58.0,
+                    "TopMargin": 21.4999,
+                    "BottomMargin": 21.5001,
+                    "Tag": 1300,
+                    "ActionTag": -1608780660,
+                    "Size": {
+                      "X": 64.0,
+                      "Y": 17.0
+                    },
+                    "Name": "lbl_lptime",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 1420583420,
+                "Size": {
+                  "X": 280.0,
+                  "Y": 60.0
+                },
+                "Name": "btn_lp",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/base/dish_rank.png",
+                  "Plist": "image/ss_base.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 33.8402
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.3678
+                },
+                "PreSize": {
+                  "X": 0.1528,
+                  "Y": 1.1957
+                },
+                "LeftMargin": 305.0,
+                "RightMargin": 305.0,
+                "TopMargin": 3.1598,
+                "BottomMargin": -21.1598,
+                "Tag": 617,
+                "ActionTag": -847992013,
+                "Size": {
+                  "X": 110.0,
+                  "Y": 110.0
+                },
+                "Name": "dish_lv_2",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 38,
+                "LabelText": "1",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 354.0,
+                  "Y": 24.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.4917,
+                  "Y": 0.2609
+                },
+                "PreSize": {
+                  "X": 0.0292,
+                  "Y": 0.413
+                },
+                "LeftMargin": 343.5,
+                "RightMargin": 355.5,
+                "TopMargin": 49.0,
+                "BottomMargin": 5.0,
+                "Tag": 620,
+                "ActionTag": 1971950477,
+                "Size": {
+                  "X": 21.0,
+                  "Y": 38.0
+                },
+                "Name": "lbl_rank",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/bar_frame.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 44,
+                "Scale9OriginY": 9,
+                "Scale9Width": 46,
+                "Scale9Height": 10,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": -18.001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.1957
+                },
+                "PreSize": {
+                  "X": 0.2778,
+                  "Y": 0.3043
+                },
+                "LeftMargin": 260.0,
+                "RightMargin": 260.0,
+                "TopMargin": 96.001,
+                "BottomMargin": -32.001,
+                "Tag": 627,
+                "Children": [
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/btn/bar190.png",
+                      "Plist": "image/ss_btn.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {},
+                    "Position": {
+                      "X": 5.0,
+                      "Y": 6.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "R": 0,
+                      "G": 51
+                    },
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.025,
+                      "Y": 0.2143
+                    },
+                    "PreSize": {
+                      "X": 0.95,
+                      "Y": 0.5714
+                    },
+                    "LeftMargin": 5.0,
+                    "RightMargin": 5.0,
+                    "TopMargin": 6.0,
+                    "BottomMargin": 6.0,
+                    "Tag": 542,
+                    "ActionTag": 1074554467,
+                    "Size": {
+                      "X": 190.0,
+                      "Y": 16.0
+                    },
+                    "Name": "bar",
+                    "ctype": "SpriteObjectData"
+                  }
+                ],
+                "ActionTag": -1745235968,
+                "Size": {
+                  "X": 200.0,
+                  "Y": 28.0
+                },
+                "Name": "bar_exp",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FontSize": 17,
+                "LabelText": "1000 / 23000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/MICROSBE.TTF",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 45,
+                  "B": 227
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": -18.001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.1957
+                },
+                "PreSize": {
+                  "X": 0.2083,
+                  "Y": 0.25
+                },
+                "LeftMargin": 285.0,
+                "RightMargin": 285.0,
+                "TopMargin": 98.501,
+                "BottomMargin": -29.501,
+                "Tag": 628,
+                "ActionTag": 1803125981,
+                "Size": {
+                  "X": 150.0,
+                  "Y": 23.0
+                },
+                "Name": "lbl_exp",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "common/KobanPanel.json",
+                  "Plist": ""
+                },
+                "StretchWidthEnable": false,
+                "StretchHeightEnable": false,
+                "InnerActionSpeed": 1.0,
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 410.0,
+                  "Y": 0.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": true,
+                "PrePosition": {
+                  "X": 0.5694,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.4444,
+                  "Y": 0.8696
+                },
+                "LeftMargin": 410.0,
+                "RightMargin": -10.0,
+                "TopMargin": 12.0,
+                "Tag": 396,
+                "ActionTag": -880388854,
+                "Size": {
+                  "X": 320.0,
+                  "Y": 80.0
+                },
+                "Name": "pnl_koban",
+                "ctype": "ProjectNodeObjectData"
+              }
+            ],
+            "ActionTag": 768172367,
+            "Size": {
+              "X": 720.0,
+              "Y": 92.0
+            },
+            "Name": "pnl_player",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/white_dialog.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 100,
+            "Scale9OriginY": 62,
+            "Scale9Width": 1,
+            "Scale9Height": 66,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 663.9851
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5187
+            },
+            "PreSize": {
+              "X": 0.8639,
+              "Y": 0.1484
+            },
+            "LeftMargin": 49.0,
+            "RightMargin": 49.0,
+            "TopMargin": 521.0149,
+            "BottomMargin": 568.9851,
+            "Tag": 646,
+            "Children": [
+              {
+                "FontSize": 22,
+                "LabelText": "タップしてスタート",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 22,
+                  "G": 142,
+                  "B": 167
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 308.0,
+                  "Y": 167.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.4952,
+                  "Y": 0.8789
+                },
+                "PreSize": {
+                  "X": 0.2347,
+                  "Y": 0.1474
+                },
+                "LeftMargin": 235.0,
+                "RightMargin": 241.0,
+                "TopMargin": 9.0,
+                "BottomMargin": 153.0,
+                "Tag": 277,
+                "ActionTag": 771378028,
+                "Size": {
+                  "X": 146.0,
+                  "Y": 28.0
+                },
+                "Name": "Text_19",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 34,
+                "LabelText": "スシプリン島の秘密",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "G": 51,
+                  "B": 153
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 311.0,
+                  "Y": 101.6735
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5351
+                },
+                "PreSize": {
+                  "X": 0.418,
+                  "Y": 0.2
+                },
+                "LeftMargin": 181.0,
+                "RightMargin": 181.0,
+                "TopMargin": 69.3265,
+                "BottomMargin": 82.6735,
+                "Tag": 650,
+                "ActionTag": 846100343,
+                "Size": {
+                  "X": 260.0,
+                  "Y": 38.0
+                },
+                "Name": "lbl_title",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 26,
+                "LabelText": "ステージ1-3",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 90.5351,
+                  "Y": 99.0962
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1456,
+                  "Y": 0.5216
+                },
+                "PreSize": {
+                  "X": 0.1994,
+                  "Y": 0.1684
+                },
+                "LeftMargin": 28.5351,
+                "RightMargin": 469.4649,
+                "TopMargin": 74.9038,
+                "BottomMargin": 83.0962,
+                "Tag": 651,
+                "ActionTag": -1415411028,
+                "Size": {
+                  "X": 124.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_stage",
+                "ctype": "TextObjectData"
+              },
+              {
+                "BackColorAlpha": 102,
+                "ComboBoxIndex": 1,
+                "SingleColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 311.0,
+                  "Y": 142.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.7474
+                },
+                "PreSize": {
+                  "X": 0.4502,
+                  "Y": 0.1053
+                },
+                "LeftMargin": 171.0,
+                "RightMargin": 171.0,
+                "TopMargin": 38.0,
+                "BottomMargin": 132.0,
+                "Tag": 56,
+                "Children": [
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s5.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 10.0,
+                      "Y": 10.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.0357,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "RightMargin": 260.0,
+                    "Tag": 57,
+                    "ActionTag": 662890965,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st1",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s5.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 30.0001,
+                      "Y": 10.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.1071,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 20.0001,
+                    "RightMargin": 239.9999,
+                    "Tag": 58,
+                    "ActionTag": -1581443299,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st2",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s5.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 50.0,
+                      "Y": 9.9999
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.1786,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 40.0,
+                    "RightMargin": 220.0,
+                    "TopMargin": 0.0001,
+                    "BottomMargin": -0.0001,
+                    "Tag": 59,
+                    "ActionTag": 989870982,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st3",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s4.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 69.9998,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.25,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 59.9998,
+                    "RightMargin": 200.0002,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 60,
+                    "ActionTag": 177086017,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st4",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s4.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 89.9998,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.3214,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 79.9998,
+                    "RightMargin": 180.0002,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 61,
+                    "ActionTag": 2070422744,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st5",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s3.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 109.9998,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.3929,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 99.9998,
+                    "RightMargin": 160.0002,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 62,
+                    "ActionTag": -1555358650,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st6",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s3.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 129.9997,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.4643,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 119.9997,
+                    "RightMargin": 140.0003,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 63,
+                    "ActionTag": 1535867295,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st7",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s2.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 149.9994,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5357,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 139.9994,
+                    "RightMargin": 120.0006,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 64,
+                    "ActionTag": -780397939,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st8",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s2.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 169.9992,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.6071,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 159.9992,
+                    "RightMargin": 100.0008,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 65,
+                    "ActionTag": 1609296254,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st9",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s1.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 189.999,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.6786,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 179.999,
+                    "RightMargin": 80.001,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 66,
+                    "ActionTag": -1634559986,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st10",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s1.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 209.9987,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.75,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 199.9987,
+                    "RightMargin": 60.0013,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 67,
+                    "ActionTag": -539098870,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st11",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s1.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 229.9985,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.8214,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 219.9985,
+                    "RightMargin": 40.0015,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 68,
+                    "ActionTag": -1783278350,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st12",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s1.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 249.9983,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.8929,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 239.9983,
+                    "RightMargin": 20.0017,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 69,
+                    "ActionTag": -800375653,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st13",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/st_s1.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 269.9981,
+                      "Y": 9.9998
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.9643,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.0714,
+                      "Y": 1.0
+                    },
+                    "LeftMargin": 259.9981,
+                    "RightMargin": 0.0019,
+                    "TopMargin": 0.0002,
+                    "BottomMargin": -0.0002,
+                    "Tag": 70,
+                    "ActionTag": 1898273702,
+                    "Size": {
+                      "X": 20.0,
+                      "Y": 20.0
+                    },
+                    "Name": "st14",
+                    "ctype": "SpriteObjectData"
+                  }
+                ],
+                "ActionTag": -1820937005,
+                "Size": {
+                  "X": 280.0,
+                  "Y": 20.0
+                },
+                "Name": "pnl_star",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/tegata_l.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 479.9989,
+                  "Y": 104.5004
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.7717,
+                  "Y": 0.55
+                },
+                "PreSize": {
+                  "X": 0.0514,
+                  "Y": 0.2368
+                },
+                "LeftMargin": 463.9989,
+                "RightMargin": 126.0011,
+                "TopMargin": 62.9996,
+                "BottomMargin": 82.0004,
+                "Tag": 652,
+                "ActionTag": -1085018615,
+                "Size": {
+                  "X": 32.0,
+                  "Y": 45.0
+                },
+                "Name": "icon_tegata1",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/tegata_l_off.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 521.9996,
+                  "Y": 104.5004
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8392,
+                  "Y": 0.55
+                },
+                "PreSize": {
+                  "X": 0.0514,
+                  "Y": 0.2368
+                },
+                "LeftMargin": 505.9996,
+                "RightMargin": 84.0004,
+                "TopMargin": 62.9996,
+                "BottomMargin": 82.0004,
+                "Tag": 653,
+                "ActionTag": -606725062,
+                "Size": {
+                  "X": 32.0,
+                  "Y": 45.0
+                },
+                "Alpha": 51,
+                "Name": "icon_tegata2",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/tegata_l_off.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 565.9999,
+                  "Y": 103.5807
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.91,
+                  "Y": 0.5452
+                },
+                "PreSize": {
+                  "X": 0.0514,
+                  "Y": 0.2368
+                },
+                "LeftMargin": 549.9999,
+                "RightMargin": 40.0001,
+                "TopMargin": 63.9193,
+                "BottomMargin": 81.0807,
+                "Tag": 654,
+                "ActionTag": -1982974515,
+                "Size": {
+                  "X": 32.0,
+                  "Y": 45.0
+                },
+                "Alpha": 51,
+                "Name": "icon_tegata3",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "BackColorAlpha": 102,
+                "ComboBoxIndex": 1,
+                "SingleColor": {
+                  "R": 144,
+                  "G": 238,
+                  "B": 144
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 311.0001,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.2632
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 0.1895
+                },
+                "LeftMargin": 0.0001,
+                "RightMargin": -0.0001,
+                "TopMargin": 122.0,
+                "BottomMargin": 32.0,
+                "Tag": 660,
+                "Children": [
+                  {
+                    "FontSize": 22,
+                    "LabelText": "進行度",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineSize": 2,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 84.0002,
+                      "Y": 18.0001
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "G": 243,
+                      "B": 89
+                    },
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.135,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.1141,
+                      "Y": 0.7222
+                    },
+                    "LeftMargin": 48.5002,
+                    "RightMargin": 502.4998,
+                    "TopMargin": 4.9999,
+                    "BottomMargin": 5.0001,
+                    "Tag": 661,
+                    "ActionTag": -505438990,
+                    "Size": {
+                      "X": 71.0,
+                      "Y": 26.0
+                    },
+                    "Name": "Text_13",
+                    "ctype": "TextObjectData"
+                  },
+                  {
+                    "FontSize": 22,
+                    "LabelText": "突破スコア",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineSize": 2,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 329.001,
+                      "Y": 18.0002
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "G": 243,
+                      "B": 89
+                    },
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5289,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.1559,
+                      "Y": 0.7222
+                    },
+                    "LeftMargin": 280.501,
+                    "RightMargin": 244.499,
+                    "TopMargin": 4.9998,
+                    "BottomMargin": 5.0002,
+                    "Tag": 665,
+                    "ActionTag": -2052875106,
+                    "Size": {
+                      "X": 97.0,
+                      "Y": 26.0
+                    },
+                    "Name": "Text_13_0",
+                    "ctype": "TextObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/btn/bar_frame.png",
+                      "Plist": "image/ss_btn.plist"
+                    },
+                    "Scale9Enable": true,
+                    "Scale9OriginX": 44,
+                    "Scale9OriginY": 9,
+                    "Scale9Width": 46,
+                    "Scale9Height": 10,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 478.0,
+                      "Y": 19.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.7685,
+                      "Y": 0.5278
+                    },
+                    "PreSize": {
+                      "X": 0.3215,
+                      "Y": 0.7778
+                    },
+                    "LeftMargin": 378.0,
+                    "RightMargin": 44.0,
+                    "TopMargin": 3.0,
+                    "BottomMargin": 5.0,
+                    "Tag": 667,
+                    "Children": [
+                      {
+                        "FileData": {
+                          "Type": "MarkedSubImage",
+                          "Path": "image/btn/bar190.png",
+                          "Plist": "image/ss_btn.plist"
+                        },
+                        "BlendFunc": {
+                          "Src": 1,
+                          "Dst": 771
+                        },
+                        "AnchorPoint": {},
+                        "Position": {
+                          "X": 5.0,
+                          "Y": 6.0
+                        },
+                        "Scale": {
+                          "ScaleX": 1.0,
+                          "ScaleY": 1.0
+                        },
+                        "CColor": {
+                          "G": 205,
+                          "B": 46
+                        },
+                        "IconVisible": false,
+                        "PrePosition": {
+                          "X": 0.025,
+                          "Y": 0.2143
+                        },
+                        "PreSize": {
+                          "X": 0.95,
+                          "Y": 0.5714
+                        },
+                        "LeftMargin": 5.0,
+                        "RightMargin": 5.0,
+                        "TopMargin": 6.0,
+                        "BottomMargin": 6.0,
+                        "Tag": 674,
+                        "ActionTag": -1660865589,
+                        "Size": {
+                          "X": 190.0,
+                          "Y": 16.0
+                        },
+                        "Name": "bar",
+                        "ctype": "SpriteObjectData"
+                      }
+                    ],
+                    "ActionTag": 735695090,
+                    "Size": {
+                      "X": 200.0,
+                      "Y": 28.0
+                    },
+                    "Name": "bar_clearscore",
+                    "ctype": "ImageViewObjectData"
+                  },
+                  {
+                    "FontSize": 15,
+                    "LabelText": "1000 / 23000",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/MICROSBE.TTF",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineSize": 2,
+                    "OutlineColor": {
+                      "R": 227,
+                      "G": 182,
+                      "B": 41
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 477.3139,
+                      "Y": 17.9562
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.7674,
+                      "Y": 0.4988
+                    },
+                    "PreSize": {
+                      "X": 0.2122,
+                      "Y": 0.5833
+                    },
+                    "LeftMargin": 411.3139,
+                    "RightMargin": 78.6861,
+                    "TopMargin": 7.5438,
+                    "BottomMargin": 7.4562,
+                    "Tag": 668,
+                    "ActionTag": -22094202,
+                    "Size": {
+                      "X": 132.0,
+                      "Y": 21.0
+                    },
+                    "Name": "lbl_score",
+                    "ctype": "TextObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/flag.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 137.0,
+                      "Y": 18.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.2203,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.045,
+                      "Y": 0.7222
+                    },
+                    "LeftMargin": 123.0,
+                    "RightMargin": 471.0,
+                    "TopMargin": 5.0,
+                    "BottomMargin": 5.0,
+                    "Tag": 669,
+                    "ActionTag": 1823825841,
+                    "Size": {
+                      "X": 28.0,
+                      "Y": 26.0
+                    },
+                    "Name": "icon_progress1",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/flag_off.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 165.9999,
+                      "Y": 18.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.2669,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.045,
+                      "Y": 0.7222
+                    },
+                    "LeftMargin": 151.9999,
+                    "RightMargin": 442.0001,
+                    "TopMargin": 5.0,
+                    "BottomMargin": 5.0,
+                    "Tag": 670,
+                    "ActionTag": 1568942773,
+                    "Size": {
+                      "X": 28.0,
+                      "Y": 26.0
+                    },
+                    "Alpha": 178,
+                    "Name": "icon_progress2",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/flag.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 194.0,
+                      "Y": 18.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.3119,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.045,
+                      "Y": 0.7222
+                    },
+                    "LeftMargin": 180.0,
+                    "RightMargin": 414.0,
+                    "TopMargin": 5.0,
+                    "BottomMargin": 5.0,
+                    "Tag": 671,
+                    "ActionTag": 1815291717,
+                    "Size": {
+                      "X": 28.0,
+                      "Y": 26.0
+                    },
+                    "Name": "icon_progress3",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/flag.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 223.0,
+                      "Y": 18.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.3585,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.045,
+                      "Y": 0.7222
+                    },
+                    "LeftMargin": 209.0,
+                    "RightMargin": 385.0,
+                    "TopMargin": 5.0,
+                    "BottomMargin": 5.0,
+                    "Tag": 672,
+                    "ActionTag": 912074743,
+                    "Size": {
+                      "X": 28.0,
+                      "Y": 26.0
+                    },
+                    "Name": "icon_progress4",
+                    "ctype": "SpriteObjectData"
+                  },
+                  {
+                    "FileData": {
+                      "Type": "MarkedSubImage",
+                      "Path": "image/icon/flag.png",
+                      "Plist": "image/ss_icon.plist"
+                    },
+                    "BlendFunc": {
+                      "Src": 1,
+                      "Dst": 771
+                    },
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 251.9999,
+                      "Y": 18.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.4051,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.045,
+                      "Y": 0.7222
+                    },
+                    "LeftMargin": 237.9999,
+                    "RightMargin": 356.0001,
+                    "TopMargin": 5.0,
+                    "BottomMargin": 5.0,
+                    "Tag": 673,
+                    "ActionTag": 638500771,
+                    "Size": {
+                      "X": 28.0,
+                      "Y": 26.0
+                    },
+                    "Name": "icon_progress5",
+                    "ctype": "SpriteObjectData"
+                  }
+                ],
+                "ActionTag": -1294208165,
+                "Size": {
+                  "X": 622.0,
+                  "Y": 36.0
+                },
+                "Name": "pnl_progress",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "FontSize": 22,
+                "LabelText": "LP:10",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 523.0002,
+                  "Y": 146.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8408,
+                  "Y": 0.7684
+                },
+                "PreSize": {
+                  "X": 0.1141,
+                  "Y": 0.1474
+                },
+                "LeftMargin": 487.5002,
+                "RightMargin": 63.4998,
+                "TopMargin": 30.0,
+                "BottomMargin": 132.0,
+                "Tag": 1462,
+                "ActionTag": 602951272,
+                "Size": {
+                  "X": 71.0,
+                  "Y": 28.0
+                },
+                "Name": "lbl_lp",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -2144836202,
+            "Size": {
+              "X": 622.0,
+              "Y": 190.0
+            },
+            "Alpha": 204,
+            "Name": "btn_start",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_cs1.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 800.9688,
+              "Y": 957.3561
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 1.1125,
+              "Y": 0.7479
+            },
+            "PreSize": {
+              "X": 0.1819,
+              "Y": 0.1031
+            },
+            "LeftMargin": 735.4688,
+            "RightMargin": -146.4688,
+            "TopMargin": 256.6439,
+            "BottomMargin": 891.3561,
+            "Tag": 648,
+            "Children": [
+              {
+                "FontSize": 20,
+                "LabelText": "すきっぷ1",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 65.0002,
+                  "Y": 65.1187
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.4962,
+                  "Y": 0.4933
+                },
+                "PreSize": {
+                  "X": 0.5496,
+                  "Y": 0.1515
+                },
+                "LeftMargin": 29.0002,
+                "RightMargin": 29.9998,
+                "TopMargin": 56.8813,
+                "BottomMargin": 55.1187,
+                "Tag": 649,
+                "ActionTag": -234489238,
+                "Size": {
+                  "X": 72.0,
+                  "Y": 20.0
+                },
+                "Name": "Text_1",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -237429798,
+            "Size": {
+              "X": 131.0,
+              "Y": 132.0
+            },
+            "Name": "btn_dbgskip1",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_cs1.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 804.4612,
+              "Y": 831.3146
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 1.1173,
+              "Y": 0.6495
+            },
+            "PreSize": {
+              "X": 0.1819,
+              "Y": 0.1031
+            },
+            "LeftMargin": 738.9612,
+            "RightMargin": -149.9612,
+            "TopMargin": 382.6854,
+            "BottomMargin": 765.3146,
+            "Tag": 260,
+            "Children": [
+              {
+                "FontSize": 20,
+                "LabelText": "すきっぷ2",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 65.0002,
+                  "Y": 65.1187
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.4962,
+                  "Y": 0.4933
+                },
+                "PreSize": {
+                  "X": 0.5649,
+                  "Y": 0.1515
+                },
+                "LeftMargin": 28.0002,
+                "RightMargin": 28.9998,
+                "TopMargin": 56.8813,
+                "BottomMargin": 55.1187,
+                "Tag": 261,
+                "ActionTag": -2030251191,
+                "Size": {
+                  "X": 74.0,
+                  "Y": 20.0
+                },
+                "Name": "Text_1",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 288759253,
+            "Size": {
+              "X": 131.0,
+              "Y": 132.0
+            },
+            "Name": "btn_dbgskip2",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 757.2662,
+              "Y": 1209.4303
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 1.0518,
+              "Y": 0.9449
+            },
+            "PreSize": {
+              "X": 0.1667,
+              "Y": 0.0703
+            },
+            "LeftMargin": 697.2662,
+            "RightMargin": -97.2662,
+            "TopMargin": 25.5697,
+            "BottomMargin": 1164.4303,
+            "Tag": 404,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/btn_present.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 60.0,
+                  "Y": 45.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.65,
+                  "Y": 0.8667
+                },
+                "LeftMargin": 21.0,
+                "RightMargin": 21.0,
+                "TopMargin": 6.0,
+                "BottomMargin": 6.0,
+                "Tag": 403,
+                "ActionTag": 1908813077,
+                "Size": {
+                  "X": 78.0,
+                  "Y": 78.0
+                },
+                "Name": "img",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 30,
+                "LabelText": "26",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 4,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 87.9995,
+                  "Y": 23.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "G": 217,
+                  "B": 148
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.7333,
+                  "Y": 0.2556
+                },
+                "PreSize": {
+                  "X": 0.3833,
+                  "Y": 0.4222
+                },
+                "LeftMargin": 64.9995,
+                "RightMargin": 9.0005,
+                "TopMargin": 48.0,
+                "BottomMargin": 4.0,
+                "Tag": 405,
+                "ActionTag": -1989124127,
+                "Size": {
+                  "X": 46.0,
+                  "Y": 38.0
+                },
+                "Name": "lbl_presentnum",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -2021625001,
+            "Size": {
+              "X": 120.0,
+              "Y": 90.0
+            },
+            "Name": "btn_present",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 720.0,
+          "Y": 1280.0
+        },
+        "Name": "Scene",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "../common/KobanPanel.json",
+        "../font/logotypejp_mp_b_1.ttf",
+        "../font/MICROSBE.TTF",
+        "../image/ss_base.plist",
+        "../image/ss_base.png",
+        "../image/ss_btn.plist",
+        "../image/ss_btn.png",
+        "../image/ss_icon.plist",
+        "../image/ss_icon.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Scene"
+}

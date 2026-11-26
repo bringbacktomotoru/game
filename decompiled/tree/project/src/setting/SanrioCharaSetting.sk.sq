@@ -1,0 +1,319 @@
+class SanrioCharaSetting extends ::SanrioSetting
+{
+  chara_id = 0;
+
+  name = "";
+  nick_name = null;
+  name_key = "";
+  desc = "";
+  birth = "0101";
+
+  scale = 1.0;
+  def_costume_id = 0;
+
+  icon = "";
+  face = "";
+
+  body = "";
+  handdir = "";
+  action = "";
+  efx_script = null;
+  stand = "stand";
+
+  voice = "b01";
+  voice_channel = 1000;
+
+  motion_key = null;
+
+  pat_height = 490;
+
+  talk_key = "";
+  first_event_id = 0;
+
+  favorite_series = null;
+
+  chara_sentence_list = null;
+  text_color = 0xffffffff;
+
+  function loadConfAtServer(t) {
+    local _setting = SanrioCharaSetting();
+    foreach (k, v in t) {
+
+      switch (k) {
+      case "favorite_series":
+      case "chara_sentence_list":
+        _setting[k] = decodeJSON(v);
+        break;
+      default:
+        _setting[k] = v;
+      }
+    }
+    return _setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (name) trans + "name";
+    if (nick_name) trans + "nick_name";
+    if (desc) trans + "desc";
+
+    return trans;
+  }
+
+  function getCharaStatus(lv) {
+
+    local s = CharaStatus();
+
+    return s;
+  }
+
+  function getID() {
+    return chara_id;
+  }
+
+  function getName() {
+    return this.name;
+  }
+
+  function getNickName() {
+    if (this.nick_name) return this.nick_name;
+    return this.name;
+  }
+
+  function getNameKey() {
+    return this.name_key;
+  }
+
+  function getDesc() {
+    return this.desc;
+  }
+
+  function getDefaultCostumeID() {
+    return def_costume_id;
+  }
+
+  function getDefaultCostumeSetting() {
+    return ::gamesetting.costume_settings[def_costume_id];
+  }
+
+  function getEffectScript() {
+    return efx_script;
+  }
+
+  function getTalkKey() {
+    return this.talk_key;
+  }
+
+  function getTextColor() {
+    return this.text_color;
+  }
+
+  function getIconPath() {
+    return "/image/icon/character/ss_chara_icon/" + this.icon;
+  }
+
+  function getIconSprite() {
+    local sp = ::getSprite(getIconPath());
+    if (!sp) sp = ::getSprite("/image/icon/character/ss_chara_icon/default_icon.png");
+    sp.blend = SK_MIX;
+    return sp;
+  }
+
+  function getIconSpriteTalkBranch() {
+    local sp = ::getSprite("/image/icon/chara_diary/chara_diary/" + this.chara_id + ".png");
+    if (!sp) return null;
+    sp.blend = SK_MIX;
+    return sp;
+  }
+
+  function getLockIconSprite() {
+    local _sp = ::getSprite("/image/icon/chara_slot/chara_slot/" + this.chara_id + ".png");
+    if (!_sp) _sp = ::getSprite("/ui/image/icon/icon/lock_room.png");
+    _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  function getFirstEventID() {
+    return first_event_id;
+  }
+
+  function getFavoriteRateFurnitureUse(series_id) {
+    local _f = -1;
+    foreach (t in this.favorite_series) {
+      if (t["id"] == series_id) _f = t["favorite"];
+    }
+    if (_f < 0) return 0;
+
+    return ::gamesetting.game_rule.getFavoriteRateFurnitureUse(_f);
+  }
+
+  function getBirthText() {
+    local m = int(birth.slice(0, 2));
+    local d = int(birth.slice(2, 4));
+    return ::dict.get("prof_birth", [m, d]);
+
+  }
+
+  function getCharaSentenceIdList() {
+    return this.chara_sentence_list;
+  }
+
+  function getConstellationText() {
+    return ::dict.get("prof_constellation", [getConstellation()]);
+  }
+  function getConstellation() {
+    local m = int(birth.slice(0, 2));
+    local d = int(birth.slice(2, 4));
+    local ret = "";
+
+    switch (m) {
+    case 1:
+      if (d >= 20) ret = ::dict.get("constellation_aquarius");
+      else ret = ::dict.get("constellation_capricorn");
+      break;
+    case 2:
+      if (d >= 19) ret = ::dict.get("constellation_pisces");
+      else ret = ::dict.get("constellation_aquarius");
+      break;
+    case 3:
+      if (d >= 21) ret = ::dict.get("constellation_aries");
+      else ret = ::dict.get("constellation_pisces");
+      break;
+    case 4:
+      if (d >= 20) ret = ::dict.get("constellation_taurus");
+      else ret = ::dict.get("constellation_aries");
+      break;
+    case 5:
+      if (d >= 21) ret = ::dict.get("constellation_gemini");
+      else ret = ::dict.get("constellation_taurus");
+      break;
+    case 6:
+      if (d >= 22) ret = ::dict.get("constellation_cancer");
+      else ret = ::dict.get("constellation_gemini");
+      break;
+    case 7:
+      if (d >= 23) ret = ::dict.get("constellation_leo");
+      else ret = ::dict.get("constellation_cancer");
+      break;
+    case 8:
+      if (d >= 23) ret = ::dict.get("constellation_virgo");
+      else ret = ::dict.get("constellation_leo");
+      break;
+    case 9:
+      if (d >= 23) ret = ::dict.get("constellation_libra");
+      else ret = ::dict.get("constellation_virgo");
+      break;
+    case 10:
+      if (d >= 24) ret = ::dict.get("constellation_scopio");
+      else ret = ::dict.get("constellation_libra");
+      break;
+    case 11:
+      if (d >= 23) ret = ::dict.get("constellation_sagittarius");
+      else ret = ::dict.get("constellation_scopio");
+      break;
+    case 12:
+      if (d >= 22) ret = ::dict.get("constellation_capricorn");
+      else ret = ::dict.get("constellation_sagittarius");
+      break;
+    }
+    return ret;
+  }
+
+  function getTotalExp(lv, lvfrom = 1) {
+    local totalexp = 0;
+    local gs = ::gamesetting;
+    local offs = gs.charaexpoffset[grade];
+    for (local l = lvfrom; l < lv; l++) {
+      totalexp += gs.charaexp[l + offs];
+    }
+    return totalexp;
+  }
+
+  function playVoice(key) {
+
+    local _vt = ::gamesetting.voice_table[key];
+    if (!_vt || !_vt[this.talk_key]) return;
+    ::playVoice("voice/" + this.name_key + "/" + _vt[this.talk_key] + ".wav", this.voice_channel);
+  }
+
+  function stopVoice() {
+    ::stopSound(this.voice_channel);
+  }
+
+}
+
+class CharaVoiceManager
+{
+  voicesets = null;
+
+  voiceset = null;
+  ov = null;
+  wav = null;
+  snd = null;
+  thread = null;
+
+  wavbuf = null;
+
+  constructor(path) {
+    voicesets = [];
+    local dir = ::getResource(path);
+    foreach (r in dir.getList()) {
+      local c = r.getContent();
+      if (typeof(c) == SS_CLOSURE) {
+        voicesets + c();
+      }
+    }
+    wavbuf = ByteBuffer();
+  }
+
+  function play(id) {
+    local vs = null;
+    foreach (v in voicesets) {
+      if (v[id]) {
+        vs = v; break;
+      }
+    }
+    if (!vs) return false;
+
+    stop();
+    if (vs != voiceset) {
+      voiceset = vs;
+      local bb = ::getResourceContent(vs.path);
+      ov = VorbisDecoder(bb);
+    }
+    thread = newthread();
+    thread.start(playthread, this, vs[id]);
+    return true;
+  }
+
+  function playing() {
+    return snd && snd.isPlaying();
+  }
+
+  function stop() {
+    if (thread) {
+      thread.terminate();
+    }
+    if (snd) snd.stop();
+    snd = null;
+  }
+
+  function playthread(v) {
+    ov.setRange(v.start, v.end);
+    snd = null;
+    if (!ov.invokeDecode(v.end - v.start)) {
+      thread = null;
+      return false;
+    }
+    while (ov.isDecoding()) {
+      suspend();
+    }
+
+    ov.toByteBuffer(wavbuf);
+    wav = skCreateWaveData(wavbuf, ov.freq, ov.ch, 2, wavbuf.remain / ov.ch / 2);
+    snd = wav.toSoundSource();
+    snd.stplay();
+    while (snd.isPlaying()) { suspend(); }
+  }
+}

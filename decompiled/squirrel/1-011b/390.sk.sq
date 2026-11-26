@@ -1,0 +1,143 @@
+class MoviePanel extends ::HomeUI.Panel {
+  static need_money_layer = false;
+  static need_rank_layer = false;
+  static need_menu_layer = false;
+  static need_panel_name = false;
+
+  seek = 0;
+  fileref = null;
+
+  btn_back = null;
+  btn_play = null;
+  play_button = null;
+  pnl_movie_layer = null;
+
+  movie_view = null;
+
+  picture_state = null;
+
+  paused = false;
+
+  function create() {
+    return ::loadSKView("/ui/MoviePlayer.ui", ::MoviePanel);
+  }
+
+  function added() {
+    super.added();
+
+    this.btn_back = findChild("btn_back");
+    this.play_button = findChild("play_button");
+    this.btn_play = this.play_button.findChild("btn_play");
+
+    this.pnl_movie_layer = findChild("pnl_movie_layer");
+
+    local _rgba = RGBAImage(this.pnl_movie_layer.bnd.w, this.pnl_movie_layer.bnd.h, 0xff000000);
+    local _bgtex = Texture();
+    _bgtex.load(_rgba);
+    this.pnl_movie_layer.addChild(SKImageView(_bgtex));
+
+    this.movie_view = MovieView();
+
+    this.movie_view.setSource(this.fileref.path, 0, this.fileref.size);
+
+    this.movie_view.prepare();
+    local _size = this.movie_view.getTextureSize();
+    local _w = ::screenWidth;
+    local _h = ::screenHeight;
+
+    local _screen_asp = _w / _h;
+    local _movie_asp = float(_size[0]) / _size[1];
+
+    local _aspect = float(_size[0]) / _size[1];
+    if (_aspect > 1.0) _h = _w * (float(_size[1]) / _size[0]);
+    else {
+      this.movie_view.scale(_h / _size[1]);
+    }
+
+    if ((_screen_asp > 1.0 && _movie_asp < 1.0) || (_screen_asp < 1.0 && _movie_asp > 1.0)) {
+      local _tmp = _w;
+      _w = _h;
+      _h = _tmp;
+    }
+
+    this.movie_view.setRect(0, 0, _w, _h);
+    this.movie_view.centerize();
+    this.movie_view.pos.set(this.pnl_movie_layer.bnd.w / 2.0, this.pnl_movie_layer.bnd.h / 2.0, 0.0);
+    this.movie_view.updateLayout();
+
+    this.pnl_movie_layer.addChild(this.movie_view);
+    this.movie_view.addEventListener(MOUSE_EVENT, _mouseevent);
+
+    ::TapButton(this.btn_back).view.addEventListener(ACTION_EVENT, _actionevent_back);
+    ::TapButton(this.btn_play).view.addEventListener(ACTION_EVENT, _actionevent_play);
+
+    setPaused(false);
+
+    this.movie_view.setEndFunc(function() {
+      setPaused(true);
+      repaint();
+    }.bindenv(this));
+
+    if (this.picture_state.frame) {
+
+      this.movie_view.seek(this.picture_state.frame);
+    }
+    this.movie_view.play();
+  }
+
+  function setPaused(b) {
+    this.paused = b;
+    this.btn_back.visible = b;
+    this.play_button.visible = b;
+  }
+
+  function removed() {
+    super.removed();
+    this.movie_view = null;
+    this.fileref = null;
+
+  }
+
+  function _mouseevent(e) {
+    e.consume();
+    if (this.paused) return;
+
+    switch (e.id) {
+    case MOUSE_CLICKED:
+
+      this.movie_view.pause();
+      setPaused(true);
+      break;
+    }
+  }
+
+  function setPanelParam(param) {
+    if ("fileref" in param) {
+      this.fileref = param.fileref;
+    }
+
+    if ("seek_time" in param) {
+      this.seek = param.seek_time;
+    }
+
+    if ("picture_state" in param) {
+      this.picture_state = param.picture_state;
+    }
+  }
+
+  function _actionevent_back(e) {
+    e.consume();
+
+    local _frame = movie_view.tell();
+
+    this.picture_state.frame = _frame;
+
+    getHomeUI().backPanel(1, false);
+  }
+
+  function _actionevent_play(e) {
+    e.consume();
+    this.movie_view.play();
+    setPaused(false);
+  }
+}

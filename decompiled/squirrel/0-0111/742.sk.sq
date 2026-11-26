@@ -1,0 +1,17 @@
+return {
+  modeldata = "pillar_BL.mdl"
+  bnd = [11.690599, 3.707358, 11.999991, 0.451178, 3.694517, 0.451035]
+
+  material = [
+  {
+    name = "room_mt"
+    tec = "shading.basic"
+    Ka = 0xfffffffd
+    Kd = 0xffffffff
+    Ks = 0xdbdbdbff
+    Ke = 0
+    shiness = 20.0
+    texture0 = "../tex/floweryantique.png"
+  }
+  ]
+}

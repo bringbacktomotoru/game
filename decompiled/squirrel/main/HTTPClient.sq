@@ -1,0 +1,614 @@
+class HTTPClient
+{
+
+  con = null;
+  constate = -1;
+
+  basicauth_user = null;
+  basicauth_pw = null;
+  customheaders = null;
+
+  maxredirections = 4;
+  location = null;
+
+  statuscode = -1;
+  statusstr = "";
+  recvheaders = null;
+  contenttype = null;
+  contentlength = 0;
+
+  recvbuf = null;
+
+  listener = null;
+
+  throwonerror = true;
+  verbose = false;
+
+  keepalive = 0;
+  lasturlreq = null;
+  closeintv = null;
+
+  timeout_connect = 5000;
+  timeout_read = 5000;
+  connect_retry = 0;
+  throwhttperror = true;
+
+  constructor() {
+    recvbuf = ByteBuffer();
+  }
+
+  function basicAuth(user, password) {
+    basicauth_user = user;
+    basicauth_pw = password;
+  }
+
+  function addHeader(key, value) {
+    if (!customheaders) customheaders = [];
+    customheaders + key + value;
+  }
+
+  function head(url, receiver = null) {
+    try {
+      return request(url, "HEAD", null, receiver);
+    } catch (ex) {
+      if (con) { con.close(); con = null; }
+      receiver.cancel();
+      throw ex;
+    }
+  }
+
+  function get(url, receiver = null) {
+    try {
+      return request(url, "GET", null, receiver);
+    } catch (ex) {
+      if (con) { con.close(); con = null; }
+      receiver.cancel();
+      throw ex;
+    }
+  }
+
+  function post(url, sender, receiver = null) {
+    try {
+      return request(url, "POST", sender, receiver);
+    } catch (ex) {
+      if (con) { con.close(); con = null; }
+      receiver.cancel();
+      throw ex;
+    }
+  }
+
+  function put(url, sender, receiver = null) {
+    try {
+      return request(url, "PUT", sender, receiver);
+    } catch (ex) {
+      if (con) { con.close(); con = null; }
+      receiver.cancel();
+      throw ex;
+    }
+  }
+
+  function del(url, receiver) {
+  }
+
+  function request(url, method, sender, receiver) {
+
+    if (typeof(sender) == SS_TABLE) {
+      sender = HTTPMultiPartSender(sender);
+    } else
+    if (typeof(sender) == SS_STRING) {
+      local bb = ByteBuffer();
+      bb.putText(sender);
+      bb.pos = 0;
+      sender = HTTPByteBufferSender(bb);
+    } else
+    if (sender instanceof ByteBuffer) {
+      sender = HTTPByteBufferSender(sender);
+    }
+    if (!receiver) receiver = HTTPByteBufferReceiver();
+
+    statuscode = 0;
+    statusstr = "";
+    recvheaders = {};
+
+    local chunked = false;
+    local crlfpos = 0;
+    local bbuf = ByteBuffer();
+    local trflen;
+    local ret = 0;
+    local maxredirect = maxredirections;
+    local urlreq = null;
+
+    while (maxredirect--) {
+      urlreq = parseURL(url);
+      receiver.httpStageChanged(0, urlreq);
+      if (listener) listener.httpStageChanged(this, 0, urlreq);
+
+      recvbuf.resize(0);
+      if (keepalive && con && con.getState() == SOCKET_CONNECTED && lasturlreq) {
+        if (urlreq.host != lasturlreq.host || urlreq.port != lasturlreq.port) {
+          con.close();
+          con = null;
+        }
+      }
+      if (closeintv) clearInterval(closeintv);
+      closeintv = null;
+      lasturlreq = null;
+      if (!con || con.getState() != SOCKET_CONNECTED) {
+        if (urlreq.scheme == "https") {
+          local ctx = SSLContext();
+          con = SSLConnection(ctx);
+          con.setHostName(urlreq.host);
+        } else {
+          con = TCPConnection();
+        }
+        con.setReader(tcpReceived, this);
+        con.setListener(tcpStateChanged, this);
+        local ipaddr = resolveIP(urlreq.host, urlreq.port);
+        if (!ipaddr) {
+          con.close();
+          con = null;
+          throw Exception(sprintf("hostname[%S] not found", urlreq.host));
+        }
+        receiver.httpStageChanged(1, ipaddr);
+        if (listener) listener.httpStageChanged(this, 1, ipaddr);
+        con.connect(ipaddr);
+        if (verbose) printf("http connect %S(%S). time=%d\n", urlreq.host, ipaddr, skGetTime());
+        waitForConnect();
+        if (verbose) printf("connected. time=%d\n", skGetTime());
+        receiver.httpStageChanged(2, null);
+        if (listener) listener.httpStageChanged(this, 2, null);
+      }
+
+      local sbuf = StringBuffer();
+      local requeststr = sprintf("%S %S HTTP/1.1\r\nHost: %S\r\n", method, urlreq.path, urlreq.host);
+      sbuf + requeststr;
+
+      if (basicauth_user && basicauth_pw) {
+        sbuf + "Authorization: Basic ";
+        sbuf + encodeBASE64(basicauth_user + ":" + basicauth_pw);
+        sbuf + "\r\n";
+      }
+
+      if (keepalive) {
+        sbuf + "Connection: Keep-Alive\r\n";
+      } else {
+        sbuf + "Connection: Close\r\n";
+      }
+
+      for (local l = 0; l < length(customheaders); l += 2) {
+        local headerstr = sprintf("%S: %S\r\n", customheaders[l], customheaders[l + 1]);
+        sbuf + headerstr;
+      }
+
+      if (sender) {
+        if (sender.httpIsChunked()) {
+          sbuf + "Transfer-Encoding: chunked\r\n";
+        } else {
+          local lenstr = sprintf("Content-Length: %d\r\n", sender.httpGetContentLength());
+          sbuf + lenstr;
+        }
+        local type = sender.httpGetDataType();
+        if (type) {
+          local typestr = sprintf("Content-Type: %S\r\n", type);
+          sbuf + typestr;
+        }
+      }
+
+      sbuf + "\r\n";
+      con.write(string(sbuf));
+      if (verbose) printf("%S\n", string(sbuf));
+
+      if (sender) {
+        local writtenlen = 0;
+        if (sender.httpIsChunked()) {
+          local w = sender.httpSend(bbuf, 32768);
+          local chunkheader = sprintf("%X\r\n", w);
+          con.write(chunkheader);
+          con.write(bbuf);
+          con.write("\r\n");
+        } else {
+          local senderlen = sender.httpGetContentLength();
+          for (;;) {
+            bbuf.size = 0;
+            local w = sender.httpSend(bbuf, 32768);
+            bbuf.pos = 0;
+            con.write(bbuf);
+            writtenlen += w;
+            if (w == 0 || writtenlen >= senderlen) break;
+          }
+          bbuf.resize(0);
+        }
+      }
+      receiver.httpStageChanged(3, null);
+      if (listener) listener.httpStageChanged(this, 3, null);
+
+      local resstr = recvLine(bbuf).asText();
+      if (verbose) {
+        printf("Received time=%d\n", skGetTime());
+        printf("%S\n", resstr);
+      }
+
+      statuscode = int(resstr.substring(9, 12));
+      statusstr = resstr.substring(13);
+      if (verbose) printf("statuscode=%d statusstr=%S\n", statuscode, statusstr);
+
+      local redirect = false;
+      while (!redirect) {
+        local str = recvLine(bbuf).asText();
+        if (str == "") {
+          break;
+        }
+        if (verbose) printf("%S\n", str);
+        local spliti = str.indexOf(":");
+        local key, value;
+        if (spliti < 0) continue;
+        key = str.substring(0, spliti).trim();
+        value = str.substring(spliti + 1).trim();
+        recvheaders[key] <- value;
+
+        switch (key) {
+        case "Content-Length":
+          contentlength = int(value);
+          break;
+        case "Transfer-Encoding":
+          if (value.toLowerCase() == "chunked") {
+            chunked = true;
+          }
+          break;
+        case "Content-Type":
+          contenttype = value;
+          break;
+        case "Location":
+          location = value;
+          local si = value.indexOf("://");
+          if (si >= 0 && si < 8) {
+
+            local t = parseURL(value);
+            if (t.scheme != urlreq.scheme || t.host != urlreq.host || t.port != urlreq.port) {
+              url = value;
+              con.close();
+              con = null;
+            } else {
+              urlreq.path = location;
+            }
+          } else {
+            urlreq.path = location;
+          }
+
+          redirect = true;
+          break;
+        }
+      }
+      if (statuscode >= 400 && throwhttperror) {
+        throw HTTPException(statusstr, statuscode, recvheaders);
+      }
+
+      if (!redirect) {
+        break;
+      }
+    }
+    receiver.httpStageChanged(4, this);
+    if (listener) listener.httpStageChanged(this, 4, this);
+
+    if (method != "HEAD" && statuscode != 204) {
+
+      local readlen = 0;
+      if (chunked) {
+        for (;;) {
+          local chunkline = recvLine(bbuf).asText();
+          local r = int(chunkline, 16);
+          if (r == 0) {
+            recv(bbuf, 2);
+            if (bbuf[0] != 13 || bbuf[1] != 10) {
+              throw Exception("broken chunk data");
+            }
+            break;
+          }
+          local r = recv(bbuf, r);
+          readlen += r;
+          if (readlen > contentlength) contentlength = readlen;
+          receiver.httpReceive(bbuf);
+          if (listener) listener.httpReceive(this, r);
+
+          recv(bbuf, 2);
+          if (bbuf[0] != 13 || bbuf[1] != 10) {
+            throw Exception("broken chunk data");
+          }
+        }
+      } else {
+        readlen = 0;
+        local _t = skGetTime();
+        local _dl = 0;
+        for (;;) {
+          local r = recv(bbuf, 0);
+          if (r > 0) {
+            receiver.httpReceive(bbuf);
+            if (listener) listener.httpReceive(this, r);
+            _dl += r;
+            if (skGetTime() > _t + 10000) {
+              printf("HTTPConnection received:%d in %d msec\n", _dl skGetTime() - _t);
+              _t += 10000;
+              _dl = 0;
+            }
+            if ((readlen += r) >= contentlength) {
+              contentlength = readlen;
+              break;
+            }
+          }
+          suspend();
+        }
+      }
+    }
+    receiver.httpStageChanged(5, null);
+    if (listener) listener.httpStageChanged(this, 5, null);
+    if (con) {
+      if (keepalive) {
+        closeintv = setTimeout(
+        function() { if (con) { con.close(); con = null; } }.bindenv(this), keepalive * 1000
+        );
+      } else {
+        con.close();
+      }
+    }
+    lasturlreq = urlreq;
+
+    return receiver.getResult();
+  }
+
+  function waitForConnect() {
+    local t0 = skGetTime();
+    do {
+      switch (con.getState()) {
+      case SOCKET_CONNECTING: suspend(); continue;
+      case SOCKET_CONNECTED:
+        constate = SOCKET_CONNECTED;
+        return;
+      default:
+
+        local st = con.getState();
+        throw Exception(sprintf("HTTP connection failure. state=%d", st));
+      }
+    } while (skGetTime() - t0 < timeout_connect);
+
+    throw Exception(sprintf("waitForConnect timeout:%d\n", timeout_connect));
+  }
+
+  function recvLine(bbuf) {
+    local tot = skGetTime() + timeout_read;
+    local crlf = 0;
+    bbuf.resize(0);
+
+    for (;;) {
+      while (!recvbuf.remain) {
+        if (constate != SOCKET_CONNECTED) throw Exception("HTTP connection was closed : " + constate);
+        if (skGetTime() > tot) throw Exception("HTTP receive line timeout. received : " + recvbuf.remain);
+        suspend();
+      }
+      local c = recvbuf.getb() & 255;
+      if (c == 13) {
+        crlf = 1;
+      } else
+      if (c == 10) {
+        if (crlf == 1) break;
+        break;
+      } else {
+        bbuf.putb(c);
+      }
+    }
+    recvbuf.trim();
+    bbuf.pos = 0;
+    return bbuf;
+  }
+
+  function recv(bbuf, readlen) {
+    local tot = skGetTime() + timeout_read;
+    while (!recvbuf.remain || recvbuf.remain < readlen) {
+      if (constate != SOCKET_CONNECTED) throw Exception("HTTP connection closed");
+      if (skGetTime() > tot) throw Exception("HTTP receive line timeout. received : " + recvbuf.remain);
+      suspend();
+    }
+    bbuf.resize(0);
+    bbuf.putBuffer(recvbuf, readlen || recvbuf.remain);
+    bbuf.pos = 0;
+    recvbuf.trim();
+    return bbuf.size;
+  }
+
+  function tcpReceived(con, buf) {
+    local pos = recvbuf.pos;
+    recvbuf.extendBuffer(buf);
+    recvbuf.pos = pos;
+  }
+
+  function tcpStateChanged(id, c, src) {
+    if (c == con) {
+      if (verbose) printf("HTTPConnection tcpStateChanged from %d to %d\n", constate, c.getState());
+      constate = c.getState();
+    }
+  }
+}
+
+class HTTPException extends Exception
+{
+  headers = null;
+
+  constructor(str, code, h = null) {
+    super(str, code);
+    headers = h;
+  }
+}
+
+class HTTPReceiver
+{
+  function httpStageChanged(st, arg) {}
+
+  function httpReceive(bbuf) {}
+
+  function cancel() {}
+
+  function getResult() { return null; }
+
+}
+
+class HTTPByteBufferReceiver
+{
+  recvbuf = null;
+
+  function httpStageChanged(st, arg) {
+    switch (st) {
+    case 4: recvbuf = ByteBuffer(); break;
+    case 5: recvbuf.pos = 0; break;
+    }
+  }
+
+  function httpReceive(bbuf) {
+    recvbuf.putBuffer(bbuf);
+  }
+
+  function cancel() {
+    if (recvbuf) recvbuf.resize(0);
+  }
+
+  function getResult() {
+    return recvbuf;
+  }
+}
+
+class HTTPFileReceiver
+{
+  fileref = null;
+  stream = null;
+  readsize = 0;
+
+  constructor(f = null) {
+    if (typeof(f) == SS_STRING) {
+      f = FileRef(f);
+    }
+    fileref = f;
+  }
+
+  function httpStageChanged(st, arg) {
+    switch (st) {
+    case 4: stream = fileref.open("wb"); break;
+    case 5: stream.close(); stream = null; break;
+    }
+  }
+
+  function cancel() {
+    if (stream) {
+      stream.close();
+      fileref.refresh();
+      fileref.deleteFile();
+      fileref.refresh();
+    }
+  }
+
+  function httpReceive(bbuf) {
+    readsize += bbuf.remain;
+    stream.write(bbuf);
+  }
+
+  function getResult() {
+    fileref.refresh();
+    return fileref;
+  }
+}
+
+class HTTPSender
+{
+  function httpIsChunked() {
+    return false;
+  }
+
+  function httpGetDataType() {
+    return null;
+  }
+
+  function httpGetContentLength() {
+    return 0;
+  }
+
+  function httpSend(bbuf, len) {
+  }
+}
+
+class HTTPByteBufferSender
+{
+  sendbuf = null;
+
+  constructor(bb) {
+    sendbuf = bb;
+  }
+
+  function httpIsChunked() {
+    return false;
+  }
+
+  function httpGetDataType() {
+    return null;
+  }
+
+  function httpGetContentLength() {
+    return sendbuf.size;
+  }
+
+  function httpSend(bbuf, len) {
+    if (len > sendbuf.size - sendbuf.pos) {
+      len = sendbuf.size - sendbuf.pos;
+    }
+    if (len > 0) {
+      bbuf.putBuffer(sendbuf, len);
+    }
+    return len;
+  }
+}
+
+class HTTPMultiPartSender
+{
+  boundary = "sa42ka99na31";
+  sendbuf = null;
+
+  constructor(t) {
+    sendbuf = ByteBuffer();
+    foreach (i, v in t) {
+      sendbuf.putText(sprintf("--%S\r\nContent-Disposition: form-data; name=\"%S\"\r\n\r\n", boundary, string(i)))
+      switch (typeof(v)) {
+      case SS_STRING:
+        sendbuf.putText(v);
+        break;
+      default:
+        sendbuf.putText(encodeJSON(v));
+        break;
+      }
+      sendbuf.putText("\r\n");
+    }
+    sendbuf.putText("--");
+    sendbuf.putText(boundary);
+    sendbuf.putText("--");
+    sendbuf.putb(0);
+    sendbuf.pos = 0;
+  }
+
+  function httpIsChunked() {
+    return false;
+  }
+
+  function httpGetDataType() {
+    return "multipart/form-data; boundary=" + boundary;
+  }
+
+  function httpGetContentLength() {
+    return sendbuf.size;
+  }
+
+  function httpSend(bbuf, len) {
+    if (len > sendbuf.size - sendbuf.pos) {
+      len = sendbuf.size - sendbuf.pos;
+    }
+    if (len > 0) {
+
+      bbuf.putBuffer(sendbuf, len);
+    }
+    return len;
+  }
+}

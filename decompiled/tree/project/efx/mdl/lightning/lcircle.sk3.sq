@@ -1,0 +1,39 @@
+model =
+{
+  root = {
+    pm = "lcircle.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+  }
+
+  function start() {
+    setBlend(SK_ADD);
+    uvscroll(0, 6);
+    for (local i = 0; i < 2; i++) {
+      fadeColor(1153171455, 30);
+      spin(0, 0, 100, 100);
+      setPivot(0, 0.3, -0.3);
+
+      pass(65);
+      pass(65);
+      fadeColor(255, 30);
+      pass(65);
+
+      fadeColor(0xffff22ff, 30);
+      spin(0, 0, 100, 100);
+      setPivot(0.25, -0.7, 0.3);
+
+      pass(65);
+      pass(65);
+      fadeColor(255, 30);
+      pass(65);
+    }
+
+  }
+}

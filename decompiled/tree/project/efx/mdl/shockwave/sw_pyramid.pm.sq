@@ -1,0 +1,19 @@
+return {
+  modeldata = "sw_pyramid.mdl"
+  bnd = [0.0, 3.279179, -2.228183, 4.216854, 3.289179, 2.773112]
+
+  material = [
+  {
+    name = "sw_pyramid"
+    tec = "shading.basic"
+    Ka = 0xffffff00
+    Kd = 0xffffffff
+    Ks = 0xffffff00
+    Ke = 0
+    shiness = 50.0
+    alphatest = 1
+    alpharef = 0.7
+    texture0 = "tex/sw_pyramid.png"
+  }
+  ]
+}

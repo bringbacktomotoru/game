@@ -1,0 +1,17 @@
+return {
+  modeldata = "wall_R.mdl"
+  bnd = [-10.198771, 4.955587, -1e-06, 0.198771, 4.955588, 4.0]
+
+  material = [
+  {
+    name = "room_mt"
+    tec = "shading.basic"
+    Ka = 0xfffffffd
+    Kd = 0xffffffff
+    Ks = 0xdbdbdbff
+    Ke = 0
+    shiness = 20.0
+    texture0 = "tex/floweryantique.png"
+  }
+  ]
+}

@@ -1,0 +1,25 @@
+model =
+{
+  root = {
+    pm = "room_select.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+  }
+
+  function start() {
+    setBlend(SK_ADD);
+    fadeColor(2130706432, 0);
+    for (;;) {
+      fadeColor(0xcf000000, 800);
+      pass(800);
+      fadeColor(2130706432, 800);
+      pass(800);
+    }
+  }
+}

@@ -1,0 +1,23 @@
+class LevelSetting extends ::Setting {
+  id = 0;
+  exp_list = null;
+  gm_list = null;
+  time_list = null;
+
+  function loadConfAtServer(t) {
+    local _setting = LevelSetting();
+    foreach (k, v in t) {
+      switch (k) {
+      case "exp_list":
+      case "gm_list":
+      case "time_list":
+        _setting[k] = decodeJSON(v);
+        break;
+      default:
+        _setting[k] = v;
+      }
+
+    }
+    return _setting;
+  }
+}

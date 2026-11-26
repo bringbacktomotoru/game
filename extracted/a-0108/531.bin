@@ -1,0 +1,2169 @@
+{
+  "ID": "d4cbc06f-461d-4205-95bf-127dfd1e31c8",
+  "Version": "2.3.3.0",
+  "Name": "HomeClosetSelectPanel",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 47,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/closet.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 375.0,
+              "Y": 600.0
+            },
+            "Scale": {
+              "ScaleX": 1.6,
+              "ScaleY": 1.6
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5208,
+              "Y": 0.4688
+            },
+            "PreSize": {
+              "X": 0.6194,
+              "Y": 0.3516
+            },
+            "LeftMargin": 152.0,
+            "RightMargin": 122.0,
+            "TopMargin": 455.0,
+            "BottomMargin": 375.0,
+            "Tag": 500,
+            "ActionTag": 1925413049,
+            "Size": {
+              "X": 446.0,
+              "Y": 450.0
+            },
+            "Name": "img_closet",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_ww.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 26,
+            "Scale9OriginY": 26,
+            "Scale9Width": 28,
+            "Scale9Height": 28,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 656.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 238,
+              "G": 238,
+              "B": 238
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5125
+            },
+            "PreSize": {
+              "X": 0.6833,
+              "Y": 0.2891
+            },
+            "LeftMargin": 114.0,
+            "RightMargin": 114.0,
+            "TopMargin": 439.0,
+            "BottomMargin": 471.0,
+            "Tag": 84,
+            "ActionTag": -563952681,
+            "Size": {
+              "X": 492.0,
+              "Y": 370.0
+            },
+            "Alpha": 229,
+            "Name": "img_icon_bg",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 36,
+            "LabelText": "クローゼット選択",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 4,
+            "OutlineColor": {},
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": 0.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 359.998,
+              "Y": 985.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.7695
+            },
+            "PreSize": {
+              "X": 0.3181,
+              "Y": 0.0344
+            },
+            "LeftMargin": 245.498,
+            "RightMargin": 245.502,
+            "TopMargin": 273.0,
+            "BottomMargin": 963.0,
+            "Tag": 49,
+            "ActionTag": -1218999799,
+            "Size": {
+              "X": 229.0,
+              "Y": 44.0
+            },
+            "Name": "lbl_title",
+            "ctype": "TextObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 712.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5562
+            },
+            "PreSize": {
+              "X": 0.8333,
+              "Y": 0.1406
+            },
+            "LeftMargin": 60.0,
+            "RightMargin": 60.0,
+            "TopMargin": 478.0,
+            "BottomMargin": 622.0,
+            "Tag": 52,
+            "ActionTag": -1054351053,
+            "Size": {
+              "X": 600.0,
+              "Y": 180.0
+            },
+            "Name": "pnl_team",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "FontSize": 44,
+            "LabelText": "キティーちゃん",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "B": 0
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": 0.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 868.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.6781
+            },
+            "PreSize": {
+              "X": 0.3042,
+              "Y": 0.0375
+            },
+            "LeftMargin": 250.5,
+            "RightMargin": 250.5,
+            "TopMargin": 388.0,
+            "BottomMargin": 844.0,
+            "Tag": 144,
+            "ActionTag": -796046432,
+            "Size": {
+              "X": 219.0,
+              "Y": 48.0
+            },
+            "Name": "lbl_subtitle",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_h3.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 360.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.2813
+            },
+            "PreSize": {
+              "X": 0.25,
+              "Y": 0.0609
+            },
+            "LeftMargin": 270.0,
+            "RightMargin": 270.0,
+            "TopMargin": 881.0,
+            "BottomMargin": 321.0,
+            "Tag": 329,
+            "Children": [
+              {
+                "FontSize": 34,
+                "LabelText": "育成開始",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineSize": 4,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 90.0,
+                  "Y": 39.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.7944,
+                  "Y": 0.5385
+                },
+                "LeftMargin": 18.5,
+                "RightMargin": 18.5,
+                "TopMargin": 18.0,
+                "BottomMargin": 18.0,
+                "Tag": 545,
+                "ActionTag": 1462137270,
+                "Size": {
+                  "X": 143.0,
+                  "Y": 42.0
+                },
+                "Name": "label",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -878905324,
+            "Size": {
+              "X": 180.0,
+              "Y": 78.0
+            },
+            "Name": "btn_next",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_l.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 39.0,
+              "Y": 662.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0542,
+              "Y": 0.5172
+            },
+            "PreSize": {
+              "X": 0.1319,
+              "Y": 0.0938
+            },
+            "LeftMargin": -8.5,
+            "RightMargin": 633.5,
+            "TopMargin": 558.0,
+            "BottomMargin": 602.0,
+            "Tag": 105,
+            "ActionTag": -346649367,
+            "Size": {
+              "X": 95.0,
+              "Y": 120.0
+            },
+            "Name": "btn_deccloset",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_r.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 679.0,
+              "Y": 662.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.9431,
+              "Y": 0.5172
+            },
+            "PreSize": {
+              "X": 0.1319,
+              "Y": 0.0938
+            },
+            "LeftMargin": 631.5,
+            "RightMargin": -6.5,
+            "TopMargin": 558.0,
+            "BottomMargin": 602.0,
+            "Tag": 106,
+            "ActionTag": -1350333230,
+            "Size": {
+              "X": 95.0,
+              "Y": 120.0
+            },
+            "Name": "btn_inccloset",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_bw.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 5,
+            "Scale9OriginY": 5,
+            "Scale9Width": 8,
+            "Scale9Height": 8,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 200.0,
+              "Y": 740.9985
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2778,
+              "Y": 0.5789
+            },
+            "PreSize": {
+              "X": 0.1111,
+              "Y": 0.0625
+            },
+            "LeftMargin": 160.0,
+            "RightMargin": 480.0,
+            "TopMargin": 499.0015,
+            "BottomMargin": 700.9985,
+            "Tag": 112,
+            "Children": [
+              {
+                "FontSize": 20,
+                "LabelText": "LV.13",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -16.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.2
+                },
+                "PreSize": {
+                  "X": 0.7875,
+                  "Y": 0.3
+                },
+                "LeftMargin": 8.5,
+                "RightMargin": 8.5,
+                "TopMargin": 84.0,
+                "BottomMargin": -28.0,
+                "Tag": 103,
+                "ActionTag": -901162487,
+                "Size": {
+                  "X": 63.0,
+                  "Y": 24.0
+                },
+                "Name": "lbl_level",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "スーツ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -36.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.45
+                },
+                "PreSize": {
+                  "X": 0.5375,
+                  "Y": 0.25
+                },
+                "LeftMargin": 18.5,
+                "RightMargin": 18.5,
+                "TopMargin": 106.0,
+                "BottomMargin": -46.0,
+                "Tag": 104,
+                "ActionTag": -411773633,
+                "Size": {
+                  "X": 43.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name1",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/grade1.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "Scale9Width": 100,
+                "Scale9Height": 20,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": 75.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.9375
+                },
+                "PreSize": {
+                  "X": 1.25,
+                  "Y": 0.25
+                },
+                "LeftMargin": -10.0,
+                "RightMargin": -10.0,
+                "TopMargin": -5.0,
+                "BottomMargin": 65.0,
+                "Tag": 178,
+                "ActionTag": 1870642617,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 20.0
+                },
+                "Name": "img_grade",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -582046125,
+            "Size": {
+              "X": 80.0,
+              "Y": 80.0
+            },
+            "Name": "btn_costume1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_bw.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 5,
+            "Scale9OriginY": 5,
+            "Scale9Width": 8,
+            "Scale9Height": 8,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 359.9989,
+              "Y": 740.9973
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5789
+            },
+            "PreSize": {
+              "X": 0.1111,
+              "Y": 0.0625
+            },
+            "LeftMargin": 319.9989,
+            "RightMargin": 320.0011,
+            "TopMargin": 499.0027,
+            "BottomMargin": 700.9973,
+            "Tag": 113,
+            "Children": [
+              {
+                "FontSize": 20,
+                "LabelText": "LV.13",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -16.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.2
+                },
+                "PreSize": {
+                  "X": 0.7875,
+                  "Y": 0.3
+                },
+                "LeftMargin": 8.5,
+                "RightMargin": 8.5,
+                "TopMargin": 84.0,
+                "BottomMargin": -28.0,
+                "Tag": 114,
+                "ActionTag": -1715118847,
+                "Size": {
+                  "X": 63.0,
+                  "Y": 24.0
+                },
+                "Name": "lbl_level",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "スーツ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -36.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.45
+                },
+                "PreSize": {
+                  "X": 0.5375,
+                  "Y": 0.25
+                },
+                "LeftMargin": 18.5,
+                "RightMargin": 18.5,
+                "TopMargin": 106.0,
+                "BottomMargin": -46.0,
+                "Tag": 115,
+                "ActionTag": -316062178,
+                "Size": {
+                  "X": 43.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name1",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/grade1.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "Scale9Width": 100,
+                "Scale9Height": 20,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": 75.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.9375
+                },
+                "PreSize": {
+                  "X": 1.25,
+                  "Y": 0.25
+                },
+                "LeftMargin": -10.0,
+                "RightMargin": -10.0,
+                "TopMargin": -5.0,
+                "BottomMargin": 65.0,
+                "Tag": 179,
+                "ActionTag": 1757809577,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 20.0
+                },
+                "Name": "img_grade",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 1107889504,
+            "Size": {
+              "X": 80.0,
+              "Y": 80.0
+            },
+            "Name": "btn_costume2",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_bw.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 5,
+            "Scale9OriginY": 5,
+            "Scale9Width": 8,
+            "Scale9Height": 8,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 519.9989,
+              "Y": 740.9971
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7222,
+              "Y": 0.5789
+            },
+            "PreSize": {
+              "X": 0.1111,
+              "Y": 0.0625
+            },
+            "LeftMargin": 479.9989,
+            "RightMargin": 160.0011,
+            "TopMargin": 499.0029,
+            "BottomMargin": 700.9971,
+            "Tag": 116,
+            "Children": [
+              {
+                "FontSize": 20,
+                "LabelText": "LV.13",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -16.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.2
+                },
+                "PreSize": {
+                  "X": 0.7875,
+                  "Y": 0.3
+                },
+                "LeftMargin": 8.5,
+                "RightMargin": 8.5,
+                "TopMargin": 84.0,
+                "BottomMargin": -28.0,
+                "Tag": 117,
+                "ActionTag": 1072964772,
+                "Size": {
+                  "X": 63.0,
+                  "Y": 24.0
+                },
+                "Name": "lbl_level",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "スーツ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -36.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.45
+                },
+                "PreSize": {
+                  "X": 0.5375,
+                  "Y": 0.25
+                },
+                "LeftMargin": 18.5,
+                "RightMargin": 18.5,
+                "TopMargin": 106.0,
+                "BottomMargin": -46.0,
+                "Tag": 118,
+                "ActionTag": -447144040,
+                "Size": {
+                  "X": 43.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name1",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/grade1.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "Scale9Width": 100,
+                "Scale9Height": 20,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": 75.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.9375
+                },
+                "PreSize": {
+                  "X": 1.25,
+                  "Y": 0.25
+                },
+                "LeftMargin": -10.0,
+                "RightMargin": -10.0,
+                "TopMargin": -5.0,
+                "BottomMargin": 65.0,
+                "Tag": 183,
+                "ActionTag": 1189316548,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 20.0
+                },
+                "Name": "img_grade",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 238523431,
+            "Size": {
+              "X": 80.0,
+              "Y": 80.0
+            },
+            "Name": "btn_costume3",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_bw.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 5,
+            "Scale9OriginY": 5,
+            "Scale9Width": 8,
+            "Scale9Height": 8,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 199.9974,
+              "Y": 610.9954
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2778,
+              "Y": 0.4773
+            },
+            "PreSize": {
+              "X": 0.1111,
+              "Y": 0.0625
+            },
+            "LeftMargin": 159.9974,
+            "RightMargin": 480.0026,
+            "TopMargin": 629.0046,
+            "BottomMargin": 570.9954,
+            "Tag": 119,
+            "Children": [
+              {
+                "FontSize": 20,
+                "LabelText": "LV.13",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -16.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.2
+                },
+                "PreSize": {
+                  "X": 0.7875,
+                  "Y": 0.3
+                },
+                "LeftMargin": 8.5,
+                "RightMargin": 8.5,
+                "TopMargin": 84.0,
+                "BottomMargin": -28.0,
+                "Tag": 120,
+                "ActionTag": -1990686612,
+                "Size": {
+                  "X": 63.0,
+                  "Y": 24.0
+                },
+                "Name": "lbl_level",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "スーツ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -36.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.45
+                },
+                "PreSize": {
+                  "X": 0.5375,
+                  "Y": 0.25
+                },
+                "LeftMargin": 18.5,
+                "RightMargin": 18.5,
+                "TopMargin": 106.0,
+                "BottomMargin": -46.0,
+                "Tag": 121,
+                "ActionTag": 200987716,
+                "Size": {
+                  "X": 43.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name1",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/grade1.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "Scale9Width": 100,
+                "Scale9Height": 20,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": 75.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.9375
+                },
+                "PreSize": {
+                  "X": 1.25,
+                  "Y": 0.25
+                },
+                "LeftMargin": -10.0,
+                "RightMargin": -10.0,
+                "TopMargin": -5.0,
+                "BottomMargin": 65.0,
+                "Tag": 182,
+                "ActionTag": 1472507953,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 20.0
+                },
+                "Name": "img_grade",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -1122151411,
+            "Size": {
+              "X": 80.0,
+              "Y": 80.0
+            },
+            "Name": "btn_costume4",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_bw.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 5,
+            "Scale9OriginY": 5,
+            "Scale9Width": 8,
+            "Scale9Height": 8,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 359.9989,
+              "Y": 610.9978
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.4773
+            },
+            "PreSize": {
+              "X": 0.1111,
+              "Y": 0.0625
+            },
+            "LeftMargin": 319.9989,
+            "RightMargin": 320.0011,
+            "TopMargin": 629.0022,
+            "BottomMargin": 570.9978,
+            "Tag": 122,
+            "Children": [
+              {
+                "FontSize": 20,
+                "LabelText": "LV.13",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -16.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.2
+                },
+                "PreSize": {
+                  "X": 0.7875,
+                  "Y": 0.3
+                },
+                "LeftMargin": 8.5,
+                "RightMargin": 8.5,
+                "TopMargin": 84.0,
+                "BottomMargin": -28.0,
+                "Tag": 123,
+                "ActionTag": -1180986556,
+                "Size": {
+                  "X": 63.0,
+                  "Y": 24.0
+                },
+                "Name": "lbl_level",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "スーツ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -36.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.45
+                },
+                "PreSize": {
+                  "X": 0.5375,
+                  "Y": 0.25
+                },
+                "LeftMargin": 18.5,
+                "RightMargin": 18.5,
+                "TopMargin": 106.0,
+                "BottomMargin": -46.0,
+                "Tag": 124,
+                "ActionTag": -1873715198,
+                "Size": {
+                  "X": 43.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name1",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/grade1.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "Scale9Width": 100,
+                "Scale9Height": 20,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": 75.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.9375
+                },
+                "PreSize": {
+                  "X": 1.25,
+                  "Y": 0.25
+                },
+                "LeftMargin": -10.0,
+                "RightMargin": -10.0,
+                "TopMargin": -5.0,
+                "BottomMargin": 65.0,
+                "Tag": 181,
+                "ActionTag": 26283833,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 20.0
+                },
+                "Name": "img_grade",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -1910184881,
+            "Size": {
+              "X": 80.0,
+              "Y": 80.0
+            },
+            "Name": "btn_costume5",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/black_dialog.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 8,
+            "Scale9OriginY": 8,
+            "Scale9Width": 16,
+            "Scale9Height": 16,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 520.0001,
+              "Y": 610.9992
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7222,
+              "Y": 0.4773
+            },
+            "PreSize": {
+              "X": 0.1111,
+              "Y": 0.0625
+            },
+            "LeftMargin": 480.0001,
+            "RightMargin": 159.9999,
+            "TopMargin": 629.0008,
+            "BottomMargin": 570.9992,
+            "Tag": 131,
+            "Children": [
+              {
+                "FontSize": 20,
+                "LabelText": "LV.13",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -16.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.2
+                },
+                "PreSize": {
+                  "X": 0.7875,
+                  "Y": 0.3
+                },
+                "LeftMargin": 8.5,
+                "RightMargin": 8.5,
+                "TopMargin": 84.0,
+                "BottomMargin": -28.0,
+                "Tag": 132,
+                "ActionTag": 1198724181,
+                "Size": {
+                  "X": 63.0,
+                  "Y": 24.0
+                },
+                "Name": "lbl_level",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 20,
+                "LabelText": "スーツ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": -36.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": -0.45
+                },
+                "PreSize": {
+                  "X": 0.5375,
+                  "Y": 0.25
+                },
+                "LeftMargin": 18.5,
+                "RightMargin": 18.5,
+                "TopMargin": 106.0,
+                "BottomMargin": -46.0,
+                "Tag": 133,
+                "ActionTag": -2094187507,
+                "Size": {
+                  "X": 43.0,
+                  "Y": 20.0
+                },
+                "Name": "lbl_name1",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/grade1.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "Scale9Width": 100,
+                "Scale9Height": 20,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 40.0,
+                  "Y": 75.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.9375
+                },
+                "PreSize": {
+                  "X": 1.25,
+                  "Y": 0.25
+                },
+                "LeftMargin": -10.0,
+                "RightMargin": -10.0,
+                "TopMargin": -5.0,
+                "BottomMargin": 65.0,
+                "Tag": 186,
+                "ActionTag": 486491723,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 20.0
+                },
+                "Name": "img_grade",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 1054787752,
+            "Size": {
+              "X": 80.0,
+              "Y": 80.0
+            },
+            "Name": "btn_costume_f",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_bw2.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 10,
+            "Scale9OriginY": 17,
+            "Scale9Width": 12,
+            "Scale9Height": 18,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 805.9997
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.6297
+            },
+            "PreSize": {
+              "X": 0.6667,
+              "Y": 0.0375
+            },
+            "LeftMargin": 120.0,
+            "RightMargin": 120.0,
+            "TopMargin": 450.0003,
+            "BottomMargin": 781.9997,
+            "Tag": 738,
+            "Children": [
+              {
+                "FontSize": 24,
+                "LabelText": "能力名",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 16.0,
+                  "Y": 34.9992
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0333,
+                  "Y": 0.7291
+                },
+                "PreSize": {
+                  "X": 0.1542,
+                  "Y": 0.5
+                },
+                "LeftMargin": 16.0,
+                "RightMargin": 390.0,
+                "TopMargin": 1.0008,
+                "BottomMargin": 22.9992,
+                "Tag": 740,
+                "ActionTag": 1820246526,
+                "Size": {
+                  "X": 74.0,
+                  "Y": 24.0
+                },
+                "Name": "lbl_main_skill",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 16,
+                "LabelText": "スキルの説明スキルの説明スキルの説明",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 16.0,
+                  "Y": 12.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0333,
+                  "Y": 0.25
+                },
+                "PreSize": {
+                  "X": 0.5104,
+                  "Y": 0.3333
+                },
+                "LeftMargin": 16.0,
+                "RightMargin": 219.0,
+                "TopMargin": 28.0,
+                "BottomMargin": 4.0,
+                "Tag": 41,
+                "ActionTag": -1203586423,
+                "Size": {
+                  "X": 245.0,
+                  "Y": 16.0
+                },
+                "Name": "lbl_main_skill_desc",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1210419446,
+            "Size": {
+              "X": 480.0,
+              "Y": 48.0
+            },
+            "Name": "Image_4",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_bw2.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 10,
+            "Scale9OriginY": 17,
+            "Scale9Width": 12,
+            "Scale9Height": 18,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 491.9996
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.3844
+            },
+            "PreSize": {
+              "X": 0.6667,
+              "Y": 0.0375
+            },
+            "LeftMargin": 120.0,
+            "RightMargin": 120.0,
+            "TopMargin": 764.0004,
+            "BottomMargin": 467.9996,
+            "Tag": 739,
+            "Children": [
+              {
+                "FontSize": 24,
+                "LabelText": "フレンド能力名",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 16.0002,
+                  "Y": 32.0007
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0333,
+                  "Y": 0.6667
+                },
+                "PreSize": {
+                  "X": 0.3,
+                  "Y": 0.5
+                },
+                "LeftMargin": 16.0002,
+                "RightMargin": 319.9998,
+                "TopMargin": 3.9993,
+                "BottomMargin": 20.0007,
+                "Tag": 741,
+                "ActionTag": -23173514,
+                "Size": {
+                  "X": 144.0,
+                  "Y": 24.0
+                },
+                "Name": "lbl_friend_main_skill",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 16,
+                "LabelText": "スキルの説明スキルの説明スキルの説明",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 16.0,
+                  "Y": 12.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0333,
+                  "Y": 0.25
+                },
+                "PreSize": {
+                  "X": 0.5104,
+                  "Y": 0.3333
+                },
+                "LeftMargin": 16.0,
+                "RightMargin": 219.0,
+                "TopMargin": 28.0,
+                "BottomMargin": 4.0,
+                "Tag": 42,
+                "ActionTag": 740159567,
+                "Size": {
+                  "X": 245.0,
+                  "Y": 16.0
+                },
+                "Name": "lbl_friend_main_skill_desc",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1900081282,
+            "Size": {
+              "X": 480.0,
+              "Y": 48.0
+            },
+            "Name": "Image_4_0",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 24,
+            "LabelText": "育成に使用するクローゼットを選択して下さい",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {},
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": 0.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 920.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.7188
+            },
+            "PreSize": {
+              "X": 0.5806,
+              "Y": 0.0219
+            },
+            "LeftMargin": 151.0,
+            "RightMargin": 151.0,
+            "TopMargin": 346.0,
+            "BottomMargin": 906.0,
+            "Tag": 1672,
+            "ActionTag": 1951444668,
+            "Size": {
+              "X": 418.0,
+              "Y": 28.0
+            },
+            "Name": "lbl_title_0",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 720.0,
+          "Y": 1280.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "font/logotypejp_mp_b_1.ttf",
+        "image/closet.png",
+        "image/ss_base.plist",
+        "image/ss_base.png",
+        "image/ss_btn.plist",
+        "image/ss_btn.png",
+        "image/ss_icon.plist",
+        "image/ss_icon.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

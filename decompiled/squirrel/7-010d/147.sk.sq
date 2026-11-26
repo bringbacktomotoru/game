@@ -1,0 +1,53 @@
+parentcoord <- false
+currentgroup <- 1
+groups <- [
+with ParticleGroupData() {
+  name = "GROUP1"
+  enabled = true
+  aimtype = 0
+  emitter = with ParticleEmitter() {
+    num = 12
+    start = 0, start_spr = 0
+    life = 1500, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 3.124139, dir_spry = 3.124139, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = "ptc/hanabira01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_color", "color": [-4259841, -4259841] },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 1.0], "scale": 3.141593, "axisid": 2 },
+  { "classid": "ptcmod_vel", "vel": 1.96, "vel_spr": 0.0 },
+  ] },
+with ParticleGroupData() {
+  name = "2"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 15
+    start = 0, start_spr = 0
+    life = 1640, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 3.124139, dir_spry = 3.124139, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = "ptc/hanabira01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_color", "color": [-4259841, -4259841] },
+  { "classid": "ptcmod_vel", "vel": 8.68, "vel_spr": 0.0 },
+  { "classid": "ptcmod_rot", "rot": [1.0, -1.0], "scale": 3.141593, "axisid": 0 },
+  { "classid": "ptcmod_rot", "rot": [1.0, -1.0], "scale": 3.1416, "axisid": 2 },
+  ] },
+]

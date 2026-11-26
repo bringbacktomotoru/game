@@ -1,0 +1,6484 @@
+costume_settings[109001] <- CostumeSetting({
+  permission = 1;
+  name = "ハローキティ";
+  desc = "空色のオーバーオールが/n元気いっぱいなスタイル。/n差し色の黄色がアクセントで/nかわいらしい。/n「いつも着ちゃう/nお洋服ってあるわよね#o1#」";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/default/kitty.pm";
+  hand_tex = "/res/clothes/default/tex/kitty.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_RED;
+
+  actions = [1, 2, 3];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[108002] <- CostumeSetting({
+  permission = 1;
+  name = "マイメロディ";
+  desc = "おばあちゃんが作ってくれた/nかわいい頭巾は宝物。/nお気に入りで/nいつもかぶっているよ。/n「メロディのとれーどまーく#h1#/nなのよ#o1#」";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/default/mymelo.pm";
+  hand_tex = "/res/clothes/default/tex/mymelo.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+
+  actions = [1, 2, 4];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[111101] <- CostumeSetting({
+  permission = 1;
+  name = "ポムポムプリン";
+  desc = "こげ茶色のベレー帽がばっちり/nきまっているスタイル。/n色々な帽子の中でも/n一番のお気に入りのよう。/n「どうかな#q1#ぼくといえば/nこの帽子でしょ#o1#」";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/default/purin.pm";
+  hand_tex = "/res/clothes/default/tex/purin.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_YELLOW;
+
+  actions = [1, 2, 5];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[101102] <- CostumeSetting({
+  permission = 1;
+  name = "シナモロール";
+  desc = "くるくる/nシナモンロールみたいな/n尻尾が目立つスタイル。/n元気いっぱいに駆け回る。/n「ぼく、仔犬だから/n寒くてもへっちゃらだよ#e1#」";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/default/cinnamon.pm";
+  hand_tex = "/res/clothes/default/tex/cinnamon.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_WHITE;
+
+  actions = [1, 2, 6];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[108003] <- CostumeSetting({
+  name = "ララ";
+  desc = "赤と白のストライプが目立つお洋服。ワンポイントの蝶ネクタイはおしゃれさんの証。「えへへ#o1#着心地もいいんだ#e1#」";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/default/lala.pm";
+  hand_tex = "/res/clothes/default/tex/lala.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+
+  actions = [1, 2, 7];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[106103] <- CostumeSetting({
+  name = "キキ";
+  desc = "ゆめ星雲の/nおもいやり星でうまれた/n双子のきょうだい星。/nララの弟で、好奇心旺盛で、/nちょっぴりあわてんぼう。/n星つりと発明が大好き。";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/default/kiki.pm";
+  hand_tex = "/res/clothes/default/tex/kiki.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+
+  actions = [1, 2, 8];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[101004] <- CostumeSetting({
+  name = "ウィッシュミーメル";
+  desc = "フランスからやってきた/nウサギの女のコ。/nちょっぴりとぼけているけど/n素直で、優しい心の持ち主。/nホットケーキと/nオムライスが大好きで/n苦手なものは雷。";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/default/mell.pm";
+  hand_tex = "/res/clothes/default/tex/mell.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_WHITE;
+
+  actions = [1, 2, 9];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[102104] <- CostumeSetting({
+  name = "ポチャッコ";
+  desc = "好奇心旺盛で、/nおっちょこちょいで、/nちょっぴりおせっかい。/nより道お散歩が大好きな/nイヌの男のコ。れんげ草と/nバナナアイスが大好き。";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/default/pocha.pm";
+  hand_tex = "/res/clothes/default/tex/pocha.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLACK;
+
+  actions = [1, 2, 10];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[112105] <- CostumeSetting({
+  permission = 1;
+  name = "けろけろけろっぴ";
+  desc = "赤と白のストライプが/n目立つお洋服。/nワンポイントの蝶ネクタイは/nおしゃれさんの証。/n「えへへ#o1#/n着心地もいいんだ#e1#」";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/default/keroppi.pm";
+  hand_tex = "/res/clothes/default/tex/keroppi.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_GREEN;
+
+  actions = [1, 2, 11];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[108007] <- CostumeSetting({
+  name = "ぼんぼんりぼん";
+  desc = "おしゃれが大好きな/nピンクのうさぎ。/n大好きなママが作ってくれた/n大きなリボンが/nチャームポイント。/n歌とダンスに夢中。";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/default/ribon.pm";
+  hand_tex = "/res/clothes/default/tex/ribon.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+
+  actions = [1, 2, 12];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[109107] <- CostumeSetting({
+  name = "めろぉ";
+  desc = "メロディのはとこの男の子。/n趣味はボタン集めと/n大好きなメロディと遊ぶこと。/nメロディから貰った/n赤いずきんが宝物。";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/default/mello.pm";
+  hand_tex = "/res/clothes/default/tex/mello.png";
+  exp_table_id = 0;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_RED;
+
+  actions = [1, 2, 13];
+  health_table_id = 0;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_default";
+  priority = 10000;
+})
+
+costume_settings[202001] <- CostumeSetting({
+  permission = 1;
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「白と黒でかっこよく/nきめちゃう#e1#」";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/monochromestar_black/kitty.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/kitty_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  get_event_id = 202001;
+  priority = 9920;
+})
+
+costume_settings[202002] <- CostumeSetting({
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「たまにはくーるに/nきめるの#h1#」";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/monochromestar_black/mymelo.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/mymelo_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 0;
+})
+
+costume_settings[202101] <- CostumeSetting({
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「色数をおさえる/nおしゃれなんだよ#e1#」";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/monochromestar_black/purin.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/purin_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 0;
+})
+
+costume_settings[202102] <- CostumeSetting({
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「帽子って落ち着く～#e1#」";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/monochromestar_black/cinnamon.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/cinnamon_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 0;
+})
+
+costume_settings[202003] <- CostumeSetting({
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「パンツスタイルも/nステキでしょ#e1#」";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/monochromestar_black/lala.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/lala_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 0;
+})
+
+costume_settings[202103] <- CostumeSetting({
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「缶バッジまでお星さま#s1#」";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/monochromestar_black/kiki.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/kiki_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 0;
+})
+
+costume_settings[202004] <- CostumeSetting({
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「お星さまきらきら/n可愛く目立っちゃう#e1#」";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/monochromestar_black/mell.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/mell_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 0;
+})
+
+costume_settings[202104] <- CostumeSetting({
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「モノトーンなら/nまかせてね#e1#」";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/monochromestar_black/pocha.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/pocha_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 0;
+})
+
+costume_settings[202105] <- CostumeSetting({
+  permission = 1;
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「びしっと/nきまってるでしょ#q1#」";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/monochromestar_black/keroppi.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/keroppi_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 9990;
+
+  get_event_id = 202105;
+})
+
+costume_settings[202007] <- CostumeSetting({
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「きらきらきまってる#q1#」";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/monochromestar_black/ribon.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/ribon_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 0;
+})
+
+costume_settings[202107] <- CostumeSetting({
+  name = "モノクロームスター";
+  desc = "モノクロな星が弾ける/nポップなスタイル。/n大き目キャスケットが/nポイント。/n「おほしさま/nいっぱいなのです#o1#」";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/monochromestar_black/mello.pm";
+  hand_tex = "/res/clothes/monochromestar_black/tex/mello_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLACK;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_black";
+  priority = 0;
+})
+
+costume_settings[204001] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n皮のキャスケットがおしゃれ。";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/monochromestar_brown/kitty.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/kitty_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+
+})
+
+costume_settings[204002] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n散りばめられたお星さまが/n控えめに主張する。";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/monochromestar_brown/mymelo.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/mymelo_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+
+})
+
+costume_settings[204101] <- CostumeSetting({
+  permission = 1;
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n「どこにいこうかな#q1#」";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/monochromestar_brown/purin.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/purin_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 9990;
+  get_event_id = 204101;
+})
+
+costume_settings[204102] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n「なんだか/nうきうきしちゃう#o1#」";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/monochromestar_brown/cinnamon.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/cinnamon_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+})
+
+costume_settings[204003] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n「お空のお散歩に/nいこうかしら…#s1#」";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/monochromestar_brown/lala.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/lala_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+})
+
+costume_settings[204103] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n動きやすさも完璧#e1#";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/monochromestar_brown/kiki.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/kiki_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+})
+
+costume_settings[204004] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n「体を動かしたく/nなっちゃうね#o1#」";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/monochromestar_brown/mell.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/mell_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+})
+
+costume_settings[204104] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/nちょっぴりななめな/n帽子がポイント。";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/monochromestar_brown/pocha.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/pocha_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+})
+
+costume_settings[204105] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n「はやくおでかけしよう～#e1#」";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/monochromestar_brown/keroppi.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/keroppi_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+})
+
+costume_settings[204007] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n「動きやすくってステキ#h1#」";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/monochromestar_brown/ribon.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/ribon_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+})
+
+costume_settings[204107] <- CostumeSetting({
+  name = "スキャターブラウニー";
+  desc = "チョコレートカラーが/nビターポップなスタイル。/nちょっとそこまで/nおでかけできそう。/n「おさんぽに行きたく/nなってきたのです#h1#」";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/monochromestar_brown/mello.pm";
+  hand_tex = "/res/clothes/monochromestar_brown/tex/mello_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BROWN;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_brown";
+  priority = 0;
+})
+
+costume_settings[207001] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「大人っぽくみえるかしら#q1#」";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/monochromestar_purple/kitty.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/kitty_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+
+})
+
+costume_settings[207002] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「いっしょにおでかけする#q1#」";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/monochromestar_purple/mymelo.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/mymelo_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+
+})
+
+costume_settings[207101] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「帽子はななめなのが/nおしゃれなんだ～#e1#」";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/monochromestar_purple/purin.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/purin_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+
+})
+
+costume_settings[207102] <- CostumeSetting({
+  permission = 1;
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「三輪車に乗って/nおでかけするんだ#e1#」";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/monochromestar_purple/cinnamon.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/cinnamon_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 9970;
+  get_event_id = 207102;
+})
+
+costume_settings[207003] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「ばっちり/nきまってるかしら#s1#」";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/monochromestar_purple/lala.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/lala_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+})
+
+costume_settings[207103] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「星釣りスタイルに/nぴったりだね#s1#」";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/monochromestar_purple/kiki.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/kiki_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+})
+
+costume_settings[207004] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「どう#q1#/nみすてりあす#e1#でしょ～#e1#」";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/monochromestar_purple/mell.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/mell_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+})
+
+costume_settings[207104] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/nスケートボードもぴったり#e1#";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/monochromestar_purple/pocha.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/pocha_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+})
+
+costume_settings[207105] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「走り回ったって/nへっちゃら#e1#」";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/monochromestar_purple/keroppi.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/keroppi_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+})
+
+costume_settings[207007] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「缶バッジもたくさん#o1#」";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/monochromestar_purple/ribon.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/ribon_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+})
+
+costume_settings[207107] <- CostumeSetting({
+  name = "トゥインクルラベンダー";
+  desc = "魅力いっぱいの/nラベンダーカラーが/n大人ポップなスタイル。/nミステリアスで/n知的にみえちゃう#q1#/n「たくさん/nうごけちゃうのです#o1#」";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/monochromestar_purple/mello.pm";
+  hand_tex = "/res/clothes/monochromestar_purple/tex/mello_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [20, 21, 22];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_monochromestar_purple";
+  priority = 0;
+})
+
+costume_settings[402001] <- CostumeSetting({
+  permission = 1;
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n大人の雰囲気でお出迎え。";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/nobleescort_black/kitty.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/kitty_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  get_event_id = 402001;
+  priority = 9930;
+})
+
+costume_settings[402002] <- CostumeSetting({
+  permission = 1;
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n「きょうも/nゆっくりしていってね…#o1#」";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/nobleescort_black/mymelo.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/mymelo_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 9940;
+  get_event_id = 402002;
+})
+
+costume_settings[402101] <- CostumeSetting({
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n制服をきるとピシッときまる。";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/nobleescort_black/purin.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/purin_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 0;
+
+})
+
+costume_settings[402102] <- CostumeSetting({
+  permission = 1;
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/nきっとここの/nコーヒーはおいしい。";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/nobleescort_black/cinnamon.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/cinnamon_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 9960;
+  get_event_id = 402102;
+})
+
+costume_settings[402003] <- CostumeSetting({
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n「なんでもお話してね…#s1#」";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/nobleescort_black/lala.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/lala_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 0;
+})
+
+costume_settings[402103] <- CostumeSetting({
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n「甘いココアで一息つく#q1#」";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/nobleescort_black/kiki.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/kiki_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 0;
+})
+
+costume_settings[402004] <- CostumeSetting({
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n「メル、似合ってるかな#q1#」";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/nobleescort_black/mell.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/mell_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 0;
+})
+
+costume_settings[402104] <- CostumeSetting({
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n「どのカップにしようかな#q1#」";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/nobleescort_black/pocha.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/pocha_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 0;
+})
+
+costume_settings[402105] <- CostumeSetting({
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n「ぼくになんでもおまかせ#e1#」";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/nobleescort_black/keroppi.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/keroppi_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 0;
+})
+
+costume_settings[402007] <- CostumeSetting({
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n「蝶ネクタイもリボンなの#o1#」";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/nobleescort_black/ribon.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/ribon_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 0;
+})
+
+costume_settings[402107] <- CostumeSetting({
+  name = "ノーブルエスコート";
+  desc = "落ち着いた雰囲気で/nエスコートする制服。/n赤い蝶ネクタイが/nワンポイント。/n「ごちゅうもんは/nぼくにまかしぇろ#e1#」";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/nobleescort_black/mello.pm";
+  hand_tex = "/res/clothes/nobleescort_black/tex/mello_black.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLACK;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_black";
+  priority = 0;
+})
+
+costume_settings[403001] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/nのんびりまったりマイペース。";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/nobleescort_gray/kitty.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/kitty_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+})
+
+costume_settings[403002] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/nいつも常連さんでたくさん。";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/nobleescort_gray/mymelo.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/mymelo_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+  priority = 0;
+
+})
+
+costume_settings[403101] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/n蝶ネクタイも/nきっちりしめちゃう。";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/nobleescort_gray/purin.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/purin_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+  priority = 0;
+
+})
+
+costume_settings[403102] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/n「ふわあ～#o1#/nリラックス～#o1#」";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/nobleescort_gray/cinnamon.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/cinnamon_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+  priority = 0;
+})
+
+costume_settings[403003] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/n「今日もいつもの、かしら#q1#」";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/nobleescort_gray/lala.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/lala_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+})
+
+costume_settings[403103] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/nキリッとかっこよく/nきめちゃおう。";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/nobleescort_gray/kiki.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/kiki_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+  priority = 0;
+})
+
+costume_settings[403004] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/n「蝶ネクタイきゅっ#e1#」";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/nobleescort_gray/mell.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/mell_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+  priority = 0;
+})
+
+costume_settings[403104] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/n物静かなのが落ち着く。";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/nobleescort_gray/pocha.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/pocha_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+  priority = 0;
+})
+
+costume_settings[403105] <- CostumeSetting({
+  permission = 1;
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/nしましまエプロンがぴったり。";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/nobleescort_gray/keroppi.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/keroppi_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+  priority = 9980;
+  get_event_id = 403105;
+})
+
+costume_settings[403007] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/nシックにきめちゃう。";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/nobleescort_gray/ribon.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/ribon_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+  priority = 0;
+})
+
+costume_settings[403107] <- CostumeSetting({
+  name = "オールドカフェ";
+  desc = "昔から変わらないことが/n一番な老舗の制服。/nシンプルモノトーンで統一。/n「おとなっぽくみえるです#q1#」";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/nobleescort_gray/mello.pm";
+  hand_tex = "/res/clothes/nobleescort_gray/tex/mello_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GRAY;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_gray";
+  priority = 0;
+})
+
+costume_settings[410001] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/nルンルン気分がとまらない。";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/nobleescort_orange/kitty.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/kitty_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[410002] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/n「ごちゅうもんはいかが…#q1#」";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/nobleescort_orange/mymelo.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/mymelo_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[410101] <- CostumeSetting({
+  permission = 1;
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/n「わわわ、大忙し～#e1#」";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/nobleescort_orange/purin.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/purin_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 9980;
+  get_event_id = 410101;
+})
+
+costume_settings[410102] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/n「わあ、/nおいしそうなパフェ…#e1#」";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/nobleescort_orange/cinnamon.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/cinnamon_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[410003] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/n「注文はわたしにまかせて#s1#」";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/nobleescort_orange/lala.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/lala_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[410103] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/nみんな、にっこり笑顔。";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/nobleescort_orange/kiki.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/kiki_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[410004] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/n「ホットケーキが/nたべたいなぁ#h1#」";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/nobleescort_orange/mell.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/mell_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[410104] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/n「なんでも言ってね#e1#」";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/nobleescort_orange/pocha.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/pocha_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[410105] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/n「はいはーい#e1#今行くよー#e1#」";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/nobleescort_orange/keroppi.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/keroppi_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[410007] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/n「は～い#e1#/nいまいきま～す#e1#」";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/nobleescort_orange/ribon.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/ribon_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[410107] <- CostumeSetting({
+  name = "ジョイフルパーラー";
+  desc = "ビビッドなオレンジが/n楽しそうな制服。/n明るい雰囲気が伝わってくる。/n「わわわ、たくさん、/nいそがしいのです#e1#」";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/nobleescort_orange/mello.pm";
+  hand_tex = "/res/clothes/nobleescort_orange/tex/mello_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [23, 24, 25];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_nobleescort_orange";
+  priority = 0;
+})
+
+costume_settings[511001] <- CostumeSetting({
+  name = "レモンポップウェイトレス";
+  desc = "ビタミンカラーで/n元気いっぱいな制服。/nビビッドな水玉スカーフが/nアクセント。/n「いらっしゃいませ～#e1#」";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/retropopdinner_yellow/kitty.pm";
+  hand_tex = "/res/clothes/retropopdinner_yellow/tex/kitty_yellow.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_YELLOW;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_yellow";
+  priority = 0;
+})
+
+costume_settings[511002] <- CostumeSetting({
+  name = "レモンポップウェイトレス";
+  desc = "ビタミンカラーで/n元気いっぱいな制服。/nビビッドな水玉スカーフが/nアクセント。/nホールはおおいそがし。";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/retropopdinner_yellow/mymelo.pm";
+  hand_tex = "/res/clothes/retropopdinner_yellow/tex/mymelo_yellow.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_YELLOW;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_yellow";
+  priority = 0;
+})
+
+costume_settings[511003] <- CostumeSetting({
+  name = "レモンポップウェイトレス";
+  desc = "ビタミンカラーで/n元気いっぱいな制服。/nビビッドな水玉スカーフが/nアクセント。/n「キュートな店員さんは/n好き#q1#」";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/retropopdinner_yellow/lala.pm";
+  hand_tex = "/res/clothes/retropopdinner_yellow/tex/lala_yellow.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_YELLOW;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_yellow";
+  priority = 0;
+})
+
+costume_settings[511004] <- CostumeSetting({
+  name = "レモンポップウェイトレス";
+  desc = "ビタミンカラーで/n元気いっぱいな制服。/nビビッドな水玉スカーフが/nアクセント。/n「メルが注文をうけるよ#o1#」";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/retropopdinner_yellow/mell.pm";
+  hand_tex = "/res/clothes/retropopdinner_yellow/tex/mell_yellow.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_YELLOW;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_yellow";
+  priority = 0;
+})
+
+costume_settings[511007] <- CostumeSetting({
+  name = "レモンポップウェイトレス";
+  desc = "ビタミンカラーで/n元気いっぱいな制服。/nビビッドな水玉スカーフが/nアクセント。/nにっこりスマイルで/nしあわせいっぱい。";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/retropopdinner_yellow/ribon.pm";
+  hand_tex = "/res/clothes/retropopdinner_yellow/tex/ribon_yellow.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_YELLOW;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_yellow";
+  priority = 0;
+})
+
+costume_settings[508001] <- CostumeSetting({
+  name = "ガーリッシュネオン";
+  desc = "ネオンピンクが/nキュートな制服。/n可愛らしく愛嬌たっぷり。/n「ありがとうございます#h1#」";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/retropopdinner_pink/kitty.pm";
+  hand_tex = "/res/clothes/retropopdinner_pink/tex/kitty_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_PINK;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_pink";
+  priority = 0;
+})
+
+costume_settings[508002] <- CostumeSetting({
+  permission = 1;
+  name = "ガーリッシュネオン";
+  desc = "ネオンピンクが/nキュートな制服。/n可愛らしく愛嬌たっぷり。/nふわふわ優しい笑顔で/nみんなメロメロ。";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/retropopdinner_pink/mymelo.pm";
+  hand_tex = "/res/clothes/retropopdinner_pink/tex/mymelo_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_PINK;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_pink";
+  priority = 9910;
+  get_event_id = 508002;
+})
+
+costume_settings[508003] <- CostumeSetting({
+  name = "ガーリッシュネオン";
+  desc = "ネオンピンクが/nキュートな制服。/n可愛らしく愛嬌たっぷり。/nフリルをひるがえして/nあっちこっちおおいそがし。";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/retropopdinner_pink/lala.pm";
+  hand_tex = "/res/clothes/retropopdinner_pink/tex/lala_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_PINK;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_pink";
+  priority = 0;
+})
+
+costume_settings[508004] <- CostumeSetting({
+  name = "ガーリッシュネオン";
+  desc = "ネオンピンクが/nキュートな制服。/n可愛らしく愛嬌たっぷり。/n「いらっしゃいませ#h1#/n…どう#q1#上手#q1#」";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/retropopdinner_pink/mell.pm";
+  hand_tex = "/res/clothes/retropopdinner_pink/tex/mell_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_PINK;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_pink";
+  priority = 0;
+})
+
+costume_settings[508007] <- CostumeSetting({
+  name = "ガーリッシュネオン";
+  desc = "ネオンピンクが/nキュートな制服。/n可愛らしく愛嬌たっぷり。/nキュートな仕草にメロメロ。";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/retropopdinner_pink/ribon.pm";
+  hand_tex = "/res/clothes/retropopdinner_pink/tex/ribon_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_PINK;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_pink";
+  priority = 0;
+})
+
+costume_settings[509001] <- CostumeSetting({
+  name = "レトロチェリーダイナー";
+  desc = "クールなダークレッドが/n大人っぽい制服。/nソーダのように/n弾ける水玉がステキ。/n「ご注文はなににしますか#q1#」";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/retropopdinner_red/kitty.pm";
+  hand_tex = "/res/clothes/retropopdinner_red/tex/kitty_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_RED;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_red";
+  priority = 0;
+})
+
+costume_settings[509002] <- CostumeSetting({
+  name = "レトロチェリーダイナー";
+  desc = "クールなダークレッドが/n大人っぽい制服。/nソーダのように/n弾ける水玉がステキ。/n「あかいいろ、/nとってもにあうでしょ#h1#」";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/retropopdinner_red/mymelo.pm";
+  hand_tex = "/res/clothes/retropopdinner_red/tex/mymelo_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_RED;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_red";
+  priority = 0;
+})
+
+costume_settings[509003] <- CostumeSetting({
+  name = "レトロチェリーダイナー";
+  desc = "クールなダークレッドが/n大人っぽい制服。/nソーダのように/n弾ける水玉がステキ。/n後姿もとってもキュート。";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/retropopdinner_red/lala.pm";
+  hand_tex = "/res/clothes/retropopdinner_red/tex/lala_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_RED;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_red";
+  priority = 0;
+})
+
+costume_settings[509004] <- CostumeSetting({
+  name = "レトロチェリーダイナー";
+  desc = "クールなダークレッドが/n大人っぽい制服。/nソーダのように/n弾ける水玉がステキ。/n「エプロンのフリルが/n気に入っているの#h1#」";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/retropopdinner_red/mell.pm";
+  hand_tex = "/res/clothes/retropopdinner_red/tex/mell_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_RED;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_red";
+  priority = 0;
+})
+
+costume_settings[509007] <- CostumeSetting({
+  name = "レトロチェリーダイナー";
+  desc = "クールなダークレッドが/n大人っぽい制服。/nソーダのように/n弾ける水玉がステキ。/n「フリフリ、かわいいね#h1#」";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/retropopdinner_red/ribon.pm";
+  hand_tex = "/res/clothes/retropopdinner_red/tex/ribon_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_RED;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopdinner_red";
+  priority = 0;
+})
+
+costume_settings[510101] <- CostumeSetting({
+  name = "サニースターバーガー";
+  desc = "ビンテージなオレンジが/nどこか懐かしい制服。/n青の差し色が/nびしっときめてくれる。/n「大きなハンバーガーが/n食べたい気分#e1#」";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/retropopboy_orange/purin.pm";
+  hand_tex = "/res/clothes/retropopboy_orange/tex/purin_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_orange";
+  priority = 0;
+})
+
+costume_settings[510102] <- CostumeSetting({
+  name = "サニースターバーガー";
+  desc = "ビンテージなオレンジが/nどこか懐かしい制服。/n青の差し色が/nびしっときめてくれる。/n「オーダーなら任せて#e1#」";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/retropopboy_orange/cinnamon.pm";
+  hand_tex = "/res/clothes/retropopboy_orange/tex/cinnamon_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_orange";
+  priority = 0;
+})
+
+costume_settings[510103] <- CostumeSetting({
+  name = "サニースターバーガー";
+  desc = "ビンテージなオレンジが/nどこか懐かしい制服。/n青の差し色が/nびしっときめてくれる。/n「かしこまりました#s1#」";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/retropopboy_orange/kiki.pm";
+  hand_tex = "/res/clothes/retropopboy_orange/tex/kiki_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [26, 27, 28];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_orange";
+  priority = 0;
+})
+
+costume_settings[510104] <- CostumeSetting({
+  name = "サニースターバーガー";
+  desc = "ビンテージなオレンジが/nどこか懐かしい制服。/n青の差し色が/nびしっときめてくれる。/n元気いっぱいに駆け回る。";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/retropopboy_orange/pocha.pm";
+  hand_tex = "/res/clothes/retropopboy_orange/tex/pocha_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_orange";
+  priority = 0;
+})
+
+costume_settings[510105] <- CostumeSetting({
+  permission = 1;
+  name = "サニースターバーガー";
+  desc = "ビンテージなオレンジが/nどこか懐かしい制服。/n青の差し色が/nびしっときめてくれる。/n「あっちこっち/nぴょんぴょん#e1#」";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/retropopboy_orange/keroppi.pm";
+  hand_tex = "/res/clothes/retropopboy_orange/tex/keroppi_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_orange";
+  priority = 9970;
+  get_event_id = 510105;
+})
+
+costume_settings[510107] <- CostumeSetting({
+  name = "サニースターバーガー";
+  desc = "ビンテージなオレンジが/nどこか懐かしい制服。/n青の差し色が/nびしっときめてくれる。/n「ぼくをよんだのです#q1#」";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/retropopboy_orange/mello.pm";
+  hand_tex = "/res/clothes/retropopboy_orange/tex/mello_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_orange";
+  priority = 0;
+})
+
+costume_settings[506101] <- CostumeSetting({
+  name = "ビンテージクリームソーダ";
+  desc = "クリーミィなブルーが/n可愛らしい制服。/nピンクな水玉蝶ネクタイは/nとってもキュート。/n「わあ#s1#どいてどいて～#e1#」";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/retropopboy_blue/purin.pm";
+  hand_tex = "/res/clothes/retropopboy_blue/tex/purin_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_blue";
+  priority = 0;
+})
+
+costume_settings[506102] <- CostumeSetting({
+  permission = 1;
+  name = "ビンテージクリームソーダ";
+  desc = "クリーミィなブルーが/n可愛らしい制服。/nピンクな水玉蝶ネクタイは/nとってもキュート。/n「えへへ、いらっしゃい#o1#」";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/retropopboy_blue/cinnamon.pm";
+  hand_tex = "/res/clothes/retropopboy_blue/tex/cinnamon_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_blue";
+  priority = 9950;
+  get_event_id = 506102;
+})
+
+costume_settings[506103] <- CostumeSetting({
+  name = "ビンテージクリームソーダ";
+  desc = "クリーミィなブルーが/n可愛らしい制服。/nピンクな水玉蝶ネクタイは/nとってもキュート。/n「は～い#s1#いまいきま～す#s1#」";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/retropopboy_blue/kiki.pm";
+  hand_tex = "/res/clothes/retropopboy_blue/tex/kiki_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_blue";
+  priority = 0;
+})
+
+costume_settings[506104] <- CostumeSetting({
+  name = "ビンテージクリームソーダ";
+  desc = "クリーミィなブルーが/n可愛らしい制服。/nピンクな水玉蝶ネクタイは/nとってもキュート。/n「えっと、ハンバーグに、/nクリームソーダに…」";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/retropopboy_blue/pocha.pm";
+  hand_tex = "/res/clothes/retropopboy_blue/tex/pocha_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_blue";
+  priority = 0;
+})
+
+costume_settings[506105] <- CostumeSetting({
+  name = "ビンテージクリームソーダ";
+  desc = "クリーミィなブルーが/n可愛らしい制服。/nピンクな水玉蝶ネクタイは/nとってもキュート。/n笑顔の練習はかかさない。";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/retropopboy_blue/keroppi.pm";
+  hand_tex = "/res/clothes/retropopboy_blue/tex/keroppi_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_blue";
+  priority = 0;
+})
+
+costume_settings[506107] <- CostumeSetting({
+  name = "ビンテージクリームソーダ";
+  desc = "クリーミィなブルーが/n可愛らしい制服。/nピンクな水玉蝶ネクタイは/nとってもキュート。/n「にっこりえがおなのです#o1#」";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/retropopboy_blue/mello.pm";
+  hand_tex = "/res/clothes/retropopboy_blue/tex/mello_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_blue";
+  priority = 0;
+})
+
+costume_settings[512101] <- CostumeSetting({
+  permission = 1;
+  name = "ナチュラルダイニング";
+  desc = "くすんだグリーンが/nナチュラルな制服。/nアースカラーを引き締める/nブラックがかっこいい。/n「大人っぽい#q1#」";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/retropopboy_green/purin.pm";
+  hand_tex = "/res/clothes/retropopboy_green/tex/purin_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_green";
+  priority = 9970;
+  get_event_id = 512101;
+})
+
+costume_settings[512102] <- CostumeSetting({
+  name = "ナチュラルダイニング";
+  desc = "くすんだグリーンが/nナチュラルな制服。/nアースカラーを引き締める/nブラックがかっこいい。/n「グリーンも/nかわいいでしょ～#e1#」";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/retropopboy_green/cinnamon.pm";
+  hand_tex = "/res/clothes/retropopboy_green/tex/cinnamon_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_green";
+  priority = 0;
+})
+
+costume_settings[512103] <- CostumeSetting({
+  name = "ナチュラルダイニング";
+  desc = "くすんだグリーンが/nナチュラルな制服。/nアースカラーを引き締める/nブラックがかっこいい。/n「緑色ばっちり/n似合うでしょ#s1#」";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/retropopboy_green/kiki.pm";
+  hand_tex = "/res/clothes/retropopboy_green/tex/kiki_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_green";
+  priority = 0;
+})
+
+costume_settings[512104] <- CostumeSetting({
+  name = "ナチュラルダイニング";
+  desc = "くすんだグリーンが/nナチュラルな制服。/nアースカラーを引き締める/nブラックがかっこいい。/n「呼んだ～#q1#」";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/retropopboy_green/pocha.pm";
+  hand_tex = "/res/clothes/retropopboy_green/tex/pocha_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_green";
+  priority = 0;
+})
+
+costume_settings[512105] <- CostumeSetting({
+  name = "ナチュラルダイニング";
+  desc = "くすんだグリーンが/nナチュラルな制服。/nアースカラーを引き締める/nブラックがかっこいい。/nのんびりゆったり/n落ち着けそう。";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/retropopboy_green/keroppi.pm";
+  hand_tex = "/res/clothes/retropopboy_green/tex/keroppi_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_green";
+  priority = 0;
+})
+
+costume_settings[512107] <- CostumeSetting({
+  name = "ナチュラルダイニング";
+  desc = "くすんだグリーンが/nナチュラルな制服。/nアースカラーを引き締める/nブラックがかっこいい。/n「ゆっくりしていくのです#o1#」";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/retropopboy_green/mello.pm";
+  hand_tex = "/res/clothes/retropopboy_green/tex/mello_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [29, 30, 31];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_retropopboy_green";
+  priority = 0;
+})
+
+costume_settings[610001] <- CostumeSetting({
+  permission = 1;
+  name = "オレンジシンプルTシャツ";
+  desc = "フレッシュな元気あふれる/nオレンジ色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/Tshirt_simple_orange/kitty.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_orange/tex/kitty_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_orange";
+  get_event_id = 610001;
+  priority = 9900;
+})
+
+costume_settings[608001] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/Tshirt_simple_pink/kitty.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/kitty_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+})
+
+costume_settings[608002] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/Tshirt_simple_pink/mymelo.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/mymelo_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+
+  get_event_id = 608002;
+})
+
+costume_settings[608101] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/Tshirt_simple_pink/purin.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/purin_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+})
+
+costume_settings[608102] <- CostumeSetting({
+  permission = 1;
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/Tshirt_simple_pink/cinnamon.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/cinnamon_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 9910;
+
+  get_event_id = 608102;
+})
+
+costume_settings[608003] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/Tshirt_simple_pink/lala.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/lala_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+})
+
+costume_settings[608103] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/Tshirt_simple_pink/kiki.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/kiki_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+})
+
+costume_settings[608004] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/Tshirt_simple_pink/mell.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/mell_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+})
+
+costume_settings[608104] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/Tshirt_simple_pink/pocha.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/pocha_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+})
+
+costume_settings[608105] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/Tshirt_simple_pink/keroppi.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/keroppi_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+})
+
+costume_settings[608007] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/Tshirt_simple_pink/ribon.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/ribon_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+})
+
+costume_settings[608107] <- CostumeSetting({
+  name = "ピンクシンプルTシャツ";
+  desc = "シンプルキュートな/nパステルピンク色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/Tshirt_simple_pink/mello.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_pink/tex/mello_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_pink";
+  priority = 0;
+})
+
+costume_settings[606001] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/Tshirt_simple_blue/kitty.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/kitty_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[606002] <- CostumeSetting({
+  permission = 1;
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/Tshirt_simple_blue/mymelo.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/mymelo_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 9950;
+  get_event_id = 606002;
+})
+
+costume_settings[606101] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/Tshirt_simple_blue/purin.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/purin_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[606102] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/Tshirt_simple_blue/cinnamon.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/cinnamon_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[606003] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/Tshirt_simple_blue/lala.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/lala_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[606103] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/Tshirt_simple_blue/kiki.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/kiki_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[606004] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/Tshirt_simple_blue/mell.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/mell_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[606104] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/Tshirt_simple_blue/pocha.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/pocha_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[606105] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/Tshirt_simple_blue/keroppi.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/keroppi_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[606007] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/Tshirt_simple_blue/ribon.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/ribon_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[606107] <- CostumeSetting({
+  name = "ブルーシンプルTシャツ";
+  desc = "爽やかで清潔感のある/nパステルな水色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/Tshirt_simple_blue/mello.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_blue/tex/mello_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_blue";
+  priority = 0;
+})
+
+costume_settings[607001] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 1;
+  res = "/res/clothes/Tshirt_simple_purple/kitty.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/kitty_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[607002] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 2;
+  res = "/res/clothes/Tshirt_simple_purple/mymelo.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/mymelo_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[607101] <- CostumeSetting({
+  permission = 1;
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 101;
+  res = "/res/clothes/Tshirt_simple_purple/purin.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/purin_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 9930;
+  get_event_id = 607101;
+})
+
+costume_settings[607102] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 102;
+  res = "/res/clothes/Tshirt_simple_purple/cinnamon.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/cinnamon_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[607003] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 3;
+  res = "/res/clothes/Tshirt_simple_purple/lala.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/lala_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[607103] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 103;
+  res = "/res/clothes/Tshirt_simple_purple/kiki.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/kiki_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[607004] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 4;
+  res = "/res/clothes/Tshirt_simple_purple/mell.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/mell_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[607104] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 104;
+  res = "/res/clothes/Tshirt_simple_purple/pocha.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/pocha_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[607105] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 105;
+  res = "/res/clothes/Tshirt_simple_purple/keroppi.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/keroppi_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[607007] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 7;
+  res = "/res/clothes/Tshirt_simple_purple/ribon.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/ribon_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[607107] <- CostumeSetting({
+  name = "パープルシンプルTシャツ";
+  desc = "ゆめかわいい/nパステルな紫色のTシャツ。/nとても動きやすい。";
+  grade = 3;
+  chara_id = 107;
+  res = "/res/clothes/Tshirt_simple_purple/mello.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/mello_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [32, 33, 34];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tshirt_simple_purple";
+  priority = 0;
+})
+
+costume_settings[706001] <- CostumeSetting({
+  permission = 1;
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n海の香りを感じられる。";
+  grade = 4;
+  chara_id = 1;
+  res = "/res/clothes/smoky_sailor_blue/kitty.pm";
+  hand_tex = "/res/clothes/smoky_sailor_blue/tex/kitty_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  get_event_id = 706001;
+  priority = 9890;
+})
+
+costume_settings[706002] <- CostumeSetting({
+  permission = 1;
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n「せーらーふくって/nあこがれちゃうの#o1#」";
+  grade = 4;
+  chara_id = 2;
+  res = "/res/clothes/smoky_sailor_blue/mymelo.pm";
+  hand_tex = "/res/clothes/smoky_sailor_blue/tex/mymelo_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 9900;
+  get_event_id = 706002;
+})
+
+costume_settings[706101] <- CostumeSetting({
+  permission = 1;
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n「ベレー帽以外も/n似合うでしょ#e1#」";
+  grade = 4;
+  chara_id = 101;
+  res = "/res/clothes/smoky_sailor_blue/purin.pm";
+  hand_tex = "/res/clothes/smoky_sailor_blue/tex/purin_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 9900;
+  get_event_id = 706101;
+})
+
+costume_settings[706102] <- CostumeSetting({
+  permission = 1;
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n「空も海もだ～いすき#e1#」";
+  grade = 4;
+  chara_id = 102;
+  res = "/res/clothes/smoky_sailor_blue/cinnamon.pm";
+  hand_tex = "/res/clothes/smoky_sailor_blue/tex/cinnamon_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 9900;
+  get_event_id = 706102;
+})
+
+costume_settings[706003] <- CostumeSetting({
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n「どう#q1#似合ってる#q1#」";
+  grade = 4;
+  chara_id = 3;
+  res = "/res/clothes/smoky_sailor_blue/lala.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/lala_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 0;
+})
+
+costume_settings[706103] <- CostumeSetting({
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/nマリンをひとりじめ#e1#";
+  grade = 4;
+  chara_id = 103;
+  res = "/res/clothes/smoky_sailor_blue/kiki.pm";
+  hand_tex = "/res/clothes/Tshirt_simple_purple/tex/kiki_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 0;
+})
+
+costume_settings[706004] <- CostumeSetting({
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n「かわいいの/nたくさんついてるでしょ#e1#」";
+  grade = 4;
+  chara_id = 4;
+  res = "/res/clothes/smoky_sailor_blue/mell.pm";
+  hand_tex = "/res/clothes/smoky_sailor_blue/tex/mell_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 0;
+})
+
+costume_settings[706104] <- CostumeSetting({
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n赤いスカーフが目を引く。";
+  grade = 4;
+  chara_id = 104;
+  res = "/res/clothes/smoky_sailor_blue/pocha.pm";
+  hand_tex = "/res/clothes/smoky_sailor_blue/tex/pocha_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 0;
+})
+
+costume_settings[706105] <- CostumeSetting({
+  permission = 1;
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n「海の冒険も/nわくわくするんだよ#e1#」";
+  grade = 4;
+  chara_id = 105;
+  res = "/res/clothes/smoky_sailor_blue/keroppi.pm";
+  hand_tex = "/res/clothes/smoky_sailor_blue/tex/keroppi_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 9920;
+  get_event_id = 706105;
+})
+
+costume_settings[706007] <- CostumeSetting({
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n海色ブルーが可愛らしい。";
+  grade = 4;
+  chara_id = 7;
+  res = "/res/clothes/smoky_sailor_blue/ribon.pm";
+  hand_tex = "/res/clothes/smoky_sailor_blue/tex/ribon_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 0;
+})
+
+costume_settings[706107] <- CostumeSetting({
+  name = "リトルマリン";
+  desc = "マリンなモチーフがたくさん/nついたキュートなセーラー。/nスモーキィな/nブルーがかわいい。/n「しゅっぱつなのです#o1#」";
+  grade = 4;
+  chara_id = 107;
+  res = "/res/clothes/smoky_sailor_blue/mello.pm";
+  hand_tex = "/res/clothes/smoky_sailor_blue/tex/mello_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_BLUE;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_blue";
+  priority = 0;
+})
+
+costume_settings[703001] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/nビビッドなブルーのラインが/nアクセントに。";
+  grade = 4;
+  chara_id = 1;
+  res = "/res/clothes/smoky_sailor_gray/kitty.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/kitty_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703002] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n「あおっぽいメロディは/nしんせん#q1#」";
+  grade = 4;
+  chara_id = 2;
+  res = "/res/clothes/smoky_sailor_gray/mymelo.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/mymelo_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703101] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n「船にのりたくなっちゃう#o1#」";
+  grade = 4;
+  chara_id = 101;
+  res = "/res/clothes/smoky_sailor_gray/purin.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/purin_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703102] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n大きな波がきたって/nへっちゃら。";
+  grade = 4;
+  chara_id = 102;
+  res = "/res/clothes/smoky_sailor_gray/cinnamon.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/cinnamon_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703003] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n「日差しも帽子があるから/nへっちゃらね#s1#」";
+  grade = 4;
+  chara_id = 3;
+  res = "/res/clothes/smoky_sailor_gray/lala.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/lala_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703103] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n「海って/n不思議がたくさん…#s1#」";
+  grade = 4;
+  chara_id = 103;
+  res = "/res/clothes/smoky_sailor_gray/kiki.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/kiki_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703004] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n「海といえば/nセーラー服だね#o1#」";
+  grade = 4;
+  chara_id = 4;
+  res = "/res/clothes/smoky_sailor_gray/mell.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/mell_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703104] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n「海の探検にしゅっぱーつ#e1#」";
+  grade = 4;
+  chara_id = 104;
+  res = "/res/clothes/smoky_sailor_gray/pocha.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/pocha_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703105] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n「海に泳ぎに行きたく/nなっちゃうなー#e1#」";
+  grade = 4;
+  chara_id = 105;
+  res = "/res/clothes/smoky_sailor_gray/keroppi.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/keroppi_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703007] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n「ぶくぶく～#h1#」";
+  grade = 4;
+  chara_id = 7;
+  res = "/res/clothes/smoky_sailor_gray/ribon.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/ribon_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[703107] <- CostumeSetting({
+  name = "スモーキィセーラー";
+  desc = "シルバーのマリンモチーフが/nきらりと光るセーラー。/n深海みたいな/nカラーリングが素敵。/n「しぇーらー#q1#/n…しぇーらー…/n…せーらーなのです#o1#」";
+  grade = 4;
+  chara_id = 107;
+  res = "/res/clothes/smoky_sailor_gray/mello.pm";
+  hand_tex = "/res/clothes/smoky_sailor_gray/tex/mello_gray.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GRAY;
+  actions = [35, 36, 37];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_smoky_sailor_gray";
+  priority = 0;
+})
+
+costume_settings[904001] <- CostumeSetting({
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「事件の香り#e1#」";
+  grade = 4;
+  chara_id = 1;
+  res = "/res/clothes/mysteryribbon_brown/kitty.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/kitty_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 0;
+})
+
+costume_settings[904002] <- CostumeSetting({
+  permission = 1;
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「めいたんてい/nメロディなの#h1#」";
+  grade = 4;
+  chara_id = 2;
+  res = "/res/clothes/mysteryribbon_brown/mymelo.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/mymelo_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 9930;
+  get_event_id = 904002;
+})
+
+costume_settings[904101] <- CostumeSetting({
+  permission = 1;
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「ぼくに解けない/n謎はなーい#o1#」";
+  grade = 4;
+  chara_id = 101;
+  res = "/res/clothes/mysteryribbon_brown/purin.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/purin_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 9910;
+  get_event_id = 904101;
+})
+
+costume_settings[904102] <- CostumeSetting({
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「むむむっ#e1#」";
+  grade = 4;
+  chara_id = 102;
+  res = "/res/clothes/mysteryribbon_brown/cinnamon.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/cinnamon_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 0;
+})
+
+costume_settings[904003] <- CostumeSetting({
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「帽子をかぶると/n頭がさえちゃう#s1#」";
+  grade = 4;
+  chara_id = 3;
+  res = "/res/clothes/mysteryribbon_brown/lala.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/lala_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 0;
+})
+
+costume_settings[904103] <- CostumeSetting({
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「細かい証拠も/n見逃さないよ#s1#」";
+  grade = 4;
+  chara_id = 103;
+  res = "/res/clothes/mysteryribbon_brown/kiki.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/kiki_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 0;
+})
+
+costume_settings[904004] <- CostumeSetting({
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「メルが解決しちゃうの#s1#」";
+  grade = 4;
+  chara_id = 4;
+  res = "/res/clothes/mysteryribbon_brown/mell.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/mell_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 0;
+})
+
+costume_settings[904104] <- CostumeSetting({
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「ふむふむなるほど…#e1#」";
+  grade = 4;
+  chara_id = 104;
+  res = "/res/clothes/mysteryribbon_brown/pocha.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/pocha_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 0;
+})
+
+costume_settings[904105] <- CostumeSetting({
+  permission = 1;
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「これは事件の予感…#e1#」";
+  grade = 4;
+  chara_id = 105;
+  res = "/res/clothes/mysteryribbon_brown/keroppi.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/keroppi_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 9940;
+  get_event_id = 904105;
+})
+
+costume_settings[904007] <- CostumeSetting({
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/nタータンチェックが/nばっちり決まっている。";
+  grade = 4;
+  chara_id = 7;
+  res = "/res/clothes/mysteryribbon_brown/ribon.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/ribon_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 0;
+})
+
+costume_settings[904107] <- CostumeSetting({
+  name = "ミステリーリボン";
+  desc = "冴える推理でズバッと/nなんでも解決しちゃうお洋服。/nカメオ付きリボンが/nこっそりと主張する。/n「かいけつは/nぼくにまかしぇろ#e1#」";
+  grade = 4;
+  chara_id = 107;
+  res = "/res/clothes/mysteryribbon_brown/mello.pm";
+  hand_tex = "/res/clothes/mysteryribbon_brown/tex/mello_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BROWN;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_brown";
+  priority = 0;
+})
+
+costume_settings[906001] <- CostumeSetting({
+  permission = 1;
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n金のボタンがピカピカ光る。";
+  grade = 4;
+  chara_id = 1;
+  res = "/res/clothes/mysteryribbon_blue/kitty.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/kitty_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  get_event_id = 906001;
+  priority = 9910;
+})
+
+costume_settings[906002] <- CostumeSetting({
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n「メロディにまかせて#o1#」";
+  grade = 4;
+  chara_id = 2;
+  res = "/res/clothes/mysteryribbon_blue/mymelo.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/mymelo_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 0;
+})
+
+costume_settings[906101] <- CostumeSetting({
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n「なんだか/n賢くなった気分～#o1#」";
+  grade = 4;
+  chara_id = 101;
+  res = "/res/clothes/mysteryribbon_blue/purin.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/purin_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 0;
+
+})
+
+costume_settings[906102] <- CostumeSetting({
+  permission = 1;
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n「ぼくにおまかせ#o1#」";
+  grade = 4;
+  chara_id = 102;
+  res = "/res/clothes/mysteryribbon_blue/cinnamon.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/cinnamon_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 9920;
+  get_event_id = 906102;
+})
+
+costume_settings[906003] <- CostumeSetting({
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n帽子のてっぺんにも/nリボンで隙なし。";
+  grade = 4;
+  chara_id = 3;
+  res = "/res/clothes/mysteryribbon_blue/lala.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/lala_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 0;
+})
+
+costume_settings[906103] <- CostumeSetting({
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n「ややっ#s1#大事件#s1#」";
+  grade = 4;
+  chara_id = 103;
+  res = "/res/clothes/mysteryribbon_blue/kiki.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/kiki_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 0;
+})
+
+costume_settings[906004] <- CostumeSetting({
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n「だ、だいじょうぶ#e1#/nメルならばっちり#e1#」";
+  grade = 4;
+  chara_id = 4;
+  res = "/res/clothes/mysteryribbon_blue/mell.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/mell_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 0;
+})
+
+costume_settings[906104] <- CostumeSetting({
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n「なぞなぞ#q1#まかせて#e1#」";
+  grade = 4;
+  chara_id = 104;
+  res = "/res/clothes/mysteryribbon_blue/pocha.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/pocha_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 0;
+})
+
+costume_settings[906105] <- CostumeSetting({
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n「謎が謎を呼ぶ…。」";
+  grade = 4;
+  chara_id = 105;
+  res = "/res/clothes/mysteryribbon_blue/keroppi.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/keroppi_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 0;
+})
+
+costume_settings[906007] <- CostumeSetting({
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n「ん～#q1#むずかしいわ…」";
+  grade = 4;
+  chara_id = 7;
+  res = "/res/clothes/mysteryribbon_blue/ribon.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/ribon_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 0;
+})
+
+costume_settings[906107] <- CostumeSetting({
+  name = "カーミィリドル";
+  desc = "いつだって冷静沈着に/nなんでも解決しちゃうお洋服。/n青いタータンチェックが/n雰囲気を盛り上げる。/n青タータンがクールにきまる。";
+  grade = 4;
+  chara_id = 107;
+  res = "/res/clothes/mysteryribbon_blue/mello.pm";
+  hand_tex = "/res/clothes/mysteryribbon_blue/tex/mello_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BLUE;
+  actions = [38, 39, 40];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_mysteryribbon_blue";
+  priority = 0;
+})
+
+costume_settings[1005001] <- CostumeSetting({
+  permission = 1;
+  name = "フラワーアイボリーコック";
+  desc = "アンティークなお花の柄が/n素敵なエプロン。/nこれを着ればどんなお料理も/n美味しく作れちゃうかも。/nこれを着て/nクッキーを作っているみたい。";
+  grade = 4;
+  chara_id = 1;
+  res = "/res/clothes/flowerapron_F_beige/kitty.pm";
+  hand_tex = "/res/clothes/flowerapron_F_beige/tex/kitty_beige.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BEIGE;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_beige";
+  get_event_id = 1005001;
+  priority = 9970;
+})
+
+costume_settings[1005002] <- CostumeSetting({
+  name = "フラワーアイボリーコック";
+  desc = "アンティークなお花の柄が/n素敵なエプロン。/nこれを着ればどんなお料理も/n美味しく作れちゃうかも。/nお母さんと一緒にクッキーを/n焼くときはこれを着るよ。";
+  grade = 4;
+  chara_id = 2;
+  res = "/res/clothes/flowerapron_F_beige/mymelo.pm";
+  hand_tex = "/res/clothes/flowerapron_F_beige/tex/mymelo_beige.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BEIGE;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_beige";
+  priority = 0;
+  get_event_id = 1005002;
+})
+
+costume_settings[1005003] <- CostumeSetting({
+  name = "フラワーアイボリーコック";
+  desc = "アンティークなお花の柄が/n素敵なエプロン。/nこれを着ればどんなお料理も/n美味しく作れちゃうかも。/n「毎日お料理/n楽しくなっちゃう#s1#」";
+  grade = 4;
+  chara_id = 3;
+  res = "/res/clothes/flowerapron_F_beige/lala.pm";
+  hand_tex = "/res/clothes/flowerapron_F_beige/tex/lala_beige.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BEIGE;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_beige";
+  priority = 0;
+})
+
+costume_settings[1005004] <- CostumeSetting({
+  name = "フラワーアイボリーコック";
+  desc = "アンティークなお花の柄が/n素敵なエプロン。/nこれを着ればどんなお料理も/n美味しく作れちゃうかも。/n「ホットケーキを/nつくりましょ#o1#」";
+  grade = 4;
+  chara_id = 4;
+  res = "/res/clothes/flowerapron_F_beige/mell.pm";
+  hand_tex = "/res/clothes/flowerapron_F_beige/tex/mell_beige.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BEIGE;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_beige";
+  priority = 0;
+})
+
+costume_settings[1005007] <- CostumeSetting({
+  name = "フラワーアイボリーコック";
+  desc = "アンティークなお花の柄が/n素敵なエプロン。/nこれを着ればどんなお料理も/n美味しく作れちゃうかも。/n「料理もまかせてね#h1#」";
+  grade = 4;
+  chara_id = 7;
+  res = "/res/clothes/flowerapron_F_beige/ribon.pm";
+  hand_tex = "/res/clothes/flowerapron_F_beige/tex/ribon_beige.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_BEIGE;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_beige";
+  priority = 0;
+})
+
+costume_settings[1012001] <- CostumeSetting({
+  name = "アロマティックエプロン";
+  desc = "フレッシュなイエローの/nリボンが目を引くエプロン。/nおいしい料理で/nみんな笑顔になっちゃう。/nおともだちに内緒で/nお料理してびっくりさせちゃおう。";
+  grade = 4;
+  chara_id = 1;
+  res = "/res/clothes/flowerapron_F_green/kitty.pm";
+  hand_tex = "/res/clothes/flowerapron_F_green/tex/kitty_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_green";
+  priority = 0;
+})
+
+costume_settings[1012002] <- CostumeSetting({
+  permission = 1;
+  name = "アロマティックエプロン";
+  desc = "フレッシュなイエローの/nリボンが目を引くエプロン。/nおいしい料理で/nみんな笑顔になっちゃう。/n「えぷろんをきるだけで/nうきうきしてきちゃうの…#h1#」";
+  grade = 4;
+  chara_id = 2;
+  res = "/res/clothes/flowerapron_F_green/mymelo.pm";
+  hand_tex = "/res/clothes/flowerapron_F_green/tex/mymelo_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_green";
+  priority = 9990;
+  get_event_id = 1012002;
+})
+
+costume_settings[1012003] <- CostumeSetting({
+  name = "アロマティックエプロン";
+  desc = "フレッシュなイエローの/nリボンが目を引くエプロン。/nおいしい料理で/nみんな笑顔になっちゃう。/n「キキ、明日は何が/n食べたいかしら…#s1#」";
+  grade = 4;
+  chara_id = 3;
+  res = "/res/clothes/flowerapron_F_green/lala.pm";
+  hand_tex = "/res/clothes/flowerapron_F_green/tex/lala_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_green";
+  priority = 0;
+})
+
+costume_settings[1012004] <- CostumeSetting({
+  name = "アロマティックエプロン";
+  desc = "フレッシュなイエローの/nリボンが目を引くエプロン。/nおいしい料理で/nみんな笑顔になっちゃう。/n「メルと一緒にお料理する#q1#」";
+  grade = 4;
+  chara_id = 4;
+  res = "/res/clothes/flowerapron_F_green/mell.pm";
+  hand_tex = "/res/clothes/flowerapron_F_green/tex/mell_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_green";
+  priority = 0;
+})
+
+costume_settings[1012007] <- CostumeSetting({
+  name = "アロマティックエプロン";
+  desc = "フレッシュなイエローの/nリボンが目を引くエプロン。/nおいしい料理で/nみんな笑顔になっちゃう。/nグリーンとイエローで/n爽やかいっぱい。";
+  grade = 4;
+  chara_id = 7;
+  res = "/res/clothes/flowerapron_F_green/ribon.pm";
+  hand_tex = "/res/clothes/flowerapron_F_green/tex/ribon_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_WORK;
+  color = COSTUME_COLOR_GREEN;
+  actions = [41, 42, 43];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_flowerapron_green";
+  priority = 0;
+})
+
+costume_settings[1104001] <- CostumeSetting({
+  permission = 1;
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンの/nクラシックワンピース。/n品の良いひかえめな/nフリルがかわいい。/nちりばめられた/nリボンがポイント。";
+  grade = 4;
+  chara_id = 1;
+  res = "/res/clothes/classicalcarol_F_brown/kitty.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_brown/tex/kitty_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  get_event_id = 1104001;
+  priority = 9960;
+})
+
+costume_settings[1104002] <- CostumeSetting({
+  permission = 1;
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンの/nクラシックワンピース。/n品の良いひかえめな/nフリルがかわいい。/n「くらしっくなメロディも/nすてきでしょ#q1#」";
+  grade = 4;
+  chara_id = 2;
+  res = "/res/clothes/classicalcarol_F_brown/mymelo.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_brown/tex/mymelo_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 9980;
+  get_event_id = 1104002;
+})
+
+costume_settings[1104101] <- CostumeSetting({
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンのクラシックスーツ。/nひかえめな装飾が/n品の良さをかもし出している。/n「ジェントルマンって感じ#q1#」";
+  grade = 4;
+  chara_id = 101;
+  res = "/res/clothes/classicalcarol_M_brown/purin.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_brown/tex/purin_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 0;
+})
+
+costume_settings[1104102] <- CostumeSetting({
+  permission = 1;
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンのクラシックスーツ。/nひかえめな装飾が/n品の良さをかもし出している。/n「かわいい#q1#かっこいい#q1#/nどっちも#q1#」";
+  grade = 4;
+  chara_id = 102;
+  res = "/res/clothes/classicalcarol_M_brown/cinnamon.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_brown/tex/cinnamon_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 9930;
+  get_event_id = 1104102;
+})
+
+costume_settings[1104003] <- CostumeSetting({
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンの/nクラシックワンピース。/n品の良いひかえめな/nフリルがかわいい。/n帽子のバラがワンポイント。";
+  grade = 4;
+  chara_id = 3;
+  res = "/res/clothes/classicalcarol_F_brown/lala.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_brown/tex/lala_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 0;
+})
+
+costume_settings[1104103] <- CostumeSetting({
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンのクラシックスーツ。/nひかえめな装飾が/n品の良さをかもし出している。/n「胸のブローチは/nララとおそろい#s1#」";
+  grade = 4;
+  chara_id = 103;
+  res = "/res/clothes/classicalcarol_M_brown/kiki.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_brown/tex/kiki_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 0;
+})
+
+costume_settings[1104004] <- CostumeSetting({
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンの/nクラシックワンピース。/n品の良いひかえめな/nフリルがかわいい。/nフリフリだけど甘すぎない。";
+  grade = 4;
+  chara_id = 4;
+  res = "/res/clothes/classicalcarol_F_brown/mell.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_brown/tex/mell_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 0;
+})
+
+costume_settings[1104104] <- CostumeSetting({
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンのクラシックスーツ。/nひかえめな装飾が/n品の良さをかもし出している。/nボーラーハットが可愛らしい。";
+  grade = 4;
+  chara_id = 104;
+  res = "/res/clothes/classicalcarol_M_brown/pocha.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_brown/tex/pocha_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 0;
+})
+
+costume_settings[1104105] <- CostumeSetting({
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンのクラシックスーツ。/nひかえめな装飾が/n品の良さをかもし出している。/n「ぴしっときめてみたよ#e1#」";
+  grade = 4;
+  chara_id = 105;
+  res = "/res/clothes/classicalcarol_M_brown/keroppi.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_brown/tex/keroppi_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 0;
+})
+
+costume_settings[1104007] <- CostumeSetting({
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンの/nクラシックワンピース。/n品の良いひかえめな/nフリルがかわいい。/nもちろんリボンはたくさん。";
+  grade = 4;
+  chara_id = 7;
+  res = "/res/clothes/classicalcarol_F_brown/ribon.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_brown/tex/ribon_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 0;
+})
+
+costume_settings[1104107] <- CostumeSetting({
+  name = "クラシカルキャロル";
+  desc = "チョコレートみたいな/nブラウンのクラシックスーツ。/nひかえめな装飾が/n品の良さをかもし出している。/n「おっきいりぼんに/nあってるです#q1#」";
+  grade = 4;
+  chara_id = 107;
+  res = "/res/clothes/classicalcarol_M_brown/mello.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_brown/tex/mello_brown.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_BROWN;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_brown";
+  priority = 0;
+})
+
+costume_settings[1107001] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かわいいローズパープルな/nクラシックワンピース。/nひかえめな/nドット模様がキュート。/nおでかけ用の特別な装い。";
+  grade = 4;
+  chara_id = 1;
+  res = "/res/clothes/classicalcarol_F_purple/kitty.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_purple/tex/kitty_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1107002] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かわいいローズパープルな/nクラシックワンピース。/nひかえめな/nドット模様がキュート。/nカメオのバラが/nとってもステキ。";
+  grade = 4;
+  chara_id = 2;
+  res = "/res/clothes/classicalcarol_F_purple/mymelo.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_purple/tex/mymelo_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1107101] <- CostumeSetting({
+  permission = 1;
+  name = "ローズポライト";
+  desc = "大人かっこいい/nローズパープルな/nクラシックスーツ。/n遊び心を忘れない/nドット模様が素敵。/n「丸い帽子がステキでしょ#e1#」";
+  grade = 4;
+  chara_id = 101;
+  res = "/res/clothes/classicalcarol_M_purple/purin.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_purple/tex/purin_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 9960;
+  get_event_id = 1107101;
+})
+
+costume_settings[1107102] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かっこいい/nローズパープルな/nクラシックスーツ。/n遊び心を忘れない/nドット模様が素敵。/nアンニュイに決めて。";
+  grade = 4;
+  chara_id = 102;
+  res = "/res/clothes/classicalcarol_M_purple/cinnamon.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_purple/tex/cinnamon_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1107003] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かわいいローズパープルな/nクラシックワンピース。/nひかえめな/nドット模様がキュート。/n自然とふるまいも/nおしとやかに。";
+  grade = 4;
+  chara_id = 3;
+  res = "/res/clothes/classicalcarol_F_purple/lala.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_purple/tex/lala_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1107103] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かっこいい/nローズパープルな/nクラシックスーツ。/n遊び心を忘れない/nドット模様が素敵。/n帽子の星飾りが光る。";
+  grade = 4;
+  chara_id = 103;
+  res = "/res/clothes/classicalcarol_M_purple/kiki.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_purple/tex/kiki_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1107004] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かわいいローズパープルな/nクラシックワンピース。/nひかえめな/nドット模様がキュート。/n「似合ってるかな…#q1#」";
+  grade = 4;
+  chara_id = 4;
+  res = "/res/clothes/classicalcarol_F_purple/mell.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_purple/tex/mell_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1107104] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かっこいい/nローズパープルな/nクラシックスーツ。/n遊び心を忘れない/nドット模様が素敵。/n「わーい、/nどこに遊びに行こうかな#q1#」";
+  grade = 4;
+  chara_id = 104;
+  res = "/res/clothes/classicalcarol_M_purple/pocha.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_purple/tex/pocha_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1107105] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かっこいい/nローズパープルな/nクラシックスーツ。/n遊び心を忘れない/nドット模様が素敵。/nおすましポーズでにっこり。";
+  grade = 4;
+  chara_id = 105;
+  res = "/res/clothes/classicalcarol_M_purple/keroppi.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_purple/tex/keroppi_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 47];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1107007] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かわいいローズパープルな/nクラシックワンピース。/nひかえめな/nドット模様がキュート。/n細かいレースが/n繊細でうっとり。";
+  grade = 4;
+  chara_id = 7;
+  res = "/res/clothes/classicalcarol_F_purple/ribon.pm";
+  hand_tex = "/res/clothes/classicalcarol_F_purple/tex/ribon_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1107107] <- CostumeSetting({
+  name = "ローズポライト";
+  desc = "大人かっこいい/nローズパープルな/nクラシックスーツ。/n遊び心を忘れない/nドット模様が素敵。/n「まんまるおぼうし、/nかわいいのです#o1#」";
+  grade = 4;
+  chara_id = 107;
+  res = "/res/clothes/classicalcarol_M_purple/mello.pm";
+  hand_tex = "/res/clothes/classicalcarol_M_purple/tex/mello_purple.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_PARTY;
+  color = COSTUME_COLOR_PURPLE;
+  actions = [44, 45, 46];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_classicalcarol_purple";
+  priority = 0;
+})
+
+costume_settings[1306001] <- CostumeSetting({
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n今夜もぐっすり眠れそう。";
+  grade = 5;
+  chara_id = 1;
+  res = "/res/clothes/starry_sleep_blue/kitty.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/kitty_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 0;
+})
+
+costume_settings[1306002] <- CostumeSetting({
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n「なんだかねむたくなって/nきちゃったの#h1#」";
+  grade = 5;
+  chara_id = 2;
+  res = "/res/clothes/starry_sleep_blue/mymelo.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/mymelo_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 0;
+})
+
+costume_settings[1306101] <- CostumeSetting({
+  permission = 1;
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n素敵な夢を/n見れそうな気がする。";
+  grade = 5;
+  chara_id = 101;
+  res = "/res/clothes/starry_sleep_blue/purin.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/purin_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 9940;
+  get_event_id = 1306101;
+})
+
+costume_settings[1306102] <- CostumeSetting({
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n「ふわぁ…ふかふかで/nすやすや眠れちゃいそう…#o1#」";
+  grade = 5;
+  chara_id = 102;
+  res = "/res/clothes/starry_sleep_blue/cinnamon.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/cinnamon_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 0;
+})
+
+costume_settings[1306003] <- CostumeSetting({
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n「ピカピカお月さまと/n一緒におやすみなさい…#s1#」";
+  grade = 5;
+  chara_id = 3;
+  res = "/res/clothes/starry_sleep_blue/lala.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/lala_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 0;
+})
+
+costume_settings[1306103] <- CostumeSetting({
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n「雲の上に/nいるみたいだよ…#s1#」";
+  grade = 5;
+  chara_id = 103;
+  res = "/res/clothes/starry_sleep_blue/kiki.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/kiki_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 0;
+})
+
+costume_settings[1306004] <- CostumeSetting({
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n「メルといっしょに/nおやすみする#q1#」";
+  grade = 5;
+  chara_id = 4;
+  res = "/res/clothes/starry_sleep_blue/mell.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/mell_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 0;
+})
+
+costume_settings[1306104] <- CostumeSetting({
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n三角のナイトキャップが/nポイント。";
+  grade = 5;
+  chara_id = 104;
+  res = "/res/clothes/starry_sleep_blue/pocha.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/pocha_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 0;
+})
+
+costume_settings[1306105] <- CostumeSetting({
+  permission = 1;
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/nふかふか素材で気持ちいい。";
+  grade = 5;
+  chara_id = 105;
+  res = "/res/clothes/starry_sleep_blue/keroppi.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/keroppi_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 9930;
+  get_event_id = 1306105;
+})
+
+costume_settings[1306007] <- CostumeSetting({
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n「ふわふわで/nぐっすり眠れちゃう#h1#」";
+  grade = 5;
+  chara_id = 7;
+  res = "/res/clothes/starry_sleep_blue/ribon.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/ribon_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 0;
+})
+
+costume_settings[1306107] <- CostumeSetting({
+  name = "スターリィスリープ";
+  desc = "星の夢を散りばめた/nナイトウェア。/nしましまストライプが/n目を引く。/n「ないときゃっぷが/nきらきらなのです…#h1#」";
+  grade = 5;
+  chara_id = 107;
+  res = "/res/clothes/starry_sleep_blue/mello.pm";
+  hand_tex = "/res/clothes/starry_sleep_blue/tex/mello_blue.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_BLUE;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_blue";
+  priority = 0;
+})
+
+costume_settings[1308001] <- CostumeSetting({
+  permission = 1;
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/n「今日はどんな夢を/n見れるかしら#q1#」";
+  grade = 5;
+  chara_id = 1;
+  res = "/res/clothes/starry_sleep_pink/kitty.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/kitty_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  get_event_id = 1308001;
+  priority = 9940;
+})
+
+costume_settings[1308002] <- CostumeSetting({
+  permission = 1;
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/nふわふわに包まれて夢見心地。";
+  grade = 5;
+  chara_id = 2;
+  res = "/res/clothes/starry_sleep_pink/mymelo.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/mymelo_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 9960;
+  get_event_id = 1308002;
+})
+
+costume_settings[1308101] <- CostumeSetting({
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/n「えへへ#o1#おやすみなさい#h1#」";
+  grade = 5;
+  chara_id = 101;
+  res = "/res/clothes/starry_sleep_pink/purin.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/purin_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 0;
+})
+
+costume_settings[1308102] <- CostumeSetting({
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/n「今日はぼくと/n一緒に寝る～#q1#」";
+  grade = 5;
+  chara_id = 102;
+  res = "/res/clothes/starry_sleep_pink/cinnamon.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/cinnamon_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 0;
+})
+
+costume_settings[1308003] <- CostumeSetting({
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/n「太陽さんが/nおこしにきてくれるのよ…#s1#」";
+  grade = 5;
+  chara_id = 3;
+  res = "/res/clothes/starry_sleep_pink/lala.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/lala_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 0;
+})
+
+costume_settings[1308103] <- CostumeSetting({
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/nお月さまがいつも/n見守ってくれる。";
+  grade = 5;
+  chara_id = 103;
+  res = "/res/clothes/starry_sleep_pink/kiki.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/kiki_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 0;
+})
+
+costume_settings[1308004] <- CostumeSetting({
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/nみんなでナイショの夜更かし。";
+  grade = 5;
+  chara_id = 4;
+  res = "/res/clothes/starry_sleep_pink/mell.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/mell_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 0;
+})
+
+costume_settings[1308104] <- CostumeSetting({
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/n「ふわあ～#s1#/n…まだねむくないよ#o1#」";
+  grade = 5;
+  chara_id = 104;
+  res = "/res/clothes/starry_sleep_pink/pocha.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/pocha_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 0;
+})
+
+costume_settings[1308105] <- CostumeSetting({
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/n「ゆめの冒険に/nしゅっぱ～つ#e1#」";
+  grade = 5;
+  chara_id = 105;
+  res = "/res/clothes/starry_sleep_pink/keroppi.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/keroppi_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 0;
+})
+
+costume_settings[1308007] <- CostumeSetting({
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/n「今日はどんな夢が/nみれるかな…#q1#」";
+  grade = 5;
+  chara_id = 7;
+  res = "/res/clothes/starry_sleep_pink/ribon.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/ribon_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 0;
+})
+
+costume_settings[1308107] <- CostumeSetting({
+  name = "ミルキィスリープ";
+  desc = "夢とメルヘンをまぜこんだ/nまだねむくないコのための/nナイトウェア。/n「もうねむたくなって/nきちゃったのです…#s1#」";
+  grade = 5;
+  chara_id = 107;
+  res = "/res/clothes/starry_sleep_pink/mello.pm";
+  hand_tex = "/res/clothes/starry_sleep_pink/tex/mello_pink.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_RELAX;
+  color = COSTUME_COLOR_PINK;
+  actions = [48, 49, 50];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_starry_sleep_pink";
+  priority = 0;
+})
+
+costume_settings[1409001] <- CostumeSetting({
+  permission = 1;
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/nおてんばに駆け回る姿が/n思い浮かぶ。/nお花と太陽のいい香り。";
+  grade = 5;
+  chara_id = 1;
+  res = "/res/clothes/tomboyish_country_red/kitty.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/kitty_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  get_event_id = 1409001;
+  priority = 9980;
+})
+
+costume_settings[1409002] <- CostumeSetting({
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/nおてんばに駆け回る姿が/n思い浮かぶ。/nたくさんの宝物を/nポケットにつめこもう。";
+  grade = 5;
+  chara_id = 2;
+  res = "/res/clothes/tomboyish_country_red/mymelo.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/mymelo_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 0;
+})
+
+costume_settings[1409101] <- CostumeSetting({
+  permission = 1;
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/n元気いっぱいに駆け回る姿が/n思い浮かぶ。/n「お花のいい香りでいっぱい#e1#」";
+  grade = 5;
+  chara_id = 101;
+  res = "/res/clothes/tomboyish_country_red/purin.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/purin_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 9920;
+  get_event_id = 1409101;
+})
+
+costume_settings[1409102] <- CostumeSetting({
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/n元気いっぱいに駆け回る姿が/n思い浮かぶ。/n「どろんこになっても/nへっちゃら#e1#」";
+  grade = 5;
+  chara_id = 102;
+  res = "/res/clothes/tomboyish_country_red/cinnamon.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/cinnamon_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 0;
+})
+
+costume_settings[1409003] <- CostumeSetting({
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/nおてんばに駆け回る姿が/n思い浮かぶ。/nカンカン帽を/nしっかりかぶって。";
+  grade = 5;
+  chara_id = 3;
+  res = "/res/clothes/tomboyish_country_red/lala.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/lala_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 0;
+})
+
+costume_settings[1409103] <- CostumeSetting({
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/n元気いっぱいに駆け回る姿が/n思い浮かぶ。/n「今日もたくさん遊ぶんだ#s1#」";
+  grade = 5;
+  chara_id = 103;
+  res = "/res/clothes/tomboyish_country_red/kiki.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/kiki_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 0;
+})
+
+costume_settings[1409004] <- CostumeSetting({
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/nおてんばに駆け回る姿が/n思い浮かぶ。/n「今日はどこに/nお散歩いこうかな#q1#」";
+  grade = 5;
+  chara_id = 4;
+  res = "/res/clothes/tomboyish_country_red/mell.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/mell_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 0;
+})
+
+costume_settings[1409104] <- CostumeSetting({
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/n元気いっぱいに駆け回る姿が/n思い浮かぶ。/n赤いスカーフが目を引く。";
+  grade = 5;
+  chara_id = 104;
+  res = "/res/clothes/tomboyish_country_red/pocha.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/pocha_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 0;
+})
+
+costume_settings[1409105] <- CostumeSetting({
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/n元気いっぱいに駆け回る姿が/n思い浮かぶ。/n暑くてもへっちゃらな/n麦わら帽子。";
+  grade = 5;
+  chara_id = 105;
+  res = "/res/clothes/tomboyish_country_red/keroppi.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/keroppi_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 0;
+})
+
+costume_settings[1409007] <- CostumeSetting({
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/nおてんばに駆け回る姿が/n思い浮かぶ。/n「お気に入りの/n麦わら帽子なの#o1#」";
+  grade = 5;
+  chara_id = 7;
+  res = "/res/clothes/tomboyish_country_red/ribon.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/ribon_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 0;
+})
+
+costume_settings[1409107] <- CostumeSetting({
+  name = "チャーミィカントリー";
+  desc = "チェック模様が可愛らしい/nオーバーオール。/n元気いっぱいに駆け回る姿が/n思い浮かぶ。/nポケットに/nいろいろ詰め込んで。";
+  grade = 5;
+  chara_id = 107;
+  res = "/res/clothes/tomboyish_country_red/mello.pm";
+  hand_tex = "/res/clothes/tomboyish_country_red/tex/mello_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_red";
+  priority = 0;
+})
+
+costume_settings[1410001] <- CostumeSetting({
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/n転んだってへっちゃら。";
+  grade = 5;
+  chara_id = 1;
+  res = "/res/clothes/tomboyish_country_orange/kitty.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/kitty_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 0;
+})
+
+costume_settings[1410002] <- CostumeSetting({
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/n鼻歌だって歌えちゃう。";
+  grade = 5;
+  chara_id = 2;
+  res = "/res/clothes/tomboyish_country_orange/mymelo.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/mymelo_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 0;
+})
+
+costume_settings[1410101] <- CostumeSetting({
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/nサイズもぴったり。";
+  grade = 5;
+  chara_id = 101;
+  res = "/res/clothes/tomboyish_country_orange/purin.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/purin_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 0;
+})
+
+costume_settings[1410102] <- CostumeSetting({
+  permission = 1;
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/n「なにして遊ぼう#e1#」";
+  grade = 5;
+  chara_id = 102;
+  res = "/res/clothes/tomboyish_country_orange/cinnamon.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/cinnamon_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 9980;
+  get_event_id = 1410102;
+})
+
+costume_settings[1410003] <- CostumeSetting({
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/n「～#o1#～#o1#」";
+  grade = 5;
+  chara_id = 3;
+  res = "/res/clothes/tomboyish_country_orange/lala.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/lala_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 0;
+})
+
+costume_settings[1410103] <- CostumeSetting({
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/n「おでかけする/n約束してるんだ#s1#」";
+  grade = 5;
+  chara_id = 103;
+  res = "/res/clothes/tomboyish_country_orange/kiki.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/kiki_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 0;
+})
+
+costume_settings[1410004] <- CostumeSetting({
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/n帽子も忘れずに。";
+  grade = 5;
+  chara_id = 4;
+  res = "/res/clothes/tomboyish_country_orange/mell.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/mell_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 0;
+})
+
+costume_settings[1410104] <- CostumeSetting({
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/nいつものお散歩も楽しさ倍増。";
+  grade = 5;
+  chara_id = 104;
+  res = "/res/clothes/tomboyish_country_orange/pocha.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/pocha_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 0;
+})
+
+costume_settings[1410105] <- CostumeSetting({
+  permission = 1;
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/n太陽をたくさん浴びて/n元気いっぱい#e1#";
+  grade = 5;
+  chara_id = 105;
+  res = "/res/clothes/tomboyish_country_orange/keroppi.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/keroppi_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 9950;
+  get_event_id = 1410105;
+})
+
+costume_settings[1410007] <- CostumeSetting({
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/n赤いガーベラが目を引く。";
+  grade = 5;
+  chara_id = 7;
+  res = "/res/clothes/tomboyish_country_orange/ribon.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/ribon_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 0;
+})
+
+costume_settings[1410107] <- CostumeSetting({
+  name = "メローファーム";
+  desc = "芝生のようなグリーンが/nほっこりするオーバーオール。/n目を閉じれば川のせせらぎや/n鳥の鳴き声がきこえそう。/nいろいろなチェックが/nたくさん散りばめられている。";
+  grade = 5;
+  chara_id = 107;
+  res = "/res/clothes/tomboyish_country_orange/mello.pm";
+  hand_tex = "/res/clothes/tomboyish_country_orange/tex/mello_orange.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_ORANGE;
+  actions = [51, 52, 53];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_tomboyish_country_orange";
+  priority = 0;
+})
+
+costume_settings[1509001] <- CostumeSetting({
+  permission = 1;
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のドレス。/nおしとやかで/n優雅に振舞えそう。/n「いつもと違うリボンも/n似合うでしょ#q1#」";
+  grade = 5;
+  chara_id = 1;
+  res = "/res/clothes/rose_cherry_doll_F_red/kitty.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_red/tex/kitty_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 9950;
+  get_event_id = 1509001;
+})
+
+costume_settings[1509002] <- CostumeSetting({
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のドレス。/nおしとやかで/n優雅に振舞えそう。/nたくさんのリボンが踊る。";
+  grade = 5;
+  chara_id = 2;
+  res = "/res/clothes/rose_cherry_doll_F_red/mymelo.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_red/tex/mymelo_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 0;
+})
+
+costume_settings[1509101] <- CostumeSetting({
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のパンツスタイル。/nおしとやかで/n優雅に振舞えそう。/n自然と背筋が伸びそう。";
+  grade = 5;
+  chara_id = 101;
+  res = "/res/clothes/rose_cherry_doll_M_red/purin.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_red/tex/purin_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 0;
+})
+
+costume_settings[1509102] <- CostumeSetting({
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のパンツスタイル。/nおしとやかで/n優雅に振舞えそう。/n「どう#q1#/nぼく、かわいいかな#q1#」";
+  grade = 5;
+  chara_id = 102;
+  res = "/res/clothes/rose_cherry_doll_M_red/cinnamon.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_red/tex/cinnamon_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 0;
+  get_event_id = 1509102;
+})
+
+costume_settings[1509003] <- CostumeSetting({
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のドレス。/nおしとやかで/n優雅に振舞えそう。/n頭につけた/n大きなリボンが目を引く。";
+  grade = 5;
+  chara_id = 3;
+  res = "/res/clothes/rose_cherry_doll_F_red/lala.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_red/tex/lala_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 0;
+})
+
+costume_settings[1509103] <- CostumeSetting({
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のパンツスタイル。/nおしとやかで/n優雅に振舞えそう。/nダークレッドが落ち着いた/n雰囲気をかもし出す。";
+  grade = 5;
+  chara_id = 103;
+  res = "/res/clothes/rose_cherry_doll_M_red/kiki.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_red/tex/kiki_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 0;
+})
+
+costume_settings[1509004] <- CostumeSetting({
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のドレス。/nおしとやかで/n優雅に振舞えそう。/n「ふりふりでかわいい#q1#」";
+  grade = 5;
+  chara_id = 4;
+  res = "/res/clothes/rose_cherry_doll_F_red/mell.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_red/tex/mell_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 0;
+})
+
+costume_settings[1509104] <- CostumeSetting({
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のパンツスタイル。/nおしとやかで/n優雅に振舞えそう。/n「どう#q1#かっこいい#q1#」";
+  grade = 5;
+  chara_id = 104;
+  res = "/res/clothes/rose_cherry_doll_M_red/pocha.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_red/tex/pocha_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 0;
+})
+
+costume_settings[1509105] <- CostumeSetting({
+  permission = 1;
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のパンツスタイル。/nおしとやかで/n優雅に振舞えそう。/nお花の模様がエレガント。";
+  grade = 5;
+  chara_id = 105;
+  res = "/res/clothes/rose_cherry_doll_M_red/keroppi.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_red/tex/keroppi_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 9960;
+  get_event_id = 1509105;
+})
+
+costume_settings[1509007] <- CostumeSetting({
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のドレス。/nおしとやかで/n優雅に振舞えそう。/n「くるくる回ると/nふわふわなの#h1#」";
+  grade = 5;
+  chara_id = 7;
+  res = "/res/clothes/rose_cherry_doll_F_red/ribon.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_red/tex/ribon_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 0;
+})
+
+costume_settings[1509107] <- CostumeSetting({
+  name = "ローズチェリードール";
+  desc = "お人形さんみたいな/n上品な深紅のパンツスタイル。/nおしとやかで/n優雅に振舞えそう。/nステキなハットに/nうきうきしちゃう。";
+  grade = 5;
+  chara_id = 107;
+  res = "/res/clothes/rose_cherry_doll_M_red/mello.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_red/tex/mello_red.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_RED;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_red";
+  priority = 0;
+})
+
+costume_settings[1512001] <- CostumeSetting({
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな深緑のドレス。/nこれを着れば/nいつだってお嬢さま気分。/nアンティークレースが上品。";
+  grade = 5;
+  chara_id = 1;
+  res = "/res/clothes/rose_cherry_doll_F_green/kitty.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_green/tex/kitty_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 0;
+})
+
+costume_settings[1512002] <- CostumeSetting({
+  permission = 1;
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな深緑のドレス。/nこれを着れば/nいつだってお嬢さま気分。/n自然と上品に振舞えそう。";
+  grade = 5;
+  chara_id = 2;
+  res = "/res/clothes/rose_cherry_doll_F_green/mymelo.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_green/tex/mymelo_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 9970;
+  get_event_id = 1512002;
+})
+
+costume_settings[1512101] <- CostumeSetting({
+  permission = 1;
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな/n深緑のパンツスタイル。/nこれを着れば/nいつだってお坊ちゃま気分。/n「えへへ#o1#キラキラ～#e1#」";
+  grade = 5;
+  chara_id = 101;
+  res = "/res/clothes/rose_cherry_doll_M_green/purin.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_green/tex/purin_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 9950;
+  get_event_id = 1512101;
+})
+
+costume_settings[1512102] <- CostumeSetting({
+  permission = 1;
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな/n深緑のパンツスタイル。/nこれを着れば/nいつだってお坊ちゃま気分。/n「かっこよく見える#q1#」";
+  grade = 5;
+  chara_id = 102;
+  res = "/res/clothes/rose_cherry_doll_M_green/cinnamon.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_green/tex/cinnamon_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 9990;
+  get_event_id = 1512102;
+})
+
+costume_settings[1512003] <- CostumeSetting({
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな深緑のドレス。/nこれを着れば/nいつだってお嬢さま気分。/n「おしとやかに/n見えるかしら#q1#」";
+  grade = 5;
+  chara_id = 3;
+  res = "/res/clothes/rose_cherry_doll_F_green/lala.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_green/tex/lala_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 0;
+})
+
+costume_settings[1512103] <- CostumeSetting({
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな/n深緑のパンツスタイル。/nこれを着れば/nいつだってお坊ちゃま気分。/n「いいこと/n思いついちゃった#s1#」";
+  grade = 5;
+  chara_id = 103;
+  res = "/res/clothes/rose_cherry_doll_M_green/kiki.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_green/tex/kiki_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 0;
+})
+
+costume_settings[1512004] <- CostumeSetting({
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな深緑のドレス。/nこれを着れば/nいつだってお嬢さま気分。/n幾重にも重なる/nヘッドリボンがポイント。";
+  grade = 5;
+  chara_id = 4;
+  res = "/res/clothes/rose_cherry_doll_F_green/mell.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_green/tex/mell_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 0;
+})
+
+costume_settings[1512104] <- CostumeSetting({
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな/n深緑のパンツスタイル。/nこれを着れば/nいつだってお坊ちゃま気分。/n「おしとやかって/nむずかしいね…#e1#」";
+  grade = 5;
+  chara_id = 104;
+  res = "/res/clothes/rose_cherry_doll_M_green/pocha.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_green/tex/pocha_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 0;
+})
+
+costume_settings[1512105] <- CostumeSetting({
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな/n深緑のパンツスタイル。/nこれを着れば/nいつだってお坊ちゃま気分。/n「緑色、似合うでしょ#e1#」";
+  grade = 5;
+  chara_id = 105;
+  res = "/res/clothes/rose_cherry_doll_M_green/keroppi.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_green/tex/keroppi_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 57];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 0;
+})
+
+costume_settings[1512007] <- CostumeSetting({
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな深緑のドレス。/nこれを着れば/nいつだってお嬢さま気分。/n「ステキなリボンでしょ#q1#」";
+  grade = 5;
+  chara_id = 7;
+  res = "/res/clothes/rose_cherry_doll_F_green/ribon.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_F_green/tex/ribon_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 0;
+})
+
+costume_settings[1512107] <- CostumeSetting({
+  name = "ベルベットリボンドルチェ";
+  desc = "ベロアなリボンが/nアンティークな/n深緑のパンツスタイル。/nこれを着れば/nいつだってお坊ちゃま気分。/n「おめかししてみたのです#o1#」";
+  grade = 5;
+  chara_id = 107;
+  res = "/res/clothes/rose_cherry_doll_M_green/mello.pm";
+  hand_tex = "/res/clothes/rose_cherry_doll_M_green/tex/mello_green.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 0;
+})
+
+costume_settings[1708001] <- CostumeSetting({
+  permission = 1;
+  name = "ハローキティフェイスTシャツ";
+  desc = "ハローキティの顔が/n大きくかかれたTシャツ。/n目立つこと間違いなし！";
+  grade = 5;
+  chara_id = 1;
+  res = "/res/clothes/Tshirt_kyaraface/kitty.pm";
+  hand_tex = "/res/clothes/Tshirt_kyaraface/tex/kitty.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  get_event_id = 1708001;
+  priority = 9990;
+})
+
+costume_settings[1809002] <- CostumeSetting({
+  permission = 1;
+  name = "マイメロディフェイスTシャツ";
+  desc = "マイメロディの顔が/n大きくかかれたTシャツ。/n目立つこと間違いなし！";
+  grade = 5;
+  chara_id = 2;
+  res = "/res/clothes/Tshirt_kyaraface/mymelo.pm";
+  hand_tex = "/res/clothes/Tshirt_kyaraface/tex/mymelo.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 9920;
+  get_event_id = 1809002;
+})
+
+costume_settings[2006102] <- CostumeSetting({
+  permission = 1;
+  name = "シナモロールフェイスTシャツ";
+  desc = "シナモロールの顔が/n大きくかかれたTシャツ。/n目立つこと間違いなし！";
+  grade = 5;
+  chara_id = 102;
+  res = "/res/clothes/Tshirt_kyaraface/cinnamon.pm";
+  hand_tex = "/res/clothes/Tshirt_kyaraface/tex/cinnamon.png";
+  exp_table_id = 1;
+  motion_table_id = 1;
+  category = COSTUME_CATEGORY_CASUAL;
+  color = COSTUME_COLOR_GREEN;
+  actions = [54, 56, 56];
+  health_table_id = 1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+  pat_script = "pat";
+  tap_script = "tap";
+  gacha_script = "gacha";
+  gacha_talk = "gacha_rose_cherry_doll_green";
+  priority = 9940;
+  get_event_id = 2006102;
+})

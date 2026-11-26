@@ -1,0 +1,19 @@
+return {
+  modeldata = "tornado.mdl"
+  bnd = [0.006375, 1.32342, -0.009596, 1.356778, 1.32733, 1.411745]
+
+  material = [
+  {
+    name = "tornado"
+    tec = "decal.def"
+    Ka = 0xffffff00
+    Kd = 0xffffffff
+    Ks = 0xffffff00
+    Ke = 0
+    shiness = 50.0
+    alphatest = 1
+    alpharef = 0.7
+    texture0 = "tex/tornado.png"
+  }
+  ]
+}

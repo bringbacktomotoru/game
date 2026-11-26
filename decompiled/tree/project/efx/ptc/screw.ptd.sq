@@ -1,0 +1,79 @@
+parentcoord <- false
+currentgroup <- 2
+groups <- [
+with ParticleGroupData() {
+  name = "hoshi"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 10
+    start = 0, start_spr = 300
+    life = 300, life_spr = 0
+    posx = 0.0, posy = -5.1, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 3.141593, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.4, "h": 0.4, "axis": 0 }
+  texture = "star03_mix.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel_spr": 0.0, "vel": 10.0 },
+  { "classid": "ptcmod_color", "color": [16753919, -1, 16753151, -1, 16753920] },
+  { "classid": "ptcmod_scale", "scale": [2.0, 0.192308, 1.692308, 0.192308, 1.384615, 0.153846, 1.076923, 0.0], "xyz": 7 },
+  { "classid": "ptcmod_acc", "coord": 0, "acc_spr": 0.0, "acc": 1.0, "axisid": 1 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 1.0], "scale": 1.710423, "axisid": 2 },
+  ] },
+with ParticleGroupData() {
+  name = "glow"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 0, start_spr = 0
+    life = 700, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 2.09, "h": 2.09, "axis": 0 }
+  texture = "glow02.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_color", "color": [255, -1174411009, 16753151, -1174411521, 16753151, -1174411521, 16753151, 255] },
+  { "classid": "ptcmod_scale", "scale": [1.153846, 0.769231, 1.153846, 0.769231, 1.192308, 0.769231, 1.153846, 0.769231], "xyz": 7 },
+  { "classid": "ptcmod_follow", "k1": 100.0, "k0": 100.0 },
+  ] },
+with ParticleGroupData() {
+  name = "wind"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 0, start_spr = 0
+    life = 600, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 2.0, "h": 2.0, "axis": 0 }
+  texture = "wind01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_rot", "rot": [-1.0, 1.0], "scale": 3.682645, "axisid": 2 },
+  { "classid": "ptcmod_color", "color": [-1778385152, -1, -1778384897, -1, -1778384897, -256] },
+  { "classid": "ptcmod_follow", "k1": 100.0, "k0": 100.0 },
+  { "classid": "ptcmod_scale", "scale": [1.884615, 1.730769, 1.384615, 0.576923], "xyz": 7 },
+  ] },
+]

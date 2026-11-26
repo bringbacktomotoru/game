@@ -1,0 +1,70 @@
+﻿;
+;----------- 最初に実行されるマクロ定義等 -------------
+;
+
+;--- 一度実行している場合は*STARTまで飛ぶ
+[if exp={tf["defined"]}]
+[jump target=*START]
+[endif]
+{tf["defined"] <- true;}
+
+;-----------------------------------------------キャラ操作
+
+;-----------------------------------------------家具操作
+
+;-----------------------------------------------部屋操作
+
+;-----------------------------------------------カメラ操作
+
+;-----------------------------------------------会話
+
+;-----------------------------------------------チュートリアルマクロ
+[macro name=tutorialwindow]
+[create id="msg.tutorial" storage="/ui/common/TutorialWindow.json" x={args.x} y={args.y} pivx=-320 pivy=-86 visible=true]
+[current text="msg.tutorial.lbl_txt"][ct]
+[endmacro]
+
+[macro name=hide_tutorialwindow]
+[delete id="msg.tutorial"]
+[endmacro]
+
+[macro name=visible_tutorialwindow]
+[set id="msg.tutorial" visible = args.visible]
+[endmacro]
+
+[macro name=createfocus]
+[if exp={!findChild("bg.focus")}]
+[create id="bg.focus" class="CircleMaskView" visible=true]
+[endif]
+[current obj="bg.focis"]
+[endmacro]
+
+[macro name=focusover]
+[createfocus]
+{
+	local v = findChild("bg.focus");
+	v.focusover( args["time"] || 300);
+}
+[endmacro]
+
+[macro name=focusin]
+[createfocus]
+{
+	local v = findChild("bg.focus");
+	v.focusin( args.x, args.y, args.sx, args.sy, args["time"] || 300);
+}
+[endmacro]
+[macro name=focusout]
+{
+	local v = findChild("bg.focus");
+	if( v) v.focusout( args["time"] || 300);
+}
+[wait time={args.time}]
+[delete id="bg.focus"]
+[endmacro]
+
+;-----------------------------------------------初期化
+
+*START
+
+//{ trace("DEFINE end!!! " .. ctx .. "\n"); }

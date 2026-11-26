@@ -1,0 +1,8 @@
+runsk("/src/common/load.sk");
+runsk("/src/util/load.sk");
+runsk("tool_translater/res/ResTranslater.sk");
+
+local trans = ResTranslater(1);
+trans.translate();
+
+println("OWARI !!!!!!!!!!!!!!!");

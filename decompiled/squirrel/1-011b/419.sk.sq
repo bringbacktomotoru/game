@@ -1,0 +1,267 @@
+import SKViewPropertyID;
+
+with SKLabelView {
+  TEXTIMG_DIR <- "/ui/image/text/text/";
+  textimg_list <- [];
+
+  view_texts <- [];
+
+  function _initTexts() {
+    this.view_texts.clear();
+    this.view_texts + { color = fontattr.color, text = "" };
+  }
+
+  function _separateText(s) {
+    if (typeof(s) != SS_STRING) {
+      text = s;
+      this.view_texts[0].text = s;
+      return;
+    }
+    local _st = clone s;
+    local _texts = [];
+    local _code_length = 5;
+    local _remain_text = s;
+
+    while (_st.contains("##C") && _remain_text.len() >= _code_length) {
+      local _idx = _st.indexOf("##C");
+      local _r_idx = _remain_text.indexOf("##C");
+      local _last_idx = _remain_text.len();
+      local _before_text = _remain_text.substring(0, _r_idx);
+      _remain_text = _remain_text.substring(_r_idx + _code_length, _last_idx);
+
+      local _nstr = _st.substring(_idx + 3, _idx + _code_length);
+      local _c = _getColorCode(int(_nstr));
+      local _l = this.view_texts.len() - 1;
+      this.view_texts[_l].text = _before_text;
+
+      this.view_texts + { color = _c, text = "" };
+
+      _st = _st.remove(_idx, _idx + _code_length);
+
+    }
+    local _l = this.view_texts.len() - 1;
+    this.view_texts[_l].text = _remain_text;
+
+    text = s;
+
+  }
+
+  function _getColorCode(c) {
+    switch (c) {
+    case 1: return 0xff0000ff;
+    case 2: return 16711935;
+    case 3: return 65535;
+    case 12: return 16777215;
+    case 21: return 0xff00ffff;
+    case 0: return fontattr.color;
+    default: return fontattr.color;
+    }
+  }
+
+  function setFontAttribute(a) {
+    fontattr = a;
+    resetattr = true;
+    repaint();
+    _updateDefaultColor();
+  }
+
+  function setFont(f) {
+    fontattr.font = getFont("/ui/font/" + f);
+  }
+
+  function setColor(c) {
+    fontattr.color = c;
+    resetattr = true;
+    repaint();
+    _updateDefaultColor();
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case LABEL:
+      {
+        setText(p0);
+      }
+      break;
+    case FONT:
+      {
+        local c0 = fontattr.color;
+        local fa = FontAttribute(::Fonts[p0.fontname], p0.fontsize, c0, p0.fontflags);
+        fa.strokecolor = p0["strokecolor"] || 255;
+        fa.strokesize = p0["strokesize"] || 0;
+        fa.strokex = p0["strokex"] || 0;
+        fa.strokey = p0["strokey"] || 0;
+        setFontAttribute(fa);
+      }
+      break;
+    case TEXTCOLOR:
+      local c = Math.lerpcolor(p0, p1, w);
+      local a = (c & 255);
+      textbox.colormask = (a << 24) | (a << 16) | (a << 8) | a;
+      fontattr.color = c | 255;
+      resetattr = true; repaint();
+      _updateDefaultColor();
+      break;
+    case WRAPTEXT:
+      textbox.wrapmode = p0; repaint();
+      break;
+    case TEXTALIGN:
+      textbox.align = p0; repaint();
+      break;
+    default:
+      super.setParam(pid, p0, p1, w);
+      break;
+    }
+  }
+
+  function _updateDefaultColor() {
+    if (this.view_texts.len() == 0) _initTexts();
+    local _oldcolor = this.view_texts[0].color;
+    this.view_texts[0].color = fontattr.color;
+
+    foreach (text_table in this.view_texts) {
+      if (text_table.color == _oldcolor) text_table.color = fontattr.color;
+    }
+  }
+
+  function setText(s) {
+    s = ::replacePlayerName(s);
+    _initTexts();
+    _separateText(s);
+
+    local _key_table = {};
+    foreach (_img in textimg_list) {
+      removeChild(_img);
+    }
+    textimg_list = [];
+
+    foreach (_idx, _text_table in this.view_texts) {
+      local _s = _text_table.text;
+      if (typeof(_s) == SS_STRING) {
+        _s = replaceNewLine(_s);
+
+        local _idx1 = _s.indexOf("#");
+        local _idx2 = _s.indexOf("#", _idx1 + 1);
+        while (_idx1 != -1 && _idx2 != -1) {
+          local _key = _s.substring(_idx1 + 1, _idx2);
+          if (!(_key in _key_table)) _key_table[_key] <- [];
+          _key_table[_key] + _idx1;
+          _s = _s.slice(0, _idx1) + "  " + _s.slice(_idx2 + 1, _s.len());
+
+          _idx1 = _s.indexOf("#", _idx1);
+          _idx2 = _s.indexOf("#", _idx1 + 1);
+        }
+
+      }
+
+      if (_idx == 0) {
+
+        local _attr = _deepCloneFontAttr(fontattr);
+
+        _attr.color = _text_table.color;
+
+        textbox.setAttribute(_attr);
+        textbox.setText(_s);
+      } else {
+
+        local _attr = _deepCloneFontAttr(fontattr);
+        _attr.color = _text_table.color;
+        textbox.appendText(_s, _attr);
+
+      }
+
+    }
+
+    local _size = -1;
+    local pos = [];
+    foreach (key, arr in _key_table) {
+      local _path = TEXTIMG_DIR + key + ".png";
+      local _sp = ::getSprite(_path);
+      _sp.blend = SK_MIX;
+
+      foreach (idx, num in arr) {
+        if (_size < 0) {
+          textbox.getCharPos(num, pos);
+          _size = textbox.strwidth(num, num + 1);
+          if (_size < 0) _size = textbox.strwidth(num + 1, num + 2);
+          _size *= 2;
+        }
+
+        textbox.getCharPos(num, pos);
+        local _img = SKImageView();
+        _img.setSprite(_sp);
+        local _y = pos[1] - _size + _size * 0.2;
+        _img.setRect(pos[0], _y, _size, _size);
+        addChild(_img);
+        textimg_list + _img;
+      }
+    }
+
+    repaint();
+  }
+
+  function _deepCloneFontAttr(f_src) {
+    local _f_dest = FontAttribute(f_src.font);
+    _f_dest.size = f_src.size;
+    _f_dest.color = f_src.color;
+    _f_dest.flags = f_src.flags;
+    _f_dest.advance = f_src.advance;
+    _f_dest.linespace = f_src.linespace;
+    _f_dest.strokecolor = f_src.strokecolor;
+    _f_dest.strokesize = f_src.strokesize;
+    _f_dest.strokex = f_src.strokex;
+    _f_dest.strokey = f_src.strokey;
+    return _f_dest;
+  }
+
+  function _initTextImageKeys() {
+    local d = ::getResource("/ui/image/text/text");
+    foreach (file in d.getList()) {
+      local _name = file.name;
+      local i = _name.indexOf(".");
+      local key = _name.slice(0, i);
+      local _ex = _name.slice(i, _name.len());
+      if (_ex != ".png") continue;
+
+      ::textimg_keys + key;
+    }
+  }
+
+  function appendText(s) {
+    setText(text + s);
+  }
+
+  function setStrokeColor(c) {
+    fontattr.strokecolor = c;
+    resetattr = true;
+    repaint();
+  }
+
+  function getFirstCharPos(add_viewpos = true) {
+    local pos = [];
+    textbox.getCharPos(0, pos);
+
+    if (add_viewpos) {
+      pos[0] += this.pos.x;
+      pos[1] += this.pos.y;
+    }
+
+    return pos;
+  }
+
+  function getLastCharPos(add_viewpos = true) {
+    local pos = [];
+    local end_idx = length(text)
+    textbox.getCharPos(end_idx, pos);
+
+    local end_char_size = textbox.strwidth(end_idx - 1, end_idx);
+    pos[0] += end_char_size;
+
+    if (add_viewpos) {
+      pos[0] += this.pos.x;
+      pos[1] += this.pos.y;
+    }
+
+    return pos;
+  }
+}

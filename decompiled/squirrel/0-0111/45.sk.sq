@@ -1,0 +1,31 @@
+model =
+{
+  root = {
+    pm = "sunbeam_big.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+    fadeColor(572465919, 0);
+  }
+
+  function start() {
+    setBlend(SK_ADD);
+    spin(0, 0, 0.05, 2000);
+    zoomTo(1.15, 1.15, 1.15, 500);
+    pass(500);
+    zoomTo(1.0, 1.0, 1.0, 500);
+    pass(500);
+    zoomTo(1.15, 1.15, 1.15, 500);
+    fadeColor(255, 1000);
+    pass(500);
+    zoomTo(1.0, 1.0, 1.0, 500);
+    pass(500);
+
+    kill();
+  }
+}

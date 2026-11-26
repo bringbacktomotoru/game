@@ -1,0 +1,75 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "star"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 40
+    start = 0, start_spr = 4600
+    life = 400, life_spr = 0
+    posx = 0.0, posy = 1.2, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.5, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 3.141593
+  },
+  shapetype = 0
+  shapedata = { "w": 0.18, "h": 0.18, "axis": 0 }
+  texture = "star03.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 0.57, "vel_spr": 0.0 },
+  { "classid": "ptcmod_color", "color": [-24065, -408026881, -24321, -391118593, -24321, -391380737, -24321, 0] },
+  { "classid": "ptcmod_scale", "scale": [1.423077, 0.615385, 2.0, 1.115385, 2.0, 0.5, 1.538462, 0.0], "xyz": 7 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, -1.0], "scale": 0.0, "axisid": 2 },
+  ] },
+with ParticleGroupData() {
+  name = "sunlight"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 0, start_spr = 0
+    life = 5000, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 1.8, "h": 1.8, "axis": 0 }
+  texture = "sunlight01.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_rot", "rot": [-1.0, 0.115385], "scale": 3.141593, "axisid": 2 },
+  { "classid": "ptcmod_color", "color": [255, -13825, -29185, -13569, -27137, -14081, -27649, 255] },
+  ] },
+with ParticleGroupData() {
+  name = "sunlight2"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 0, start_spr = 0
+    life = 5000, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 1.8, "h": 1.8, "axis": 0 }
+  texture = "sunlight02.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_color", "color": [255, -14081, -28929, -14081, -29441, -14081, -29441, 255] },
+  { "classid": "ptcmod_rot", "rot": [0.038462, 0.307692], "scale": 3.141593, "axisid": 2 },
+  ] },
+]

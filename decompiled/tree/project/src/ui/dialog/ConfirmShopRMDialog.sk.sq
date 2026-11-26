@@ -1,0 +1,44 @@
+class ConfirmShopRMDialog extends ::Dialog {
+  lbl_price = null;
+  lbl_confirm = null;
+
+  pnl_rm = null;
+
+  img_ok = null;
+  img_ng = null;
+  img_icon = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/ConfirmShopRMDialog.ui"));
+
+    this.lbl_price = this.view.findChild("lbl_price");
+    this.lbl_confirm = this.view.findChild("lbl_confirm");
+    this.img_icon = this.view.findChild("img_icon");
+    this.img_ok = this.btn_ok.findChild("img_ok");
+    this.img_ng = this.btn_ok.findChild("img_ng");
+
+    this.pnl_rm = this.view.findChild("pnl_rm");
+
+    this.view.findChild("lbl_explain").setText(::dict.get("shop_explain_rm"));
+    this.pnl_rm.findChild("lbl_old").setText(::dict.get("have_hapiness"));
+    this.pnl_rm.findChild("lbl_new").setText(::dict.get("purchased_hapiness"));
+  }
+
+  function setShopRM(ss) {
+    local _price = ss.getPrice();
+    if (typeof(_price) == SS_INTEGER) _price = ::formatNumberString(_price);
+    this.lbl_price.setText(::dict.get("shop_confirm_cash", [_price]));
+
+    this.lbl_confirm.setText(::dict.get("shop_confirm_rm", [ss.getItemName()]));
+
+    local _ud = ::gamesession.getUserData();
+    local _iap_setting = ::gamesetting.iap_settings[ss.getItemID()];
+
+    local _onerouse = _iap_setting.getOnerousRM();
+    local _bonus = _iap_setting.getBonusRM();
+    local _nowrm = _ud.getTotalRealMoney();
+
+    this.pnl_rm.findChild("lbl_rm_old").setText(::formatNumberString(_nowrm));
+    this.pnl_rm.findChild("lbl_rm_new").setText(::formatNumberString(_nowrm + _onerouse + _bonus));
+  }
+}

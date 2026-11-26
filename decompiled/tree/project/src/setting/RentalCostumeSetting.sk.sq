@@ -1,0 +1,30 @@
+class RentalCostumeSetting extends ::Setting {
+  id = 0;
+  costume_id = 0;
+  time = -1;
+  price = 0;
+
+  function loadConfAtServer(t) {
+    local _setting = RentalCostumeSetting();
+    foreach (k, v in t) {
+      _setting[k] = v;
+    }
+    return _setting;
+  }
+
+  function getID() {
+    return id;
+  }
+
+  function getCostumeID() {
+    return this.costume_id;
+  }
+
+  function getTime() {
+    return this.time;
+  }
+
+  function getPrice() {
+    return this.price;
+  }
+}

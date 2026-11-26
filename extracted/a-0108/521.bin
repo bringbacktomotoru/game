@@ -1,0 +1,352 @@
+{
+  "ID": "fa7d14b4-9f84-479e-86c6-72435d358a5c",
+  "Version": "2.3.3.0",
+  "Name": "EventBranchDialog",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 91,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_h1.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 59,
+            "Scale9OriginY": 25,
+            "Scale9Width": 62,
+            "Scale9Height": 27,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 360.0,
+              "Y": 900.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.7031
+            },
+            "PreSize": {
+              "X": 0.75,
+              "Y": 0.0602
+            },
+            "LeftMargin": 90.0,
+            "RightMargin": 90.0,
+            "TopMargin": 341.5,
+            "BottomMargin": 861.5,
+            "Tag": 48,
+            "Children": [
+              {
+                "FontSize": 40,
+                "LabelText": "選択肢１",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 5,
+                "OutlineColor": {
+                  "G": 165,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 270.0,
+                  "Y": 38.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4935
+                },
+                "PreSize": {
+                  "X": 0.2852,
+                  "Y": 0.6494
+                },
+                "LeftMargin": 193.0,
+                "RightMargin": 193.0,
+                "TopMargin": 14.0,
+                "BottomMargin": 13.0,
+                "Tag": 49,
+                "ActionTag": 1242307546,
+                "Size": {
+                  "X": 154.0,
+                  "Y": 50.0
+                },
+                "Name": "lbl_text",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1527868224,
+            "Size": {
+              "X": 540.0,
+              "Y": 77.0
+            },
+            "Name": "btn_branch1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_h1.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 59,
+            "Scale9OriginY": 25,
+            "Scale9Width": 62,
+            "Scale9Height": 27,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 359.9998,
+              "Y": 750.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5859
+            },
+            "PreSize": {
+              "X": 0.75,
+              "Y": 0.0602
+            },
+            "LeftMargin": 89.9998,
+            "RightMargin": 90.0001,
+            "TopMargin": 491.4999,
+            "BottomMargin": 711.5001,
+            "Tag": 54,
+            "Children": [
+              {
+                "FontSize": 40,
+                "LabelText": "選択肢２",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 5,
+                "OutlineColor": {
+                  "G": 165,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 270.0,
+                  "Y": 38.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4935
+                },
+                "PreSize": {
+                  "X": 0.2944,
+                  "Y": 0.6494
+                },
+                "LeftMargin": 190.5,
+                "RightMargin": 190.5,
+                "TopMargin": 14.0,
+                "BottomMargin": 13.0,
+                "Tag": 55,
+                "ActionTag": -1252964581,
+                "Size": {
+                  "X": 159.0,
+                  "Y": 50.0
+                },
+                "Name": "lbl_text",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -301656380,
+            "Size": {
+              "X": 540.0,
+              "Y": 77.0
+            },
+            "Name": "btn_branch2",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_h1.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 59,
+            "Scale9OriginY": 25,
+            "Scale9Width": 62,
+            "Scale9Height": 27,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 359.9998,
+              "Y": 600.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.4688
+            },
+            "PreSize": {
+              "X": 0.75,
+              "Y": 0.0602
+            },
+            "LeftMargin": 89.9998,
+            "RightMargin": 90.0001,
+            "TopMargin": 641.4998,
+            "BottomMargin": 561.5002,
+            "Tag": 56,
+            "Children": [
+              {
+                "FontSize": 40,
+                "LabelText": "選択肢3",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 5,
+                "OutlineColor": {
+                  "G": 165,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 270.0,
+                  "Y": 38.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4935
+                },
+                "PreSize": {
+                  "X": 0.2815,
+                  "Y": 0.6494
+                },
+                "LeftMargin": 194.0,
+                "RightMargin": 194.0,
+                "TopMargin": 14.0,
+                "BottomMargin": 13.0,
+                "Tag": 57,
+                "ActionTag": 1755136531,
+                "Size": {
+                  "X": 152.0,
+                  "Y": 50.0
+                },
+                "Name": "lbl_text",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -1246863224,
+            "Size": {
+              "X": 540.0,
+              "Y": 77.0
+            },
+            "Name": "btn_branch3",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 720.0,
+          "Y": 1280.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "font/logotypejp_mp_b_1.ttf",
+        "image/ss_btn.plist",
+        "image/ss_btn.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

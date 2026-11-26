@@ -1,0 +1,30 @@
+parentcoord <- false
+currentgroup <- 0.0
+groups <- [
+with ParticleGroupData() {
+  name = "arrow"
+  enabled = true
+  aimtype = 1
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 0, start_spr = 0
+    life = 1400, life_spr = 0
+    posx = 0.0, posy = -0.3, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 3.141593, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+    linearbits = 0
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.7, "h": 0.7 }
+  texture = "ar_question.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = true
+  mod = [
+  { "color": [-86, -1, -1, -1, -1, -1, -1, -86], "classid": "ptcmod_color" },
+  { "axisid": 2, "classid": "ptcmod_rot", "rot": [-1.0, 1.0, 1.0, 1.0], "scale": 0.261799 },
+  ] },
+]

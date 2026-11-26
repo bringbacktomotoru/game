@@ -1,0 +1,4486 @@
+{
+  "ID": "6f96b22c-8b5f-4814-891a-2eb8d070703f",
+  "Version": "2.3.3.0",
+  "Name": "DailyPresentDialog",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 91,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_l.png",
+              "Plist": ""
+            },
+            "Scale9Width": 708,
+            "Scale9Height": 1013,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 354.0,
+              "Y": 506.5
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 202,
+            "ActionTag": 1204554857,
+            "Size": {
+              "X": 708.0,
+              "Y": 1013.0
+            },
+            "Name": "img",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/logo/logo_loginbonus.png",
+              "Plist": ""
+            },
+            "Scale9Width": 316,
+            "Scale9Height": 32,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 354.0,
+              "Y": 909.9998
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.8983
+            },
+            "PreSize": {
+              "X": 0.4463,
+              "Y": 0.0316
+            },
+            "LeftMargin": 196.0,
+            "RightMargin": 196.0,
+            "TopMargin": 87.0002,
+            "BottomMargin": 893.9998,
+            "Tag": 203,
+            "ActionTag": 1143559289,
+            "Size": {
+              "X": 316.0,
+              "Y": 32.0
+            },
+            "Name": "img",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_deco_up.png",
+              "Plist": ""
+            },
+            "Scale9Width": 476,
+            "Scale9Height": 29,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 354.0,
+              "Y": 864.9992
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.8539
+            },
+            "PreSize": {
+              "X": 0.6723,
+              "Y": 0.0286
+            },
+            "LeftMargin": 116.0,
+            "RightMargin": 116.0,
+            "TopMargin": 133.5008,
+            "BottomMargin": 850.4992,
+            "Tag": 205,
+            "ActionTag": 930832498,
+            "Size": {
+              "X": 476.0,
+              "Y": 29.0
+            },
+            "Name": "img",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_deco_down.png",
+              "Plist": ""
+            },
+            "Scale9Width": 476,
+            "Scale9Height": 29,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 354.0001,
+              "Y": 220.0003
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.2172
+            },
+            "PreSize": {
+              "X": 0.6723,
+              "Y": 0.0286
+            },
+            "LeftMargin": 116.0001,
+            "RightMargin": 115.9999,
+            "TopMargin": 778.4997,
+            "BottomMargin": 205.5003,
+            "Tag": 204,
+            "ActionTag": -353218912,
+            "Size": {
+              "X": 476.0,
+              "Y": 29.0
+            },
+            "Name": "img",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/bg/bg_loginbonus.png",
+              "Plist": ""
+            },
+            "Scale9Width": 560,
+            "Scale9Height": 570,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 354.0,
+              "Y": 545.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.538
+            },
+            "PreSize": {
+              "X": 0.791,
+              "Y": 0.5627
+            },
+            "LeftMargin": 74.0,
+            "RightMargin": 74.0,
+            "TopMargin": 182.9999,
+            "BottomMargin": 260.0001,
+            "Tag": 206,
+            "ActionTag": -1527767161,
+            "Size": {
+              "X": 560.0,
+              "Y": 570.0
+            },
+            "Name": "img",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 24,
+            "LabelText": "明日もログインして、プレゼントをゲットしよう！",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 354.0,
+              "Y": 175.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 86,
+              "G": 86,
+              "B": 86
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.1728
+            },
+            "PreSize": {
+              "X": 0.7768,
+              "Y": 0.0237
+            },
+            "LeftMargin": 79.0,
+            "RightMargin": 79.0,
+            "TopMargin": 826.0,
+            "BottomMargin": 163.0,
+            "Tag": 207,
+            "ActionTag": -735273537,
+            "Size": {
+              "X": 550.0,
+              "Y": 24.0
+            },
+            "Name": "lbl_1",
+            "ctype": "TextObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 20,
+            "LabelText": "注意事項などあればまだ仕様が固まっていないのでああああ\nログインの仕方が蓄積なのかどうかわからいのであああああ\nその場合の注意点などをかくところ。ない場合はあああああ",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 354.0,
+              "Y": 120.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 86,
+              "G": 86,
+              "B": 86
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.1185
+            },
+            "PreSize": {
+              "X": 0.7062,
+              "Y": 0.0592
+            },
+            "LeftMargin": 104.0,
+            "RightMargin": 104.0,
+            "TopMargin": 863.0,
+            "BottomMargin": 90.0,
+            "Tag": 208,
+            "ActionTag": -2083442608,
+            "Size": {
+              "X": 500.0,
+              "Y": 60.0
+            },
+            "Name": "lbl_2",
+            "ctype": "TextObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 175.0,
+              "Y": 630.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2472,
+              "Y": 0.6219
+            },
+            "PreSize": {
+              "X": 0.209,
+              "Y": 0.1619
+            },
+            "LeftMargin": 175.0,
+            "RightMargin": 385.0,
+            "TopMargin": 219.0,
+            "BottomMargin": 630.0,
+            "Tag": 209,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_everyday.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 148,
+                "Scale9Height": 164,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 1.0
+                },
+                "Tag": 210,
+                "ActionTag": -323316333,
+                "Size": {
+                  "X": 148.0,
+                  "Y": 164.0
+                },
+                "Name": "img_bg",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/logo/logo_loginbonus_1day.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 76,
+                "Scale9Height": 40,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 57.0001,
+                  "Y": 133.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3851,
+                  "Y": 0.811
+                },
+                "PreSize": {
+                  "X": 0.5135,
+                  "Y": 0.2439
+                },
+                "LeftMargin": 19.0001,
+                "RightMargin": 52.9999,
+                "TopMargin": 11.0,
+                "BottomMargin": 113.0,
+                "Tag": 213,
+                "ActionTag": 1807162582,
+                "Size": {
+                  "X": 76.0,
+                  "Y": 40.0
+                },
+                "Name": "img_day",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 18,
+                "LabelText": "× 9999",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Right",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 130.0,
+                  "Y": 45.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8784,
+                  "Y": 0.2744
+                },
+                "PreSize": {
+                  "X": 0.6757,
+                  "Y": 0.1341
+                },
+                "LeftMargin": 30.0,
+                "RightMargin": 18.0,
+                "TopMargin": 108.0,
+                "BottomMargin": 34.0,
+                "Tag": 116,
+                "ActionTag": 927556296,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 22.0
+                },
+                "Name": "lbl_value",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 90.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5488
+                },
+                "PreSize": {
+                  "X": 0.3108,
+                  "Y": 0.2805
+                },
+                "LeftMargin": 51.0,
+                "RightMargin": 51.0,
+                "TopMargin": 51.0,
+                "BottomMargin": 67.0,
+                "Tag": 109,
+                "ActionTag": 1699433039,
+                "Size": {
+                  "X": 46.0,
+                  "Y": 46.0
+                },
+                "Name": "img_icon",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_getbg.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 147,
+                "Scale9Height": 163,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.9932,
+                  "Y": 0.9939
+                },
+                "LeftMargin": 0.5,
+                "RightMargin": 0.5,
+                "TopMargin": 0.5,
+                "BottomMargin": 0.5,
+                "Tag": 212,
+                "ActionTag": -291568156,
+                "Size": {
+                  "X": 147.0,
+                  "Y": 163.0
+                },
+                "Name": "img_gray",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 135,
+                "Scale9Height": 111,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 80.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4878
+                },
+                "PreSize": {
+                  "X": 0.9122,
+                  "Y": 0.6768
+                },
+                "LeftMargin": 6.5,
+                "RightMargin": 6.5,
+                "TopMargin": 28.5,
+                "BottomMargin": 24.5,
+                "Tag": 214,
+                "ActionTag": -9958814,
+                "Size": {
+                  "X": 135.0,
+                  "Y": 111.0
+                },
+                "Name": "img_get",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 732235353,
+            "Size": {
+              "X": 148.0,
+              "Y": 164.0
+            },
+            "Name": "pnl_day1",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 385.0007,
+              "Y": 630.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5438,
+              "Y": 0.6219
+            },
+            "PreSize": {
+              "X": 0.209,
+              "Y": 0.1619
+            },
+            "LeftMargin": 385.0007,
+            "RightMargin": 174.9993,
+            "TopMargin": 219.0,
+            "BottomMargin": 630.0,
+            "Tag": 215,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_everyday.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 148,
+                "Scale9Height": 164,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 1.0
+                },
+                "Tag": 216,
+                "ActionTag": 1906645840,
+                "Size": {
+                  "X": 148.0,
+                  "Y": 164.0
+                },
+                "Name": "img_bg",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/logo/logo_loginbonus_2day.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 76,
+                "Scale9Height": 40,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 57.0001,
+                  "Y": 133.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3851,
+                  "Y": 0.811
+                },
+                "PreSize": {
+                  "X": 0.5135,
+                  "Y": 0.2439
+                },
+                "LeftMargin": 19.0001,
+                "RightMargin": 52.9999,
+                "TopMargin": 11.0,
+                "BottomMargin": 113.0,
+                "Tag": 217,
+                "ActionTag": -170873696,
+                "Size": {
+                  "X": 76.0,
+                  "Y": 40.0
+                },
+                "Name": "img_day",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 18,
+                "LabelText": "× 9999",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Right",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 130.0,
+                  "Y": 45.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8784,
+                  "Y": 0.2744
+                },
+                "PreSize": {
+                  "X": 0.6757,
+                  "Y": 0.1341
+                },
+                "LeftMargin": 30.0,
+                "RightMargin": 18.0,
+                "TopMargin": 108.0,
+                "BottomMargin": 34.0,
+                "Tag": 117,
+                "ActionTag": 363451396,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 22.0
+                },
+                "Name": "lbl_value",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 90.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5488
+                },
+                "PreSize": {
+                  "X": 0.3108,
+                  "Y": 0.2805
+                },
+                "LeftMargin": 51.0,
+                "RightMargin": 51.0,
+                "TopMargin": 51.0,
+                "BottomMargin": 67.0,
+                "Tag": 110,
+                "ActionTag": 1281551877,
+                "Size": {
+                  "X": 46.0,
+                  "Y": 46.0
+                },
+                "Name": "img_icon",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_getbg.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 147,
+                "Scale9Height": 163,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.9932,
+                  "Y": 0.9939
+                },
+                "LeftMargin": 0.5,
+                "RightMargin": 0.5,
+                "TopMargin": 0.5,
+                "BottomMargin": 0.5,
+                "Tag": 218,
+                "ActionTag": -1557913772,
+                "Size": {
+                  "X": 147.0,
+                  "Y": 163.0
+                },
+                "Name": "img_gray",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 135,
+                "Scale9Height": 111,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 80.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4878
+                },
+                "PreSize": {
+                  "X": 0.9122,
+                  "Y": 0.6768
+                },
+                "LeftMargin": 6.5,
+                "RightMargin": 6.5,
+                "TopMargin": 28.5,
+                "BottomMargin": 24.5,
+                "Tag": 219,
+                "ActionTag": 1476250029,
+                "Size": {
+                  "X": 135.0,
+                  "Y": 111.0
+                },
+                "Name": "img_get",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 482450845,
+            "Size": {
+              "X": 148.0,
+              "Y": 164.0
+            },
+            "Name": "pnl_day2",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 478.0009,
+              "Y": 456.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.6751,
+              "Y": 0.4501
+            },
+            "PreSize": {
+              "X": 0.209,
+              "Y": 0.1619
+            },
+            "LeftMargin": 478.0009,
+            "RightMargin": 81.9991,
+            "TopMargin": 392.9998,
+            "BottomMargin": 456.0002,
+            "Tag": 220,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_everyday.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 148,
+                "Scale9Height": 164,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 1.0
+                },
+                "Tag": 221,
+                "ActionTag": 1385378993,
+                "Size": {
+                  "X": 148.0,
+                  "Y": 164.0
+                },
+                "Name": "img_bg",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/logo/logo_loginbonus_3day.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 76,
+                "Scale9Height": 40,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 57.0001,
+                  "Y": 133.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3851,
+                  "Y": 0.811
+                },
+                "PreSize": {
+                  "X": 0.5135,
+                  "Y": 0.2439
+                },
+                "LeftMargin": 19.0001,
+                "RightMargin": 52.9999,
+                "TopMargin": 11.0,
+                "BottomMargin": 113.0,
+                "Tag": 222,
+                "ActionTag": -1341441545,
+                "Size": {
+                  "X": 76.0,
+                  "Y": 40.0
+                },
+                "Name": "img_day",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 18,
+                "LabelText": "× 9999",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Right",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 130.0,
+                  "Y": 45.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8784,
+                  "Y": 0.2744
+                },
+                "PreSize": {
+                  "X": 0.6757,
+                  "Y": 0.1341
+                },
+                "LeftMargin": 30.0,
+                "RightMargin": 18.0,
+                "TopMargin": 108.0,
+                "BottomMargin": 34.0,
+                "Tag": 118,
+                "ActionTag": -1575564710,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 22.0
+                },
+                "Name": "lbl_value",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 90.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5488
+                },
+                "PreSize": {
+                  "X": 0.3108,
+                  "Y": 0.2805
+                },
+                "LeftMargin": 51.0,
+                "RightMargin": 51.0,
+                "TopMargin": 51.0,
+                "BottomMargin": 67.0,
+                "Tag": 111,
+                "ActionTag": 660125892,
+                "Size": {
+                  "X": 46.0,
+                  "Y": 46.0
+                },
+                "Name": "img_icon",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_getbg.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 147,
+                "Scale9Height": 163,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.9932,
+                  "Y": 0.9939
+                },
+                "LeftMargin": 0.5,
+                "RightMargin": 0.5,
+                "TopMargin": 0.5,
+                "BottomMargin": 0.5,
+                "Tag": 223,
+                "ActionTag": 1447976876,
+                "Size": {
+                  "X": 147.0,
+                  "Y": 163.0
+                },
+                "Name": "img_gray",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 135,
+                "Scale9Height": 111,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 80.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4878
+                },
+                "PreSize": {
+                  "X": 0.9122,
+                  "Y": 0.6768
+                },
+                "LeftMargin": 6.5,
+                "RightMargin": 6.5,
+                "TopMargin": 28.5,
+                "BottomMargin": 24.5,
+                "Tag": 224,
+                "ActionTag": -1821726881,
+                "Size": {
+                  "X": 135.0,
+                  "Y": 111.0
+                },
+                "Name": "img_get",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -1531723857,
+            "Size": {
+              "X": 148.0,
+              "Y": 164.0
+            },
+            "Name": "pnl_day3",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 385.0009,
+              "Y": 290.0009
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5438,
+              "Y": 0.2863
+            },
+            "PreSize": {
+              "X": 0.209,
+              "Y": 0.1619
+            },
+            "LeftMargin": 385.0009,
+            "RightMargin": 174.9991,
+            "TopMargin": 558.9991,
+            "BottomMargin": 290.0009,
+            "Tag": 235,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_everyday.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 148,
+                "Scale9Height": 164,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 1.0
+                },
+                "Tag": 236,
+                "ActionTag": 345746197,
+                "Size": {
+                  "X": 148.0,
+                  "Y": 164.0
+                },
+                "Name": "img_bg",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/logo/logo_loginbonus_4day.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 76,
+                "Scale9Height": 40,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 57.0001,
+                  "Y": 133.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3851,
+                  "Y": 0.811
+                },
+                "PreSize": {
+                  "X": 0.5135,
+                  "Y": 0.2439
+                },
+                "LeftMargin": 19.0001,
+                "RightMargin": 52.9999,
+                "TopMargin": 11.0,
+                "BottomMargin": 113.0,
+                "Tag": 237,
+                "ActionTag": 347561963,
+                "Size": {
+                  "X": 76.0,
+                  "Y": 40.0
+                },
+                "Name": "img_day",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 18,
+                "LabelText": "× 9999",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Right",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 130.0,
+                  "Y": 45.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8784,
+                  "Y": 0.2744
+                },
+                "PreSize": {
+                  "X": 0.6757,
+                  "Y": 0.1341
+                },
+                "LeftMargin": 30.0,
+                "RightMargin": 18.0,
+                "TopMargin": 108.0,
+                "BottomMargin": 34.0,
+                "Tag": 119,
+                "ActionTag": 917247726,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 22.0
+                },
+                "Name": "lbl_value",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 90.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5488
+                },
+                "PreSize": {
+                  "X": 0.3108,
+                  "Y": 0.2805
+                },
+                "LeftMargin": 51.0,
+                "RightMargin": 51.0,
+                "TopMargin": 51.0,
+                "BottomMargin": 67.0,
+                "Tag": 112,
+                "ActionTag": -1804504616,
+                "Size": {
+                  "X": 46.0,
+                  "Y": 46.0
+                },
+                "Name": "img_icon",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_getbg.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 147,
+                "Scale9Height": 163,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.9932,
+                  "Y": 0.9939
+                },
+                "LeftMargin": 0.5,
+                "RightMargin": 0.5,
+                "TopMargin": 0.5,
+                "BottomMargin": 0.5,
+                "Tag": 238,
+                "ActionTag": 1874975530,
+                "Size": {
+                  "X": 147.0,
+                  "Y": 163.0
+                },
+                "Name": "img_gray",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 135,
+                "Scale9Height": 111,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 80.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4878
+                },
+                "PreSize": {
+                  "X": 0.9122,
+                  "Y": 0.6768
+                },
+                "LeftMargin": 6.5,
+                "RightMargin": 6.5,
+                "TopMargin": 28.5,
+                "BottomMargin": 24.5,
+                "Tag": 239,
+                "ActionTag": 358906974,
+                "Size": {
+                  "X": 135.0,
+                  "Y": 111.0
+                },
+                "Name": "img_get",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -1726401756,
+            "Size": {
+              "X": 148.0,
+              "Y": 164.0
+            },
+            "Name": "pnl_day4",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 175.0002,
+              "Y": 290.0009
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2472,
+              "Y": 0.2863
+            },
+            "PreSize": {
+              "X": 0.209,
+              "Y": 0.1619
+            },
+            "LeftMargin": 175.0002,
+            "RightMargin": 384.9998,
+            "TopMargin": 558.9991,
+            "BottomMargin": 290.0009,
+            "Tag": 230,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_everyday.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 148,
+                "Scale9Height": 164,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 1.0
+                },
+                "Tag": 231,
+                "ActionTag": -1220351952,
+                "Size": {
+                  "X": 148.0,
+                  "Y": 164.0
+                },
+                "Name": "img_bg",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/logo/logo_loginbonus_5day.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 76,
+                "Scale9Height": 40,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 57.0001,
+                  "Y": 133.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3851,
+                  "Y": 0.811
+                },
+                "PreSize": {
+                  "X": 0.5135,
+                  "Y": 0.2439
+                },
+                "LeftMargin": 19.0001,
+                "RightMargin": 52.9999,
+                "TopMargin": 11.0,
+                "BottomMargin": 113.0,
+                "Tag": 232,
+                "ActionTag": -964949989,
+                "Size": {
+                  "X": 76.0,
+                  "Y": 40.0
+                },
+                "Name": "img_day",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 18,
+                "LabelText": "× 9999",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Right",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 130.0,
+                  "Y": 45.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8784,
+                  "Y": 0.2744
+                },
+                "PreSize": {
+                  "X": 0.6757,
+                  "Y": 0.1341
+                },
+                "LeftMargin": 30.0,
+                "RightMargin": 18.0,
+                "TopMargin": 108.0,
+                "BottomMargin": 34.0,
+                "Tag": 120,
+                "ActionTag": 1861356680,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 22.0
+                },
+                "Name": "lbl_value",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 90.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5488
+                },
+                "PreSize": {
+                  "X": 0.3108,
+                  "Y": 0.2805
+                },
+                "LeftMargin": 51.0,
+                "RightMargin": 51.0,
+                "TopMargin": 51.0,
+                "BottomMargin": 67.0,
+                "Tag": 113,
+                "ActionTag": -284721176,
+                "Size": {
+                  "X": 46.0,
+                  "Y": 46.0
+                },
+                "Name": "img_icon",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_getbg.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 147,
+                "Scale9Height": 163,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.9932,
+                  "Y": 0.9939
+                },
+                "LeftMargin": 0.5,
+                "RightMargin": 0.5,
+                "TopMargin": 0.5,
+                "BottomMargin": 0.5,
+                "Tag": 233,
+                "ActionTag": -1110981495,
+                "Size": {
+                  "X": 147.0,
+                  "Y": 163.0
+                },
+                "Name": "img_gray",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 135,
+                "Scale9Height": 111,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 80.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4878
+                },
+                "PreSize": {
+                  "X": 0.9122,
+                  "Y": 0.6768
+                },
+                "LeftMargin": 6.5,
+                "RightMargin": 6.5,
+                "TopMargin": 28.5,
+                "BottomMargin": 24.5,
+                "Tag": 234,
+                "ActionTag": 378942382,
+                "Size": {
+                  "X": 135.0,
+                  "Y": 111.0
+                },
+                "Name": "img_get",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 1143167525,
+            "Size": {
+              "X": 148.0,
+              "Y": 164.0
+            },
+            "Name": "pnl_day5",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 82.001,
+              "Y": 456.0003
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.1158,
+              "Y": 0.4501
+            },
+            "PreSize": {
+              "X": 0.209,
+              "Y": 0.1619
+            },
+            "LeftMargin": 82.001,
+            "RightMargin": 477.999,
+            "TopMargin": 392.9997,
+            "BottomMargin": 456.0003,
+            "Tag": 225,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_everyday.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 148,
+                "Scale9Height": 164,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 1.0
+                },
+                "Tag": 226,
+                "ActionTag": -2010628272,
+                "Size": {
+                  "X": 148.0,
+                  "Y": 164.0
+                },
+                "Name": "img_bg",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/logo/logo_loginbonus_6day.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 76,
+                "Scale9Height": 40,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 57.0001,
+                  "Y": 133.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3851,
+                  "Y": 0.811
+                },
+                "PreSize": {
+                  "X": 0.5135,
+                  "Y": 0.2439
+                },
+                "LeftMargin": 19.0001,
+                "RightMargin": 52.9999,
+                "TopMargin": 11.0,
+                "BottomMargin": 113.0,
+                "Tag": 227,
+                "ActionTag": -2040350698,
+                "Size": {
+                  "X": 76.0,
+                  "Y": 40.0
+                },
+                "Name": "img_day",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 18,
+                "LabelText": "× 9999",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Right",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 130.0,
+                  "Y": 45.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8784,
+                  "Y": 0.2744
+                },
+                "PreSize": {
+                  "X": 0.6757,
+                  "Y": 0.1341
+                },
+                "LeftMargin": 30.0,
+                "RightMargin": 18.0,
+                "TopMargin": 108.0,
+                "BottomMargin": 34.0,
+                "Tag": 121,
+                "ActionTag": 1918652523,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 22.0
+                },
+                "Name": "lbl_value",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 90.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5488
+                },
+                "PreSize": {
+                  "X": 0.3108,
+                  "Y": 0.2805
+                },
+                "LeftMargin": 51.0,
+                "RightMargin": 51.0,
+                "TopMargin": 51.0,
+                "BottomMargin": 67.0,
+                "Tag": 114,
+                "ActionTag": 1349687171,
+                "Size": {
+                  "X": 46.0,
+                  "Y": 46.0
+                },
+                "Name": "img_icon",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_getbg.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 147,
+                "Scale9Height": 163,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.9932,
+                  "Y": 0.9939
+                },
+                "LeftMargin": 0.5,
+                "RightMargin": 0.5,
+                "TopMargin": 0.5,
+                "BottomMargin": 0.5,
+                "Tag": 228,
+                "ActionTag": -1066617269,
+                "Size": {
+                  "X": 147.0,
+                  "Y": 163.0
+                },
+                "Name": "img_gray",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 135,
+                "Scale9Height": 111,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 80.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4878
+                },
+                "PreSize": {
+                  "X": 0.9122,
+                  "Y": 0.6768
+                },
+                "LeftMargin": 6.5,
+                "RightMargin": 6.5,
+                "TopMargin": 28.5,
+                "BottomMargin": 24.5,
+                "Tag": 229,
+                "ActionTag": 1573668997,
+                "Size": {
+                  "X": 135.0,
+                  "Y": 111.0
+                },
+                "Name": "img_get",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 1633199189,
+            "Size": {
+              "X": 148.0,
+              "Y": 164.0
+            },
+            "Name": "pnl_day6",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 282.0011,
+              "Y": 456.0003
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.3983,
+              "Y": 0.4501
+            },
+            "PreSize": {
+              "X": 0.209,
+              "Y": 0.1619
+            },
+            "LeftMargin": 282.0011,
+            "RightMargin": 277.9989,
+            "TopMargin": 392.9997,
+            "BottomMargin": 456.0003,
+            "Tag": 240,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_7day.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 190,
+                "Scale9Height": 204,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 82.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.2838,
+                  "Y": 1.2439
+                },
+                "LeftMargin": -21.0,
+                "RightMargin": -21.0,
+                "TopMargin": -20.0,
+                "BottomMargin": -20.0,
+                "Tag": 241,
+                "ActionTag": -558975363,
+                "Size": {
+                  "X": 190.0,
+                  "Y": 204.0
+                },
+                "Name": "img_bg",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/logo/logo_loginbonus_7day.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 87,
+                "Scale9Height": 43,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 54.0002,
+                  "Y": 143.9998
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3649,
+                  "Y": 0.878
+                },
+                "PreSize": {
+                  "X": 0.5878,
+                  "Y": 0.2622
+                },
+                "LeftMargin": 10.5002,
+                "RightMargin": 50.4998,
+                "TopMargin": -1.4998,
+                "BottomMargin": 122.4998,
+                "Tag": 242,
+                "ActionTag": 1161641916,
+                "Size": {
+                  "X": 87.0,
+                  "Y": 43.0
+                },
+                "Name": "img_day",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 18,
+                "LabelText": "× 9999",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Right",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 130.0,
+                  "Y": 45.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8784,
+                  "Y": 0.2744
+                },
+                "PreSize": {
+                  "X": 0.6757,
+                  "Y": 0.1341
+                },
+                "LeftMargin": 30.0,
+                "RightMargin": 18.0,
+                "TopMargin": 108.0,
+                "BottomMargin": 34.0,
+                "Tag": 122,
+                "ActionTag": -1428162720,
+                "Size": {
+                  "X": 100.0,
+                  "Y": 22.0
+                },
+                "Name": "lbl_value",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 74.0,
+                  "Y": 90.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5488
+                },
+                "PreSize": {
+                  "X": 0.3108,
+                  "Y": 0.2805
+                },
+                "LeftMargin": 51.0,
+                "RightMargin": 51.0,
+                "TopMargin": 51.0,
+                "BottomMargin": 67.0,
+                "Tag": 115,
+                "ActionTag": -1939221399,
+                "Size": {
+                  "X": 46.0,
+                  "Y": 46.0
+                },
+                "Name": "img_icon",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 505205257,
+            "Size": {
+              "X": 148.0,
+              "Y": 164.0
+            },
+            "Name": "pnl_day7",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 354.0,
+              "Y": 745.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.7354
+            },
+            "PreSize": {
+              "X": 0.1412,
+              "Y": 0.0987
+            },
+            "LeftMargin": 304.0,
+            "RightMargin": 304.0,
+            "TopMargin": 218.0,
+            "BottomMargin": 695.0,
+            "Tag": 246,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 245,
+                "ActionTag": 88215668,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 248,
+                "ActionTag": 650004544,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 249,
+                "ActionTag": -1480030826,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_3",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 250,
+                "ActionTag": -1568385008,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 251,
+                "ActionTag": -358245834,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 252,
+                "ActionTag": -258068899,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get3",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -588134581,
+            "Size": {
+              "X": 100.0,
+              "Y": 100.0
+            },
+            "Name": "pnl_dot1",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 560.0,
+              "Y": 659.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "RotationSkewX": 60.0,
+            "RotationSkewY": 60.0,
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.791,
+              "Y": 0.6505
+            },
+            "PreSize": {
+              "X": 0.1412,
+              "Y": 0.0987
+            },
+            "LeftMargin": 510.0,
+            "RightMargin": 98.0,
+            "TopMargin": 303.9998,
+            "BottomMargin": 609.0002,
+            "Tag": 253,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 254,
+                "ActionTag": 1438627522,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 255,
+                "ActionTag": -304154579,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 256,
+                "ActionTag": -614004787,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_3",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 257,
+                "ActionTag": -504972555,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 258,
+                "ActionTag": -764691506,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 259,
+                "ActionTag": -1902162182,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get3",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 1840042511,
+            "Size": {
+              "X": 100.0,
+              "Y": 100.0
+            },
+            "Name": "pnl_dot2",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 559.9998,
+              "Y": 418.0015
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "RotationSkewX": 120.0,
+            "RotationSkewY": 120.0,
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.791,
+              "Y": 0.4126
+            },
+            "PreSize": {
+              "X": 0.1412,
+              "Y": 0.0987
+            },
+            "LeftMargin": 509.9998,
+            "RightMargin": 98.0002,
+            "TopMargin": 544.9985,
+            "BottomMargin": 368.0015,
+            "Tag": 260,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 261,
+                "ActionTag": 1645679680,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 262,
+                "ActionTag": 672334733,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 263,
+                "ActionTag": -2117199550,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_3",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 264,
+                "ActionTag": 1160506835,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 265,
+                "ActionTag": 1945208621,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 266,
+                "ActionTag": -1919365234,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get3",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -1415844008,
+            "Size": {
+              "X": 100.0,
+              "Y": 100.0
+            },
+            "Name": "pnl_dot3",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 354.0001,
+              "Y": 318.0012
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "RotationSkewX": 180.0,
+            "RotationSkewY": 180.0,
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.3139
+            },
+            "PreSize": {
+              "X": 0.1412,
+              "Y": 0.0987
+            },
+            "LeftMargin": 304.0001,
+            "RightMargin": 303.9999,
+            "TopMargin": 644.9988,
+            "BottomMargin": 268.0012,
+            "Tag": 267,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 268,
+                "ActionTag": -1417567686,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 269,
+                "ActionTag": 165946074,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 270,
+                "ActionTag": -140463647,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_3",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 271,
+                "ActionTag": 943099677,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 272,
+                "ActionTag": -857632951,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 273,
+                "ActionTag": 70712024,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get3",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -1170705010,
+            "Size": {
+              "X": 100.0,
+              "Y": 100.0
+            },
+            "Name": "pnl_dot4",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 149.9981,
+              "Y": 418.0009
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "RotationSkewX": 240.0,
+            "RotationSkewY": 240.0,
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2119,
+              "Y": 0.4126
+            },
+            "PreSize": {
+              "X": 0.1412,
+              "Y": 0.0987
+            },
+            "LeftMargin": 99.9981,
+            "RightMargin": 508.0019,
+            "TopMargin": 544.9991,
+            "BottomMargin": 368.0009,
+            "Tag": 274,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 275,
+                "ActionTag": -46021070,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 276,
+                "ActionTag": 735995438,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 277,
+                "ActionTag": 580481374,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_3",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 278,
+                "ActionTag": -950303413,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 279,
+                "ActionTag": -1203381198,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 280,
+                "ActionTag": -1060982377,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get3",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -134544352,
+            "Size": {
+              "X": 100.0,
+              "Y": 100.0
+            },
+            "Name": "pnl_dot5",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 249.0003,
+              "Y": 587.0013
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.3517,
+              "Y": 0.5795
+            },
+            "PreSize": {
+              "X": 0.1412,
+              "Y": 0.0987
+            },
+            "LeftMargin": 199.0003,
+            "RightMargin": 408.9997,
+            "TopMargin": 375.9987,
+            "BottomMargin": 537.0013,
+            "Tag": 288,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 289,
+                "ActionTag": -486155030,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 290,
+                "ActionTag": 878327977,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 291,
+                "ActionTag": 99531830,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_3",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.31,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 22.5,
+                "RightMargin": 60.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 292,
+                "ActionTag": -622207491,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get1",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 41.5,
+                "RightMargin": 41.5,
+                "TopMargin": 41.0,
+                "BottomMargin": 41.0,
+                "Tag": 293,
+                "ActionTag": 1968850612,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get2",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/home/loginbonus_dot_get.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 17,
+                "Scale9Height": 18,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 69.0,
+                  "Y": 47.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.69,
+                  "Y": 0.47
+                },
+                "PreSize": {
+                  "X": 0.17,
+                  "Y": 0.18
+                },
+                "LeftMargin": 60.5,
+                "RightMargin": 22.5,
+                "TopMargin": 44.0,
+                "BottomMargin": 38.0,
+                "Tag": 294,
+                "ActionTag": -1840673673,
+                "Size": {
+                  "X": 17.0,
+                  "Y": 18.0
+                },
+                "Name": "img_dot_get3",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -50621274,
+            "Size": {
+              "X": 100.0,
+              "Y": 100.0
+            },
+            "Name": "pnl_dot6",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 0,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 295,
+            "ActionTag": -509372889,
+            "Size": {
+              "X": 708.0,
+              "Y": 1013.0
+            },
+            "Name": "btn_ok",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 708.0,
+          "Y": 1013.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../Default/ImageFile.png",
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/bg/bg_loginbonus.png",
+        "../image/dialog/dialog_deco_down.png",
+        "../image/dialog/dialog_deco_up.png",
+        "../image/dialog/dialog_l.png",
+        "../image/home/loginbonus_7day.png",
+        "../image/home/loginbonus_dot.png",
+        "../image/home/loginbonus_dot_get.png",
+        "../image/home/loginbonus_everyday.png",
+        "../image/home/loginbonus_get.png",
+        "../image/home/loginbonus_getbg.png",
+        "../image/logo/logo_loginbonus.png",
+        "../image/logo/logo_loginbonus_1day.png",
+        "../image/logo/logo_loginbonus_2day.png",
+        "../image/logo/logo_loginbonus_3day.png",
+        "../image/logo/logo_loginbonus_4day.png",
+        "../image/logo/logo_loginbonus_5day.png",
+        "../image/logo/logo_loginbonus_6day.png",
+        "../image/logo/logo_loginbonus_7day.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

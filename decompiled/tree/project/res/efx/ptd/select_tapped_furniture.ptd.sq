@@ -1,0 +1,29 @@
+parentcoord <- false
+currentgroup <- 0.0
+groups <- [
+with ParticleGroupData() {
+  name = "1"
+  enabled = true
+  aimtype = 0
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 0, start_spr = 0
+    life = 3000, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+    linearbits = 0
+  },
+  shapetype = 4
+  shapedata = { "path": "../mdl/select_tapped_furniture/select_tapped_furniture.pm" }
+  texture = "select_tapped_furniture.pm"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = false
+  mod = [
+  { "color": [-1, -1, -1, -1, -1, -1, -1, -256], "classid": "ptcmod_color" },
+  ] },
+]

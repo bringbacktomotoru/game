@@ -1,0 +1,185 @@
+/*
+ * $Id: DragField.java,v 1.6 2005/02/11 17:41:31 kotori Exp $
+ * 
+ * Copyright 2004 (C) CyberStep, Inc. All Rights Reserved.
+ */
+package tool;
+import oni.runtime.event.*;
+import kotori.kwt.*;
+import kotori.kwt.basic.*;
+import kotori.kwt.event.*;
+import kotori.geometry.KMath;
+
+public class DragField extends Container implements TextListener, ActionListener{
+
+	TextInput field;
+	BasicButton button;
+	ActionListener actionlistener;
+	
+	float val;
+	float spd;		//	valの変化スピード(マウスの1dotが基準)
+	float qua;		//	1なら1,2,3,4... 5なら0.2,0.4,0.6,0.8... 10なら0.1,0.2,0.3,0.4... 
+	float min,max;
+	boolean loop;
+	
+	float pval;		//	ドラッグ中のval
+	
+	boolean dynamic = false;
+	boolean drawint = false;
+
+	public DragField(){
+		this(false);
+	}
+
+	public DragField( boolean di){
+		spd = 0.1f;
+		qua = 100;
+		min = 0;
+		max = 1000;
+		field = new BasicTextField();
+// TODO
+//		field.setAlignment(2);
+		field.setText("0");
+		add(field);
+		button = new BasicButton("\003");
+		button.setProcType(1);
+		button.addMouseListener(new Dragger());
+		add(button);
+		addActionListener(this); // added
+		field.addTextListener(this);
+		field.addActionListener(this);
+		drawint = di;
+	}
+
+	public void setRect( float x, float y, float w, float h, float pivx, float pivy){
+		super.setRect(x,y,w,h,pivx,pivy);
+		button.setRect(w-16,0,16,h);
+		field.setRect(0,0,w-16,h);
+	}
+
+	/**
+	 * @param s valの変化スピード(マウスの1dotが基準)
+	 * @param q 1なら1,2,3,4... 5なら0.2,0.4,0.6,0.8... 10なら0.1,0.2,0.3,0.4...
+	 * @param mi min
+	 * @param ma max
+	 */
+	public void setFixParam(float s, int q, float mi, float ma) {
+		spd = s;
+		qua = (float) q;
+		min = mi;
+		max = ma;
+	}
+	
+	public void setLoop( boolean b){
+		loop = b;
+	}
+
+	public void dynamicChange( boolean b){
+		dynamic = b;
+	}
+	
+	public void setFieldInt(boolean b) {
+		drawint = b;
+	}
+	
+	public float setValue( float f){
+		val = f;
+		if( drawint){
+			field.setText(Integer.toString((int)fixedValue(val)));
+		}else{
+			field.setText(Float.toString(fixedValue(val)));
+		}
+		field.updateLayout(); // 12/17 kurita
+		return val;
+	}
+	
+	public float fixedValue( float f){
+		return KMath.clamp( (float)((int)(f*qua+(1.0/qua*0.5)*(f<0?-1:1))) / qua, min, max);
+	}
+
+	protected boolean processMouseEvent( MouseEvent e){
+		switch (e.getID()) {
+		case MouseEvent.MOUSE_PRESSED:
+			if( e.getSource() == button){
+//				field.requestFocus();
+			}
+			break;
+		case MouseEvent.MOUSE_WHEEL_MOVED:
+//			setValue(val+Math.max(spd,1/(float)qua)*e.getWheelRotation());
+			setValue(val+spd*20*e.getWheelRotation());
+			postActionEvent(0);
+			e.consume();
+			break;
+		}
+		return super.processMouseEvent(e);
+	}
+
+	public float getValue(){
+		float v;
+	// May 25, 2004
+		try{
+			v = Float.parseFloat(field.getText());
+		}catch( Exception e){
+			v = val;
+		}
+		val = v;
+		return val;
+	}
+
+	public void actionPerformed( ActionEvent e){
+		if( e.getSource() == field){
+			float _v = val;
+			try{
+				setValue( Float.parseFloat(field.getText()));
+				postActionEvent("released",e.getModifiers());
+			}catch( Exception ae){
+				setValue(_v);
+			}
+			e.consume(); // 2004/11/22
+		}
+	}
+
+	public void textValueChanged( TextEvent e){
+		if( e.getSource() == field){
+		}
+	}
+
+	public void postActionEvent( String s, int modif) {
+		super.postActionEvent(s, modif);
+	}
+
+	class Dragger extends MouseAdapter{
+		int ox, oy;
+		float v0,v;
+
+		public void mousePressed(MouseEvent e){
+			ox = e.getX();
+			oy = e.getY();
+			v = v0 = val;
+		}
+
+		public void mouseReleased(MouseEvent e){
+			if( val != v0){
+				DragField.this.postActionEvent("released",e.getModifiers());
+			}
+		}
+		public void mouseDragged(MouseEvent e){
+			int mx = e.getX()-ox;
+			button.setCursorPos(ox,oy);
+			float old = val;
+			if( loop){
+				v = (v+mx*spd-min);
+				while( v < 0) v += (max-min);
+				v = (v%(max-min))+min;
+			}else{
+				v = KMath.clamp(v+mx*spd,min,max);
+			}
+			setValue( fixedValue(v));
+			if (dynamic && val != old) {
+				DragField.this.postActionEvent("",e.getModifiers());
+			}
+//			ox = e.getX();
+//			oy = e.getY();
+		}
+	}
+}

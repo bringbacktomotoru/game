@@ -1,0 +1,6 @@
+with SKLibView {
+  function generatePtd(path, x = 0, y = 0, s = 1.0) {
+    local tap_view = ::gamesession.getTapViewLayer();
+    tap_view.addParticleFromUI(x, y, path, s);
+  }
+}

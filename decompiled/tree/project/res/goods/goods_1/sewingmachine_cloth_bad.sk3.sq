@@ -1,0 +1,30 @@
+runsk("/res/goods/goods_base.sk")
+
+with model {
+  body <- {
+    pm = "sewingmachine_cloth_bad.pm"
+  }
+
+}
+
+with script {
+
+  function start() {
+    anime(1, 1, 0, false);
+    fadeColor(255, 0);
+    fadeColor(0xffffffff, 300);
+    pass(300);
+  }
+
+  function open() {
+    anime(2, 3, 5, false);
+    pass(200);
+  }
+
+  function end() {
+    setBlend(SK_MIX);
+    fadeColor(0xffffff00, 300);
+    pass(300);
+  }
+
+}

@@ -1,0 +1,46 @@
+class SKIconCheckbox extends SKToggleButtonBase
+{
+  splist = null;
+  sp = null;
+  iconsp = null;
+
+  constructor(icon, g = null) {
+    splist = [
+    ::getSprite("/system/ui.silver/ui.clp#togbtn11"),
+    ::getSprite("/system/ui.silver/ui.clp#togbtn12"),
+    ::getSprite("/system/ui.silver/ui.clp#togbtn13"),
+    ::getSprite("/system/ui.silver/ui.clp#togbtn14"),
+    ];
+    sp = splist[0];
+    iconsp = icon;
+    group = g;
+  }
+
+  function updateLayout() {
+    super.updateLayout();
+    foreach (b in splist) {
+      if (b) b.bnd.set(0, 0, bnd.w, bnd.h);
+    }
+  }
+
+  function render() {
+    skDrawSprite(sp);
+    if (iconsp) skDrawSprite(iconsp, bnd.w / 2, bnd.h / 2);
+  }
+
+  function updateComponentState() {
+    if (viewenabled) {
+      if (selected) {
+        sp = splist[2];
+      } else
+      if (mousein) {
+        sp = splist[1];
+      } else {
+        sp = splist[0];
+      }
+    } else {
+      sp = splist[3];
+    }
+    repaint();
+  }
+}

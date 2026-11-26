@@ -1,0 +1,182 @@
+class WorkListDialog extends ::Dialog {
+  works = null;
+
+  scroll = null;
+  reclist = null;
+
+  pnl_list = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/WorkListDialog.ui"));
+
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(reclist);
+    this.scroll.dxscale = 0.0;
+
+    this.pnl_list = this.view.findChild("pnl_list");
+    pnl_list.addChild(this.reclist);
+    pnl_list.setBuffer(true);
+
+    local _lbl_text = this.view.findChild("lbl_text");
+    _lbl_text.setText(::dict.get("work_list_title"));
+  }
+
+  function setData(ws) {
+    this.works = ws;
+    setActionListPanel();
+  }
+
+  function setActionListPanel() {
+    this.reclist.clearChildren();
+
+    local _offset = 0;
+
+    foreach (idx, wd in this.works) {
+      local _item = CharaWork(this, idx, wd);
+      _item.pos.y = _offset;
+
+      this.reclist.addChild(_item);
+      _item.matdirty = true;
+      _item.repaint();
+
+      _offset += _item.bnd.h;
+    }
+
+    this.reclist.setRect(0, 0, this.pnl_list.bnd.w, _offset);
+    this.scroll.setScrollRect(this.reclist.bnd)
+  }
+
+  function moveARPanel(cid) {
+    ::gamesession.getCurrentScene().getUI().movePanel(::ARPanel, false, { "costume_id" = cid });
+  }
+}
+
+class WorkListDialog.CharaWork extends SKView {
+  index = -1;
+  work_data = null;
+
+  view = null;
+  layer = null;
+  remaining_time = null;
+  btn_end = null;
+  btn_cancel = null;
+  btn_get = null;
+
+  constructor(layer, idx, wd) {
+    this.layer = layer;
+    this.index = idx;
+    this.work_data = wd;
+
+    this.view = ::loadSKView("/ui/common/CharaWork.ui");
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    addChild(this.view);
+
+    local _lbl_name = this.view.findChild("lbl_name");
+    _lbl_name.setText(wd.getSetting().getName());
+
+    local _icon = ::SKImageView();
+    local _pnl_icon = this.view.findChild("pnl_chara_icon");
+    _icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+    _icon.pos.set(0, 0);
+    _pnl_icon.addChild(_icon);
+    local _img_icon = CostumeIcon(wd.getCostumeID(), _icon, false, false);
+
+    this.remaining_time = this.view.findChild("lbl_time");
+    if (wd.getState() == ::WorkData.STATE_WORKING) this.remaining_time.setText(::dict.get("remain") + ::getTimeText(wd.getRemainingTime(::getServerTime())));
+    else this.remaining_time.setText(::dict.get("product_finished"));
+
+    local _working = wd.isWorking();
+    this.btn_end = this.view.findChild("btn_end");
+    this.btn_cancel = this.view.findChild("btn_cancel");
+    this.btn_get = this.view.findChild("btn_get");
+    ::TapButton(this.btn_get, false).view.addEventListener(ACTION_EVENT, actionevent_get);
+    if (_working) {
+      ::TapButton(this.btn_end, false).view.addEventListener(ACTION_EVENT, actionevent_end);
+      ::TapButton(this.btn_cancel, false).view.addEventListener(ACTION_EVENT, actionevent_cancel);
+      this.btn_get.visible = false;
+    }
+    else {
+      this.btn_end.visible = false;
+      this.btn_cancel.visible = false;
+    }
+
+    local _btn_ar = this.view.findChild("btn_ar");
+    ::TapButton(_btn_ar, false).view.addEventListener(ACTION_EVENT, actionevent_ar);
+
+    this.view.setUpdateFunc(update.bindenv(this));
+  }
+
+  function update(dt) {
+    _updateWorkData();
+
+    if (this.btn_end.visible && !this.work_data.isWorking()) {
+      this.btn_end.visible = false;
+      this.btn_cancel.visible = false;
+    } else if (!this.btn_get.visible && this.work_data.isWorking()) {
+      this.btn_get.visible = true;
+    }
+  }
+
+  function _updateWorkData() {
+    this.remaining_time = this.view.findChild("lbl_time");
+    if (this.work_data.isWorking()) this.remaining_time.setText(::dict.get("remain") + ::getTimeText(this.work_data.getRemainingTime(::getServerTime())));
+    else this.remaining_time.setText(::dict.get("product_finished"));
+
+    this.remaining_time.matdirty = true;
+    this.remaining_time.repaint();
+  }
+
+  function actionevent_end(e) {
+    local _scene = ::gamesession.getCurrentScene();
+    local _wm = _scene.getWorkManager();
+    local _cos_id = this.work_data.getCostumeID();
+    if (!_wm.shorteningTime(_cos_id)) return;
+
+    local _wd = _wm.applyWorkedReward(_cos_id);
+    if (_wd) {
+
+      _scene.updateActiveSanrioCharas();
+
+      local _chara_id = ::gamesetting.costume_settings[_wd.cos_id].getCharaID();
+      local _event_id = ::gamesetting.costume_action_settings[_wd.w_id].getWorkEndEvent();
+      ::event_manager.startEventSceneTalk(_event_id, this, _showWorkReward, _wd.cos_id);
+    }
+    else {
+
+    }
+  }
+
+  function actionevent_get(e) {
+    e.consume();
+
+    local _scene = ::gamesession.getCurrentScene();
+    local _wm = _scene.getWorkManager();
+    local _cos_id = this.work_data.getCostumeID();
+
+    local _wd = _wm.applyWorkedReward(_cos_id);
+    if (_wd) {
+
+      _scene.updateActiveSanrioCharas();
+
+      local _chara_id = ::gamesetting.costume_settings[_wd.cos_id].getCharaID();
+      local _event_id = ::gamesetting.costume_action_settings[_wd.w_id].getWorkEndEvent();
+      ::event_manager.startEventSceneTalk(_event_id, this, _showWorkReward, _wd.cos_id);
+    }
+  }
+
+  function _showWorkReward() {
+    ::gamesession.getCurrentScene().getWorkManager().showRewardDialog();
+  }
+
+  function actionevent_cancel(e) {
+    local _scene = ::gamesession.getCurrentScene();
+    if (!_scene.getWorkManager().cancelWork(this.work_data.getCostumeID())) return;
+    this.layer.setActionListPanel();
+
+    _scene.updateActiveSanrioCharas();
+  }
+
+  function actionevent_ar(e) {
+    this.layer.moveARPanel(this.work_data.getCostumeID());
+  }
+}

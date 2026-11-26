@@ -1,0 +1,39 @@
+;
+;----------- おでかけから帰ってきたとき -------------
+
+; 作業部屋指定
+;[focusroom address={[0,0]}]
+[focusdoor]
+
+; カメラ初期位置
+[movecamera type=1 z=-15 y=2.2 time=0]
+[rotatecamera pitch=0]
+
+; キャラ出現
+[popchara z=-2 angle=180 relative=true]
+[wait time=200]
+[startanime time=700 script=bookshelf_mitsuketa]
+[waitaction script=bookshelf_mitsuketa]
+[wait time=700]
+
+[turnchara angle=0 time=1000 script=turn_r]
+[waitaction script=turn_r]
+
+; キャラ手振り
+[startanime time=2000 script=tefuri]
+[balloon time=3000]
+[talk talk_key = "going_2_1"]
+[wait time=2000]
+[endballoon]
+[waitaction script=tefuri]
+
+; キャラ前に向かって移動
+[movechara type=1 z=-2 script=skip_smile neutral=stand time=1300]
+[wait time=2000]
+
+[startanime time=4000 script=work_end_event]
+[balloon time=8000]
+[talk talk_key = "going_2_3"]
+[wait time=8000]
+[endballoon]
+[waitaction script=ketsui_event]

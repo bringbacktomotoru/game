@@ -1,0 +1,1780 @@
+with Serializable() {
+
+  class UserData
+  {
+    static SerialVersion = 1;
+    static HAPINESS_ACTION_INTERVAL_SUCCES = 10;
+    static HAPINESS_ACTION_INTERVAL_FAIL = 0;
+
+    user_id = null;
+    friend_code = 0;
+    name = "?";
+    sex = null;
+    comment = "";
+
+    rank = 0;
+    rankexp = 0;
+    gmoney = 0;
+    rmoney = 0;
+    freerm = 0;
+
+    character_table = null;
+    furnitures = null;
+    furniture_amount_table = null;
+
+    costume_table = null;
+    room_edits = null;
+
+    current_room_index = 0;
+    room_layout = null;
+    rooms = null;
+    unlocked_slot_ids = null;
+
+    nextuid = 1;
+    wall_papers = null;
+    room_num = 0;
+
+    purchase_records = null;
+
+    lvup_furniture_max = 1;
+    lvup_furniture_table = null;
+
+    items = null;
+    item_boosts = null;
+
+    friend_helper_chara_id = 0;
+
+    last_daily_time = 0;
+    daily_present_idx = 0;
+    presents = null;
+
+    work_reward = null;
+
+    friend_checked_timestamp = 0;
+    friend_receive_checked_timestamp = 0;
+    present_checked_timestamp = 0;
+
+    is_fl_tutorial_all_end = false;
+    end_tutorial_ids = null;
+    selected_first_chara_id = null;
+
+    gacha_table = null;
+
+    costume_request_table = null;
+
+    mails = null;
+
+    hapiness_action_cos_id = null;
+    capture_hapiness_time = -1;
+    next_hapiness_action_time = null;
+
+    static MAX_BONUS_HAPINESS_NUM = 5;
+    static BONUS_HAPINESS_RECOVER_TIME = 5 * 60;
+    static CANT_UPDATE_RECOVER_TIME = -2;
+
+    bonus_hapiness = null;
+    bonus_hapiness_num = null;
+    next_bonus_hapiness_recover_time = null;
+    tap_hapiness = 0;
+
+    current_panel_mission_id = null;
+    panel_mission_table = null;
+    missiondata_table = null;
+
+    savetime = 0;
+
+    last_ad_video_watch_time = 0;
+    ad_video_watch_count = 0;
+
+    reply_record = null;
+
+    constructor() {
+      sex = SEX_NONE;
+
+      furnitures = {};
+
+      costume_table = {};
+      character_table = {};
+
+      this.rooms = [];
+      this.room_edits = {};
+
+      room_layout = [];
+      wall_papers = {};
+      unlocked_slot_ids = [];
+
+      purchase_records = {};
+
+      lvup_furniture_table = {};
+
+      presents = {};
+
+      items = {};
+      item_boosts = [];
+      for (local i = 0; i < ItemSetting.SLOT_MAX; i++) {
+        this.item_boosts + null;
+      }
+
+      work_reward = {};
+      gacha_table = {};
+
+      costume_request_table = {};
+
+      is_fl_tutorial_all_end = false;
+      end_tutorial_ids = [];
+
+      this.mails = [];
+
+      this.hapiness_action_cos_id = -1;
+      this.next_hapiness_action_time = -1;
+
+      this.bonus_hapiness_num = MAX_BONUS_HAPINESS_NUM;
+      this.next_bonus_hapiness_recover_time = -1;
+
+      this.panel_mission_table = {};
+      this.missiondata_table = {};
+      this.reply_record = {};
+    }
+
+    function setup() {
+
+    }
+
+    function isInitialData() {
+      return name == "?";
+    }
+
+    function getUID() {
+      return this.user_id;
+    }
+
+    function getFriendCode() {
+      return this.friend_code;
+    }
+
+    function getPlayerName(add_sex = true) {
+      if (!add_sex) return this.name;
+      if (!::dict) return this.name;
+
+      local _dictkey = this.sex == 1 ? "name_male" : "name_female";
+      return ::dict.get(_dictkey, [this.name]);
+    }
+    function setPlayerInfo(name, sex) {
+      this.name = name;
+      this.sex = sex;
+    }
+
+    function getGameMoney(rid = -1) {
+      if (rid < 0) rid = getCurrentRoomUID();
+      local _red = getRoomEditData(rid);
+      if (!_red) return 0;
+      return _red.getGameMoney();
+    }
+
+    function setGameMoney(v, rid = -1) {
+      if (rid < 0) rid = getCurrentRoomUID();
+      local _red = getRoomEditData(rid);
+      _red.setGameMoney(v);
+    }
+
+    function addGameMoney(v, rid = -1) {
+      if (rid < 0) rid = getCurrentRoomUID();
+      local _red = getRoomEditData(rid);
+      _red.addGameMoney(v);
+    }
+
+    function addGameMoneyAtTapped() {
+      local _red = getCurrentRoomEditData();
+      this.addGameMoney(_red.getTapHapiness());
+    }
+
+    function addGameMoneyAtFurnitureTapped(num = 1) {
+      this.addGameMoney(num * getFurnitureTapHapinessRate());
+    }
+
+    function getFurnitureTapHapinessRate() {
+      local _ret = int(this.getTapHapiness()) / 10;
+      if (_ret <= 0) _ret = 1;
+      return _ret;
+    }
+
+    function getRealMoney() {
+      return this.rmoney;
+    }
+
+    function getFreeRealMoney() {
+      return this.freerm;
+    }
+
+    function getTotalRealMoney() {
+      return this.rmoney + this.freerm;
+    }
+
+    function addRealMoney(v) {
+      this.rmoney += v;
+      ::gamesession.updateRMValue();
+    }
+
+    function addFreeRealMoney(v) {
+      this.freerm += v;
+      ::gamesession.updateRMValue();
+    }
+
+    function paymentRealMoney(v) {
+      if (v <= 0) return;
+      this.freerm -= v;
+      if (this.freerm < 0) {
+        this.rmoney += this.freerm;
+        this.freerm = 0;
+      }
+      ::gamesession.updateRMValue();
+    }
+
+    function setRealMoney(rm_val = -1, free_val = -1) {
+      if (rm_val >= 0) {
+        this.rmoney = rm_val;
+      }
+      if (free_val >= 0) {
+        this.freerm = free_val;
+      }
+      ::gamesession.updateRMValue();
+    }
+
+    function applyPurchase(type, price, shop_check = true) {
+      if (price <= 0) return;
+
+      switch (type) {
+      case PRICE_GM:
+
+        local _gm = getGameMoney();
+        if (_gm >= price) {
+
+          addGameMoney(-price);
+        }
+        else {
+
+          local _pay_rm = price - _gm;
+          addGameMoney(-_gm);
+          paymentRealMoney(_pay_rm);
+        }
+        break;
+
+      }
+
+      if (shop_check) {
+        local _scene = ::gamesession.getCurrentScene();
+        if (!(_scene instanceof SanrioGameScene)) return;
+        _scene.getUI().updateShopMark(false, type == PRICE_GM);
+      }
+    }
+
+    function hasMoney(type, price) {
+      switch (type) {
+      case PRICE_GM:
+        return getGameMoney() + getTotalRealMoney() >= price ? true : false;
+      }
+      return false;
+    }
+
+    function getRank() {
+      return rank;
+    }
+
+    function getSelectedFirstCharaID() {
+      return this.selected_first_chara_id;
+    }
+
+    function getFurnitureDataTable() {
+      return this.furnitures;
+    }
+    function getFurnitureData(uid) {
+      return this.furnitures[uid];
+    }
+
+    function getUIFurnitureData(furniture_id) {
+      if (!contains(UIFurnitures, furniture_id)) return null;
+
+      foreach (uid, furniture in furnitures) {
+        if (furniture.getID() != furniture_id) continue;
+
+        return getFurnitureData(uid);
+      }
+
+      return null;
+    }
+
+    function hasRoomByRoomID(rid) {
+      foreach (rsd in this.rooms) {
+        if (!rsd) continue;
+        if (rsd.getRoomID() == rid) return true;
+      }
+      return false;
+    }
+
+    function hasRoomByProductId(productId) {
+      foreach (iapId, iapSetting in ::gamesetting.iap_settings) {
+        if (iapSetting.item_id != productId) continue;
+
+        local _roomId = iapSetting.room_id;
+        if (_roomId > 0 && hasRoomByRoomID(_roomId)) return true;
+      }
+
+      return false;
+    }
+
+    function addRoom(room_id) {
+      local _red = ::RoomEditData.create(room_id);
+      this.room_edits[room_id] <- _red;
+
+      local _rsd = RoomSlotData();
+      _rsd.setRoomUID(room_id);
+      this.rooms + _rsd;
+    }
+
+    function getRooms() {
+      return this.rooms;
+    }
+
+    function getRoomNum() {
+      return length(this.rooms);
+    }
+
+    function unlockRoomSlot(slot_setting_id) {
+      if (isUnlockedRoomSlot(slot_setting_id)) {
+        return;
+      }
+
+      this.unlocked_slot_ids + slot_setting_id;
+      this.rooms + RoomSlotData();
+    }
+
+    function removeRoomFurnitures(ridx) {
+      local _red = getRoomEditDataBySlotIdx(ridx);
+      if (!_red) return;
+      _red.removeAllFurnitures();
+    }
+
+    function sellRoom(uid) {
+      local _rd = this.getRoomEditData(uid);
+      if (!_rd) return false;
+      local _rs = ::gamesetting.room_settings[_rd.getRoomID()];
+      if (!_rs || !_rs.canSell()) return false;
+
+      addGameMoney(_rs.getSellPrice());
+      delete this.room_edits[uid];
+      return true;
+    }
+
+    function isUnlockedRoomSlot(slot_setting_id) {
+      return ::contains(this.unlocked_slot_ids, slot_setting_id);
+    }
+
+    function getLockedRoomSlotSettingIds() {
+      local slot_settings = ::gamesetting.room_slot_settings;
+      local ids = [];
+      if (length(slot_settings) == length(this.unlocked_slot_ids)) return ids;
+
+      foreach (id, slot_setting in slot_settings) {
+        if (isUnlockedRoomSlot(id)) continue;
+        ids + id;
+      }
+
+      return ids;
+    }
+
+    function setRoom(room_idx, room_uid) {
+      if (room_idx > length(this.rooms)) {
+        ::errorln("set room num over ; " + room_idx);
+        return;
+      }
+
+      this.rooms[room_idx].setRoomUID(room_uid);
+    }
+
+    function updateRoomSlot() {
+      local ids = [];
+      foreach (id, setting in ::gamesetting.room_slot_settings) {
+
+        if (isUnlockedRoomSlot(id)) continue;
+
+        if (!::checkCondition(setting.condition_ids, ::gamesetting.room_slot_unlock_condition_settings)) continue;
+
+        ids + id;
+      }
+
+      if (length(ids) == 0) return;
+
+      local res = ::gamesession.unlockRoomSlot(ids);
+      if (res["ret"] != ::ServletConstants.RESPONSE_SUCCEED) {
+        println("[ERROR] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        println("ids.len = " + ids.len);
+        foreach (idx, id in ids) {
+          println("-- id = " + id)
+        }
+        currentthread().printStackTrace();
+        return;
+      }
+
+      foreach (id in ids) {
+        unlockRoomSlot(id);
+      }
+    }
+
+    function getRoomSlotData(slot_idx) {
+      return this.rooms[slot_idx];
+    }
+
+    function getCurrentRoomSlotData() {
+      return this.rooms[this.current_room_index];
+    }
+
+    function getRoomIndexByRoomID(rid) {
+      foreach (idx, rsd in this.rooms) {
+
+        if (rsd.getRoomUID() != rid) continue;
+        return idx;
+      }
+      return -1;
+    }
+
+    function selectRoom(room_idx, need_update = true) {
+      this.current_room_index = room_idx;
+
+      ::gamesession.updateGMValue(true);
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof SanrioGameScene) {
+        _scene.getUI().updateHapinessValueInfo();
+      }
+
+      if (need_update) {
+        local _udl = ::gamesession.getUserDataLocal();
+        _udl.changeRoomIndex(room_idx);
+        _udl.save();
+      }
+    }
+
+    function getRoomEditDataTable() {
+      return this.room_edits;
+    }
+
+    function getRoomEditData(uid) {
+      return this.room_edits[uid];
+    }
+    function getRoomEditDataBySlotIdx(slot_idx) {
+      local slot_data = this.rooms[slot_idx];
+      local room_uid = slot_data.getRoomUID();
+      return getRoomEditData(room_uid);
+    }
+    function getRoomEditNum(rid) {
+      local _cnt = 0;
+      foreach (re in room_edits) {
+        if (re.getRoomID() == rid) _cnt++;
+      }
+      return _cnt;
+    }
+
+    function getCurrentRoomUID() {
+      return this.rooms[this.current_room_index].getRoomUID();
+    }
+
+    function getCurrentRoomEditData() {
+      local room_uid = this.getCurrentRoomUID();
+      return this.room_edits[room_uid];
+    }
+
+    function getRoomEditDataContainFurniture(fuid) {
+      foreach (red in this.room_edits) {
+        if (red && red.isContainFurniture(fuid)) return red;
+      }
+      return null;
+    }
+
+    function getRoomEditDataContainFurnitureFromSlots(fuid) {
+      foreach (rsd in this.rooms) {
+        if (rsd) {
+          local red = getRoomEditData(rsd.getRoomUID());
+          if (red && red.isContainFurniture(fuid)) return red;
+        }
+      }
+      return null;
+    }
+    function getRoomEditData_byRoomAddress(floor, room) {
+      local room_uid = this.room_layout[floor][room];
+      return getRoomEditData(room_uid);
+    }
+    function isCurrentRoomIndex(room_idx) {
+      return this.current_room_index == room_idx;
+    }
+    function getCurrentRoomIndex() {
+      return this.current_room_index;
+    }
+    function getRoomSlotIndexByRoomUID(room_uid) {
+      if (room_uid == -1) return -1;
+      foreach (idx, room in this.rooms) {
+        if (room.getRoomUID() == room_uid) return idx;
+      }
+      return -1;
+    }
+
+    function getUidRoomLayout(floor, room) {
+      return this.room_layout[floor][room]
+    }
+
+    function getRoomLayout() {
+      return this.room_layout;
+    }
+
+    function getResideCharas(room_idx) {
+      local room_slot = this.rooms[room_idx];
+      if (!room_slot) return null;
+      return room_slot.getResideCharas();
+    }
+    function getCurrentRoomResideCharas() {
+      return this.getResideCharas(this.current_room_index);
+    }
+
+    function getResideCharaCostumeID(room_idx, chara_id) {
+      local room_slot = this.rooms[room_idx];
+      return room_slot.getResideCharaCostumeID(chara_id);
+    }
+    function getCurrentRoomCharaCostumeID(chara_id) {
+      return this.getResideCharaCostumeID(this.current_room_index, chara_id);
+    }
+
+    function getResideCharaCostume(room_idx, chara_id) {
+      local costume_id = this.getResideCharaCostumeID(room_idx, chara_id);
+      if (costume_id != -1) return getCostumeData(costume_id);
+
+      return null;
+    }
+
+    function getCurrentRoomCharaCostume(chara_id) {
+      return this.getResideCharaCostume(this.current_room_index, chara_id);
+    }
+
+    function getEnableResideMaxNums(room_idx) {
+      local _red = getRoomEditDataBySlotIdx(room_idx);
+      return _red.getEnableResideMaxNums();
+    }
+
+    function getEnableResideNums(room_index) {
+      local _red = getRoomEditDataBySlotIdx(room_index);
+      return _red.getEnableResideNums();
+    }
+
+    function getResideCharaNum(room_idx) {
+      local room_slot = this.rooms[room_idx];
+      return room_slot.getResideCharaNum();
+    }
+    function getCurrentRoomCharaNum() {
+      return this.getResideCharaNum(this.current_room_index);
+    }
+
+    function isResideCharaMax(room_idx) {
+      local room_slot = this.rooms[room_idx];
+      local chara_num = room_slot.getResideCharaNum();
+      return chara_num >= this.getEnableResideNums(room_idx);
+    }
+    function isCurrentRoomResideCharaMax() {
+      return this.isResideCharaMax(this.current_room_index);
+    }
+
+    function getCostumeDataTable() {
+      return costume_table;
+    }
+
+    function getCostumeNum() {
+      if (!this.costume_table) return 0;
+      return length(this.costume_table);
+    }
+
+    function getCostumeData(cid) {
+      if (cid in costume_table) {
+        return costume_table[cid];
+      }
+      return null;
+    }
+
+    function hasCostume(cid) {
+      if (cid in costume_table) return true;
+      return false;
+    }
+
+    function canLevelupStartFurniture() {
+      return length(lvup_furniture_table) < lvup_furniture_max ? true : false;
+    }
+    function getLevelupWaitingFurniture() {
+      return lvup_furniture_table;
+    }
+
+    function getPurchaseRecordNums(shop_id) {
+      if (shop_id in purchase_records) {
+        return purchase_records[shop_id];
+      }
+      return 0;
+    }
+
+    function isFirstLoginTutorialEnd() {
+      return is_fl_tutorial_all_end;
+    }
+    function getEndTutorials() {
+      return this.end_tutorial_ids;
+    }
+
+    function addEndTutorials(ids) {
+      foreach (id in ids) {
+        addEndTutorial(id);
+      }
+    }
+    function addEndTutorial(id) {
+      if (this.isEndTutorialId(id)) return;
+      this.end_tutorial_ids + id;
+    }
+
+    function isEndTutorialId(id) {
+      local idx = this.end_tutorial_ids.indexOf(id);
+      if (idx != -1) return true;
+      return false;
+    }
+
+    function getPresents() {
+      return this.presents;
+    }
+
+    function getAchieveDatas() {
+      return this.achieve_datas;
+    }
+
+    function isClearedAchievement(id) {
+      return ::contains(this.cleared_achieve, id);
+    }
+
+    function getFriendHelperCharaID() {
+      return this.friend_helper_chara_id;
+    }
+
+    function getCaptureHapinessTime() {
+      return this.capture_hapiness_time;
+    }
+
+    function setCaptureHapinessTime(t) {
+      this.capture_hapiness_time = t;
+    }
+
+    function _getMail(mail_id) {
+      foreach (mail in this.mails) {
+        if (mail.getMailId() != mail_id) continue;
+
+        return mail;
+      }
+      return null;
+    }
+
+    function _getMailIndex(mail_id) {
+      foreach (idx, mail in this.mails) {
+        if (mail.getMailId() != mail_id) continue;
+
+        return idx;
+      }
+      return -1;
+    }
+
+    function getMails() {
+      return this.mails;
+    }
+
+    function getUnreadMailNum(limit) {
+      local count = 0;
+      foreach (mail in this.mails) {
+        if (!mail.isRead()) count++
+        if (count >= limit) break;
+      }
+
+      return count;
+    }
+
+    function _setRewardMailFlagProcess(mail_idx) {
+      local mail = this.mails[mail_idx];
+      if (!mail) return;
+
+      mail.setReadFlag();
+
+    }
+    function setReadMailFlag(mail_id) {
+      local mail_idx = _getMailIndex(mail_id);
+      _setRewardMailFlagProcess(mail_idx);
+    }
+
+    function hasMailItem(mail_id) {
+      local mail = _getMail(mail_id);
+      return mail.hasItem();
+    }
+    function hasMailItemByIdx(mail_idx) {
+      local mail = this.mails[mail_idx];
+      return mail.hasItem();
+    }
+
+    function receiveMailItem(mail_id, reward) {
+      _getMail(mail_id).itemReceived();
+      addRewardItems([reward]);
+      setReadMailFlag(mail_id);
+    }
+
+    function receiveMailItems(rewards) {
+      addRewardItems(rewards);
+
+      local _setRewardMailFlagProcess = _setRewardMailFlagProcess;
+      local mails = this.mails
+      foreach (reward in rewards) {
+        local idx = reward.idx
+        mails[idx].itemReceived();
+        _setRewardMailFlagProcess(idx);
+      }
+    }
+
+    function _deleteMailProcess(mail_idx) {
+      delete this.mails[mail_idx];
+    }
+
+    function deleteMail(mail_id) {
+      foreach (idx, mail in mails) {
+        if (mail.getMailId() != mail_id) continue;
+
+        _deleteMailProcess(idx);
+      }
+    }
+
+    function deleteMails(idxes) {
+      foreach (idx in idxes) {
+        _deleteMailProcess(idx);
+      }
+    }
+
+    function setSelectedFirstCharaID(id) {
+      this.selected_first_chara_id = id;
+    }
+
+    function addRank(cid) {
+      if (::gamesetting.costume_settings[cid].isDefaultCostume()) return;
+
+      this.rank++;
+      addBonusHapinessNum();
+      calcBonusHapiness();
+      ::gamesession.updateRankValue();
+      ::gamesession.getUserDataLocal().setupRoomMotion();
+    }
+
+    function addCostumeID(cid, check_panelmission = true) {
+      local _cd = ::CostumeData.createCostumeData(cid, true);
+      addCostumeData(_cd, false, check_panelmission);
+    }
+    function addCostumeData(costume, is_load = false, check_panelmission = true) {
+      if (costume.getID() in costume_table) return;
+
+      costume.setClosetTime(::getServerTime());
+      costume_table[costume.getID()] <- costume;
+
+      local _chara_id = costume.getCharaID();
+      this.addCharacterData(_chara_id);
+      if (!is_load) {
+        ::gamesession.getUserDataLocal().addNewItem(ITEM_TYPE_COSTUME, costume.getID());
+        ::gamesession.saveUserDataLocal();
+        ::gamesession.getCurrentScene().getUI().updateMenuNewMark(::HomeUI.UPDATE_MENU_MARK_COSTUME);
+
+        local _chara_data = getCharacterDataByCostumeId(costume.getID());
+        _chara_data.setupEnableCharaSentenceList();
+
+        if (check_panelmission) {
+
+          local _scene = ::gamesession.getCurrentScene();
+          if (_scene instanceof ::SanrioGameScene) {
+            _scene.getPanelMissionManager().getNewCostume(costume.getID());
+            _scene.getPanelMissionManager().checkHasCostume(costume.getID());
+          }
+        }
+      }
+
+      if (!is_load) {
+        addRank(costume.getID());
+      }
+
+      return costume.getID();
+    }
+
+    function addCostumeLevel(id) {
+      costume_table[id].addLevel(1);
+    }
+
+    function getCharacterDataTable() {
+      return this.character_table;
+    }
+    function getCharacterData(chara_id) {
+      return this.character_table[chara_id] || null;
+    }
+    function getCharacterNums() {
+      return length(this.character_table);
+    }
+    function hasCharacter(chara_id) {
+      if (chara_id in this.character_table) return true;
+      return false;
+    }
+
+    function addCharacterData(chara_id) {
+      if (chara_id in this.character_table) return;
+      local cd = ::CharacterData();
+      cd.id = chara_id;
+      cd.initMotions();
+      this.character_table[chara_id] <- cd;
+    }
+    function addCharacterDataByCostumeId(cos_id) {
+      local _cs = ::gamesetting.costume_settings[cos_id];
+      this.addCharacterData(_cs.getCharaID())
+    }
+    function getCharacterDataByCostumeId(cos_id) {
+      local _cs = ::gamesetting.costume_settings[cos_id];
+      return this.getCharacterData(_cs.getCharaID())
+    }
+
+    function addItem(id, value) {
+      if (id in items) {
+        local _nums = this.items[id];
+        this.items[id] = _nums + value;
+      } else {
+        this.items[id] <- value;
+      }
+
+      if (this.items[id] <= 0) {
+        delete items[id];
+      }
+    }
+
+    function getItemNums(id) {
+      if (id in this.items) {
+        return this.items[id];
+      } else {
+        return 0;
+      }
+    }
+
+    function getItems() {
+      return this.items;
+    }
+
+    function getItemBoostList() {
+      return this.item_boosts;
+    }
+    function getItemBoostData(slot) {
+      return this.item_boosts[slot] || null;
+    }
+    function hasItemBoost(slot) {
+      return this.item_boosts[slot] != null ? true : false;
+    }
+    function checkFinishedItemBoost() {
+      for (local i = 0; i < ItemSetting.SLOT_MAX; i++) {
+        if (!this.item_boosts[i]) continue;
+        if (item_boosts[i].checkFinished()) this.item_boosts[i] = null;
+      }
+    }
+
+    function addRewardItems(reward) {
+      if (!reward || reward.len() < 1) return;
+
+      local _cosdata;
+      for (local i = 0; i < reward.len(); i++) {
+        local _r = reward[i];
+
+        switch (_r.kind) {
+        case ITEM_TYPE_GM:
+          addGameMoney(_r.num);
+          break;
+        case ITEM_TYPE_FREERM:
+          addFreeRealMoney(_r.num);
+          break;
+        case ITEM_TYPE_COSTUME:
+          if (!getCostumeData(_r.id)) {
+            _cosdata = ::CostumeData.createCostumeData(_r.id, true);
+            addCostumeData(_cosdata);
+            _r.newer_obtained <- true;
+          }
+          break;
+        case ITEM_TYPE_FURNITURE:
+          if (getFurnitureAmount(_r.id) == 0) {
+            _r.newer_obtained <- true;
+          }
+
+          addFurniture(_r.id, _r.uid, false, _r.target_id);
+          break;
+        case ITEM_TYPE_ITEM:
+          addItem(_r.id, _r.num);
+          break;
+        case ITEM_TYPE_STORY:
+
+          break;
+        case ITEM_TYPE_ROOM_EXP:
+
+          break;
+        case ITEM_TYPE_COSTUME_EXP:
+          _cosdata = getCostumeData(_r.target_id);
+          if (_cosdata) _cosdata.addExp(_r.num);
+          break;
+        case ITEM_TYPE_FURNITURE_EXP:
+          local fd = getFurnitureData(_r.target_id);
+          if (fd) fd.addExp(_r.num);
+          break;
+        case ITEM_TYPE_MOTION:
+
+          local _charadata = getCharacterData(_r.target_id);
+          if (_charadata) _charadata.addMotion(_r.id);
+          break;
+        case ITEM_TYPE_HEALTH:
+          _cosdata = getCostumeData(_r.target_id);
+          if (_cosdata) _cosdata.addHealth(_r.num);
+          break;
+        }
+      }
+    }
+
+    function hasItemByShopSetting(ss, roomid = -1) {
+      return hasItem(ss.getItemType(), ss.getItemID(), ss.getTargetID(), roomid);
+    }
+
+    function hasItem(type, id, target = -1, roomid = -1) {
+      switch (type) {
+      case ITEM_TYPE_GM:
+        return getGameMoney(roomid) > 0 ? true : false;
+      case ITEM_TYPE_FREERM:
+        return getFreeRealMoney() > 0 ? true : false;
+      case ITEM_TYPE_COSTUME:
+        return hasCostume(id);
+      case ITEM_TYPE_FURNITURE:
+        return getFurnitureAmount(id, roomid) > 0 ? true : false;
+      case ITEM_TYPE_ITEM:
+        return getItemNums(id) > 0 ? true : false;
+      case ITEM_TYPE_MOTION:
+        local _chara_data = getCharacterData(target);
+        if (!_chara_data) return false;
+        return _chara_data.hasMotion(id);
+
+      }
+      return false;
+    }
+
+    function addResideCharaToCurrentRoom(costume_id) {
+      return this.addResideChara(this.current_room_index, costume_id);
+    }
+    function addResideChara(room_idx, id, need_api = true) {
+      if (!canAddResideChara(room_idx, id)) return;
+
+      local _room_slot = this.rooms[room_idx];
+      _room_slot.addResideChara(id);
+    }
+
+    function addFirstResideChara(costume_id) {
+      if (!canAddResideChara(this.current_room_index, costume_id)) return;
+      local _room_slot = this.rooms[this.current_room_index];
+      _room_slot.addResideChara(costume_id);
+    }
+
+    function removeResideCharaFromCurrentRoom(costume_id) {
+      return this.removeResideChara(this.current_room_index, costume_id);
+    }
+    function removeResideChara(room_idx, costume_id) {
+      local _st = ::gamesession.removeRoomCostume(costume_id, room_idx);
+      if (_st < 0) return;
+
+      local _room_slot = this.rooms[room_idx];
+      local _removed_id = _room_slot.removeResideChara(costume_id);
+      if (_removed_id == -1) return;
+
+      _updateCostumeClosetTime(_removed_id, _st);
+    }
+
+    function removeAllResideChara(room_idx) {
+      local room_slot = this.rooms[room_idx];
+      local _st = ::getServerTime();
+      foreach (costume_id in room_slot.removeAllResideChara()) {
+        _updateCostumeClosetTime(costume_id, _st);
+      }
+    }
+
+    function changeResideChara(r_idx, r_cos_ids, a_cos_ids, send_api = true) {
+      local _recover = [];
+      local _st = 0;
+
+      if (send_api) {
+        local _ret = ::gamesession.changeRoomCostume(r_cos_ids, a_cos_ids, r_idx);
+        if (!_ret) return;
+        _st = _ret.ct;
+      }
+
+      local _room_slot = this.rooms[r_idx];
+      foreach (ri in r_cos_ids) {
+        local _test_cd = getCostumeData(ri);
+        local _removed_id = _room_slot.removeResideChara(ri);
+        if (_removed_id >= 0) {
+          _updateCostumeClosetTime(_removed_id, _st);
+        }
+      }
+
+      foreach (idx, ai in a_cos_ids) {
+        if (!canAddResideChara(r_idx, ai)) continue;
+        local _cos = getCostumeData(ai);
+
+        _cos.setClosetTime(-1);
+        _room_slot.addResideChara(ai);
+      }
+    }
+
+    function _updateCostumeClosetTime(costume_id, st) {
+      local _cos = getCostumeData(costume_id);
+      _cos.setClosetTime(st);
+    }
+
+    function canAddResideChara(room_idx, id) {
+      if (isResideCharaMax(room_idx)) return false;
+
+      local _setting = ::gamesetting.costume_settings;
+      if (!_setting[id]) return false;
+
+      local _chara_id = _setting[id].getCharaID();
+      local room_slot = this.rooms[room_idx];
+      if (room_slot.isCharaResiding(_chara_id)) return false;
+
+      return true;
+    }
+
+    function addFurniture(furniture_id, set_uid = -1, is_load = false, room_id = -1) {
+      local uid;
+      if (set_uid < 0) uid = nextuid++;
+      else uid = set_uid;
+      local data = FurnitureData().init(uid, furniture_id, room_id);
+      furnitures[uid] <- data;
+
+      if (!is_load) {
+        addFurnitureAmount(furniture_id, uid, !is_load, room_id);
+
+        ::gamesession.getUserDataLocal().addNewItem(ITEM_TYPE_FURNITURE, furniture_id);
+        ::gamesession.saveUserDataLocal();
+        ::gamesession.getCurrentScene().getUI().updateMenuNewMark(::HomeUI.UPDATE_MENU_MARK_FURNITURE);
+
+        local _scene = ::gamesession.getCurrentScene();
+        if (_scene instanceof ::SanrioGameScene) {
+          _scene.getPanelMissionManager().getNewFurniture(data.getID());
+        }
+      }
+
+      return uid;
+    }
+
+    function addFurnitureData(fd, is_load = false) {
+      if (fd.getUID() in this.furnitures) {
+        this.furnitures[fd.getUID()] = fd;
+      } else {
+        this.furnitures[fd.getUID()] <- fd;
+      }
+
+      if (!is_load) {
+        addFurnitureAmount(fd.getID(), fd.getUID(), !is_load, fd.getRoomID());
+
+        ::gamesession.getUserDataLocal().addNewItem(ITEM_TYPE_FURNITURE, fd.getID());
+        ::gamesession.saveUserDataLocal();
+        ::gamesession.getCurrentScene().getUI().updateMenuNewMark(::HomeUI.UPDATE_MENU_MARK_FURNITURE);
+
+        local _scene = ::gamesession.getCurrentScene();
+        if (_scene instanceof ::SanrioGameScene) {
+          _scene.getPanelMissionManager().getNewFurniture(fd.getID());
+        }
+      }
+    }
+
+    function removeFurniture(uid) {
+      delete this.furnitures[uid];
+    }
+
+    function sellFurniture(uid) {
+      local _fd = this.furnitures[uid];
+      if (!_fd) return false;
+      local _fs = _fd.getSetting();
+      if (!_fs || !_fs.canSell()) return false;
+
+      subFurnitureAmount(_fs.getID(), uid);
+      removeFurnitureType(_fs.getID());
+      addGameMoney(_fs.getSellPrice());
+      delete this.furnitures[uid];
+      return true;
+    }
+
+    function addFurnitureAmount(furniture_id, furniture_uid, calc_hapiness = true, room_id = -1) {
+
+      if (room_id < 0) room_id = getCurrentRoomUID();
+      local _red = getRoomEditData(room_id);
+      return _red.addFurnitureAmount(furniture_id, furniture_uid, calc_hapiness);
+    }
+
+    function subFurnitureAmount(furniture_id, furniture_uid) {
+      local _fad = this.furniture_amount_table[furniture_id];
+      if (!_fad) return -1;
+
+      _fad.removeFurniture(furniture_uid);
+
+      return _fad.getFurnitureAmount();
+    }
+    function getFurnitureAmount(furniture_id, room_id = -1) {
+      if (!this.furnitures) return 0;
+
+      if (furniture_id < 0) return length(this.furnitures);
+
+      if (room_id < 0) room_id = getCurrentRoomUID();
+      local _red = getRoomEditData(room_id);
+      if (!_red) return 0;
+      return _red.getFurnitureAmount(furniture_id);
+    }
+    function getFurnitureAmountTable(room_id = -1) {
+
+      if (room_id < 0) room_id = getCurrentRoomUID();
+      local _red = getRoomEditData(room_id);
+      return _red.getFurnitureAmountTable();
+    }
+    function getFurnitureAmountData(furniture_id, room_id = -1) {
+
+      if (room_id < 0) room_id = getCurrentRoomUID();
+      local _red = getRoomEditData(room_id);
+      return _red.getFurnitureAmountData(furniture_id);
+    }
+
+    function editFurnitureAmountByUid(furniture_uid, layout) {
+      local _fd = getFurnitureData(furniture_uid);
+      if (!_fd) return;
+      editFurnitureAmount(_fd.getID(), furniture_uid, layout);
+    }
+    function editFurnitureAmount(furniture_id, furniture_uid, layout) {
+      local _fad = this.furniture_amount_table[furniture_id];
+      if (!_fad) return;
+      _fad.editLayoutFurniture(furniture_uid, layout);
+    }
+
+    function getRoomFurnitureAmount(room_id = -1) {
+      if (room_id < 0) room_id = getCurrentRoomUID();
+      local _red = getRoomEditData(room_id);
+      if (!_red) return 0;
+      return _red.getRoomFurnitureAmount();
+    }
+
+    function addFurnitureType(fid) {
+
+    }
+
+    function removeFurnitureType(fid) {
+
+    }
+
+    function getFurnitureTypeList(rid = -1) {
+
+      if (rid < 0) rid = getCurrentRoomUID();
+      local _ret = getRoomEditData(rid);
+      return _ret.getFurnitureTypeList();
+    }
+
+    function getUseableFurnitureTypeList(rid = -1) {
+
+      if (rid < 0) rid = getCurrentRoomUID();
+      local _ret = getRoomEditData(rid);
+      return _ret.getUseableFurnitureTypeList();
+    }
+
+    function addFurnitureLevel(uid) {
+      furnitures[uid].addLevel(1);
+    }
+
+    function addRoomEditData(data) {
+      this.room_edits[data.getUID()] <- data;
+    }
+
+    function removeRoomEditData(id) {
+
+      delete this.room_edits[id];
+    }
+
+    function addWaitingLevelupFurniture(uid) {
+      lvup_furniture_table[uid] <- int(::getServerTime());
+    }
+    function removeWaitingLevelupFurniture(uid) {
+      delete lvup_furniture_table[uid];
+    }
+
+    function getRemainingPurchaseNum(shop_id) {
+      local shop_setting = ::gamesetting.shop_settings[shop_id];
+      if (!shop_setting) {
+        ::errorln("invalid shop id : " + shop_id);
+        return { limit = true, num = -1 };
+      }
+
+      if (shop_setting.limit != -1) return { limit = true, num = shop_setting.limit - getPurchaseRecordNums(shop_id) };
+      else return { limit = false }
+    }
+
+    function checkPurchasable(shop_id, num) {
+      local shop_setting = ::gamesetting.shop_settings[shop_id];
+
+      if (shop_setting.limit != -1 && shop_setting.limit < getPurchaseRecordNums(shop_id) + num) {
+        return { result = false, log = ::dict.get("purchase_limit_over") };
+      }
+
+      switch (shop_setting.getPriceType()) {
+      case PRICE_GM:
+        if (getGameMoney() < shop_setting.getPrice()) {
+          return { result = false, log = ::dict.get("no_have_gm") };
+        }
+        break;
+      case PRICE_RM:
+        if (getTotalRealMoney() < shop_setting.getPrice()) {
+          return { result = false, log = ::dict.get("lack_rm") };
+        }
+        break;
+      case PRICE_ONEROUS_RM:
+        if (getRealMoney() < shop_setting.getPrice()) {
+          return { result = false, log = ::dict.get("lack_rm") };
+        }
+      }
+
+      return { result = true, log = ::dict.get("shop_confirm") };
+    }
+
+    function purchaseRoom(shop_id, num) {
+      local shop_setting = ::gamesetting.shop_settings[shop_id];
+      if (!shop_setting) {
+        ::errorln("invalid shop id : " + shop_id);
+        return false;
+      }
+
+      local price = shop_setting.getPrice();
+      switch (shop_setting.getPriceType()) {
+      case PRICE_GM:
+        if (this.getGameMoney() < price) {
+          ::errorln("lack of game money");
+          return false;
+        }
+        break;
+      case PRICE_RM:
+        if (this.getTotalRealMoney() < price) {
+          ::errorln("lack of real money");
+          return false;
+        }
+        break;
+      case PRICE_ONEROUS_RM:
+        if (this.getRealMoney() < price) {
+          ::errorln("lack of real money");
+          return false;
+        }
+        break;
+      }
+
+      local res = gamesession.purchaseRoom(shop_id, num);
+      if (res.ret != ::ServletConstants.RESPONSE_SUCCEED) {
+        return false;
+      }
+
+      foreach (uid in res.room_uids) {
+
+        addRoom(shop_setting.getItemID());
+      }
+
+      applyPurchase(shop_setting.getPriceType(), price);
+      addPurchaseRecord(shop_id, num);
+
+      return true;
+    }
+
+    function addPurchaseRecord(shop_id, num) {
+      if (shop_id in purchase_records) {
+        local _oldnum = purchase_records[shop_id];
+        purchase_records[shop_id] = _oldnum + num;
+      } else {
+        purchase_records[shop_id] <- num;
+      }
+    }
+
+    function addWorkReward(cid, wid, idx) {
+      local _wrd = this.work_reward[cid];
+      if (!_wrd) {
+        _wrd = ::WorkRewardData.createWorkRewardData(cid);
+        work_reward[cid] <- _wrd;
+      }
+      _wrd.addIndex(wid, idx);
+    }
+
+    function addWorkRewardData(wrd) {
+      work_reward[wrd.getCostumeID()] <- wrd;
+    }
+
+    function getWorkRewardData(cid) {
+      return this.work_reward[cid];
+    }
+
+    function addGachaData(gd) {
+      this.gacha_table[gd.getID()] <- gd;
+    }
+
+    function addGachaCount(gid, ver) {
+      local _gd = this.gacha_table[gid];
+      if (!_gd) {
+        _gd = ::GachaData.createGachaData(gid, ver);
+        this.gacha_table[gid] <- _gd;
+      }
+      _gd.addCound(ver);
+    }
+
+    function getGachaCount(gid, ver) {
+      local _gd = this.gacha_table[gid];
+      if (!_gd) return 0;
+      return _gd.getCount(ver);
+    }
+
+    function addLimitGachaCount(gid, ver) {
+      local _gd = this.gacha_table[gid];
+      if (!_gd) {
+        _gd = ::GachaData.createGachaData(gid, ver);
+        this.gacha_table[gid] <- _gd;
+      }
+      _gd.addLimitCount(ver);
+    }
+
+    function getLimitGachaCount(gid, ver) {
+      local _gd = this.gacha_table[gid];
+      if (!_gd) return 0;
+      return _gd.getLimitCount(ver);
+    }
+
+    function addDailyGachaCount(gid, ver, st) {
+      local _gd = this.gacha_table[gid];
+      if (!_gd) {
+        _gd = ::GachaData.createGachaData(gid, ver);
+        this.gacha_table[gid] <- _gd;
+      }
+      _gd.addDailyCount(ver, st);
+    }
+
+    function getDailyGachaCount(gid, ver) {
+      local _gd = this.gacha_table[gid];
+      if (!_gd) return 0;
+      return _gd.getDailyCount(ver);
+    }
+
+    function addStepGachaCount(gid, ver, st) {
+      local _gd = this.gacha_table[gid];
+      if (!_gd) {
+        _gd = ::GachaData.createGachaData(gid, ver);
+        this.gacha_table[gid] <- _gd;
+      }
+      _gd.addStepCount(ver, st);
+    }
+
+    function getStepGachaCount(gid, ver) {
+      local _gd = this.gacha_table[gid];
+      if (!_gd) return 0;
+      return _gd.getStepCount(ver);
+    }
+
+    function addCostumeRequestDataListTableAtLoader(loader) {
+      local table_len = loader.get();
+      for (local i = 0; i < table_len; i++) {
+        addCostumeRequestDataListAtLoader(loader);
+      }
+    }
+
+    function addCostumeRequestDataListAtLoader(loader, costume_id = -1) {
+      local crds_len = loader.get();
+      local crds = [];
+      for (local i = 0; i < crds_len; i++) {
+        local _crd = CostumeRequestData();
+        _crd.loadWithCreate(loader);
+        crds + _crd;
+      }
+
+      if (costume_id == -1) costume_id = crds[0].getCostumeID();
+
+      if (costume_id in this.costume_request_table) {
+        this.costume_request_table[costume_id] = crds;
+      } else {
+        this.costume_request_table[costume_id] <- crds;
+      }
+    }
+
+    function addCostumeRequestData(costume_id, crd) {
+      if (costume_id in this.costume_request_table) {
+        this.costume_request_table[costume_id][0] = crd;
+      } else {
+        local crds = [];
+        crds + crd;
+        this.costume_request_table[costume_id] <- crds;
+      }
+    }
+
+    function removeCostumeRequestDataList(costume_id) {
+      delete this.costume_request_table[costume_id];
+    }
+
+    function getCostumeRequestData(costume_id) {
+      return this.costume_request_table[costume_id][0] || null;
+    }
+
+    function getCostumeRequestDataTable() {
+      return this.costume_request_table;
+    }
+
+    function enableHapinessAction(force = false) {
+      local _rule = ::gamesetting.game_rule;
+      if (!force && !::tutorial_manager.enableHapinessAction()) return false;
+      if (!hasBonusHapinessNum()) return false;
+      if (this.next_hapiness_action_time > ::getServerTime()) return false;
+      if (this.hasHapinessAction()) return false;
+      if (!force && ::PUBLIC_RANDOM.nexti(100) >= ::gamesetting.game_rule.getBonusHeartRate()) return false;
+
+      return true;
+    }
+    function getHapinessActionCosId() {
+      return this.hapiness_action_cos_id;
+    }
+    function setHapinessActionCosId(cid) {
+      this.hapiness_action_cos_id = cid;
+    }
+    function isHapinessAction(cos_id) {
+      return this.hapiness_action_cos_id == cos_id ? true : false;
+    }
+    function hasHapinessAction() {
+      return this.hapiness_action_cos_id > 0;
+    }
+    function succesHapinessAction(cos_id) {
+      if (!isHapinessAction(cos_id)) return false;
+
+      this.next_hapiness_action_time = ::getServerTime() + HAPINESS_ACTION_INTERVAL_SUCCES;
+      setHapinessActionCosId(-1);
+
+      return true;
+    }
+
+    function resetHapinessAction() {
+      this.next_hapiness_action_time = -1;
+      setHapinessActionCosId(-1);
+    }
+
+    function failHapinessAction(cos_id) {
+      if (!isHapinessAction(cos_id)) return false;
+
+      this.next_hapiness_action_time = ::getServerTime() + HAPINESS_ACTION_INTERVAL_FAIL;
+      setHapinessActionCosId(-1);
+
+      return true;
+    }
+
+    function getTapHapiness(room_id = -1) {
+
+      if (room_id < 0) room_id = getCurrentRoomUID();
+      local _red = getRoomEditData(room_id);
+      return _red.getTapHapiness();
+    }
+
+    function calcBonusHapiness() {
+
+      this.bonus_hapiness = getTapHapiness() * (29 + this.rank);
+
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof SanrioGameScene) {
+        _scene.getUI().updateHapinessValueInfo();
+      }
+    }
+    function getBonusHapiness() {
+      return this.bonus_hapiness;
+    }
+    function getBonusHapinessNum() {
+      updateBonusHapinessNum();
+      return this.bonus_hapiness_num;
+    }
+
+    function addBonusHapinessNum() {
+      updateBonusHapinessNum();
+      if (!isMaxBonusHapinessNum()) {
+        this.bonus_hapiness_num += ::gamesetting.game_rule.getLevelupBonusRecoveryNum();
+        this.bonus_hapiness_num = Math.min(this.bonus_hapiness_num, MAX_BONUS_HAPINESS_NUM);
+        if (isMaxBonusHapinessNum()) this.next_bonus_hapiness_recover_time = -1;
+      }
+    }
+
+    function setBonusHapinessNum(num) {
+      this.bonus_hapiness_num = num;
+    }
+
+    function hasBonusHapinessNum() {
+      return this.bonus_hapiness_num > 0 ? true : false;
+    }
+
+    function consumeBonusHapinessNum(time = -1) {
+      this.bonus_hapiness_num--;
+      if (time < 0) {
+        if (this.next_bonus_hapiness_recover_time < 0) {
+          this.next_bonus_hapiness_recover_time = ::getServerTime() + BONUS_HAPINESS_RECOVER_TIME;
+        }
+      } else {
+        this.next_bonus_hapiness_recover_time = time;
+      }
+    }
+    function getNextBonusHapinessRecoveryTime() {
+      return this.next_bonus_hapiness_recover_time;
+    }
+    function isMaxBonusHapinessNum() {
+      return this.bonus_hapiness_num == MAX_BONUS_HAPINESS_NUM ? true : false;
+    }
+    function updateBonusHapinessNum() {
+      if (isMaxBonusHapinessNum()) return;
+
+      local _now = ::getServerTime();
+      if (_now <= this.next_bonus_hapiness_recover_time) return;
+
+      local _val = int((_now - this.next_bonus_hapiness_recover_time) / BONUS_HAPINESS_RECOVER_TIME) + 1;
+      this.bonus_hapiness_num += _val;
+      this.bonus_hapiness_num = Math.min(MAX_BONUS_HAPINESS_NUM, this.bonus_hapiness_num);
+
+      if (isMaxBonusHapinessNum()) {
+        this.next_bonus_hapiness_recover_time = -1
+      } else {
+        this.next_bonus_hapiness_recover_time += _val * BONUS_HAPINESS_RECOVER_TIME;
+      }
+
+    }
+
+    function addPanelMissionDatasAtServer(pmids) {
+      foreach (pmid in pmids) {
+        local _pmd = ::PanelMissionData.createPanelMissionData(pmid);
+        this.panel_mission_table[pmid] <- _pmd;
+
+        foreach (md in _pmd.getMissionDataList()) {
+          addMissionData(md);
+        }
+      }
+    }
+    function getPanelMissionDataTable() {
+      return this.panel_mission_table;
+    }
+    function getPanelMissionData(pmid) {
+      return this.panel_mission_table[pmid] || null;
+    }
+    function getCurrentPanelMission() {
+      local _red = this.getCurrentRoomEditData();
+      return _red.getPanelMissionData();
+    }
+    function setPanelMissionID(pmid, rid = -1) {
+      if (rid < 0) {
+        local _pms = ::gamesetting.panel_mission_settings[pmid];
+        rid = _pms.getRoomID();
+      }
+      local _red = getRoomEditData(rid);
+      _red.setPanelMissionID(pmid);
+    }
+
+    function addMissionData(md) {
+      this.missiondata_table[md.getID()] <- md;
+    }
+    function getMissionData(mid) {
+      return this.missiondata_table[mid] || null;
+    }
+
+    function hasReplyRecord(key) {
+      if (key in this.reply_record) return true;
+      return false;
+    }
+    function putReplyRecord(key, textkey) {
+      this.reply_record[key] <- textkey;
+    }
+    function getReplyTextKey(key) {
+      return this.reply_record[key];
+    }
+
+    function getLastAdVideoWatchTime() {
+      return this.last_ad_video_watch_time;
+    }
+
+    function setLastAdVideoWatchTime(time) {
+      this.last_ad_video_watch_time = time;
+    }
+
+    function getAdVideoWatchCount() {
+      return this.ad_video_watch_count;
+    }
+
+    function addAdVideoWatchCount(add) {
+      this.ad_video_watch_count += add;
+    }
+
+    function checkAndResetAdVideoWatch() {
+
+      if (!::isOtherDay(this.last_ad_video_watch_time)) return false;
+      this.ad_video_watch_count = 0;
+      return true;
+    }
+
+    function load(loader) {
+      this.friend_code = loader.get();
+      this.name = loader.get();
+      this.sex = loader.get();
+
+      this.rank = loader.get();
+      this.rankexp = loader.get();
+      this.gmoney = loader.get();
+      this.rmoney = loader.get();
+      this.freerm = loader.get();
+      this.capture_hapiness_time = loader.get();
+
+      local _furniture_nums = loader.get();
+      local _tmp_amt_table = {};
+      for (local i = 0; i < _furniture_nums; i++) {
+        local fd = ::FurnitureData.loadWithCreate(loader);
+        addFurnitureData(fd, true);
+
+        local _rid = fd.getRoomID();
+        if (!(_rid in _tmp_amt_table)) _tmp_amt_table[_rid] <- [];
+        _tmp_amt_table[_rid] + fd;
+      }
+
+      local room_slot_num = loader.get();
+      this.rooms.resize(room_slot_num, null);
+      foreach (idx, _ in this.rooms) {
+        local slot_data = ::RoomSlotData();
+        slot_data.load(loader);
+        this.rooms[idx] = slot_data;
+      }
+
+      local unlocked_num = loader.get();
+      this.unlocked_slot_ids.resize(unlocked_num, null)
+      foreach (idx, _ in this.unlocked_slot_ids) {
+        this.unlocked_slot_ids[idx] = loader.get();
+      }
+
+      local room_num = loader.get();
+      for (local i = 0; i < room_num; i++) {
+        local room_edit = ::RoomEditData.loadWithCreate(loader);
+        addRoomEditData(room_edit);
+
+        local _list = _tmp_amt_table[room_edit.getUID()];
+        foreach (fd in _list) {
+          room_edit.addFurnitureAmountAtLoad(fd.getID(), fd.getUID(), false);
+        }
+        room_edit.calcTapHapiness(true);
+
+      }
+
+      local _room_layout = this.room_layout;
+      local size = loader.get();
+      _room_layout.resize(size, null);
+      foreach (idx, _ in _room_layout) {
+        local layout = _room_layout[idx] = array(loader.get());
+        foreach (idx, _ in layout) {
+          layout[idx] = loader.get();
+        }
+      }
+
+      local _costume_data_num = loader.get();
+      for (local i = 0; i < _costume_data_num; i++) {
+        local _costume = ::CostumeData.loadWithCreate(loader);
+        addCostumeData(_costume, true);
+      }
+
+      local _work_reward_data_num = loader.get();
+      for (local i = 0; i < _work_reward_data_num; i++) {
+        local _wrd = ::WorkRewardData.loadWithCreate(loader);
+        addWorkRewardData(_wrd);
+      }
+
+      local _item_nums = loader.get();
+      for (local i = 0; i < _item_nums; i++) {
+        local id = loader.get();
+        local nums = loader.get();
+        addItem(id, nums);
+      }
+
+      local _purchase_records_num = loader.get();
+      for (local i = 0; i < _purchase_records_num; i++) {
+        local id = loader.get();
+        local nums = loader.get();
+        addPurchaseRecord(id, nums);
+      }
+
+      local _gacha_data_num = loader.get();
+      for (local i = 0; i < _gacha_data_num; i++) {
+        local _gd = ::GachaData.loadWithCreate(loader);
+        addGachaData(_gd);
+      }
+
+      local _end_tutorial_num = loader.get();
+      for (local i = 0; i < _end_tutorial_num; i++) {
+        this.end_tutorial_ids + loader.get();
+      }
+
+      local _costume_request_list_num = loader.get();
+      for (local i = 0; i < _costume_request_list_num; i++) {
+        local crds_len = loader.get();
+        local crds = [];
+        for (local j = 0; j < crds_len; j++) {
+          local _crd = ::CostumeRequestData.loadWithCreate(loader);
+          crds + _crd;
+        }
+        this.costume_request_table[crds[0].getCostumeID()] <- crds;
+      }
+
+      local mail_num = loader.get();
+      for (local i = 0; i < mail_num; i++) {
+        local mail_data = ::MailData.loadWithCreate(loader);
+        this.mails + mail_data;
+      }
+
+      local chara_num = loader.get();
+      for (local i = 0; i < chara_num; i++) {
+        local chara_data = ::CharacterData.loadWithCreate(loader);
+        this.character_table[chara_data.getID()] <- chara_data;
+      }
+
+      this.bonus_hapiness_num = loader.get();
+      this.next_bonus_hapiness_recover_time = loader.get();
+
+      this.last_ad_video_watch_time = loader.get();
+      this.ad_video_watch_count = loader.get();
+
+      local _pmd_num = loader.get();
+      for (local i = 0; i < _pmd_num; i++) {
+        local _pmd = ::PanelMissionData().loadWithCreate(loader);
+        this.panel_mission_table[_pmd.getID()] <- _pmd;
+      }
+
+      local _reply_num = loader.get();
+      for (local i = 0; i < _reply_num; i++) {
+        local _key = loader.get();
+        local _val = loader.get();
+        this.reply_record[_key] <- _val;
+      }
+
+      loader.close();
+
+      if (getCharacterNums() == 0) {
+        foreach (fid, _ in this.furniture_amount_table) {
+          ::gamesession.getUserDataLocal().addNewItem(ITEM_TYPE_FURNITURE, fid);
+        }
+        ::gamesession.saveUserDataLocal();
+      }
+
+      foreach (_chara_data in this.character_table) {
+        _chara_data.setupEnableCharaSentenceList(true);
+      }
+
+      ::gamesession.getUserDataLocal().setupRoomMotion();
+    }
+
+    function forARTest() {
+      local _cosId = 101004;
+
+      local _cd = ::CostumeData.createCostumeData(_cosId, true);
+      addCostumeData(_cd, true, false);
+      addRoom(1);
+      rooms[0].addResideChara(_cosId);
+    }
+  }
+
+}

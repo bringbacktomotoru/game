@@ -1,0 +1,310 @@
+local buildpartsmap = function(func, t, sk3d) {
+  t[sk3d.name] <- sk3d;
+  foreach (c in sk3d.children) {
+    func(func, t, c);
+  }
+}
+
+class SK3DScriptRunner extends ScriptRunner
+{
+  sk3d = null;
+  sel = null;
+  partsmap = null;
+
+  constructor(s = null) {
+    super(s);
+  }
+
+  function setSK3DObject(s) {
+    if (s != sk3d) {
+      sk3d = s;
+    }
+  }
+
+  function _call(self, name) {
+    if (name == "all") {
+      local s = [];
+      foreach (v in partsmap) {
+        s + v;
+      }
+      sel = s;
+    } else {
+      if (!partsmap) {
+        buildpartsmap(buildpartsmap, partsmap = {}, sk3d);
+      }
+      sel = partsmap[name];
+    }
+    return this;
+  }
+
+  function select(n1, ...) {
+    return this;
+  }
+
+  function setSource(src) {
+    sk3d.setSource(src);
+  }
+
+  function generate(gen) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      return ::generateSK3DObject(gen, s, s.scn);
+    }
+  }
+
+  function kill(dt = 0) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.kill(dt);
+    }
+  }
+
+  function isAlive() {
+    local s = sel || sk3d; sel = null;
+    return s ? s.alive : false;
+  }
+
+  function setScale(x, y = null, z = null) {
+    if (y == null) {
+      y = z = x;
+    }
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.scale(x, y, z);
+      o.matdirty = true;
+    }
+  }
+
+  function setHPB(h, p, b) {
+    local s = sel || sk3d; sel = null;
+    h *= Math.DTOR;
+    p *= Math.DTOR;
+    b *= Math.DTOR;
+    foreach (o in s) {
+      removeModifierOrder(101);
+      o.rot.setHPB(h, p, b);
+      o.matdirty = true;
+    }
+  }
+
+  function setPivot(x, y, z) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      local tf = Transform();
+      tf.tx = x; tf.ty = y; tf.tz = z;
+      o.setPivot(tf);
+      o.matdirty = true;
+    }
+  }
+
+  function setVisible(b) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.setVisible(b);
+    }
+  }
+
+  function setColor(color) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.setColor(color);
+    }
+  }
+
+  function setLayer(l) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.setLayer(l);
+    }
+  }
+
+  function setMotion(mot) {
+    if (mot instanceof SS_STRING) {
+      local res = ::getResource("/action/anime/l_ghoul.mot");
+      if (!res) println("WARNING!! motion file is not found. path=" + mot);
+      mot = ::getMotionData(res);
+    }
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.setMotion(mot);
+    }
+  }
+
+  function anime(st, en = null, spd = null, lp = false, ft = 0.0) {
+    local s = sel || sk3d; sel = null;
+    if (s) {
+      s.anime(st, en, spd, lp, ft);
+    }
+  }
+
+  function passAnime(...) {
+    switch (vargc) {
+    case 1:
+      anime(vargv[0], vargv[0], 1000.0 / 1, false);
+      break;
+    case 2:
+      anime(vargv[0], vargv[1] / 1000.0);
+      break;
+    case 3:
+      anime(vargv[0], vargv[1], Math.abs(vargv[1] - vargv[0]) * 1000.0 / vargv[2], false);
+      break;
+    case 4:
+      if (typeof(vargv[3]) == SS_BOOL) {
+        anime(vargv[0], vargv[1], Math.abs(vargv[1] - vargv[0]) * 1000.0 / vargv[2], vargv[3]);
+      } else {
+        anime(vargv[0], vargv[1], Math.abs(vargv[1] - vargv[0]) * 1000.0 / vargv[2], true, vargv[3] / 1000.0);
+      }
+      break;
+    }
+  }
+
+  function animespd(spd) {
+    local s = sel || sk3d; sel = null;
+    if (s) {
+      s.animstat.setSpeed(spd);
+    }
+  }
+
+  function setBlend(b, changedepth = 1) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.setBlend(b, changedepth);
+    }
+  }
+
+  function setPolygonOffset(o1, o2 = 0.0, mate = null) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      if (o.mesh) {
+        foreach (f in o.mesh.face) {
+          f.m.polygonoffset1 = o1;
+          f.m.polygonoffset2 = o2;
+        }
+      }
+      if (o.ptc) {
+        foreach (g in o.ptc.groups) {
+          g.m.polygonoffset1 = o1;
+          g.m.polygonoffset2 = o2;
+        }
+      }
+    }
+  }
+
+  function begin() {
+  }
+
+  function end() {
+  }
+
+  function startParticle() {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.startParticle();
+    }
+  }
+
+  function setColor(color, idx = "Kmul") {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.removeModifierClass(::ColorFadeModifier);
+      foreach (m in o.getMaterials()) {
+        m[idx] = color;
+      }
+    }
+  }
+
+  function fadeAlpha(alpha, time) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.addModifier(ColorFadeModifier(o, alpha, time));
+    }
+  }
+
+  function fadeColor(color, time, idx = "Kmul") {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.addModifier(ColorFadeModifier(o, color, time, idx));
+    }
+  }
+
+  function fadeDiffuse(color, time) {
+    fadeColor(color, time, "Kd");
+  }
+
+  function fadeEmit(color, time) {
+    fadeColor(color, time, "Ke");
+  }
+
+  function blink(freq, time) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.addModifier(BlinkModifier(o, freq, time));
+    }
+  }
+
+  function flushColor(color, freq, time, idx = "Ke") {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.addModifier(ColorFlushModifier(o, color, freq, time, idx));
+    }
+  }
+
+  function moveFor(x, y, z, time) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.addModifier(MoveForModifier(Vector3D(x, y, z), time));
+    }
+  }
+
+  function zoomTo(x, y, z, time) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.addModifier(ZoomModifier(clone o.scale, Vector3D(x, y, z), time));
+    }
+  }
+
+  function gummy(x, y, z, time) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.addModifier(GummyZoomModifier(clone Vector3D(x, y, z), time));
+    }
+  }
+
+  function vibe(mag, time, vec = Vector3D(1, 1, 1)) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.addModifier(VibeModifier(mag, vec, time));
+    }
+  }
+
+  function spin(x, y, z, time, accel = 0) {
+    local s = sel || sk3d; sel = null;
+    local v = Vector3D(x, y, z);
+    foreach (o in s) {
+      o.addModifier(SpinModifier(v, time, accel));
+    }
+  }
+
+  function rotateTo(h, p, b, time) {
+    local s = sel || sk3d; sel = null;
+    local q = Quaternion.fromHPB(h * Math.DTOR, p * Math.DTOR, b * Math.DTOR);
+    foreach (o in s) {
+      o.addModifier(RotateModifier(clone o.rot, q, time));
+    }
+  }
+
+  function morph(t, time = 0) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      o.morph(t, time);
+    }
+  }
+
+  function uvscroll(u, v) {
+    local s = sel || sk3d; sel = null;
+    foreach (o in s) {
+      local uvmod = ::UVScrollModifier(o, u, v);
+      o.addModifier(uvmod);
+    }
+  }
+}

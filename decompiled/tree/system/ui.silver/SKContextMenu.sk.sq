@@ -1,0 +1,37 @@
+class SKContextMenu extends SKContextMenuBase
+{
+  mgnx = 3;
+  mgny = 4;
+
+  constructor() {
+    local a = SKMenuAdaptor();
+    setMenuAdaptor(a);
+  }
+
+  function createListView() {
+    return SKListView();
+  }
+
+  function createScrollPane(r) {
+    local p = SKScrollPane(2, 0);
+    p.setRect(r.x, r.y, r.w, r.h);
+    p.setClipAreaColor(0xebeff3ff);
+    return p;
+  }
+
+  function createMenuBoard(r) {
+
+    local fig = SKImageView(Sprite());
+    fig.enabled = true;
+    fig.setRect(r.x - mgnx, r.y - mgny, r.w + mgnx * 2, r.h + mgny * 2);
+    return fig;
+  }
+
+  function postItemEvent(id, i) {
+    local e = Event();
+    e.id = id;
+    e.src = this;
+    e.actioncmd = i;
+    ::rootview.postEvent(e);
+  }
+}

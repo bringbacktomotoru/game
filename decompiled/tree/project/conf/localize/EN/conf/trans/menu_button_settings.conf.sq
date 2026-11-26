@@ -1,0 +1,15 @@
+menu_button_settings[1].name = "Gacha"
+
+menu_button_settings[2].name = "Shop"
+
+menu_button_settings[3].name = "Inventory"
+
+menu_button_settings[4].name = "Friends"
+
+menu_button_settings[5].name = "Place Furniture"
+
+menu_button_settings[6].name = "Room"
+
+menu_button_settings[7].name = "Settings"
+
+menu_button_settings[8].name = "Diary"

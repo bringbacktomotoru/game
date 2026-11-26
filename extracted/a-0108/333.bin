@@ -1,0 +1,409 @@
+{
+  "ID": "29e34351-ae54-4629-b669-f92279dc4849",
+  "Version": "2.3.3.0",
+  "Name": "Choco",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 318,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/menu_bg.jpg",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 640.0,
+              "Y": 360.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 421,
+            "ActionTag": -1042235499,
+            "Size": {
+              "X": 1280.0,
+              "Y": 720.0
+            },
+            "Name": "dummy",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/white.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleY": 1.0
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": 622.0001
+            },
+            "Scale": {
+              "ScaleX": 80.0,
+              "ScaleY": 32.5
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.8639
+            },
+            "PreSize": {
+              "X": 0.0125,
+              "Y": 0.0222
+            },
+            "RightMargin": 1264.0,
+            "TopMargin": 97.9999,
+            "BottomMargin": 606.0001,
+            "Tag": 425,
+            "ActionTag": 921662472,
+            "Size": {
+              "X": 16.0,
+              "Y": 16.0
+            },
+            "Name": "white_7",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/frm_side.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 1.0,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 640.0002,
+              "Y": 621.9999
+            },
+            "Scale": {
+              "ScaleX": 0.25,
+              "ScaleY": 1.78
+            },
+            "RotationSkewX": 90.0,
+            "RotationSkewY": 90.0,
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.8639
+            },
+            "PreSize": {
+              "X": 0.0313,
+              "Y": 1.0
+            },
+            "LeftMargin": 600.0002,
+            "RightMargin": 639.9998,
+            "TopMargin": -261.9999,
+            "BottomMargin": 261.9999,
+            "Tag": 422,
+            "ActionTag": 871074146,
+            "Size": {
+              "X": 40.0,
+              "Y": 720.0
+            },
+            "Name": "frm_side_5",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/frm_side.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 1.0,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 639.9998,
+              "Y": 101.9987
+            },
+            "Scale": {
+              "ScaleX": -0.25,
+              "ScaleY": 1.78
+            },
+            "RotationSkewX": 90.0,
+            "RotationSkewY": 90.0,
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.1417
+            },
+            "PreSize": {
+              "X": 0.0313,
+              "Y": 1.0
+            },
+            "LeftMargin": 599.9998,
+            "RightMargin": 640.0002,
+            "TopMargin": 258.0013,
+            "BottomMargin": -258.0013,
+            "Tag": 426,
+            "ActionTag": 88972524,
+            "Size": {
+              "X": 40.0,
+              "Y": 720.0
+            },
+            "Name": "frm_side_5_0",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleY": 1.0
+            },
+            "Position": {
+              "X": 75.9999,
+              "Y": 584.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0594,
+              "Y": 0.8111
+            },
+            "PreSize": {
+              "X": 0.875,
+              "Y": 0.5972
+            },
+            "LeftMargin": 75.9999,
+            "RightMargin": 84.0001,
+            "TopMargin": 136.0,
+            "BottomMargin": 154.0,
+            "Tag": 546,
+            "ActionTag": 2103091116,
+            "Size": {
+              "X": 1120.0,
+              "Y": 430.0
+            },
+            "Name": "pnl_list",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/biglbl/choco.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 270.823,
+              "Y": 630.9968
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2116,
+              "Y": 0.8764
+            },
+            "PreSize": {
+              "X": 0.3156,
+              "Y": 0.0944
+            },
+            "LeftMargin": 68.823,
+            "RightMargin": 807.177,
+            "TopMargin": 55.0032,
+            "BottomMargin": 596.9968,
+            "Tag": 944,
+            "ActionTag": -1253573801,
+            "Size": {
+              "X": 404.0,
+              "Y": 68.0
+            },
+            "Name": "aaaa",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 76.0,
+              "Y": 504.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0594,
+              "Y": 0.7
+            },
+            "PreSize": {
+              "X": 0.8672,
+              "Y": 0.1111
+            },
+            "LeftMargin": 76.0,
+            "RightMargin": 94.0,
+            "TopMargin": 136.0,
+            "BottomMargin": 504.0,
+            "Tag": 1029,
+            "ActionTag": 924206781,
+            "Size": {
+              "X": 1110.0,
+              "Y": 80.0
+            },
+            "Name": "dummy2",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FontSize": 30,
+            "LabelText": "チョコを集めてプレゼントを貰おう！\n(チョコは敵キャラを倒すとたまにドロップします)",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 3,
+            "OutlineColor": {},
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 621.6025,
+              "Y": 670.8066
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4856,
+              "Y": 0.9317
+            },
+            "PreSize": {
+              "X": 0.4117,
+              "Y": 0.1
+            },
+            "LeftMargin": 621.6025,
+            "RightMargin": 131.3975,
+            "TopMargin": 13.1934,
+            "BottomMargin": 634.8066,
+            "Tag": 415,
+            "ActionTag": -337690063,
+            "Size": {
+              "X": 527.0,
+              "Y": 72.0
+            },
+            "Name": "lbl_name",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 1280.0,
+          "Y": 720.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../common/white.png",
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/biglbl/choco.png",
+        "../image/frm_side.png",
+        "../image/menu_bg.jpg"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

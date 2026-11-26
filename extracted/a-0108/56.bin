@@ -1,0 +1,20 @@
+// UIScript created by BonusHapinessEffect.ui 
+
+function anim() {
+//		$lbl_title.anime(10,10,0);
+		$img_heart.anime(10,17,17);
+		$img_sun.anime(10,20,20);
+		$lbl_num.anime(10,10,0);
+	pass(250);
+		$lbl_num.anime(10,15,15);
+		$img_sun.anime(30,35,0.3, true);
+		generatePtd("/res/efx/ptd/BonusHapinessEffect_kira.ptd", 640, 640, 0.1);
+}
+
+
+function hide() {
+		$img_sun.anime(20,25,40);
+	pass(50);
+		$img_heart.anime(20,25,10);
+		$lbl_num.anime(20,25,10);
+}

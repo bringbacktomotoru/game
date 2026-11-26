@@ -1,0 +1,174 @@
+iap_settings[0] <- IAPSetting({
+  item_id = "rm6";
+  name = "60 ハピネス";
+  add_rm = 60;
+  price = 120;
+});
+
+iap_settings[1] <- IAPSetting({
+  item_id = "rm36";
+  name = "360 ハピネス";
+  add_rm = 240;
+  bonus_rm = 120;
+  price = 480;
+});
+
+iap_settings[2] <- IAPSetting({
+  item_id = "rm75";
+  name = "750 ハピネス";
+  add_rm = 480;
+  bonus_rm = 270;
+  price = 960;
+});
+
+iap_settings[3] <- IAPSetting({
+  item_id = "rm140";
+  name = "1400 ハピネス";
+  add_rm = 900;
+  bonus_rm = 500;
+  price = 1800;
+});
+
+iap_settings[4] <- IAPSetting({
+  item_id = "rm320";
+  name = "3200 ハピネス";
+  add_rm = 1900;
+  bonus_rm = 1300;
+  price = 3800;
+});
+
+iap_settings[5] <- IAPSetting({
+  item_id = "rm440";
+  name = "4400 ハピネス";
+  add_rm = 2500;
+  bonus_rm = 1900;
+  price = 5000;
+});
+
+iap_settings[6] <- IAPSetting({
+  item_id = "cyberstep.cssp.rm120";
+  name = "60,000 ハピネス";
+  add_rm = 60000;
+  bonus_rm = 0;
+  price = 120;
+});
+
+iap_settings[7] <- IAPSetting({
+  item_id = "cyberstep.cssp.rm480";
+  name = "250,000 ハピネス";
+  add_rm = 250000;
+  bonus_rm = 0;
+  price = 480;
+});
+
+iap_settings[8] <- IAPSetting({
+  item_id = "cyberstep.cssp.rm960";
+  name = "570,000 ハピネス";
+  add_rm = 570000;
+  bonus_rm = 0;
+  price = 960;
+});
+
+iap_settings[9] <- IAPSetting({
+  item_id = "cyberstep.cssp.rm1800";
+  name = "1,100,000 ハピネス";
+  add_rm = 1100000;
+  bonus_rm = 0;
+  price = 1800;
+});
+
+iap_settings[10] <- IAPSetting({
+  item_id = "cyberstep.cssp.rm3600";
+  name = "2,400,000 ハピネス";
+  add_rm = 2400000;
+  bonus_rm = 0;
+  price = 3600;
+});
+
+iap_settings[11] <- IAPSetting({
+  item_id = "cyberstep.cssp.rm5000";
+  name = "3,500,000 ハピネス";
+  add_rm = 3500000;
+  bonus_rm = 0;
+  price = 5000;
+});
+
+iap_settings[12] <- IAPSetting({
+  item_id = "cyberstep.cssp.rm9800";
+  name = "7,200,000 ハピネス";
+  add_rm = 7200000;
+  bonus_rm = 0;
+  price = 9800;
+});
+
+iap_settings[100] <- IAPSetting({
+  item_id = "com.cyberstep.cssp.room2";
+  name = "room2";
+  add_rm = 0;
+  bonus_rm = 0;
+  room_id = 2;
+  price = 0;
+});
+
+iap_settings[101] <- IAPSetting({
+  item_id = "com.cyberstep.cssp.room3";
+  name = "room3";
+  add_rm = 0;
+  bonus_rm = 0;
+  room_id = 3;
+  price = 0;
+});
+
+iap_settings[102] <- IAPSetting({
+  item_id = "com.cyberstep.cssp.room4";
+  name = "room4";
+  add_rm = 0;
+  bonus_rm = 0;
+  room_id = 4;
+  price = 240;
+});
+
+iap_settings[103] <- IAPSetting({
+  item_id = "com.cyberstep.cssp.room5";
+  name = "room5";
+  add_rm = 0;
+  bonus_rm = 0;
+  room_id = 5;
+  price = 360;
+});
+
+iap_settings[110] <- IAPSetting({
+  item_id = "com.cyberstep.cssp.room2s";
+  name = "room2";
+  add_rm = 0;
+  bonus_rm = 0;
+  room_id = 2;
+  price = 0;
+});
+
+iap_settings[111] <- IAPSetting({
+  item_id = "com.cyberstep.cssp.room3s";
+  name = "room3";
+  add_rm = 0;
+  bonus_rm = 0;
+  room_id = 3;
+  price = 0;
+});
+
+iap_settings[112] <- IAPSetting({
+  item_id = "com.cyberstep.cssp.room4s";
+  name = "room4";
+  add_rm = 0;
+  bonus_rm = 0;
+  room_id = 4;
+  price = 240;
+});
+
+iap_settings[113] <- IAPSetting({
+  item_id = "com.cyberstep.cssp.room5s";
+  name = "room5";
+  add_rm = 0;
+  bonus_rm = 0;
+  room_id = 5;
+  price = 360;
+});

@@ -1,0 +1,5 @@
+::OneSignal <- null;
+::getOneSignalID <- function() {
+
+  return null;
+}

@@ -1,0 +1,89 @@
+class SelectTranseDialog extends ::Dialog
+{
+  btn_jp = null;
+  lbl_jp = null;
+  btn_en = null;
+  lbl_en = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/SelectTranseDialog.ui"));
+    this.view.findChild("lbl_title").setText(::dict.get("select_transe_title"));
+    this.view.findChild("lbl_desc").setText(::dict.get("select_transe_desc"));
+    this.btn_jp = this.view.findChild("btn_jp");
+    this.lbl_jp = this.view.findChild("lbl_jp");
+    this.lbl_jp.setText(::dict.get("select_transe_list_jp"));
+    TapButton(this.btn_jp).region.addEventListener(ACTION_EVENT, _jp_proceed);
+    this.btn_en = this.view.findChild("btn_en");
+    this.lbl_en = this.view.findChild("lbl_en");
+    this.lbl_en.setText(::dict.get("select_transe_list_en"));
+    TapButton(this.btn_en).region.addEventListener(ACTION_EVENT, _en_proceed);
+    this.view.findChild("btn_cancel").findChild("lbl_cancel").setText(::dict.get("cancel"));
+  }
+
+  function _jp_proceed(e) {
+    local _dlg = ::SelectTranseMessageDialog("JP");
+    _dlg.show();
+  }
+  function _en_proceed(e) {
+    local _dlg = ::SelectTranseMessageDialog("EN");
+    _dlg.show();
+  }
+}
+
+class SelectTranseMessageDialog extends ::Dialog
+{
+  btn_ok = null;
+  lbl_ok = null;
+  lbl_transe = null;
+  userdata_local = null;
+
+  constructor(lbl_string) {
+    super(::loadSKView("/ui/dialog/SelectTranseMessageDialog.ui"));
+    userdata_local = ::gamesession.getUserDataLocal();
+    lbl_transe = lbl_string;
+    this.btn_ok = this.view.findChild("btn_ok");
+    this.lbl_ok = this.btn_ok.findChild("lbl_ok");
+    this.view.findChild("btn_cancel").findChild("lbl_cancel").setText(::dict.get("cancel"));
+    TapButton(this.btn_ok).region.addEventListener(ACTION_EVENT, _setTranse);
+    this.view.findChild("lbl_text").setText(::dict.get("  "));
+
+    switch (lbl_transe) {
+    case "JP":
+      this.view.findChild("lbl_text").setText(::dict.get("select_transe_confirmation", [::dict.get("select_transe_list_jp")]));
+      break;
+    case "EN":
+      this.view.findChild("lbl_text").setText(::dict.get("select_transe_confirmation", [::dict.get("select_transe_list_en")]));
+      break;
+    case "nodata":
+      this.view.findChild("lbl_text").setText(::dict.get("assumption_nodata"));
+      break;
+    default:
+      this.view.findChild("lbl_text").setText("dict error" + lbl_string);
+      break;
+    }
+  }
+
+  function _setTranse(e) {
+    if (!::READ_TRANS_FILE.equals(lbl_transe)) {
+      switch (lbl_transe) {
+      case "JP":
+        ::READ_TRANS_FILE = "JP";
+        this.userdata_local.setLanguage("JP");
+        this.userdata_local.save();
+        break;
+      case "EN":
+        ::READ_TRANS_FILE = "EN";
+        this.userdata_local.setLanguage("EN");
+        this.userdata_local.save();
+      default:
+        break;
+      }
+
+      ::gamesession.dialoglayer.closeAllDialog();
+      ::gamesession.messagelayer.closeAllMessage();
+      ::gamesession.changePackageCheckScene();
+    }
+
+  }
+
+}

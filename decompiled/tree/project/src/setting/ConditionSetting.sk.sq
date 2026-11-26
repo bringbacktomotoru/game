@@ -1,0 +1,32 @@
+class ConditionSetting extends Setting {
+  id = null;
+  is_and = null;
+  condition = null
+
+  function loadConfAtServer(t) {
+    local setting = ConditionSetting();
+
+    foreach (k, v in t) {
+      switch (k) {
+      case "condition":
+        setting.condition = {};
+        foreach (key, params in v) {
+          setting.condition[key] <- decodeJSON(params);
+        }
+        break;
+      default:
+        setting[k] = v;
+      }
+    }
+
+    return setting;
+  }
+
+  function getCondition() {
+    return this.condition;
+  }
+
+  function isAnd() {
+    return this.is_and;
+  }
+}

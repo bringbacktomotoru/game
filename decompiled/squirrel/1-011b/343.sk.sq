@@ -1,0 +1,42 @@
+class MotionViewDialog extends ::Dialog {
+  lbl_msg = null;
+  sk3dview = null;
+  motion_setting = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/MotionViewDialog.ui"));
+    this.lbl_msg = this.view.findChild("lbl_text");
+
+    local _pnl_chara = this.view.findChild("pnl_chara");
+    this.sk3dview = Chara3DView();
+    this.sk3dview.setRect(0, 0, _pnl_chara.bnd.w, _pnl_chara.bnd.h);
+    _pnl_chara.addChild(this.sk3dview);
+  }
+
+  function setCostume(cid) {
+    this.sk3dview.setCostumeId(cid);
+    this.sk3dview.build(true);
+  }
+
+  function setMotion(mid) {
+    this.motion_setting = ::gamesetting.costume_motion_settings[mid];
+  }
+
+  function show() {
+    if (this.motion_setting) {
+      local _t = newthread();
+      _t.start(startShowFunc, this);
+    }
+    super.show();
+  }
+
+  function startShowFunc() {
+    local _scp = this.motion_setting.getActionName();
+    while (true) {
+      this.sk3dview.charaScript(_scp);
+      sleep(1000);
+      while (this.sk3dview.isScriptRunning() && this.sk3dview.getCurrentScriptName() == _scp) { suspend() };
+      sleep(1000);
+    }
+  }
+}

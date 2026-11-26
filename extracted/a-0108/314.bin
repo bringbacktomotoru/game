@@ -1,0 +1,407 @@
+{
+  "ID": "b747257f-51db-4889-9bb1-d1be9b0fc675",
+  "Version": "2.3.3.0",
+  "Name": "LevelupWaitingInfoDialog",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 249,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_s.png",
+              "Plist": ""
+            },
+            "Scale9Width": 684,
+            "Scale9Height": 466,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 250,
+            "ActionTag": 874954912,
+            "Size": {
+              "X": 684.0,
+              "Y": 466.0
+            },
+            "Name": "img_bg",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 40,
+            "LabelText": "レベルアップ待ち",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "OutlineSize": 4,
+            "OutlineColor": {
+              "R": 26,
+              "G": 26,
+              "B": 26
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 249.1627,
+              "Y": 374.4142
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.3643,
+              "Y": 0.8035
+            },
+            "PreSize": {
+              "X": 0.3684,
+              "Y": 0.103
+            },
+            "HorizontalEdge": "LeftEdge",
+            "LeftMargin": 123.1627,
+            "RightMargin": 308.8373,
+            "TopMargin": 67.5858,
+            "BottomMargin": 350.4142,
+            "Tag": 252,
+            "ActionTag": 1249076646,
+            "Size": {
+              "X": 252.0,
+              "Y": 48.0
+            },
+            "Name": "lbl_head",
+            "ctype": "TextObjectData"
+          },
+          {
+            "ClipAble": true,
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 71.0913,
+              "Y": 135.7449
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.1039,
+              "Y": 0.2913
+            },
+            "PreSize": {
+              "X": 0.8041,
+              "Y": 0.4292
+            },
+            "LeftMargin": 71.0913,
+            "RightMargin": 62.9087,
+            "TopMargin": 130.2551,
+            "BottomMargin": 135.7449,
+            "Tag": 251,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "common/LevelupInfoItem.json",
+                  "Plist": ""
+                },
+                "StretchWidthEnable": false,
+                "StretchHeightEnable": false,
+                "InnerActionSpeed": 1.0,
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 14.973,
+                  "Y": 121.3767
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": true,
+                "PrePosition": {
+                  "X": 0.0272,
+                  "Y": 0.6069
+                },
+                "PreSize": {
+                  "X": 0.9455,
+                  "Y": 0.4
+                },
+                "LeftMargin": 14.973,
+                "RightMargin": 15.027,
+                "TopMargin": -1.3767,
+                "BottomMargin": 121.3767,
+                "Tag": 265,
+                "ActionTag": -1588782052,
+                "Size": {
+                  "X": 520.0,
+                  "Y": 80.0
+                },
+                "Name": "dummy_levelupinfo",
+                "ctype": "ProjectNodeObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "common/LevelupInfoItem.json",
+                  "Plist": ""
+                },
+                "StretchWidthEnable": false,
+                "StretchHeightEnable": false,
+                "InnerActionSpeed": 1.0,
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 12.6377,
+                  "Y": 41.4788
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": true,
+                "PrePosition": {
+                  "X": 0.023,
+                  "Y": 0.2074
+                },
+                "PreSize": {
+                  "X": 0.9455,
+                  "Y": 0.4
+                },
+                "LeftMargin": 12.6377,
+                "RightMargin": 17.3623,
+                "TopMargin": 78.5212,
+                "BottomMargin": 41.4788,
+                "Tag": 274,
+                "ActionTag": -1131464736,
+                "Size": {
+                  "X": 520.0,
+                  "Y": 80.0
+                },
+                "Name": "dummy_levelupinfo_0",
+                "ctype": "ProjectNodeObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "common/LevelupInfoItem.json",
+                  "Plist": ""
+                },
+                "StretchWidthEnable": false,
+                "StretchHeightEnable": false,
+                "InnerActionSpeed": 1.0,
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 6.507,
+                  "Y": -34.942
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": true,
+                "PrePosition": {
+                  "X": 0.0118,
+                  "Y": -0.1747
+                },
+                "PreSize": {
+                  "X": 0.9455,
+                  "Y": 0.4
+                },
+                "LeftMargin": 6.507,
+                "RightMargin": 23.493,
+                "TopMargin": 154.942,
+                "BottomMargin": -34.942,
+                "Tag": 283,
+                "ActionTag": -1024686383,
+                "Size": {
+                  "X": 520.0,
+                  "Y": 80.0
+                },
+                "Name": "dummy_levelupinfo_0_0",
+                "ctype": "ProjectNodeObjectData"
+              }
+            ],
+            "ActionTag": 2069154292,
+            "Size": {
+              "X": 550.0,
+              "Y": 200.0
+            },
+            "Name": "pnl_list",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/button/button_dialog_red.png",
+              "Plist": ""
+            },
+            "Scale9Width": 238,
+            "Scale9Height": 101,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 339.913,
+              "Y": 96.7487
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4969,
+              "Y": 0.2076
+            },
+            "PreSize": {
+              "X": 0.2339,
+              "Y": 0.1288
+            },
+            "LeftMargin": 259.913,
+            "RightMargin": 264.087,
+            "TopMargin": 339.2513,
+            "BottomMargin": 66.7487,
+            "Tag": 253,
+            "Children": [
+              {
+                "FontSize": 30,
+                "LabelText": "閉じる",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 79.3398,
+                  "Y": 28.4023
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.4959,
+                  "Y": 0.4734
+                },
+                "PreSize": {
+                  "X": 0.4938,
+                  "Y": 0.6
+                },
+                "LeftMargin": 39.8398,
+                "RightMargin": 41.1602,
+                "TopMargin": 13.5977,
+                "BottomMargin": 10.4023,
+                "Tag": 254,
+                "ActionTag": -1335576582,
+                "Size": {
+                  "X": 79.0,
+                  "Y": 36.0
+                },
+                "Name": "lbl_close",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 1299838212,
+            "Size": {
+              "X": 160.0,
+              "Y": 60.0
+            },
+            "Name": "btn_close",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 684.0,
+          "Y": 466.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../common/LevelupInfoItem.json",
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/button/button_dialog_red.png",
+        "../image/dialog/dialog_s.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

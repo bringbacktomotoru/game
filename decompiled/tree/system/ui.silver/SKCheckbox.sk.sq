@@ -1,0 +1,54 @@
+class SKCheckbox extends SKToggleButtonBase
+{
+  static deffontattr = FontAttribute(Fonts.ui, 12, 255, 0);
+
+  fontattr = null;
+  boxsp = null;
+  bordersp = null;
+  checksp = null;
+  textbox = null;
+
+  constructor(txt = "", g = null, a = null) {
+    fontattr = a ? a : deffontattr;
+    boxsp = ::getSprite("/system/ui.silver/ui.clp#checkbox");
+    bordersp = ::getSprite("/system/ui.silver/ui.clp#borderbg1");
+    checksp = ::getSprite("/system/ui.silver/icon.clp#check");
+
+    if (length(txt) > 0) {
+      textbox = TextBox(fontattr, txt);
+      textbox.align = 3;
+    }
+    group = g;
+  }
+
+  function updateLayout() {
+    super.updateLayout();
+    local w = bnd.w, h = bnd.h;
+    bordersp.bnd.set(0, 0, w, h);
+
+    if (textbox) {
+      boxsp.bnd.x = 4;
+      boxsp.bnd.y = (h / 2.0 - 6.0) | 0;
+      checksp.bnd.x = 4;
+      checksp.bnd.y = (h / 2.0 - 6.0) | 0;
+      textbox.setRect(24, 0, w - 24, h);
+    } else {
+      boxsp.bnd.x = (w / 2.0 - 6.0) | 0;
+      boxsp.bnd.y = (h / 2.0 - 6.0) | 0;
+      checksp.bnd.x = (w / 2.0 - 6.0) | 0;
+      checksp.bnd.y = (h / 2.0 - 6.0) | 0;
+    }
+
+  }
+
+  function render() {
+    if (mousein) skDrawSprite(bordersp);
+    skDrawTextBox(textbox);
+    skDrawSprite(boxsp);
+    if (selected) skDrawSprite(checksp);
+  }
+
+  function updateComponentState() {
+    repaint();
+  }
+}

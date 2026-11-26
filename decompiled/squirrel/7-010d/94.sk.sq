@@ -1,0 +1,15 @@
+model =
+{
+  root = {
+    pm = "tensei.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function start() {
+    uvscroll(0.3, 0.5);
+  }
+}

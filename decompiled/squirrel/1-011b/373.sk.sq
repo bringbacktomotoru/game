@@ -1,0 +1,295 @@
+class RoomDetailDialog extends ::Dialog {
+
+  setting = null;
+  room_uid = null;
+  shop_setting = null;
+
+  show_mode = null;
+  static MODE_BUY = 1;
+  static MODE_SELL = 2;
+  static MODE_CHANGE = 3;
+
+  lbl_name = null;
+  lbl_desc = null;
+  lbl_size = null;
+
+  lbl_maxcharas = null;
+  lbl_maxfurnitures = null;
+  lbl_charanum = null;
+  lbl_furniturenum = null;
+
+  lbl_amount = null;
+
+  pnl_icon = null;
+  pnl_charaicon = null;
+  pnl_furnitureicon = null;
+
+  pnl_possession = null;
+  pnl_price = null;
+  pnl_sell = null;
+
+  sk3dview = null;
+  mouse_prev_x = null;
+
+  constructor(view) {
+    super(view);
+
+    local _dialog = this.view.findChild("pnl_dialog");
+
+    this.lbl_name = _dialog.findChild("lbl_name");
+    this.lbl_desc = _dialog.findChild("lbl_description");
+    this.lbl_size = _dialog.findChild("lbl_roomsize");
+    this.pnl_icon = _dialog.findChild("pnl_view");
+
+    this.lbl_maxcharas = _dialog.findChild("lbl_maxcharas");
+    this.lbl_maxfurnitures = _dialog.findChild("lbl_maxfurnitures");
+    this.lbl_charanum = _dialog.findChild("lbl_charanum");
+    this.lbl_furniturenum = _dialog.findChild("lbl_furniturenum");
+
+    this.lbl_maxcharas.setText(::dict.get("roomslot_maxcharas"));
+    this.lbl_maxfurnitures.setText(::dict.get("roomslot_maxfurnitures"));
+
+    this.pnl_charaicon = _dialog.findChild("pnl_charaicon");
+    this.pnl_furnitureicon = _dialog.findChild("pnl_furnitureicon");
+
+    _dialog.findChild("pnl_slide").findChild("lbl_slide").setText(::dict.get("rewarddialog_slide_desc"));
+
+    this.lbl_maxfurnitures.visible = false;
+    this.lbl_furniturenum.visible = false;
+    this.pnl_furnitureicon.visible = false;
+
+    local _sp = ::gamesetting.sanrio_chara_settings[1].getIconSprite();
+    _sp.bnd.set(0, 0, pnl_charaicon.bnd.w, pnl_charaicon.bnd.h);
+    this.pnl_charaicon.addChild(::SKImageView(_sp));
+
+    _sp = ::gamesetting.title_settings[10].getIconSprite();
+    _sp.bnd.set(0, 0, pnl_furnitureicon.bnd.w, pnl_furnitureicon.bnd.h);
+    this.pnl_furnitureicon.addChild(::SKImageView(_sp));
+
+    this.pnl_possession = _dialog.findChild("pnl_possession");
+    if (this.pnl_possession) {
+      local _lbl_possession = this.pnl_possession.findChild("lbl_possession");
+      _lbl_possession.setText(::dict.get("possession"));
+      this.lbl_amount = this.pnl_possession.findChild("lbl_amount");
+    }
+
+    this.pnl_price = _dialog.findChild("pnl_price");
+    this.pnl_sell = _dialog.findChild("pnl_sell");
+
+    local _pnl_mouse_event = this.view.findChild("pnl_mouse_event");
+    _pnl_mouse_event.addEventListener(MOUSE_EVENT, mouseevent);
+
+    this.setting = null;
+    this.shop_setting = null;
+
+    this.sk3dview = ::House3DView();
+    this.sk3dview.setRect(0, 0, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+    this.sk3dview.updateLayout();
+    this.pnl_icon.addChild(this.sk3dview);
+
+    this.sk3dview.addEventListener(MOUSE_EVENT, _mouseevent_viewer);
+  }
+
+  function showed() {
+
+  }
+
+  function reset() {
+    this.ret = 0;
+  }
+
+  function setRoomSetting(data, mode) {
+    reset();
+    this.show_mode = mode;
+
+    this.setting = ::gamesetting.room_settings[data.getRoomID()];
+    this.room_uid = data.getUID();
+
+    _setupSeriesIcon();
+    if (mode == MODE_SELL) _setupSellButton();
+    _updateRoomSettingInfo();
+  }
+
+  function setShopSetting(shop_id) {
+    reset();
+    this.show_mode = MODE_BUY;
+
+    this.shop_setting = ::gamesetting.shop_settings[shop_id];
+    this.setting = ::gamesetting.room_settings[shop_setting.getItemID()];
+
+    _setupBuyInfo();
+    _setupSeriesIcon();
+    _updateRoomSettingInfo();
+  }
+
+  function _updateRoomSettingInfo() {
+
+    this.lbl_name.setText(this.setting.getName());
+    this.lbl_desc.setText(this.setting.getDesc());
+    this.lbl_size.setText(this.setting.getSizeText());
+
+    local _ud = ::gamesession.getUserData();
+    this.sk3dview.clearObjects();
+    local _data = _ud.getRoomEditData(this.room_uid) || ::RoomEditData.create(-1, this.setting.getID());
+    this.sk3dview.setRoomEditData(_data);
+    this.sk3dview.build(true);
+
+    local _param = this.setting.getMaxParameters();
+
+    this.lbl_charanum.setText(::dict.get("nums_chara", [_param.chara]));
+    this.lbl_furniturenum.setText(::dict.get("nums_amount", [_param.furniture]));
+
+    if (this.lbl_amount) {
+      local _ud = ::gamesession.getUserData();
+      this.lbl_amount.setText(_ud.getRoomEditNum(this.setting.getID()));
+    }
+  }
+
+  function _setupSeriesIcon() {
+    local pnl_series = this.view.findChild("pnl_seriesicon");
+    local icon = SKImageView();
+    icon.setSprite(this.setting.getSeriesSetting().getIconSprite());
+    icon.setRect(0, 0, pnl_series.bnd.w, pnl_series.bnd.h);
+    pnl_series.addChild(icon);
+  }
+
+  function _setupSellButton() {
+    if (!this.setting.canSell()) {
+      pnl_sell.setVisible(false);
+      return;
+    }
+    this.pnl_sell.findChild("lbl_sell").setText(::dict.get("shop_sell"));
+    this.pnl_sell.findChild("lbl_sell_value").setText(this.setting.getSellPrice());
+    ::TapButton(this.pnl_sell).view.addEventListener(ACTION_EVENT, actionevent_sell);
+    this.pnl_sell.findChild("lbl_sell_caution").setText(::dict.get("shop_sell_room_message"));
+  }
+
+  function _setupBuyInfo() {
+    if (this.shop_setting.isPriceTypeGM()) {
+      this.pnl_price.findChild("img_rm").visible = false;
+    } else {
+      this.pnl_price.findChild("img_gm").visible = false;
+    }
+    this.pnl_price.findChild("lbl_price").setText(::dict.get("shop_price"));
+    this.pnl_price.findChild("lbl_price_value").setText(this.shop_setting.getPrice());
+  }
+
+  function actionevent_sell(e) {
+    e.consume();
+
+    local _ud = ::gamesession.getUserData();
+    local _room_idx = _ud.getRoomSlotIndexByRoomUID(this.room_uid);
+    if (_room_idx != -1) {
+      this.view.startMethod("showSellErrorText");
+      return;
+    }
+
+    local _dlg = SellConfirmDialog(this.room_uid);
+    _dlg.show();
+    if (!_dlg.ret) return;
+
+    if (!::gamesession.sellRoom(this.room_uid)) return;
+
+    local _suc = _ud.sellRoom(this.room_uid);
+    if (!_suc) return;
+    this.ret = 1;
+
+    local _text = ::dict.get("shop_sold", [::dict.get("room")]);
+    ::gamesession.messagelayer.closeAllMessage();
+    local _msg = ::Message();
+    _msg.setMsec(4 * 1000);
+    _msg.setText(_text);
+    _msg.setFontSize(32);
+    _msg.setPosition(::screenWidth / 2.0, ::screenHeight / 2.0);
+    _msg.show();
+    sleep(600);
+    close();
+  }
+
+  function mouseevent(e) {
+    switch (e.id) {
+    case MOUSE_RELEASED:
+      close();
+      break;
+    }
+  }
+
+  function _mouseevent_viewer(e) {
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.mouse_prev_x = e.x;
+      break;
+    case MOUSE_DRAGGED:
+
+      local _model = this.sk3dview.getModel();
+      local _theta = (this.mouse_prev_x - e.x) / 2.0;
+      _model.setAngle(_model.getAngle() + _theta);
+      this.sk3dview.updateVisibleWall();
+      this.mouse_prev_x = e.x;
+      break;
+    }
+  }
+}
+
+class RoomDetailDialog.SellConfirmDialog extends ::Dialog {
+  lbl_roomsize = null;
+  lbl_confirm = null;
+  lbl_cancel = null;
+  lbl_buy = null;
+  lbl_price = null;
+
+  constructor(room_uid) {
+    super(::loadSKView("/ui/dialog/SellRoomConfirmDialog.ui"));
+
+    local _ud = ::gamesession.getUserData();
+    local _room_id = _ud.getRoomEditData(room_uid).getRoomID();
+    local _rs = ::gamesetting.room_settings[_room_id];
+    local _ss = _rs.getSeriesSetting();
+
+    local _sp;
+
+    local _pnl_series_icon = this.view.findChild("pnl_series_icon");
+    _sp = _ss.getIconSprite();
+    local _series_icon = ::SKImageView();
+    _series_icon.setSprite(_sp);
+    _series_icon.setRect(0, 0, _pnl_series_icon.bnd.w, _pnl_series_icon.bnd.h);
+    _pnl_series_icon.addChild(_series_icon);
+
+    local _lbl_name = this.view.findChild("lbl_name");
+    _lbl_name.setText(_rs.getName());
+
+    this.lbl_roomsize = this.view.findChild("lbl_roomsize");
+    this.lbl_roomsize.setText(_rs.getSizeText())
+
+    local _pnl_room = this.view.findChild("pnl_room");
+    local _pnl_view = _pnl_room.findChild("pnl_view");
+    _sp = _rs.getIconSpriteUnacquired();
+    local _room_icon = ::SKImageView();
+    _room_icon.setSprite(_sp);
+    _room_icon.setRect(0, 0, _pnl_view.bnd.w, _pnl_view.bnd.h);
+    _pnl_view.addChild(_room_icon);
+
+    local _lbl_level = _pnl_room.findChild("lbl_level");
+
+    _lbl_level.setVisible(false);
+
+    this.lbl_confirm = this.view.findChild("lbl_confirm");
+    this.lbl_confirm.setText(::dict.get("shop_sell_confirm"));
+
+    this.lbl_cancel = this.btn_cancel.findChild("lbl_cancel");
+    this.lbl_cancel.setText(::dict.get("cancel"));
+    this.lbl_buy = this.btn_ok.findChild("lbl_buy");
+    this.lbl_buy.setText(::dict.get("shop_sell"));
+    this.lbl_price = this.btn_ok.findChild("lbl_price");
+    this.lbl_price.setText(_rs.getSellPrice());
+
+    this.tapbutton_ok.setTappedSE(SoundConstants.SOUND_SELL);
+  }
+
+  function showed() {
+    this.lbl_roomsize.setText(lbl_roomsize.getText());
+    this.lbl_confirm.setText(lbl_confirm.getText());
+    this.lbl_buy.setText(lbl_buy.getText());
+    this.lbl_price.setText(lbl_price.getText());
+  }
+}

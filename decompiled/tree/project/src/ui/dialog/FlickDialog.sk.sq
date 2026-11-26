@@ -1,0 +1,41 @@
+class FlickDialog extends ::Dialog {
+
+  flick_check = FlickChecker();
+  flick_enabled = true;
+
+  constructor(v, modal, sender) {
+    super(v, modal);
+    v.addEventListener(MOUSE_EVENT, this.mouseevent_dialog, this);
+
+  }
+
+  function mouseevent_dialog(e) {
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.flick_check.pressed(e);
+      break;
+    case MOUSE_DRAGGED:
+      this.flick_check.dragged(e);
+      break;
+    case MOUSE_RELEASED:
+      local _flick_ret = this.flick_check.released(e);
+      if (flick_enabled && _flick_ret == FlickChecker.FLICK_LEFT) {
+        flickLeft();
+      }
+      else if (flick_enabled && _flick_ret == FlickChecker.FLICK_RIGHT) {
+        flickRight();
+      }
+      break;
+    }
+
+  }
+
+  function flickRight() {
+    println("flick Right");
+  }
+
+  function flickLeft() {
+    println("flick Left");
+  }
+
+}

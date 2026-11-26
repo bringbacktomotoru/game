@@ -1,0 +1,325 @@
+declare arsprite;
+
+module mod_material;
+
+param common
+{
+	attribute mediump vec4 in_pos <ID=POSITION>;
+	attribute mediump vec4 in_uv <id=UV1>;
+	attribute lowp vec4 in_col <id=COLOR1>;
+	
+	uniform sampler2D coltex1 <id=COLORTEX1>;
+	uniform sampler2D coltex2 <id=COLORTEX2>;
+	uniform sampler2D coltex3 <id=COLORTEX3>;		//	PolygonMesh+Material
+	uniform sampler2D coltex4 <id=COLORTEX4>;		//	PolygonMesh+Material
+	
+	uniform mediump mat4 colormat <id=COLORMAT>;
+	uniform mediump mat4 p1 <id=MISC1MAT>;
+	uniform mediump mat4 p2 <id=MISC2MAT>;	//	PolygonMesh+Material
+	
+	uniform mediump vec2 colpix1 <id=COLORTEX1_PIX, scale=0.5>;	// boyakasi
+	
+	varying mediump vec4 v_uv;
+	varying lowp vec4 v_col;
+}
+
+vs def
+{
+	void main(){
+		gl_Position = in_pos;
+		v_uv = in_uv;
+		v_col = in_col;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////
+//	dof+bloom fx mix (RGBA)
+
+fs fxmix_RGBA
+{
+	void main(){
+		lowp vec4 pix = $(COLORTEX1){ texture2D( coltex1, v_uv.xy)} : { vec4(1.0,1.0,1.0,1.0)};
+		$(COLORTEX2) {
+			lowp vec4 bloom = texture2D( coltex2, v_uv.xy);
+			pix = bloom + pix * (vec4(1.0,1.0,1.0,1.0) - bloom);
+		}
+		$(COLORTEX3 && COLORTEX4) {
+			mediump float d = texture2D( coltex4, uv).x;
+			mediump float dz = (d - p1[0].x) * p1[0].y;
+			pix = mix( pix, texture2D( coltex3, v_uv.xy), min( dz*dz, 1.0));
+		}
+		$(ALPHATEST) if(pix.w < alpharef) discard;
+		gl_FragColor = pix;
+	}
+}
+
+technique fxmix_RGBA
+{
+	pass {
+		using material;
+		CULLFACE = OFF;
+		
+		param = common;
+		vs = def;
+		fs = fxmix_RGBA;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////
+//	dof+bloom fx mix (BGRA)
+
+fs fxmix_BGRA
+{
+	void main(){
+		precision mediump float;
+		lowp vec4 pix = $(COLORTEX1){ texture2D( coltex1, v_uv.xy)} : { vec4(1,1,1,1)};
+		$(COLORTEX2) {
+			lowp vec4 bloom = texture2D( coltex2, v_uv.xy);
+			pix = bloom + pix * (vec4(1,1,1,1) - bloom);
+		}
+		$(COLORTEX3 && COLORTEX4) {
+			mediump float d = texture2D( coltex4, uv).x;
+			mediump float dz = (d - p1[0].x) * p1[0].y;
+			pix = mix( pix, texture2D( coltex3, v_uv.xy), min( dz*dz, 1.0));
+		}
+		$(ALPHATEST) if(pix.w < alpharef) discard;
+		//swap
+		float tmp = pix.x;
+		pix.x = pix.z;
+		pix.z = tmp;
+		gl_FragColor = pix;
+	}
+}
+
+technique fxmix_BGRA
+{
+	pass {
+		using material;
+		CULLFACE = OFF;
+		
+		param = common;
+		vs = def;
+		fs = fxmix_BGRA;
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////
+//	NV12toRGBA
+fs nv12toRGBA
+{
+	void main(){
+		precision mediump float;
+		float y,u,v,r,g,b;
+		lowp vec4 ytex = $(COLORTEX1) { texture2D( coltex1 , v_uv.xy) * v_col; } : { v_col; }
+		$(COLORTEX2){
+			lowp vec4 uvtex = texture2D( coltex2 , v_uv.zw);
+			
+			y = ytex.x;
+			u = uvtex.w - 0.5;
+			v = uvtex.x - 0.5;
+			
+			r = y + 1.13083 * v;
+			g = y - 0.39465 * u - 0.58060*v;
+			b = y + 2.03211 * u;
+		} : {
+			r = ytex.x;
+			g = ytex.y;
+			b = ytex.z;
+		}
+		lowp vec4 pix = vec4( r,g,b,ytex.w);
+		
+		$(COLORMAT) pix = colormat * pix;
+//		$(PREMULTALPHA) pix.xyz *= pix.w;
+		gl_FragColor = pix;
+	}
+}
+
+
+technique nv12toRGBA
+{
+	pass {
+		using material;
+		CULLFACE = OFF;
+		
+		param = common;
+		vs = def;
+		fs = nv12toRGBA;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////
+//	NV12toBGRA
+fs nv12toBGRA
+{
+	void main(){
+		precision mediump float;
+		float y,u,v,r,g,b;
+		lowp vec4 ytex = $(COLORTEX1) { texture2D( coltex1 , v_uv.xy) * v_col; } : { v_col; }
+		$(COLORTEX2){
+			lowp vec4 uvtex = texture2D( coltex2 , v_uv.zw);
+			
+			y = ytex.x;
+			u = uvtex.w - 0.5;
+			v = uvtex.x - 0.5;
+			
+			r = y + 1.13083 * v;
+			g = y - 0.39465 * u - 0.58060*v;
+			b = y + 2.03211 * u;
+		} : {
+			r = ytex.x;
+			g = ytex.y;
+			b = ytex.z;
+		}
+		lowp vec4 pix = vec4( b,g,r,ytex.w);
+		
+		$(COLORMAT) pix = colormat * pix;
+//		$(PREMULTALPHA) pix.xyz *= pix.w;
+		gl_FragColor = pix;
+	}
+}
+
+
+technique nv12toBGRA
+{
+	pass {
+		using material;
+		CULLFACE = OFF;
+		
+		param = common;
+		vs = def;
+		fs = nv12toBGRA;
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////
+//	NV21toRGBA
+fs nv21toRGBA
+{
+	void main(){
+		precision mediump float;
+		float y,u,v,r,g,b;
+		lowp vec4 ytex = $(COLORTEX1) { texture2D( coltex1 , v_uv.xy) * v_col; } : { v_col; }
+		$(COLORTEX2){
+			lowp vec4 uvtex = texture2D( coltex2 , v_uv.zw);
+			
+			y = ytex.x;
+			v = uvtex.w - 0.5;
+			u = uvtex.x - 0.5;
+			
+			r = y + 1.13083 * v;
+			g = y - 0.39465 * u - 0.58060*v;
+			b = y + 2.03211 * u;
+		} : {
+			r = ytex.x;
+			g = ytex.y;
+			b = ytex.z;
+		}
+		lowp vec4 pix = vec4( r,g,b,ytex.w);
+		
+		$(COLORMAT) pix = colormat * pix;
+//		$(PREMULTALPHA) pix.xyz *= pix.w;
+		gl_FragColor = pix;
+	}
+}
+
+technique nv21toRGBA
+{
+	pass {
+		using material;
+		CULLFACE = OFF;
+		
+		param = common;
+		vs = def;
+		fs = nv21toRGBA;
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////
+//	NV21toBGRA
+fs nv21toBGRA
+{
+	void main(){
+		precision mediump float;
+		float y,u,v,r,g,b;
+		lowp vec4 ytex = $(COLORTEX1) { texture2D( coltex1 , v_uv.xy) * v_col; } : { v_col; }
+		$(COLORTEX2){
+			lowp vec4 uvtex = texture2D( coltex2 , v_uv.zw);
+			
+			y = ytex.x;
+			v = uvtex.w - 0.5;
+			u = uvtex.x - 0.5;
+			
+			r = y + 1.13083 * v;
+			g = y - 0.39465 * u - 0.58060*v;
+			b = y + 2.03211 * u;
+		} : {
+			r = ytex.x;
+			g = ytex.y;
+			b = ytex.z;
+		}
+		lowp vec4 pix = vec4( b,g,r,ytex.w);
+		
+		$(COLORMAT) pix = colormat * pix;
+//		$(PREMULTALPHA) pix.xyz *= pix.w;
+		gl_FragColor = pix;
+	}
+}
+
+technique nv21toBGRA
+{
+	pass {
+		using material;
+		CULLFACE = OFF;
+		
+		param = common;
+		vs = def;
+		fs = nv21toBGRA;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////
+//	iosYCbCrToRGBA
+fs iosYCbCrToRGBA
+{
+	void main(){
+		precision mediump float;
+		float y,u,v,r,g,b;
+		lowp vec4 ytex = $(COLORTEX1) { texture2D( coltex1 , v_uv.xy) * v_col; } : { v_col; }
+		$(COLORTEX2){
+			lowp vec4 uvtex = texture2D( coltex2 , v_uv.zw);
+			
+			y = ytex.x;
+			u = uvtex.x - 0.5;
+			v = uvtex.w - 0.5;
+			
+			r = y + 1.402*v;
+			g = y - 0.344*u - 0.714*v;
+			b = y + 1.772*u;
+		} : {
+			r = ytex.x;
+			g = ytex.y;
+			b = ytex.z;
+		}
+		lowp vec4 pix = vec4( r,g,b,ytex.w);
+		
+		$(COLORMAT) pix = colormat * pix;
+//		$(PREMULTALPHA) pix.xyz *= pix.w;
+		gl_FragColor = pix;
+	}
+}
+
+technique iosYCbCrToRGBA
+{
+	pass {
+		using material;
+		CULLFACE = OFF;
+		
+		param = common;
+		vs = def;
+		fs = iosYCbCrToRGBA;
+	}
+}
+

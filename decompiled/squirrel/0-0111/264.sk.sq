@@ -1,0 +1,17 @@
+return {
+  modeldata = "spoon.mdl"
+  bnd = [-0.00077, -0.028857, 0.371259, 0.179739, 0.064414, 0.547927]
+
+  material = [
+  {
+    name = "spoon_mt"
+    tec = "shading.basic"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 2139062271
+    Ke = 151587327
+    shiness = 10.0
+    texture0 = "tex/fork_spoon.png"
+  }
+  ]
+}

@@ -1,0 +1,1044 @@
+{
+  "ID": "701bb1e5-0240-4b0b-8580-dec2f9edac70",
+  "Version": "2.3.3.0",
+  "Name": "result_1",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 80,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "stageresult/gameresult_clear.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 76,
+            "ActionTag": -1464743158,
+            "Size": {
+              "X": 1280.0,
+              "Y": 720.0
+            },
+            "Name": "dummy",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0003,
+              "Y": 400.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.5556
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.1528
+            },
+            "LeftMargin": 0.0003,
+            "RightMargin": -0.0002,
+            "TopMargin": 209.9999,
+            "BottomMargin": 400.0001,
+            "Tag": 205,
+            "Children": [
+              {
+                "FontSize": 48,
+                "LabelText": "トータルスコア",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 386.9999,
+                  "Y": 54.9989
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3023,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.2251,
+                  "Y": 0.413
+                },
+                "LeftMargin": 386.9999,
+                "RightMargin": 651.0001,
+                "TopMargin": 28.0011,
+                "BottomMargin": 27.9989,
+                "Tag": 192,
+                "ActionTag": -1786600578,
+                "Size": {
+                  "X": 242.0,
+                  "Y": 54.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 48,
+                "LabelText": "10,000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 749.4993,
+                  "Y": 54.9989
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5855,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.2251,
+                  "Y": 0.413
+                },
+                "LeftMargin": 749.4993,
+                "RightMargin": 353.5007,
+                "TopMargin": 28.0011,
+                "BottomMargin": 27.9989,
+                "Tag": 193,
+                "ActionTag": -1103311536,
+                "Size": {
+                  "X": 177.0,
+                  "Y": 54.0
+                },
+                "Name": "lbl_totalscore",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/icon/hiscore.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 299.9999,
+                  "Y": 54.9987
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2344,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 241.9999,
+                "RightMargin": 922.0001,
+                "TopMargin": 0.0013,
+                "BottomMargin": -0.0013,
+                "Tag": 200,
+                "ActionTag": 1338307795,
+                "Size": {
+                  "X": 116.0,
+                  "Y": 110.0
+                },
+                "Name": "icon_hiscore",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": -1827410517,
+            "Size": {
+              "X": 1280.0,
+              "Y": 110.0
+            },
+            "Name": "pnl_1",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": -0.0007,
+              "Y": 289.9995
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.4028
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.1278
+            },
+            "LeftMargin": -0.0007,
+            "RightMargin": 0.0007,
+            "TopMargin": 338.0005,
+            "BottomMargin": 289.9995,
+            "Tag": 204,
+            "Children": [
+              {
+                "FontSize": 48,
+                "LabelText": "イノチボーナス",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 386.9999,
+                  "Y": 35.9995
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3023,
+                  "Y": 0.3913
+                },
+                "PreSize": {
+                  "X": 0.2251,
+                  "Y": 0.413
+                },
+                "LeftMargin": 386.9999,
+                "RightMargin": 653.0001,
+                "TopMargin": 29.0005,
+                "BottomMargin": 8.9995,
+                "Tag": 194,
+                "ActionTag": -272915302,
+                "Size": {
+                  "X": 240.0,
+                  "Y": 54.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 48,
+                "LabelText": "10,000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 749.499,
+                  "Y": 35.9995
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5855,
+                  "Y": 0.3913
+                },
+                "PreSize": {
+                  "X": 0.2251,
+                  "Y": 0.413
+                },
+                "LeftMargin": 749.499,
+                "RightMargin": 353.501,
+                "TopMargin": 29.0005,
+                "BottomMargin": 8.9995,
+                "Tag": 197,
+                "ActionTag": 812347608,
+                "Size": {
+                  "X": 177.0,
+                  "Y": 54.0
+                },
+                "Name": "lbl_score",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/tegata_ll.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 300.0,
+                  "Y": 45.9994
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2344,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 265.0,
+                "RightMargin": 945.0,
+                "TopMargin": 0.0006,
+                "BottomMargin": -0.0006,
+                "Tag": 201,
+                "ActionTag": 1230795933,
+                "Size": {
+                  "X": 70.0,
+                  "Y": 92.0
+                },
+                "Name": "icon_tegata",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/icon/rate_a.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 691.1024,
+                  "Y": 36.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5399,
+                  "Y": 0.3913
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 651.1024,
+                "RightMargin": 548.8976,
+                "TopMargin": 24.9999,
+                "BottomMargin": 5.0001,
+                "Tag": 207,
+                "ActionTag": -557958165,
+                "Size": {
+                  "X": 80.0,
+                  "Y": 62.0
+                },
+                "Name": "icon_rate",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": -110712860,
+            "Size": {
+              "X": 1280.0,
+              "Y": 92.0
+            },
+            "Name": "pnl_2",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": -0.0007,
+              "Y": 197.9993
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.275
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.1278
+            },
+            "LeftMargin": -0.0007,
+            "RightMargin": 0.0007,
+            "TopMargin": 430.0007,
+            "BottomMargin": 197.9993,
+            "Tag": 209,
+            "Children": [
+              {
+                "FontSize": 48,
+                "LabelText": "ゲキハボーナス",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 386.9999,
+                  "Y": 35.9995
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3023,
+                  "Y": 0.3913
+                },
+                "PreSize": {
+                  "X": 0.2251,
+                  "Y": 0.413
+                },
+                "LeftMargin": 386.9999,
+                "RightMargin": 653.0001,
+                "TopMargin": 29.0005,
+                "BottomMargin": 8.9995,
+                "Tag": 210,
+                "ActionTag": 1203389275,
+                "Size": {
+                  "X": 245.0,
+                  "Y": 54.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 48,
+                "LabelText": "10,000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 749.499,
+                  "Y": 35.9995
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5855,
+                  "Y": 0.3913
+                },
+                "PreSize": {
+                  "X": 0.2251,
+                  "Y": 0.413
+                },
+                "LeftMargin": 749.499,
+                "RightMargin": 353.501,
+                "TopMargin": 29.0005,
+                "BottomMargin": 8.9995,
+                "Tag": 211,
+                "ActionTag": -325872343,
+                "Size": {
+                  "X": 177.0,
+                  "Y": 54.0
+                },
+                "Name": "lbl_score",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/tegata_ll.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 300.0,
+                  "Y": 45.9994
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2344,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 265.0,
+                "RightMargin": 945.0,
+                "TopMargin": 0.0006,
+                "BottomMargin": -0.0006,
+                "Tag": 212,
+                "ActionTag": 1035403197,
+                "Size": {
+                  "X": 70.0,
+                  "Y": 92.0
+                },
+                "Name": "icon_tegata",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/icon/rate_a.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 691.1024,
+                  "Y": 36.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5399,
+                  "Y": 0.3913
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 651.1024,
+                "RightMargin": 548.8976,
+                "TopMargin": 24.9999,
+                "BottomMargin": 5.0001,
+                "Tag": 214,
+                "ActionTag": -1376721237,
+                "Size": {
+                  "X": 80.0,
+                  "Y": 62.0
+                },
+                "Name": "icon_rate",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": 1483351678,
+            "Size": {
+              "X": 1280.0,
+              "Y": 92.0
+            },
+            "Name": "pnl_3",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": -0.0008,
+              "Y": 105.9992
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.1472
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.1278
+            },
+            "LeftMargin": -0.0008,
+            "RightMargin": 0.0009,
+            "TopMargin": 522.0008,
+            "BottomMargin": 105.9992,
+            "Tag": 215,
+            "Children": [
+              {
+                "FontSize": 48,
+                "LabelText": "コバンボーナス",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 386.9999,
+                  "Y": 35.9995
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.3023,
+                  "Y": 0.3913
+                },
+                "PreSize": {
+                  "X": 0.2251,
+                  "Y": 0.413
+                },
+                "LeftMargin": 386.9999,
+                "RightMargin": 653.0001,
+                "TopMargin": 29.0005,
+                "BottomMargin": 8.9995,
+                "Tag": 216,
+                "ActionTag": 1280653283,
+                "Size": {
+                  "X": 245.0,
+                  "Y": 54.0
+                },
+                "Name": "lbl_name",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 48,
+                "LabelText": "10,000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 749.4989,
+                  "Y": 35.9996
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5855,
+                  "Y": 0.3913
+                },
+                "PreSize": {
+                  "X": 0.2251,
+                  "Y": 0.413
+                },
+                "LeftMargin": 749.4989,
+                "RightMargin": 353.5011,
+                "TopMargin": 29.0004,
+                "BottomMargin": 8.9996,
+                "Tag": 217,
+                "ActionTag": -1632330080,
+                "Size": {
+                  "X": 177.0,
+                  "Y": 54.0
+                },
+                "Name": "lbl_score",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/icon/tegata_ll.png",
+                  "Plist": "image/ss_icon.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 300.0,
+                  "Y": 45.9994
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2344,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 265.0,
+                "RightMargin": 945.0,
+                "TopMargin": 0.0006,
+                "BottomMargin": -0.0006,
+                "Tag": 218,
+                "ActionTag": -1471029444,
+                "Size": {
+                  "X": 70.0,
+                  "Y": 92.0
+                },
+                "Name": "icon_tegata",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/icon/rate_a.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 691.1017,
+                  "Y": 36.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5399,
+                  "Y": 0.3913
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 651.1017,
+                "RightMargin": 548.8983,
+                "TopMargin": 24.9999,
+                "BottomMargin": 5.0001,
+                "Tag": 220,
+                "ActionTag": 1209095535,
+                "Size": {
+                  "X": 80.0,
+                  "Y": 62.0
+                },
+                "Name": "icon_rate",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": 1232987709,
+            "Size": {
+              "X": 1280.0,
+              "Y": 92.0
+            },
+            "Name": "pnl_4",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 1280.0,
+          "Y": 720.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/icon/hiscore.png",
+        "../image/icon/rate_a.png",
+        "../image/ss_icon.plist",
+        "../image/ss_icon.png",
+        "gameresult_clear.json"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

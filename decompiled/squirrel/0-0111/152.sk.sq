@@ -1,0 +1,82 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "star1-yellow"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 8
+    start = 0, start_spr = 1500
+    life = 400, life_spr = 250
+    posx = 0.0, posy = 2.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 2.5, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 0.0, dir_sprz = 1.22173
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.2, "h": 0.2 }
+  texture = "star.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "vel_spr": 0.0, "classid": "ptcmod_vel", "vel": 1.5 },
+  { "color": [-16744, -16641, -16747, -16641, -16746, -16641, -16746, -16641], "classid": "ptcmod_color" },
+  { "axisid": 1, "classid": "ptcmod_acc", "acc": -0.15, "coord": 1, "acc_spr": 0.05 },
+  { "xyz": 7, "scale": [0.923077, 1.307692, 1.115385, 0.423077], "classid": "ptcmod_scale" },
+  ] },
+with ParticleGroupData() {
+  name = "star2_blue"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 6
+    start = 100, start_spr = 1400
+    life = 400, life_spr = 250
+    posx = 0.0, posy = 2.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 2.6, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 1.047198, dir_sprz = 0.872665
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.2, "h": 0.2 }
+  texture = "star.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "vel_spr": 0.0, "classid": "ptcmod_vel", "vel": 1.5 },
+  { "color": [-503316481, -671088714, -671088641, -671088716, -671088641, -671088716, -671088641, -671088716], "classid": "ptcmod_color" },
+  { "axisid": 1, "classid": "ptcmod_acc", "acc": -0.15, "coord": 1, "acc_spr": 0.05 },
+  { "xyz": 7, "scale": [0.923077, 1.346154, 1.076923, 0.384615], "classid": "ptcmod_scale" },
+  ] },
+with ParticleGroupData() {
+  name = "star3-pink"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 7
+    start = 200, start_spr = 1300
+    life = 400, life_spr = 250
+    posx = 0.0, posy = 2.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 2.8, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 0.0, dir_sprz = 1.047198
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.25, "h": 0.25 }
+  texture = "star.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "vel_spr": 0.0, "classid": "ptcmod_vel", "vel": 1.5 },
+  { "color": [-2883585, -2949195, -2949121, -2949197, -2949121, -2949197, -2949121, -2949195], "classid": "ptcmod_color" },
+  { "axisid": 1, "classid": "ptcmod_acc", "acc": -0.15, "coord": 1, "acc_spr": 0.05 },
+  { "xyz": 7, "scale": [0.923077, 1.346154, 1.038462, 0.423077], "classid": "ptcmod_scale" },
+  ] },
+]

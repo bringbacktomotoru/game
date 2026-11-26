@@ -1,0 +1,267 @@
+{
+  "ID": "a912848c-82af-4c46-b775-4450c2876874",
+  "Version": "2.3.3.0",
+  "Name": "ProductIcon",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 549,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/ImageFile.png",
+              "Plist": ""
+            },
+            "Scale9Width": 46,
+            "Scale9Height": 46,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 32.0,
+              "Y": 30.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5079,
+              "Y": 0.6522
+            },
+            "PreSize": {
+              "X": 0.7302,
+              "Y": 1.0
+            },
+            "LeftMargin": 9.0,
+            "RightMargin": 8.0,
+            "TopMargin": -7.0,
+            "BottomMargin": 7.0,
+            "Tag": 138,
+            "ActionTag": -895752344,
+            "Size": {
+              "X": 46.0,
+              "Y": 46.0
+            },
+            "Name": "img_product_icon",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 20,
+            "LabelText": "×0",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 111,
+              "G": 59,
+              "B": 59
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 60.0,
+              "Y": 32.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.9524,
+              "Y": 0.6957
+            },
+            "PreSize": {
+              "X": 0.4921,
+              "Y": 0.5217
+            },
+            "LeftMargin": 60.0,
+            "RightMargin": -28.0,
+            "TopMargin": 2.0,
+            "BottomMargin": 20.0,
+            "Tag": 778,
+            "ActionTag": 1281539365,
+            "Size": {
+              "X": 31.0,
+              "Y": 24.0
+            },
+            "Name": "lbl_product_value",
+            "ctype": "TextObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 31.5,
+              "Y": 23.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 177,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/game/talk_bg.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 506,
+                "Scale9Height": 186,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.5,
+                  "Y": 23.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 1.0
+                },
+                "Tag": 176,
+                "ActionTag": -544525625,
+                "Size": {
+                  "X": 63.0,
+                  "Y": 46.0
+                },
+                "Name": "img_bg",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Default",
+                  "Path": "Default/ImageFile.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 46,
+                "Scale9Height": 46,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.5,
+                  "Y": 30.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.6522
+                },
+                "PreSize": {
+                  "X": 0.7302,
+                  "Y": 1.0
+                },
+                "LeftMargin": 8.5,
+                "RightMargin": 8.5,
+                "TopMargin": -7.0,
+                "BottomMargin": 7.0,
+                "CallBackType": "Touch",
+                "Tag": 178,
+                "ActionTag": 379353558,
+                "Size": {
+                  "X": 46.0,
+                  "Y": 46.0
+                },
+                "Name": "img_icon",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 1568155581,
+            "Size": {
+              "X": 63.0,
+              "Y": 46.0
+            },
+            "Name": "btn",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 63.0,
+          "Y": 46.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../Default/ImageFile.png",
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/game/talk_bg.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

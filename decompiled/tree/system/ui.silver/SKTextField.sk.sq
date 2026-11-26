@@ -1,0 +1,126 @@
+local r_1 = Rect2D();
+
+class SKTextField extends SKTextEditBase
+{
+  fontmet = null;
+  backsplist = null;
+  backsp = null;
+
+  constructor(s = "", a = null) {
+    super(s, a);
+    backsplist = [
+    ::getSprite("/system/ui.silver/ui.clp#textfield1"),
+    ::getSprite("/system/ui.silver/ui.clp#textfield2"),
+    ::getSprite("/system/ui.silver/ui.clp#textfield3"),
+    ::getSprite("/system/ui.silver/ui.clp#textfield1"),
+    ];
+    backsplist[3].color = 0xffffff66;
+    backsp = backsplist[0];
+    textbox.marginl = textbox.marginr = 5;
+    fontmet = fontattr.getFontMetrics();
+  }
+
+  function updateLayout() {
+    super.updateLayout();
+    foreach (b in backsplist) {
+      if (b) b.bnd.set(0, 0, bnd.w, bnd.h);
+    }
+  }
+
+  function startClip() {
+
+  }
+
+  function endClip() {
+
+  }
+
+  function drawBack() {
+    skDrawSprite(backsp);
+  }
+  function drawText() {
+    skDrawTextBox(textbox);
+  }
+  function drawBorder() {
+  }
+  function drawCursor(x, y) {
+    sprite.bnd.set(x - 1, y + fontmet.y, 2, fontmet.h);
+    sprite.color0 = 0xffffffff;
+    skDrawSprite(sprite);
+  }
+  function drawSelectionLine(x, y, w, h) {
+    sprite.bnd.set(x, y, w, h);
+    sprite.color0 = 1721355519;
+    skDrawSprite(sprite);
+  }
+  function updateComponentState() {
+    if (!isEnabled()) {
+      backsp = backsplist[3];
+    } else
+    if (focused) {
+      backsp = backsplist[2];
+    } else
+    if (mousein) {
+      backsp = backsplist[1];
+    } else {
+      backsp = backsplist[0];
+    }
+    repaint();
+  }
+
+  function scrollCursorToVisible() {
+    local tb = textbox;
+    if (cursx > bnd.w - tb.marginr) {
+      local dx = (bnd.w - tb.marginr) - cursx;
+      tb.x += dx;
+      cursx += dx;
+      repaint();
+    }
+    if (cursx < tb.marginl) {
+      local dx = tb.marginl - cursx;
+      tb.x += dx;
+      cursx += dx;
+      repaint();
+    }
+  }
+
+  function mousepressed(e) {
+    if (e.count == 2) {
+      selectAll();
+      return;
+    }
+    e.computeLocal(getInvMatrix());
+    idx = textbox.charIndexAt(e.lx, e.ly);
+    regend = idx;
+    regselect = false;
+    prx = e.lx;
+    pry = e.ly;
+    updateCursorPos();
+    updateMaxColumn();
+    scrollCursorToVisible();
+    updateRegion();
+    if (!focused) {
+      requestFocus();
+
+    }
+  }
+
+  function focusStateChanged(b) {
+    super.focusStateChanged(b);
+    if (b) {
+      idx = length(text);
+      regend = idx;
+      regselect = false;
+      updateCursorPos();
+      scrollCursorToVisible();
+      updateRegion();
+
+      scrollRectToVisible(this, r_1.set(0, 0, bnd.w, bnd.h));
+    }
+  }
+
+  function enterPressed(e) {
+    postActionEvent();
+    return true;
+  }
+}

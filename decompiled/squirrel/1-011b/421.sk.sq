@@ -1,0 +1,111 @@
+class SentenceProcessor {
+  setting = null;
+  sentence_list = null;
+  index = null;
+
+  panel = null;
+  model = null;
+
+  chara_key = null;
+
+  current_tw = null;
+
+  thread = null;
+  wait_next = null;
+
+  constructor(panel, model) {
+    this.panel = panel;
+
+    this.model = model;
+    local _cs = ::gamesetting.costume_settings[this.model.getCostumeID()];
+    this.chara_key = _cs.getCharaSetting().getTalkKey();
+
+    this.index = -1;
+  }
+
+  function setSentenceList(setting) {
+    this.sentence_list = null;
+
+    this.setting = setting;
+    this.sentence_list = setting.getSentenceList(this.chara_key);
+    return true;
+  }
+
+  function startSentence() {
+    this.index = 0;
+
+    this.thread = newthread();
+    this.thread.start(function() {
+      local _mdl = this.model;
+      _mdl.setAutoAction(false);
+      _mdl.clearTasks();
+
+      local _chara_setting = _mdl.getCharaSetting();
+
+      while (this.index < this.sentence_list.len()) {
+        local _s = this.sentence_list[this.index];
+        local _scp = _s["motion"] || null;
+        local _sentence = _s["sentence"] || null;
+        local _args = _s["args"] || null;
+        local _voice = _s["voice"] || null;
+        local _next_time = _s["time"] || ::CharaSentenceListSetting.DEFAULT_NEXT_TIME;
+
+        if (_scp) this.model.startScript(_scp, _args);
+        if (_sentence) this.current_tw = this.panel.addTalkSentence(this.chara_key, _sentence);
+        if (_voice && _chara_setting) _chara_setting.playVoice(_voice);
+
+        this.index++;
+
+        sleep(800);
+        this.wait_next = true;
+
+        local cnt = 0;
+        while (true) {
+          if (!this.wait_next) break;
+          if (cnt > _next_time) break;
+
+          sleep(100);
+          cnt += 100;
+        }
+
+        if (this.current_tw) {
+          this.current_tw.interruptTalk();
+          this.current_tw = null;
+          sleep(500);
+        }
+
+        this.model.setCurrentScriptName("");
+      }
+      _finishProcess();
+      this.thread = null;
+
+      END:
+      this.thread = null;
+
+    }.bindenv(this), this);
+  }
+
+  function finishSentence() {
+    if (this.thread) this.thread.interruptGoto("END");
+  }
+
+  function _finishProcess() {
+  }
+
+  function nextSentence() {
+    this.wait_next = false;
+  }
+
+  function isLast() {
+    return this.index >= this.sentence_list.len() - 1 ? true : false;
+  }
+  function isTalking() {
+    if (!this.current_tw) return false;
+    if (current_tw.getState() == ::TalkWindow.STATE_STARTED) return true;
+
+    return false;
+  }
+  function isRunningSentenceProcessor() {
+    return this.thread ? true : false;
+  }
+}

@@ -1,0 +1,743 @@
+condition_settings[1] <- ConditionSetting({
+  condition = {
+    friendship = [1, 2]
+  }
+})
+
+condition_settings[2] <- ConditionSetting({
+  condition = {
+    friendship = [1, 3]
+  }
+})
+
+condition_settings[3] <- ConditionSetting({
+  condition = {
+    friendship = [1, 4]
+  }
+})
+
+condition_settings[4] <- ConditionSetting({
+  condition = {
+    friendship = [2, 2]
+  }
+})
+
+condition_settings[5] <- ConditionSetting({
+  condition = {
+    friendship = [2, 3]
+  }
+})
+
+condition_settings[6] <- ConditionSetting({
+  condition = {
+    friendship = [2, 4]
+  }
+})
+condition_settings[7] <- ConditionSetting({
+  condition = {
+    friendship = [101, 2]
+  }
+})
+
+condition_settings[8] <- ConditionSetting({
+  condition = {
+    friendship = [101, 3]
+  }
+})
+
+condition_settings[9] <- ConditionSetting({
+  condition = {
+    friendship = [101, 4]
+  }
+})
+
+condition_settings[10] <- ConditionSetting({
+  condition = {
+    friendship = [102, 2]
+  }
+})
+
+condition_settings[11] <- ConditionSetting({
+  condition = {
+    friendship = [102, 3]
+  }
+})
+
+condition_settings[12] <- ConditionSetting({
+  condition = {
+    friendship = [102, 4]
+  }
+})
+
+condition_settings[13] <- ConditionSetting({
+  condition = {
+    friendship = [3, 2]
+  }
+})
+
+condition_settings[14] <- ConditionSetting({
+  condition = {
+    friendship = [3, 3]
+  }
+})
+
+condition_settings[15] <- ConditionSetting({
+  condition = {
+    friendship = [3, 4]
+  }
+})
+
+condition_settings[16] <- ConditionSetting({
+  condition = {
+    friendship = [103, 2]
+  }
+})
+
+condition_settings[17] <- ConditionSetting({
+  condition = {
+    friendship = [103, 3]
+  }
+})
+
+condition_settings[18] <- ConditionSetting({
+  condition = {
+    friendship = [103, 4]
+  }
+})
+
+condition_settings[19] <- ConditionSetting({
+  condition = {
+    friendship = [4, 2]
+  }
+})
+
+condition_settings[20] <- ConditionSetting({
+  condition = {
+    friendship = [4, 3]
+  }
+})
+
+condition_settings[21] <- ConditionSetting({
+  condition = {
+    friendship = [4, 4]
+  }
+})
+
+condition_settings[22] <- ConditionSetting({
+  condition = {
+    friendship = [104, 2]
+  }
+})
+
+condition_settings[23] <- ConditionSetting({
+  condition = {
+    friendship = [104, 3]
+  }
+})
+
+condition_settings[24] <- ConditionSetting({
+  condition = {
+    friendship = [104, 4]
+  }
+})
+
+condition_settings[25] <- ConditionSetting({
+  condition = {
+    friendship = [105, 2]
+  }
+})
+
+condition_settings[26] <- ConditionSetting({
+  condition = {
+    friendship = [105, 3]
+  }
+})
+
+condition_settings[27] <- ConditionSetting({
+  condition = {
+    friendship = [105, 4]
+  }
+})
+
+condition_settings[1001] <- ConditionSetting({
+  condition = {
+    end_panelmission = [102]
+  }
+})
+condition_settings[1002] <- ConditionSetting({
+  condition = {
+    end_panelmission = [203]
+  }
+})
+condition_settings[1003] <- ConditionSetting({
+  condition = {
+    purchase_num = [40000, 1]
+  }
+})
+
+condition_settings[1004] <- ConditionSetting({
+  condition = {
+    purchase_num = [40001, 1]
+  }
+})
+
+condition_settings[1005] <- ConditionSetting({
+  condition = {
+    purchase_num = [40002, 1]
+  }
+})
+
+condition_settings[1006] <- ConditionSetting({
+  condition = {
+    purchase_num = [40003, 2]
+  }
+})
+
+condition_settings[1007] <- ConditionSetting({
+  condition = {
+    purchase_num = [40004, 2]
+  }
+})
+
+condition_settings[1008] <- ConditionSetting({
+  condition = {
+    purchase_num = [40005, 2]
+  }
+})
+
+condition_settings[1009] <- ConditionSetting({
+  condition = {
+    purchase_num = [40006, 2]
+  }
+})
+
+condition_settings[1010] <- ConditionSetting({
+  condition = {
+    purchase_num = [40007, 2]
+  }
+})
+
+condition_settings[1011] <- ConditionSetting({
+  condition = {
+    purchase_num = [40008, 2]
+  }
+})
+
+condition_settings[1500] <- ConditionSetting({
+  condition = {
+    end_event = [1000]
+  }
+})
+
+condition_settings[1501] <- ConditionSetting({
+  condition = {
+    end_event = [1500]
+  }
+})
+
+condition_settings[1501] <- ConditionSetting({
+  condition = {
+    end_event = [1500]
+  }
+})
+
+condition_settings[2000] <- ConditionSetting({
+  condition = {
+    house_extended = [2]
+  }
+})
+
+condition_settings[2001] <- ConditionSetting({
+  condition = {
+    house_extended = [3]
+  }
+})
+
+condition_settings[2002] <- ConditionSetting({
+  condition = {
+    house_extended = [4]
+  }
+})
+
+condition_settings[2003] <- ConditionSetting({
+  condition = {
+    house_extended = [5]
+  }
+})
+
+condition_settings[2004] <- ConditionSetting({
+  condition = {
+    house_extended = [6]
+  }
+})
+
+condition_settings[2005] <- ConditionSetting({
+  condition = {
+    house_extended = [7]
+  }
+})
+
+condition_settings[2006] <- ConditionSetting({
+  condition = {
+    house_extended = [8]
+  }
+})
+
+condition_settings[4000] <- ConditionSetting({
+  condition = {
+    doing_mission = [30]
+  }
+})
+condition_settings[4001] <- ConditionSetting({
+  condition = {
+    doing_mission = [40]
+  }
+})
+
+condition_settings[4010] <- ConditionSetting({
+  condition = {
+    doing_mission = [180]
+  }
+})
+condition_settings[4011] <- ConditionSetting({
+  condition = {
+    doing_mission = [130]
+    has_not_furniture = [5405]
+  }
+  is_and = true;
+})
+condition_settings[4012] <- ConditionSetting({
+  condition = {
+    doing_mission = [150]
+  }
+})
+condition_settings[4013] <- ConditionSetting({
+  condition = {
+    doing_mission = [160]
+  }
+})
+condition_settings[4014] <- ConditionSetting({
+  condition = {
+    doing_mission = [171]
+  }
+})
+condition_settings[4015] <- ConditionSetting({
+  condition = {
+    doing_mission = [140]
+  }
+})
+
+condition_settings[4020] <- ConditionSetting({
+  condition = {
+    doing_mission = [240]
+  }
+})
+condition_settings[4021] <- ConditionSetting({
+  condition = {
+    doing_mission = [250]
+  }
+})
+condition_settings[4022] <- ConditionSetting({
+  condition = {
+    doing_mission = [260]
+  }
+})
+
+condition_settings[4030] <- ConditionSetting({
+  condition = {
+    doing_mission = [330]
+  }
+})
+condition_settings[4031] <- ConditionSetting({
+  condition = {
+    doing_mission = [340]
+  }
+})
+condition_settings[4032] <- ConditionSetting({
+  condition = {
+    doing_mission = [350]
+  }
+})
+condition_settings[4033] <- ConditionSetting({
+  condition = {
+    doing_mission = [360]
+  }
+})
+condition_settings[4034] <- ConditionSetting({
+  condition = {
+    doing_mission = [380]
+  }
+})
+condition_settings[4035] <- ConditionSetting({
+  condition = {
+    doing_mission = [390]
+  }
+})
+
+condition_settings[4040] <- ConditionSetting({
+  condition = {
+    doing_mission = [470]
+    has_not_furniture = [6006]
+  }
+  is_and = true;
+})
+condition_settings[4041] <- ConditionSetting({
+  condition = {
+    doing_mission = [450]
+  }
+})
+condition_settings[4042] <- ConditionSetting({
+  condition = {
+    doing_mission = [441]
+  }
+})
+
+condition_settings[4050] <- ConditionSetting({
+  condition = {
+    doing_mission = [560]
+  }
+})
+condition_settings[4051] <- ConditionSetting({
+  condition = {
+    doing_mission = [550]
+  }
+})
+condition_settings[4052] <- ConditionSetting({
+  condition = {
+    doing_mission = [570]
+  }
+})
+condition_settings[4053] <- ConditionSetting({
+  condition = {
+    doing_mission = [580]
+  }
+})
+condition_settings[4054] <- ConditionSetting({
+  condition = {
+    doing_mission = [590]
+  }
+})
+
+condition_settings[4060] <- ConditionSetting({
+  condition = {
+    doing_mission = [660]
+  }
+})
+condition_settings[4061] <- ConditionSetting({
+  condition = {
+    doing_mission = [670]
+  }
+})
+condition_settings[4062] <- ConditionSetting({
+  condition = {
+    doing_mission = [680]
+  }
+})
+condition_settings[4063] <- ConditionSetting({
+  condition = {
+    doing_mission = [691]
+  }
+})
+
+condition_settings[4070] <- ConditionSetting({
+  condition = {
+    doing_mission = [740]
+  }
+})
+condition_settings[4071] <- ConditionSetting({
+  condition = {
+    doing_mission = [750]
+  }
+})
+condition_settings[4072] <- ConditionSetting({
+  condition = {
+    doing_mission = [760]
+  }
+})
+condition_settings[4073] <- ConditionSetting({
+  condition = {
+    doing_mission = [771]
+  }
+})
+condition_settings[4074] <- ConditionSetting({
+  condition = {
+    doing_mission = [781]
+  }
+})
+condition_settings[4075] <- ConditionSetting({
+  condition = {
+    doing_mission = [791]
+  }
+})
+
+condition_settings[4080] <- ConditionSetting({
+  condition = {
+    doing_mission = [880]
+  }
+})
+condition_settings[4081] <- ConditionSetting({
+  condition = {
+    doing_mission = [870]
+  }
+})
+condition_settings[4082] <- ConditionSetting({
+  condition = {
+    doing_mission = [860]
+  }
+})
+condition_settings[4083] <- ConditionSetting({
+  condition = {
+    doing_mission = [850]
+  }
+})
+
+condition_settings[4090] <- ConditionSetting({
+  condition = {
+    doing_mission = [950]
+  }
+})
+condition_settings[4091] <- ConditionSetting({
+  condition = {
+    doing_mission = [940]
+  }
+})
+condition_settings[4092] <- ConditionSetting({
+  condition = {
+    doing_mission = [930]
+  }
+})
+condition_settings[4093] <- ConditionSetting({
+  condition = {
+    doing_mission = [990]
+  }
+})
+condition_settings[4094] <- ConditionSetting({
+  condition = {
+    doing_mission = [980]
+  }
+})
+condition_settings[4095] <- ConditionSetting({
+  condition = {
+    doing_mission = [970]
+  }
+})
+
+condition_settings[4100] <- ConditionSetting({
+  condition = {
+    doing_mission = [1040]
+  }
+})
+condition_settings[4101] <- ConditionSetting({
+  condition = {
+    doing_mission = [1030]
+  }
+})
+condition_settings[4102] <- ConditionSetting({
+  condition = {
+    doing_mission = [1050]
+  }
+})
+condition_settings[4103] <- ConditionSetting({
+  condition = {
+    doing_mission = [1061]
+  }
+})
+condition_settings[4104] <- ConditionSetting({
+  condition = {
+    doing_mission = [1070]
+  }
+})
+condition_settings[4105] <- ConditionSetting({
+  condition = {
+    doing_mission = [1080]
+  }
+})
+condition_settings[4106] <- ConditionSetting({
+  condition = {
+    doing_mission = [1090]
+  }
+})
+
+condition_settings[4110] <- ConditionSetting({
+  condition = {
+    doing_mission = [1140]
+  }
+})
+condition_settings[4111] <- ConditionSetting({
+  condition = {
+    doing_mission = [1130]
+  }
+})
+condition_settings[4112] <- ConditionSetting({
+  condition = {
+    doing_mission = [1150]
+  }
+})
+condition_settings[4113] <- ConditionSetting({
+  condition = {
+    doing_mission = [1180]
+  }
+})
+condition_settings[4114] <- ConditionSetting({
+  condition = {
+    doing_mission = [1190]
+  }
+})
+
+condition_settings[4120] <- ConditionSetting({
+  condition = {
+    doing_mission = [1230]
+  }
+})
+condition_settings[4121] <- ConditionSetting({
+  condition = {
+    doing_mission = [1240]
+  }
+})
+condition_settings[4122] <- ConditionSetting({
+  condition = {
+    doing_mission = [1250]
+  }
+})
+condition_settings[4123] <- ConditionSetting({
+  condition = {
+    doing_mission = [1290]
+  }
+})
+
+condition_settings[4130] <- ConditionSetting({
+  condition = {
+    doing_mission = [1320]
+  }
+})
+condition_settings[4131] <- ConditionSetting({
+  condition = {
+    doing_mission = [1330]
+  }
+})
+condition_settings[4132] <- ConditionSetting({
+  condition = {
+    doing_mission = [1340]
+  }
+})
+condition_settings[4133] <- ConditionSetting({
+  condition = {
+    doing_mission = [1350]
+  }
+})
+condition_settings[4134] <- ConditionSetting({
+  condition = {
+    doing_mission = [1391]
+  }
+})
+
+condition_settings[5000] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [9401, 1]
+  }
+})
+
+condition_settings[5001] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [10801, 1]
+  }
+})
+
+condition_settings[5002] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [7006, 1]
+  }
+})
+
+condition_settings[5003] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [101, 1,
+    105, 1]
+  }
+})
+
+condition_settings[5004] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [10805, 1,
+    10806, 1]
+  }
+})
+
+condition_settings[5005] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [7005, 1,
+    7809, 1]
+  }
+})
+
+condition_settings[5006] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [8201, 1,
+    10007, 1]
+  }
+})
+
+condition_settings[5007] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [8207, 1,
+    8403, 1]
+  }
+})
+
+condition_settings[5008] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [11205, 1,
+    908, 1]
+  }
+})
+
+condition_settings[5009] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [803, 1,
+    1504, 1,
+    1508, 1]
+  }
+})
+
+condition_settings[5010] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [11201, 1,
+    6605, 1,
+    6606, 1]
+  }
+})
+
+condition_settings[5011] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [8205, 1,
+    3801, 1,
+    3808, 1]
+  }
+})
+
+condition_settings[5012] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [1701, 5,
+    1711, 5]
+  }
+})
+
+condition_settings[5013] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [1703, 5,
+    1713, 5]
+  }
+})
+
+condition_settings[5014] <- ConditionSetting({
+  condition = {
+    has_furniture_amount = [1706, 5,
+    1716, 5]
+  }
+})
+
+condition_settings[10000] <- ConditionSetting({
+  condition = {
+    tutorial = [3]
+  }
+})

@@ -1,0 +1,82 @@
+;
+;----------- テスト選択肢付き -------------
+;イメージチェンジしてみたって言ってくる話
+
+; 作業部屋指定
+[focusroom address={[0,0]}]
+
+; 初期配置
+[popchara name=mymelo relative=1 x=0 angle=0]
+[movecamera type=1 z=11 y=-1.7]
+; 手振り
+[wait time=500]
+[startanime name=mymelo time=2000 script=tefuri]
+[balloon name=mymelo time=5000]
+[wait time=500]ねぇねぇ♡
+[waitaction name=mymelo script=tefuri]
+[endballoon name=mymelo]
+[wait time=1300]
+
+[startanime name=mymelo time=4000 script=kurukuru]
+[balloon name=mymelo time=5000]
+みてみて♡[r][wait time=1000]どうかしら？
+[waitaction name=mymelo script=kurukuru]
+[endballoon name=mymelo]
+
+[wait time=300]
+
+[startanime name=mymelo time=3000 script=hokori]
+[balloon name=mymelo time=3000]
+[wait time=500]おようふくを[r]きがえてみたの♡
+[waitaction name=mymelo script=hokori]
+[endballoon name=mymelo]
+[wait time=1000]
+[branch target={"*select1"} text={"すっごく可愛い！"}]
+[branch target={"*select2"} text={"とっても似合ってる！"}]
+[branch target={"*select3"} text={"あれ？髪の毛きった？"}]
+
+[wait time=2000]
+[s]
+; 分岐処理
+
+*select1
+[startanime name=mymelo time=5000 script=tere]
+[balloon name=mymelo time=3000]
+[wait time=500]そんなにほめられると[r]はずかしくなっちゃう…♡
+[waitaction name=mymelo script=tere]
+[endballoon name=mymelo]
+[jump target={"*branch_end"}]
+
+
+*select2
+[startanime name=mymelo time=7500 script=picture_kansou_event script_args={[3,"kiraniko"]}]
+[balloon name=mymelo time=6000]
+[wait time=1000]・・・ほんとう？[r][wait time=2000]とってもうれしいの♡
+[waitaction name=mymelo script=picture_kansou_event]
+[endballoon name=mymelo]
+[jump target={"*branch_end"}]
+
+
+*select3
+[startanime name=mymelo time=6000 script=plant_nagameru_set script_args={[2,"bikkuri"]}]
+[balloon name=mymelo time=6000]
+ええっ！？[r][wait time=1500]・・・[wait time=1500]おようふくを[r]きがえたの～～～！
+[waitaction name=mymelo script=plant_nagameru_set]
+[endballoon name=mymelo]
+[jump target={"*branch_end"}]
+
+
+*branch_end
+[wait time=1000]
+[startanime name=mymelo time=5300 script=lampstand_manzoku_set script_args={[3,"smile4","manzoku"]}]
+[balloon name=mymelo time=5000]
+[wait time=500]まためろでぃと[r][wait time=1500]おはなししてね…♡
+[waitaction name=mymelo script=lampstand_manzoku_set]
+[endballoon name=mymelo]
+[wait time=500]
+[startanime name=mymelo time=2000 script=tefuri]
+[waitaction name=mymelo script=tefuri]
+
+[wait time=1000]
+
+

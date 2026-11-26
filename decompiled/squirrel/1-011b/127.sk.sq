@@ -1,0 +1,347 @@
+class SceneTransition
+{
+  session = null;
+  layer = null;
+  s1 = null;
+  s2 = null;
+
+  function init(gs, _s1, _s2) {
+    session = gs;
+    layer = gs.scenelayer;
+    s1 = _s1;
+    s2 = _s2;
+  }
+
+  function perform() {
+  }
+}
+
+class ImmediateSceneTransition extends SceneTransition
+{
+
+  function perform() {
+    s2.loadScene();
+    suspend();
+    if (s1) layer.removeChild(s1);
+    layer.pos.y = 1000;
+    layer.matdirty = true;
+    layer.addChild(s2);
+    if (s1) s1.releaseScene();
+    suspend();
+    layer.pos.y = 0;
+    layer.matdirty = true;
+    s2.startScene();
+    s2.showScene();
+  }
+}
+
+class ColorFadeSceneTransition extends SceneTransition
+{
+  imgview = null;
+  frames = 30;
+
+  constructor(c = 0) {
+    imgview = SKImageView();
+    imgview.sp.color = c;
+    imgview.sp.blend = SK_MIX;
+  }
+
+  function perform() {
+    local r = ::rootview;
+    local sp = imgview.sp;
+    imgview.setRect(0, 0, r.bnd.w, r.bnd.h);
+    r.addChild(imgview);
+    local fdiv = 1.0 / float(frames - 1);
+    for (local l = 0; l < frames; l++) {
+      local a = ((l * fdiv) * 255.0);
+      sp.color = (sp.color & 0xffffff00) | a;
+      imgview.repaint();
+      sleep(16);
+    }
+    s2.loadScene();
+    s1.releaseScene();
+    suspend();
+    if (s1) layer.removeChild(s1);
+    layer.addChild(s2);
+    s2.startScene();
+    suspend();
+    for (local l = frames - 1; l >= 0; l--) {
+      local a = ((l * fdiv) * 255.0);
+      sp.color = (sp.color & 0xffffff00) | a;
+      imgview.repaint();
+      sleep(16);
+    }
+    r.removeChild(imgview);
+
+    s2.showScene();
+  }
+}
+
+class UniversalMaskSceneTransition extends SceneTransition
+{
+  imgview = null;
+  w1 = 0.0;
+  w2 = 1.0;
+  fnum = 60;
+
+  sleeptime = 0;
+
+  constructor(tex, mask, spr = 5.0, f = 60) {
+    imgview = SKImageView();
+    local sp = imgview.sp;
+    sp.shadersrc = skFXFindTechnique("dashsprite.unitrans").getShaderSource(0);
+    local m = sp.miscmat = Matrix();
+    sp.tex0 = tex;
+    sp.tex1 = mask;
+    sp.color = 0xffffffff;
+    sp.blend = SK_MIX;
+    m[0] = 0.0;
+    m[1] = 1.0;
+    m[2] = spr;
+    w1 = -1.0 / spr;
+    w2 = 1.0 + 1.0 / spr;
+    fnum = f;
+  }
+
+  function perform() {
+    local r = ::rootview;
+    local sp = imgview.sp;
+    local m = sp.miscmat;
+
+    local tw = sp.tex0.width < ::screenWidth ? ::screenWidth : sp.tex0.width;
+    local offset = sp.tex0.width > ::screenWidth ? (sp.tex0.width - ::screenWidth) / 2 : 0;
+    imgview.setRect(-offset, 0, tw, ::screenHeight);
+    r.addChild(imgview);
+    local _div = 1.0 / (fnum - 1);
+    for (local l = 0; l < fnum; l++) {
+      m[0] = Math.lerp(w1, w2, l * _div);
+      imgview.repaint();
+      sleep(16);
+    }
+    local t0 = skGetTime();
+    s2.loadScene();
+    s1.releaseScene();
+    suspend();
+    skCollectGarbage();
+    local dt = skGetTime() - t0;
+    if (dt < sleeptime) {
+      sleep(sleeptime - dt);
+    }
+
+    if (s1) layer.removeChild(s1);
+    layer.addChild(s2);
+    suspend();
+    s2.startScene();
+    m[1] = -1.0;
+    for (local l = 0; l < 60; l++) {
+      m[0] = -Math.lerp(w1, w2, l * _div);
+      imgview.repaint();
+      sleep(16);
+    }
+    r.removeChild(imgview);
+
+    s2.showScene();
+  }
+}
+
+class UniversalMaskSceneTransition2 extends SceneTransition
+{
+  imgview = null;
+  w1 = 0.0;
+  w2 = 1.0;
+  fnum = 60;
+
+  constructor(tex, mask, spr = 5.0, f = 60) {
+    imgview = SKImageView();
+    local sp = imgview.sp;
+    sp.shadersrc = skFXFindTechnique("dashsprite.unitrans").getShaderSource(0);
+    local m = sp.miscmat = Matrix();
+    sp.tex0 = tex;
+    sp.tex1 = mask;
+    sp.color = 0xffffffff;
+    sp.blend = SK_MIX;
+    m[0] = 0.0;
+    m[1] = 1.0;
+    m[2] = spr;
+    w1 = -1.0 / spr;
+    w2 = 1.0 + 1.0 / spr;
+    fnum = f;
+  }
+
+  function perform() {
+    local r = ::rootview;
+    local sp = imgview.sp;
+    local m = sp.miscmat;
+    imgview.setRect(0, 0, r.bnd.w, r.bnd.h);
+    r.addChild(imgview);
+    local _div = 1.0 / (fnum - 1);
+    for (local l = 0; l < fnum; l++) {
+      m[0] = Math.lerp(w1, w2, l * _div);
+      imgview.repaint();
+      sleep(16);
+    }
+    s2.loadScene();
+    s1.releaseScene();
+    suspend();
+    if (s1) layer.removeChild(s1);
+    layer.addChild(s2);
+    suspend();
+    sleep(300);
+    s2.startScene();
+    for (local l = 0; l < 50; l++) {
+      local a = (255.0 - (l / 49.0) * 255.0);
+      sp.color = (sp.color & 0xffffff00) | a;
+      imgview.repaint();
+      sleep(16);
+    }
+    r.removeChild(imgview);
+
+    s2.showScene();
+  }
+}
+
+class UISceneTransition extends SceneTransition
+{
+  view = null;
+  imgview = null;
+
+  w1 = 0.0;
+  w2 = 1.0;
+  fnum = 60;
+
+  sleeptime = 0;
+
+  constructor(view, mask, spr = 5.0, f = 60) {
+    this.view = view;
+    imgview = view.findChild("img_bg");
+    local sp = imgview.sp;
+    sp.shadersrc = skFXFindTechnique("dashsprite.unitrans").getShaderSource(0);
+    local m = sp.miscmat = Matrix();
+    sp.tex1 = mask;
+    sp.color = 0xffffffff;
+    sp.blend = SK_MIX;
+    m[0] = 0.0;
+    m[1] = 1.0;
+    m[2] = spr;
+    w1 = -1.0 / spr;
+    w2 = 1.0 + 1.0 / spr;
+    fnum = f;
+  }
+
+  function perform() {
+    local r = ::rootview;
+    local sp = imgview.sp;
+    local m = sp.miscmat;
+
+    local _bx = (::screenWidth - ::uiWidth) / 2.0;
+    local _by = (::screenHeight - ::uiHeight) / 2.0;
+    this.imgview.setRect(_bx, _by, ::uiWidth, ::uiHeight);
+
+    r.addChild(this.view);
+    local _div = 1.0 / (fnum - 1);
+    for (local l = 0; l < fnum; l++) {
+      m[0] = Math.lerp(w1, w2, l * _div);
+      imgview.repaint();
+      sleep(16);
+    }
+    local t0 = skGetTime();
+    s2.loadScene();
+    s1.releaseScene();
+    suspend();
+    skCollectGarbage();
+    local dt = skGetTime() - t0;
+    if (dt < sleeptime) {
+      sleep(sleeptime - dt);
+    }
+
+    if (s1) layer.removeChild(s1);
+    layer.addChild(s2);
+    suspend();
+    s2.startScene();
+    _hideView(this.view, "pnl_bg");
+    m[1] = -1.0;
+    for (local l = 0; l < 60; l++) {
+      m[0] = -Math.lerp(w1, w2, l * _div);
+      imgview.repaint();
+
+      sleep(16);
+    }
+    r.removeChild(this.view);
+
+    s2.showScene();
+  }
+
+  function _hideView(v, name) {
+    if (!v || !v.children || v.children.len() <= 0) return;
+    foreach (c in v.children) {
+      if (c.name == name) continue;
+      c.visible = false;
+    }
+    foreach (c in v.children) {
+      if (c.name == name) continue;
+      _hideView(c, name);
+    }
+  }
+}
+
+class MoveSceneTransition extends SceneTransition
+{
+  constructor() {
+  }
+
+  function perform() {
+    local r = ::rootview;
+    s1.setBuffer(true);
+    local sp = s1.buf;
+    sp.shadersrc = skFXFindTechnique("dashsprite.moveblur").getShaderSource(0);
+    sp.blend = SK_MIX;
+    local m = sp.miscmat = Matrix();
+    m[0] = 1.0; m[1] = 0.0;
+    m[2] = 0.0; m[3] = 1.0;
+
+    for (local l = 0; l < 40; l++) {
+      local w = ((l / 40.0));
+      s1.pos.x -= 1280.0 / 40.0;
+      s1.matdirty = true;
+      m[4] = 0.03 * w; m[5] = 0.1 * w;
+
+      local c = ((1.0 - w) * 255) | 0;
+      s1.bufcolor = (c << 24) | (c << 16) | (c << 8) | 255;
+      layer.repaint();
+      sleep(16);
+    }
+    s2.loadScene();
+    s1.releaseScene();
+    suspend();
+
+    s2.setBuffer(true);
+    sp = s2.buf;
+    sp.shadersrc = skFXFindTechnique("dashsprite.moveblur").getShaderSource(0);
+    sp.blend = SK_MIX;
+    sp.miscmat = m;
+    m[0] = 1.0; m[1] = 0.0;
+
+    if (s1) layer.removeChild(s1);
+    layer.addChild(s2);
+    s2.pos.x += 1280.0;
+    s2.matdirty = true;
+    s2.startScene();
+
+    for (local l = 39; l >= 0; l--) {
+      local w = ((l / 40.0));
+      s2.pos.x -= 1280.0 / 40.0;
+      s2.matdirty = true;
+      m[4] = -0.03 * w; m[5] = -0.1 * w;
+
+      local c = ((1.0 - w) * 255) | 0;
+      s2.bufcolor = (c << 24) | (c << 16) | (c << 8) | 255;
+      layer.repaint();
+      sleep(16);
+    }
+
+    s2.setBuffer(false);
+    layer.repaint();
+
+    s2.showScene();
+  }
+}

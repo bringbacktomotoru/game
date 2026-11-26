@@ -1,0 +1,1472 @@
+class PropertyPanel extends ::HomeUI.Panel {
+  static need_rank_layer = false;
+  static need_hapiness_info = true;
+
+  static FURNITURE_COL_NUM = 2;
+  static ITEM_COL_NUM = 2;
+  static ROOM_COL_NUM = 2;
+
+  static TAB_FURNITURE = 0;
+  static TAB_ROOM = 1;
+  static TAB_ITEM = 2;
+
+  view = null;
+  btn_change = null;
+
+  pnl_tab_list = null;
+  tab_reclist = null;
+  tab_scroll = null;
+  tab_list = null;
+
+  pnl_card_list = null;
+  reclist = null;
+  scroll = null;
+  card_list = null;
+  scroll_bar = null;
+
+  select = -1;
+
+  dlg = null;
+
+  btn_filter = null;
+  lbl_filter = null;
+  select_list = null;
+  type_list = null;
+  number_list = null;
+
+  tab_sound = ::SoundConstants.SOUND_MOVETAB;
+
+  function added() {
+    super.added();
+
+    this.view = ::loadSKView("/ui/ItemListPanel.ui");
+    addChild(this.view);
+
+    local _btn_back = this.view.findChild("btn_back");
+    ::TapButton(_btn_back).view.addEventListener(ACTION_EVENT, actionevent_back);
+
+    this.view.findChild("btn_performance").visible = false;
+
+    this.view.findChild("btn_sort").visible = false;;
+
+    this.pnl_tab_list = this.view.findChild("pnl_tab_list");
+    this.tab_reclist = ::SKMaskView();
+    this.tab_scroll = ::ScrollPanel(this.tab_reclist);
+    this.tab_scroll.dyscale = 0.0;
+    this.pnl_tab_list.addChild(this.tab_reclist);
+    this.pnl_tab_list.setBuffer(true);
+    _setShopTab();
+
+    this.btn_filter = this.view.findChild("btn_filter");
+    this.btn_filter.visible = true;
+    ::TapButton(this.btn_filter).view.addEventListener(ACTION_EVENT, actionevent_filter);
+    this.lbl_filter = this.view.findChild("lbl_filter");
+    this.lbl_filter.visible = true;
+    this.lbl_filter.setText(::dict.get("filter_dialog"));
+
+    this.btn_filter.visible = false;
+    this.lbl_filter.visible = false;
+    this.select_list = [0, 0, 0];
+    this.type_list = [];
+    this.number_list = [];
+
+    this.tab_scroll.dxscale = 0.0;
+
+    this.pnl_card_list = this.view.findChild("pnl_item_list");
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dyscale = 0.0;
+    this.pnl_card_list.addChild(this.reclist);
+    this.pnl_card_list.setBuffer(true);
+
+    this.scroll_bar = ::ScrollBarH(this.view.findChild("pnl_scroll_bar"));
+
+    this.card_list = [{}, {}, {}];
+
+    _setCardList(TAB_FURNITURE, false, false);
+    _setTabBg(TAB_FURNITURE);
+
+    this.view.startMethod("init");
+  }
+
+  function show() {
+    this.view.startMethod("show");
+  }
+
+  function _setShopTab() {
+    this.tab_reclist.clearChildren();
+    local _offset = 0;
+    this.tab_list = [];
+
+    local _tab = ShopTab(this, TAB_FURNITURE);
+    _tab.setName(::dict.get("furniture"));
+    _tab.pos.x = _offset;
+    this.tab_reclist.addChild(_tab);
+    _tab.matdirty = true;
+    _tab.repaint();
+    _offset += _tab.bnd.w;
+    this.tab_list + _tab;
+    updateTabNewIcon(TAB_FURNITURE);
+
+    this.tab_reclist.setRect(0, 0, _offset, this.pnl_tab_list.bnd.h);
+    this.tab_scroll.setScrollRect(this.tab_reclist.bnd);
+  }
+
+  function updateTabNewIcon(idx) {
+    foreach (t in this.tab_list) {
+      if (t.getIndex() == idx) {
+        if (idx == TAB_FURNITURE) {
+          t.setTabNewIcon(::gamesession.getUserDataLocal().hasNewItems(ITEM_TYPE_FURNITURE));
+        }
+        else if (idx == TAB_ROOM) {
+          t.setTabNewIcon(::gamesession.getUserDataLocal().hasNewItems(ITEM_TYPE_ROOM));
+        }
+        break;
+      }
+    }
+  }
+
+  function _setCardList(s, f = false, sound = true) {
+
+    this.select = s;
+
+    this.reclist.clearChildren();
+    this.card_list = [{}, {}, {}];
+
+    switch (s) {
+    case TAB_FURNITURE:
+
+      _setFurnitureList();
+      break;
+    case TAB_ROOM:
+
+      _setRoomList();
+      break;
+    case TAB_ITEM:
+
+      _setItemList();
+      break;
+    }
+    if (sound) ::playSound(tab_sound);
+  }
+
+  function _setupCardViews() {
+    sleep(140);
+    local t = skGetTime();
+    foreach (card in this.card_list[this.select]) {
+      card.setupViews();
+
+      local t2 = skGetTime();
+      if (t + 16 < t2) {
+        t = t2;
+        suspend();
+      }
+    }
+  }
+
+  function _setFurnitureList() {
+    local _furnitures = ::gamesession.getUserData().getFurnitureAmountTable();
+    local _offset = 10;
+    local _cnt = 0;
+    local _size_x = 0;
+    local _sort_list = _getFurnitureSortList(_furnitures);
+    local _udl = ::gamesession.getUserDataLocal();
+    local _new_items = _udl.getNewItem(ITEM_TYPE_FURNITURE);
+    if (!_new_items) _new_items = [];
+
+    foreach (fad in _sort_list) {
+
+      local _fs = fad.getSetting();
+      if (!fad || fad.getFurnitureAmount() == 0) continue;
+      if (!_fs || _fs.invisibleProperties()) continue;
+
+      if (this.select_list[0] == 1 && fad.getPropertyAmount() == 0) continue;
+
+      if (this.select_list[2] != 0) {
+        local _get_type;
+        _get_type = ::gamesetting.furniture_settings[fad.getID()].getType();
+
+        if (_get_type != this.select_list[2]) {
+          continue;
+        }
+      }
+
+      local _furni = this.card_list[TAB_FURNITURE][fad.getID()] || FurnitureCard(this, fad, _new_items.indexOf(fad.getID()) >= 0);
+
+      _size_x = _furni.bnd.w;
+      if (_cnt > 0 && _cnt % FURNITURE_COL_NUM == 0) _offset += _size_x + 10;
+
+      _furni.pos.x = _offset;
+      _furni.pos.y = (_cnt % FURNITURE_COL_NUM) * (_furni.bnd.h + 5);
+      this.reclist.addChild(_furni);
+      _furni.matdirty = true;
+      _furni.repaint();
+
+      this.card_list[TAB_FURNITURE][fad.getID()] <- _furni;
+      _cnt++;
+    }
+
+    _offset += _size_x * 2;
+
+    this.reclist.setRect(0, 0, _offset, this.pnl_card_list.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+    this.scroll_bar.setup(this.scroll, this.pnl_card_list.bnd, true);
+
+    _udl.deleteNewItem(ITEM_TYPE_FURNITURE, -1);
+    _udl.save();
+    getHomeUI().updateMenuNewMark(::HomeUI.UPDATE_MENU_MARK_FURNITURE);
+
+    newthread().start(_setupCardViews, this);
+  }
+
+  function _getFurnitureSortList(furnitures) {
+
+    local _lists = {};
+    local _series_list = [];
+    local _added;
+
+    local _result_list = [];
+    local _hit = false;
+
+    foreach (fad in furnitures) {
+      _hit = false;
+      for (local i = 0; i < _result_list.len(); i++) {
+        if (_result_list[i].getMaxinumUid() >= fad.getMaxinumUid()) continue;
+        _hit = true;
+        _result_list[i] <- fad;
+        break;
+      }
+      if (!_hit) _result_list + fad;
+
+    }
+
+    local _setting = null;
+    local _number = null;
+    local _number_setting = null;
+    local _lbl = null;
+    number_list = [];
+    type_list = [];
+    number_list + 0;
+    type_list + "すべて";
+    foreach (ss in _result_list) {
+      _setting = ::gamesetting.furniture_settings[ss.getID()];
+      _number = _setting.getType();
+      _number_setting = _setting.getTypeSetting();
+      _lbl = _number_setting.name;
+      for (local i = 0; i <= this.number_list.len() + 1; i++) {
+        if (this.number_list[i] == _number)
+        break;
+        else if (!this.number_list[i] && i == this.number_list.len()) {
+          this.number_list + _number;
+          this.type_list + _lbl;
+          break;
+        }
+      }
+    }
+    return _result_list;
+
+  }
+
+  function _setRoomList() {
+    local _offset = 0;
+
+    local _ud = ::gamesession.getUserData();
+    local _room_edits = _ud.getRoomEditDataTable();
+    local _cnt = 0;
+    local _size_x = 0;
+    local _new_items = ::gamesession.getUserDataLocal().getNewItem(ITEM_TYPE_ROOM);
+    if (!_new_items) _new_items = [];
+    foreach (_room in _room_edits) {
+
+      local _card = this.card_list[TAB_ROOM][_room.getUID()] || RoomCard(this, _room, _new_items.indexOf(_room.getUID()) >= 0);
+
+      _size_x = _card.bnd.w;
+      if (_cnt > 0 && _cnt % ROOM_COL_NUM == 0) _offset += _size_x;
+
+      if (_cnt % ROOM_COL_NUM) _card.hideUnderline();
+      _card.pos.x = _offset;
+      _card.pos.y = (_cnt % ROOM_COL_NUM) * (_card.bnd.h);
+      this.reclist.addChild(_card);
+      _card.repaint();
+
+      this.card_list[TAB_ROOM][_room.getUID()] <- _card;
+      _cnt++;
+    }
+    _offset += _size_x * 2;
+
+    this.reclist.setRect(0, 0, _offset, this.pnl_card_list.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+    this.scroll_bar.setup(this.scroll, this.pnl_card_list.bnd, false);
+
+    newthread().start(_setupCardViews, this);
+  }
+
+  function _setItemList() {
+    local _offset = 0;
+    local _cnt = 0;
+    local _size_x = 0;
+
+    local _items = ::gamesession.getUserData().getItems();
+    foreach (setting_id, nums in _items) {
+      if (nums <= 0) continue;
+
+      local _item = this.card_list[TAB_ITEM][setting_id] || ItemCard(setting_id, nums, tappedItemCard.bindenv(this));
+
+      _size_x = _item.bnd.w;
+      if (_cnt == ITEM_COL_NUM) {
+        _cnt = 0;
+        _offset += _size_x + 10;
+      }
+      _item.pos.x = _offset;
+      _item.pos.y = (_item.bnd.h + 10) * _cnt;
+      this.reclist.addChild(_item);
+
+      this.card_list[TAB_ITEM][setting_id] <- _item;
+      _cnt++;
+    }
+    _offset += _size_x * 2;
+
+    this.reclist.setRect(0, 0, _offset, this.pnl_card_list.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+    this.scroll_bar.setup(this.scroll, this.pnl_card_list.bnd, false);
+  }
+
+  function reloadList() {
+    _setCardList(this.select, true);
+  }
+  function removeCard(uid) {
+    delete this.card_list[this.select][uid];
+    _setCardList(this.select, true);
+  }
+
+  function moveEditPanel(uid) {
+    local bp_name = getHomeUI().getBackToPanelName();
+    if (bp_name == "RoomEditPanel") getHomeUI().clearPanelHistory();
+    getHomeUI().movePanel(::RoomEditPanel, false, { "uid" = uid });
+  }
+
+  function getCard(tab, id) {
+    return this.card_list[tab][id] || null;
+  }
+
+  function setButtonAllOff(type) {
+    foreach (card in this.card_list[type]) {
+      card.getButtonFurniture().pickable = false;
+      card.getButtonDetail().pickable = false;
+    }
+  }
+
+  function tappedItemCard(id) {
+    if (this.dlg) return;
+
+    local setting = ::gamesetting.item_settings[id];
+
+    switch (setting.kind) {
+    case ItemSetting.SHORTEN_TIME:
+    case ItemSetting.ADD:
+      this.dlg = TargetListDialog(id, this);
+      break;
+    case ItemSetting.BOOST:
+      this.dlg = ConfirmUseItemBoostDialog(id);
+      break;
+    }
+    this.dlg.show();
+
+    while (!this.dlg.isClosing()) {
+      suspend();
+    }
+
+    if (this.dlg.ret > 0) updateItemNums(id);
+
+    this.dlg = null;
+  }
+
+  function updateItemNums(item_id) {
+    foreach (idx, card in this.card_list[this.select]) {
+      if (card.id == item_id) {
+        card.updateItemNums();
+        break;
+      }
+    }
+  }
+
+  function actionevent_back(e) {
+    getHomeUI().backPanel();
+  }
+
+  function actionevent_change(e) {
+    foreach (card in this.card_list[this.select]) {
+      card.reverseCard();
+    }
+  }
+
+  function tapShopTab(idx) {
+    _setCardList(idx);
+    _setTabBg(idx);
+  }
+
+  function _setTabBg(idx) {
+    for (local i = 0; i < this.tab_list.len(); i++) {
+      this.tab_list[i].setTabBg(this.tab_list[i].getIndex() == idx);
+    }
+  }
+
+  function actionevent_filter(e) {
+    local _dlg = null;
+    _dlg = ::PropattyFilterDialog(this.select_list, this.type_list, this.number_list);
+    _dlg.show();
+    if (_dlg.ret) {
+      this.select_list[0] = _dlg.l_select_list[0];
+      this.select_list[1] = _dlg.l_select_list[1];
+      this.select_list[2] = _dlg.l_select_list[2];
+      tapShopTab(TAB_FURNITURE);
+    }
+  }
+
+}
+
+class PropertyPanel.ShopTab extends SKView {
+  pnl_parent = null;
+  view = null;
+
+  lbl_name = null;
+
+  index = -1;
+  press_time = -1;
+  press_x = -1;
+  press_y = -1;
+
+  img_tab_on = null;
+  img_tab_off = null;
+  img_icon_new = null;
+
+  constructor(p, idx) {
+    this.pnl_parent = p;
+    this.index = idx;
+
+    this.view = ::loadSKView("/ui/common/PanelTab.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    local _pnl_tab = this.view.findChild("pnl_tab");
+    this.lbl_name = _pnl_tab.findChild("lbl_name");
+
+    this.img_tab_on = _pnl_tab.findChild("img_tab_on");
+    this.img_tab_off = _pnl_tab.findChild("img_tab_off");
+    this.img_icon_new = _pnl_tab.findChild("img_icon_new");
+
+    _pnl_tab.addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function getIndex() {
+    return this.index;
+  }
+
+  function setName(s) {
+    this.lbl_name.setText(s);
+  }
+
+  function mouseevent(e) {
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.press_time = e.time;
+      this.press_x = e.x;
+      this.press_y = e.y;
+      break;
+    case MOUSE_RELEASED:
+      local _tx = this.press_x - e.x;
+      local _ty = this.press_y - e.y;
+      local _dist = Math.sqrt(_tx * _tx + _ty * _ty);
+      if (e.time - this.press_time < 300 && _dist < 15) {
+        this.pnl_parent.tapShopTab(this.index);
+      }
+      break;
+    }
+  }
+
+  function setTabBg(select) {
+    if (select) {
+      this.img_tab_on.visible = true;
+      this.img_tab_off.visible = false;
+    }
+    else {
+      this.img_tab_on.visible = false;
+      this.img_tab_off.visible = true;
+    }
+  }
+
+  function setTabNewIcon(b) {
+    this.img_icon_new.setVisible(b);
+    repaint();
+  }
+}
+
+class PropertyPanel.FurnitureCard extends SKView {
+
+  pnl_parent = null;
+  view = null;
+
+  data = null;
+  is_new = false;
+  img_new = null;
+
+  btn_furni = null;
+  btn_detail = null;
+
+  constructor(p, fad, mark) {
+    this.pnl_parent = p;
+    this.data = fad;
+
+    this.view = ::loadSKView("/ui/common/PropertyFurnitureCard.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+    this.is_new = mark;
+
+    setupHighPriorityViews();
+  }
+
+  function setupHighPriorityViews() {
+
+    this.btn_furni = this.view.findChild("btn_furni");
+    ::TapButton(this.btn_furni, false).region.addEventListener(ACTION_EVENT, actionevent_select);
+
+    this.btn_furni.findChild("lbl_put").setText(::dict.get("property_furniture_edit"));
+
+    this.btn_detail = this.view.findChild("btn_detail");
+    ::TapButton(this.btn_detail, false).view.addEventListener(ACTION_EVENT, actionevent_detail);
+
+    local _all = this.data.getFurnitureAmount();
+    this.view.findChild("lbl_property_num").setText(::formatNumberString(_all));
+
+    local _layout = this.data.getLayoutAmount();
+    this.view.findChild("lbl_room_num").setText(::formatNumberString(_layout));
+
+  }
+
+  function setupViews() {
+
+    local _setting = this.data.getSetting();
+
+    local _icon = this.view.findChild("img_icon");
+    local _sp = Sprite(::getTexture(_setting.getIconPathByIndex(0)));
+    _sp.blend = SK_MIX;
+    _icon.setSprite(_sp);
+    _icon.updateLayout();
+    if (this.data.getPropertyAmount() > 0) {
+      _icon.setColor(0xffffffff);
+      this.view.findChild("img_bg_disable").setVisible(false);
+      this.btn_furni.findChild("img_btn_disable").setVisible(false);
+    } else {
+      _icon.setColor(0xffffff55);
+      this.view.findChild("img_bg_disable").setVisible(true);
+      this.btn_furni.findChild("img_btn_disable").setVisible(true);
+    }
+  }
+
+  function actionevent_select(e) {
+    e.consume();
+
+    if (this.is_new) {
+
+      this.is_new = false;
+      repaint();
+
+      this.pnl_parent.updateTabNewIcon(PropertyPanel.TAB_FURNITURE);
+    }
+
+    if (!enableLayout()) {
+      local _dlg;
+      _dlg = ::SimpleDialog();
+      _dlg.lbl_msg.setText(::dict.get("property_furniture_cant_layout"));
+      _dlg.show();
+      return;
+    }
+
+    ::tutorial_manager.checkWaitingActionEvent(this.btn_furni);
+
+    this.pnl_parent.moveEditPanel(this.data.getPropertyUids()[0]);
+  }
+
+  function enableLayout() {
+    return this.data.getPropertyAmount() > 0 ? true : false;
+  }
+
+  function actionevent_detail(e) {
+    e.consume();
+
+    local _dlg = ::FurnitureDetailDialog();
+    _dlg.setFurniture(this.data.getID());
+    _dlg.show();
+
+    if (this.is_new) {
+
+      this.is_new = false;
+      repaint();
+
+      this.pnl_parent.updateTabNewIcon(PropertyPanel.TAB_FURNITURE);
+    }
+  }
+
+  function reverseCard() {
+  }
+
+  function getButtonFurniture() {
+    return this.btn_furni;
+  }
+  function getButtonDetail() {
+    return this.btn_detail;
+  }
+}
+
+class PropertyPanel.ItemCard extends SKView {
+  func = null;
+  id = null;
+
+  view = null;
+  lbl_name = null;
+  lbl_nums = null;
+  img_icon = null;
+
+  constructor(item_id, nums, func) {
+    this.func = func;
+    this.id = item_id;
+
+    this.view = ::loadSKView("/ui/common/UseItemCard.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    local _btn = this.view.findChild("btn");
+    ::TapButton(_btn, false).region.addEventListener(ACTION_EVENT, actionevent);
+
+    this.lbl_name = _btn.findChild("lbl_name");
+    this.lbl_nums = _btn.findChild("pnl_nums").findChild("lbl_nums");
+
+    local setting = ::gamesetting.item_settings[item_id];
+    this.lbl_name.setText(setting.name);
+    this.lbl_nums.setText(::dict.get("nums_amount", [::formatNumberString(nums)]));
+
+    local _pnl_item_icon = _btn.findChild("pnl_icon");
+    local _sp = ::getSprite(setting.getIconPath());
+    _sp.blend = SK_MIX;
+
+    this.img_icon = SKImageView();
+    this.img_icon.setSprite(_sp);
+    this.img_icon.setRect(0, 0, _pnl_item_icon.bnd.w, _pnl_item_icon.bnd.h);
+    _pnl_item_icon.addChild(this.img_icon);
+  }
+
+  function updateItemNums() {
+    local nums = ::gamesession.getUserData().getItemNums(this.id);
+    this.lbl_nums.setText(::dict.get("nums_amount", [::formatNumberString(nums)]));
+  }
+
+  function actionevent(e) {
+    e.consume();
+    func(this.id);
+  }
+}
+
+class PropertyPanel.RoomCard extends SKView {
+  static SCALE_RATE = 0.94563;
+
+  room_uid = -1;
+  room_id = -1;
+  pnl_parent = null;
+  is_using = false;
+
+  room_detail_dialog = null;
+
+  view = null;
+  btn_room = null;
+  pnl_view = null;
+  pnl_lv = null;
+
+  pnl_using = null;
+  lbl_using = null;
+  pnl_room_index = null;
+
+  lbl_charanum = null;
+  lbl_furniturenum = null;
+  pnl_charaicon = null;
+  pnl_furnitureicon = null;
+
+  img_underline = null;
+
+  is_new = false;
+  img_new = null;
+
+  constructor(p, edit_data, mark) {
+    this.pnl_parent = p;
+    this.view = ::loadSKView("/ui/common/RoomListItem.ui");
+    this.addChild(this.view);
+    this.setRect(0, 0, this.view.bnd.w * SCALE_RATE, this.view.bnd.h * SCALE_RATE);
+    this.scale(SCALE_RATE);
+    this.matdirty = true;
+    this.btn_room = this.view.findChild("btn_room");
+
+    this.pnl_view = this.btn_room.findChild("pnl_view");
+
+    this.pnl_lv = this.btn_room.findChild("pnl_lv");
+    this.pnl_lv.setVisible(false);
+    this.pnl_lv.setEnabled(false);
+
+    this.pnl_using = this.btn_room.findChild("pnl_using");
+    this.lbl_using = this.pnl_using.findChild("lbl_using");
+    this.lbl_using.setText(::dict.get("roomlist_using"));
+    this.pnl_room_index = this.pnl_using.findChild("pnl_room_index");
+
+    this.lbl_charanum = this.btn_room.findChild("lbl_charanum");
+    this.lbl_furniturenum = this.btn_room.findChild("lbl_furniturenum");
+    this.pnl_charaicon = this.btn_room.findChild("pnl_charaicon");
+    this.pnl_furnitureicon = this.btn_room.findChild("pnl_furnitureicon");
+
+    local _sp = ::gamesetting.sanrio_chara_settings[1].getIconSprite();
+    _sp.bnd.set(0, 0, pnl_charaicon.bnd.w, pnl_charaicon.bnd.h);
+    this.pnl_charaicon.addChild(::SKImageView(_sp));
+
+    _sp = ::gamesetting.title_settings[10].getIconSprite();
+    _sp.bnd.set(0, 0, pnl_furnitureicon.bnd.w, pnl_furnitureicon.bnd.h);
+    this.pnl_furnitureicon.addChild(::SKImageView(_sp));
+
+    this.img_underline = this.view.findChild("img_underline");
+
+    ::TapButton(this.btn_room.findChild("btn_detail")).view.addEventListener(ACTION_EVENT, actionevent_detail);
+
+    this.room_uid = edit_data.getUID();
+    this.room_id = edit_data.getRoomID();
+
+    this.is_new = mark;
+    this.img_new = this.btn_room.findChild("img_new");
+    this.img_new.visible = mark;
+  }
+
+  function setupViews() {
+    this.pnl_room_index.clearChildren();
+    this.is_using = false;
+
+    local ud = ::gamesession.getUserData();
+    local room_idx = ud.getRoomSlotIndexByRoomUID(this.room_uid);
+    if (room_idx != -1) {
+      local sp = ::Setting.getRoomIconSprite(room_idx + 1);
+      sp.blend = SK_MIX;
+      local _sca = this.pnl_room_index.bnd.h / sp.bnd.h;
+      sp.bnd.set(0, 0, sp.bnd.w * _sca, sp.bnd.h * _sca);
+      this.pnl_room_index.addChild(::SKImageView(sp));
+
+      this.is_using = true;
+
+      this.pnl_using.setVisible(true);
+    } else {
+      this.pnl_using.setVisible(false);
+    }
+
+    local _rs = ::gamesetting.room_settings[this.room_id];
+    local _sp = _rs.getIconSpriteUnacquired();
+    local _icon = SKImageView(_sp);
+    _icon.setColor(is_using ? 0xffffff44 : 0xffffffff);
+    _icon.setRect(0, 0, this.pnl_view.bnd.w, this.pnl_view.bnd.h);
+    this.pnl_view.addChild(_icon);
+
+    local _param = _rs.getMaxParameters();
+    this.lbl_charanum.setText(::dict.get("nums_chara", [_param.chara]));
+    this.lbl_furniturenum.setText(::dict.get("nums_amount", [_param.furniture]));
+  }
+
+  function hideUnderline() {
+    this.img_underline.setVisible(false);
+  }
+
+  function actionevent_detail(e) {
+    e.consume();
+
+    if (this.is_new) {
+      this.img_new.visible = false;
+      this.is_new = false;
+      repaint();
+      ::gamesession.getUserDataLocal().deleteNewItem(ITEM_TYPE_ROOM, this.room_uid);
+      ::gamesession.saveUserDataLocal();
+      ::gamesession.getCurrentScene().getUI().updateMenuNewMark(::HomeUI.UPDATE_MENU_MARK_ROOM);
+      this.pnl_parent.updateTabNewIcon(PropertyPanel.TAB_ROOM);
+    }
+
+    if (!this.room_detail_dialog) {
+      this.room_detail_dialog = ::RoomDetailDialog(::loadSKView("/ui/dialog/RoomDetailDialog.ui"));
+    }
+    local _ud = ::gamesession.getUserData();
+    this.room_detail_dialog.setRoomSetting(_ud.getRoomEditData(this.room_uid), ::RoomDetailDialog.MODE_SELL);
+    this.room_detail_dialog.show();
+
+    if (this.room_detail_dialog.ret > 0) this.pnl_parent.removeCard(this.room_uid);
+  }
+}
+
+class PropertyPanel.ConfirmUseItemBoostDialog extends ::Dialog {
+  item_setting = null;
+  overlap = null;
+
+  view = null;
+  lbl_name = null;
+  lbl_desc = null;
+  img_icon = null;
+
+  constructor(item_id) {
+    super(::loadSKView("/ui/dialog/ConfirmUseItemBoostDialog.ui"));
+
+    this.item_setting = ::gamesetting.item_settings[item_id];
+
+    this.lbl_name = this.view.findChild("lbl_item_name");
+    this.lbl_name.setText(item_setting.name);
+    this.lbl_desc = this.view.findChild("lbl_desc");
+    this.lbl_desc.setText(this.item_setting.desc);
+
+    local _pnl_item_icon = this.view.findChild("img_icon_item");
+    local _sp = ::getSprite(this.item_setting.getIconPath());
+    _sp.blend = SK_MIX;
+
+    this.img_icon = SKImageView();
+    this.img_icon.setSprite(_sp);
+    this.img_icon.setRect(0, 0, _pnl_item_icon.bnd.w, _pnl_item_icon.bnd.h);
+
+    _pnl_item_icon.addChild(this.img_icon);
+
+    local ud = ::gamesession.getUserData();
+    local lbl_nums = this.view.findChild("lbl_nums");
+    lbl_nums.setText(::dict.get("nums_amount", [ud.getItemNums(item_id)]));
+
+    local boost_data = ud.getItemBoostData(this.item_setting.slot);
+    this.overlap = boost_data ? true : false;
+
+    local lbl_error = this.view.findChild("lbl_error");
+    local lbl_remain = this.view.findChild("lbl_remain");
+
+    if (this.overlap) {
+      lbl_error.visible = true;
+      lbl_remain.visible = true;
+      this.view.findChild("lbl_remain_text").visible = true;
+
+      switch (this.item_setting.slot) {
+      case ItemSetting.SLOT_WORK:
+        lbl_error.setText(::dict.get("useitem_unable_boost_work"));
+        break;
+      case ItemSetting.SLOT_PRODUCT:
+        lbl_error.setText(::dict.get("useitem_unable_boost_product"));
+        break;
+      }
+
+      switch (this.item_setting.type) {
+      case ItemSetting.TYPE_PERIOD:
+        local now = ::getServerTime();
+        local tl = ::TimeLabel(lbl_remain, boost_data.getRemainTime(now));
+        tl.startCountDown();
+        break;
+      case ItemSetting.TYPE_COUNT:
+        lbl_remain.setText(::dict.get("nums_count", [boost_data.getRemainCount()]));
+        break;
+      }
+    } else {
+      lbl_error.visible = false;
+      lbl_remain.visible = false;
+      this.view.findChild("lbl_remain_text").visible = false;
+    }
+
+  }
+
+  function actionevent(e) {
+    super.actionevent(e);
+
+    if (ret > 0) {
+      local res = ::gamesession.useBoostItem(this.item_setting.id);
+      if (res.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+        local ud = ::gamesession.getUserData();
+        ud.useBoostItem(this.item_setting.id);
+      }
+    }
+  }
+}
+
+class PropertyPanel.TargetListDialog extends ::Dialog {
+  parent_panel = null;
+  item_setting = null;
+
+  tab = null;
+
+  reclist = null;
+  scroll = null;
+  target_list = null;
+
+  view = null;
+  lbl_title = null;
+  pnl_list = null;
+
+  constructor(item_id, parent_panel) {
+    super(::loadSKView("/ui/dialog/UseItemTargetListDialog.ui"));
+
+    this.parent_panel = parent_panel;
+    this.item_setting = ::gamesetting.item_settings[item_id];
+
+    this.lbl_title = this.view.findChild("lbl_title");
+    this.lbl_title.setText(::dict.get("useitem_select_target"));
+
+    this.pnl_list = this.view.findChild("pnl_item_list");
+
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dxscale = 0.0;
+    this.pnl_list.addChild(this.reclist);
+    this.pnl_list.setBuffer(true);
+
+    _createIconList();
+  }
+
+  function _createIconList() {
+    this.reclist.clearChildren();
+    this.target_list = [];
+
+    local offset = 0;
+    local cnt = 0;
+
+    local data_table = _getDataTable();
+
+    foreach (type, id_list in data_table) {
+      foreach (idx, id in id_list) {
+        local item = TargetCard(this.item_setting.kind, type, id, showDialog.bindenv(this));
+
+        if (cnt == 3) {
+          cnt = 0;
+          offset += item.bnd.h + 10;
+        }
+
+        item.pos.x = (item.bnd.w + 10) * cnt;
+        item.pos.y = offset;
+        this.reclist.addChild(item);
+
+        this.target_list + item;
+        cnt++;
+      }
+    }
+
+    if (this.target_list.len() > 0) offset += this.target_list[0].bnd.h;
+
+    this.reclist.setRect(0, 0, this.pnl_list.bnd.w, offset);
+    this.scroll.setScrollRect(this.reclist.bnd);
+  }
+
+  function _getDataTable() {
+    local table = {};
+    foreach (idx, target_type in this.item_setting.targets) {
+      table[target_type] <- [];
+    }
+
+    local ud = ::gamesession.getUserData();
+
+    switch (this.item_setting.kind) {
+    case ItemSetting.SHORTEN_TIME:
+      foreach (idx, target in this.item_setting.targets) {
+        if (target == ITEM_TYPE_COSTUME) {
+          foreach (id, cd in ud.getCostumeDataTable()) {
+            if (!cd.hasWorkData()) continue;
+            table[target] + id;
+          }
+        } else if (target == ITEM_TYPE_FURNITURE) {
+          foreach (uid, fd in ud.getFurnitureDataTable()) {
+            if (!fd.hasProductData()) continue;
+            table[target] + uid;
+          }
+        }
+      }
+
+      break;
+    case ItemSetting.ADD:
+      foreach (idx, target in this.item_setting.targets) {
+        if (target == ITEM_TYPE_COSTUME_EXP || target == ITEM_TYPE_HEALTH) {
+          foreach (id, cd in ud.getCostumeDataTable()) {
+            table[target] + id;
+          }
+        } else if (target == ITEM_TYPE_FURNITURE_EXP) {
+          foreach (uid, fd in ud.getFurnitureDataTable()) {
+            if (!fd.hasProductID()) continue;
+            table[target] + uid;
+          }
+        } else if (target == ITEM_TYPE_ROOM_EXP) {
+          foreach (uid, rd in ud.getRoomEditDataTable()) {
+            table[target] + uid;
+          }
+        }
+      }
+      break;
+    }
+
+    return table;
+  }
+
+  function showDialog(target_card) {
+    local target_id = target_card.id;
+    local kind = target_card.kind;
+    local type = target_card.type;
+
+    local dlg = null;
+    if (kind == ::ItemSetting.SHORTEN_TIME) {
+      dlg = ConfirmUseShortenDialog(this.item_setting.id, type, target_id);
+    } else {
+      switch (type) {
+      case ITEM_TYPE_HEALTH:
+        dlg = ConfirmUseAddHealthDialog(this.item_setting.id, type, target_id);
+        break;
+      case ITEM_TYPE_COSTUME_EXP:
+      case ITEM_TYPE_FURNITURE_EXP:
+      case ITEM_TYPE_ROOM_EXP:
+        dlg = ConfirmUseAddExpDialog(this.item_setting.id, type, target_id);
+        break;
+      }
+    }
+    dlg.show();
+    while (!dlg.isClosing()) {
+      suspend();
+    }
+    if (dlg.ret > 0) {
+      this.parent_panel.updateItemNums(this.item_setting.id);
+      target_card.updateInfo();
+    }
+  }
+}
+
+class PropertyPanel.TargetListDialog.TargetCard extends SKView {
+  kind = null;
+  type = null;
+  id = null;
+
+  useable = null;
+  timelabel = null;
+
+  func = null;
+
+  view = null;
+  img_bg = null;
+  lbl_name = null;
+  lbl_error = null;
+  pnl_exp = null;
+  pnl_health = null;
+  pnl_time = null;
+  img_icon = null;
+
+  constructor(kind, type, id, func) {
+    this.view = ::loadSKView("/ui/common/UseItemTargetCard.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    local _btn = this.view.findChild("btn");
+    ::TapButton(_btn, false).region.addEventListener(ACTION_EVENT, actionevent);
+
+    this.img_bg = _btn.findChild("img_bg");
+
+    this.lbl_name = _btn.findChild("lbl_name");
+    this.lbl_error = _btn.findChild("lbl_msg_error");
+
+    this.pnl_exp = _btn.findChild("pnl_exp");
+    this.pnl_health = _btn.findChild("pnl_health");
+    this.pnl_time = _btn.findChild("pnl_time");
+
+    this.kind = kind;
+    this.type = type;
+    this.id = id;
+    this.func = func;
+
+    this.useable = true;
+    this.timelabel = null;
+
+    local ud = ::gamesession.getUserData();
+    local _sp = null;
+
+    switch (type) {
+    case ITEM_TYPE_COSTUME:
+    case ITEM_TYPE_COSTUME_EXP:
+    case ITEM_TYPE_HEALTH:
+      local cd = ud.getCostumeData(id);
+      _sp = ::getSprite(cd.getSetting().getCostumeIconPath());
+
+      break;
+    case ITEM_TYPE_FURNITURE:
+    case ITEM_TYPE_FURNITURE_EXP:
+      local fd = ud.getFurnitureData(id);
+      _sp = ::getSprite(fd.getCurrentIconPath());
+
+      break;
+    case ITEM_TYPE_ROOM_EXP:
+      break;
+    }
+    _sp.blend = SK_MIX;
+
+    local _pnl_icon = _btn.findChild("pnl_icon");
+    this.img_icon = SKImageView();
+    this.img_icon.setSprite(_sp);
+    this.img_icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+    _pnl_icon.addChild(this.img_icon);
+
+    updateInfo();
+  }
+
+  function updateInfo() {
+    local ud = ::gamesession.getUserData();
+
+    if (this.kind == ::ItemSetting.SHORTEN_TIME) {
+      this.pnl_time.visible = true;
+      this.pnl_exp.visible = false;
+      this.pnl_health.visible = false;
+
+      this.lbl_error.setText(::dict.get("useitem_unable_shorten"));
+
+      local lbl_time = this.pnl_time.findChild("lbl_time");
+
+      local now = ::getServerTime()
+      local remain = 0;
+
+      switch (this.type) {
+      case ITEM_TYPE_COSTUME:
+        local cd = ud.getCostumeData(this.id);
+        local wd = cd.getWorkData();
+
+        this.lbl_name.setText(cd.getName());
+        remain = wd.getRemainingTime(now);
+        if (!wd.isWorking() || remain <= 0) {
+          this.useable = false;
+        } else {
+          this.useable = true;
+        }
+        break;
+      case ITEM_TYPE_FURNITURE:
+        local fd = ud.getFurnitureData(id);
+        local pd = fd.getProductData();
+
+        this.lbl_name.setText(fd.getCurrentName());
+        remain = pd.getRemainTime(now);
+        if (pd.isFinishedAtState() || remain <= 0) {
+          this.useable = false;
+        } else {
+          this.useable = true;
+        }
+        break;
+      }
+
+      if (this.useable) {
+        if (!this.timelabel) this.timelabel = ::TimeLabel(lbl_time, 0);
+        this.timelabel.setRemainTime(remain);
+        this.timelabel.startCountDown();
+
+        this.useable = true;
+      } else {
+        if (this.timelabel) {
+          this.timelabel.stopCountDown();
+          this.timelabel = null;
+        }
+        this.useable = false;
+        lbl_time.setText(::dict.get("product_finished"));
+      }
+
+    } else {
+      if (this.type == ITEM_TYPE_HEALTH) {
+        this.pnl_health.visible = true;
+        this.pnl_time.visible = false;
+        this.pnl_exp.visible = false;
+
+        this.lbl_error.setText(::dict.get("useitem_unable_health"));
+
+        local cd = ud.getCostumeData(id);
+        local max = cd.getMaxHealth();
+        local now = cd.getHealth(false);
+
+        this.lbl_name.setText(cd.getName());
+        local lbl_health = this.pnl_health.findChild("lbl_health");
+        lbl_health.setText(::dict.get("nums_slash", [now, max]));
+        this.useable = now < max ? true : false;
+
+      } else {
+        this.pnl_exp.visible = true;
+        this.pnl_health.visible = false;
+        this.pnl_time.visible = false;
+
+        this.lbl_error.setText(::dict.get("useitem_unable_exp"));
+
+        local lbl_exp = this.pnl_exp.findChild("lbl_exp");
+        local max = 0;
+        local now = 0;
+
+        switch (this.type) {
+        case ITEM_TYPE_COSTUME_EXP:
+          local cd = ud.getCostumeData(id);
+          max = cd.getMaxExp();
+          now = cd.getExp();
+          this.lbl_name.setText(cd.getName());
+
+          break;
+        case ITEM_TYPE_FURNITURE_EXP:
+          local fd = ud.getFurnitureData(id);
+
+          max = fd.getMaxExp();
+          now = fd.getExp();
+          this.lbl_name.setText(fd.getCurrentName());
+          break;
+        case ITEM_TYPE_ROOM_EXP:
+          local rd = ud.getRoomEditData(id);
+          max = rd.getMaxExp();
+          now = rd.getExp();
+          break;
+        }
+        lbl_exp.setText(::dict.get("nums_slash", [now, max]));
+        this.useable = now < max ? true : false;
+      }
+    }
+    this.img_bg.setDisableColor(!this.useable);
+  }
+
+  function actionevent(e) {
+    e.consume();
+
+    if (this.useable) {
+      func(this);
+    } else {
+      startMethod(shorErrorMessage.bindenv(this));
+    }
+  }
+
+  function shorErrorMessage() {
+    this.lbl_error.anime(5, 5, 0);
+    sleep(1000);
+    this.lbl_error.anime(5, 0, 20);
+  }
+}
+
+class PropertyPanel.TargetListDialog.ConfirmUseItemDialog extends ::Dialog {
+  target = null;
+  target_id = null;
+  item_setting = null;
+
+  view = null;
+  lbl_item_name = null;
+  lbl_item_nums = null;
+  img_item_icon = null;
+
+  constructor(ui_res, item_id) {
+    super(ui_res);
+
+    this.item_setting = ::gamesetting.item_settings[item_id];
+
+    this.lbl_item_name = this.view.findChild("lbl_item_name");
+    this.lbl_item_name.setText(item_setting.name);
+
+    local ud = ::gamesession.getUserData();
+    this.lbl_item_nums = this.view.findChild("lbl_nums");
+    this.lbl_item_nums.setText(::dict.get("nums_amount", [ud.getItemNums(item_id)]));
+
+    local _pnl_item_icon = this.view.findChild("img_icon_item");
+    local _sp = ::getSprite(this.item_setting.getIconPath());
+    _sp.blend = SK_MIX;
+
+    this.img_item_icon = SKImageView();
+    this.img_item_icon.setSprite(_sp);
+    this.img_item_icon.setRect(0, 0, _pnl_item_icon.bnd.w, _pnl_item_icon.bnd.h);
+
+    _pnl_item_icon.addChild(this.img_item_icon);
+  }
+}
+
+class PropertyPanel.TargetListDialog.ConfirmUseShortenDialog extends ItemListPanel.TargetListDialog.ConfirmUseItemDialog {
+  data = null;
+
+  lbl_name = null;
+  img_icon = null;
+
+  lbl_remain = null;
+  lbl_remain_new = null;
+
+  constructor(item_id, target, target_id) {
+    super(::loadSKView("/ui/dialog/ConfirmUseItemShortenDialog.ui"), item_id);
+
+    this.target = target;
+    this.target_id = target_id;
+
+    this.lbl_name = this.view.findChild("lbl_target_name");
+    this.lbl_remain = this.view.findChild("lbl_remain_now");
+    this.lbl_remain_new = this.view.findChild("lbl_remain_new");
+
+    local now = ::getServerTime();
+    local shorten = this.item_setting.getTimeSec();
+    local remain = 0;
+    local remain_new = 0;
+
+    local _pnl_icon = this.view.findChild("img_icon_target");
+    local _sp = null;
+
+    local ud = ::gamesession.getUserData();
+    if (target == ITEM_TYPE_COSTUME) {
+      this.data = ud.getCostumeData(target_id);
+      this.lbl_name.setText(this.data.getName());
+      _sp = ::getSprite(this.data.getSetting().getCostumeIconPath());
+
+      local wd = this.data.getWorkData();
+      remain = wd.getRemainingTime(now);
+      remain_new = wd.getRemainingTime(now + shorten);
+    } else if (target == ITEM_TYPE_FURNITURE) {
+      this.data = ud.getFurnitureData(target_id);
+      this.lbl_name.setText(this.data.getCurrentName());
+      _sp = ::getSprite(this.data.getCurrentIconPath());
+
+      local pd = this.data.getProductData();
+      remain = pd.getRemainTime(now);
+      remain_new = pd.getRemainTime(now + shorten);
+    }
+    _sp.blend = SK_MIX;
+    this.img_icon = SKImageView();
+    this.img_icon.setSprite(_sp);
+    this.img_icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+    _pnl_icon.addChild(this.img_icon);
+
+    local tl_now = ::TimeLabel(lbl_remain, remain);
+    tl_now.setEndFunc(setFinishTextAtNow.bindenv(this));
+    tl_now.startCountDown();
+    local tl_new = ::TimeLabel(lbl_remain_new, remain_new);
+    tl_new.setEndFunc(setFinishTextAtNew.bindenv(this));
+    tl_new.startCountDown();
+  }
+
+  function actionevent(e) {
+    super.actionevent(e);
+
+    if (ret > 0) {
+      local res = ::gamesession.useOnceItem(this.item_setting.id, this.target, this.target_id);
+
+      if (res.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+        if (this.target == ITEM_TYPE_COSTUME) {
+          this.data.getWorkData().start_time -= this.item_setting.getTimeSec();
+        } else if (this.target == ITEM_TYPE_FURNITURE) {
+          this.data.getProductData().start_time -= this.item_setting.getTimeSec();
+        }
+        ::gamesession.getUserData().addItem(this.item_setting.id, -1);
+      }
+    }
+  }
+
+  function setFinishTextAtNow() {
+    this.lbl_remain.setText(::dict.get("product_finished"));
+  }
+  function setFinishTextAtNew() {
+    this.lbl_remain_new.setText(::dict.get("product_finished"));
+  }
+}
+
+class PropertyPanel.TargetListDialog.ConfirmUseAddExpDialog extends ItemListPanel.TargetListDialog.ConfirmUseItemDialog {
+  data = null;
+
+  lbl_name = null;
+  img_icon = null;
+
+  constructor(item_id, target, target_id) {
+    super(::loadSKView("/ui/dialog/ConfirmUseItemAddExpDialog.ui"), item_id);
+
+    this.target = target;
+    this.target_id = target_id;
+
+    this.lbl_name = this.view.findChild("lbl_target_name");
+    local lbl_exp_now = this.view.findChild("lbl_exp_now");
+    local lbl_exp_new = this.view.findChild("lbl_exp_new");
+
+    local now = 0;
+    local max = 0;
+
+    local _pnl_icon = this.view.findChild("img_icon_target");
+    local _sp = null;
+
+    local ud = ::gamesession.getUserData();
+    if (target == ITEM_TYPE_COSTUME_EXP) {
+      this.data = ud.getCostumeData(target_id);
+      this.lbl_name.setText(this.data.getName());
+      _sp = ::getSprite(this.data.getSetting().getCostumeIconPath());
+
+      max = this.data.getMaxExp();
+      now = this.data.getExp();
+    } else if (target == ITEM_TYPE_FURNITURE_EXP) {
+      this.data = ud.getFurnitureData(target_id);
+      this.lbl_name.setText(this.data.getCurrentName());
+      _sp = ::getSprite(this.data.getCurrentIconPath());
+
+      max = this.data.getMaxExp();
+      now = this.data.getExp();
+    } else if (target == ITEM_TYPE_ROOM_EXP) {
+      this.data = ud.getRoomEditData(id);
+
+      max = this.data.getMaxExp();
+      now = this.data.getExp();
+    }
+
+    _sp.blend = SK_MIX;
+    this.img_icon = SKImageView();
+    this.img_icon.setSprite(_sp);
+    this.img_icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+    _pnl_icon.addChild(this.img_icon);
+
+    lbl_exp_now.setText(::dict.get("nums_slash", [now, max]));
+    lbl_exp_new.setText(::dict.get("nums_slash", [now + item_setting.value, max]));
+  }
+
+  function actionevent(e) {
+    super.actionevent(e);
+
+    if (ret > 0) {
+      local is_succes = null;
+      local res = ::gamesession.useOnceItem(this.item_setting.id, this.target, this.target_id);
+
+      if (res.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+        this.data.addExp(this.item_setting.value);
+        ::gamesession.getUserData().addItem(this.item_setting.id, -1);
+      }
+    }
+  }
+}
+
+class PropertyPanel.TargetListDialog.ConfirmUseAddHealthDialog extends ItemListPanel.TargetListDialog.ConfirmUseItemDialog {
+  data = null;
+
+  lbl_name = null;
+  img_icon = null;
+
+  constructor(item_id, target, target_id) {
+    super(::loadSKView("/ui/dialog/ConfirmUseItemAddHealthDialog.ui"), item_id);
+
+    this.target = target;
+    this.target_id = target_id;
+
+    this.lbl_name = this.view.findChild("lbl_target_name");
+    local lbl_health_now = this.view.findChild("lbl_health_now");
+    local lbl_health_new = this.view.findChild("lbl_health_new");
+
+    local ud = ::gamesession.getUserData();
+    this.data = ud.getCostumeData(target_id);
+    this.lbl_name.setText(data.getName());
+
+    local now = this.data.getHealth(false);
+    local max = this.data.getMaxHealth();
+
+    lbl_health_now.setText(::dict.get("nums_slash", [now, max]));
+    lbl_health_new.setText(::dict.get("nums_slash", [Math.min(now + item_setting.value, max), max]));
+
+    local _pnl_icon = this.view.findChild("img_icon_target");
+    local _sp = ::getSprite(this.data.getSetting().getCostumeIconPath());
+    _sp.blend = SK_MIX;
+    this.img_icon = SKImageView();
+    this.img_icon.setSprite(_sp);
+    this.img_icon.setRect(0, 0, _pnl_icon.bnd.w, _pnl_icon.bnd.h);
+    _pnl_icon.addChild(this.img_icon);
+  }
+
+  function actionevent(e) {
+    super.actionevent(e);
+
+    if (ret > 0) {
+      local res = ::gamesession.useOnceItem(this.item_setting.id, this.target, this.target_id);
+
+      if (res.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+        this.data.addHealth(this.item_setting.value);
+        ::gamesession.getUserData().addItem(this.item_setting.id, -1);
+      }
+    }
+  }
+}

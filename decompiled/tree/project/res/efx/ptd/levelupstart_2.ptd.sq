@@ -1,0 +1,32 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "go_1"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 9
+    start = 0, start_spr = 0
+    life = 600, life_spr = 0
+    posx = 0.0, posy = 0.5, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.383972
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 3.141593
+    linearbits = 128
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.095, "h": 0.095 }
+  texture = "star.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "vel_spr": 0.0, "classid": "ptcmod_vel", "vel": 0.8 },
+  { "color": [-16744, -16641, -16747, -16641, -16746, -16641, -16746, -16641], "classid": "ptcmod_color" },
+  { "axisid": 1, "classid": "ptcmod_acc", "acc_spr": 0.0, "coord": 0, "acc": -0.08 },
+  { "xyz": 7, "scale": [0.923077, 1.653846, 1.423077, 0.423077], "classid": "ptcmod_scale" },
+  { "scale": 3.141593, "classid": "ptcmod_rot", "rot": [-1.0, -0.576923], "axisid": 2 },
+  ] },
+]

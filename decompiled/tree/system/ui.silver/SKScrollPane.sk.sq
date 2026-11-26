@@ -1,0 +1,39 @@
+class SKScrollPane extends SKScrollPaneBase
+{
+  function createClipArea() {
+    return ClipArea();
+  }
+
+  function createBackground() {
+    return null;
+  }
+
+  function createScrollBar(ori) {
+    return SKScrollbar(ori);
+  }
+
+  function setClipAreaColor(c) {
+    cliparea.sp.color = c;
+    cliparea.buf.blend = SK_OFF;
+  }
+}
+
+class SKScrollPane.ClipArea extends SKView
+{
+  sp = null;
+
+  constructor() {
+    setBuffer(true);
+    sp = Sprite();
+    sp.color0 = 0xffffffff;
+  }
+
+  function updateLayout() {
+    sp.bnd.set(0, 0, bnd.w, bnd.h);
+    repaint();
+  }
+
+  function render() {
+    skDrawSprite(sp);
+  }
+}

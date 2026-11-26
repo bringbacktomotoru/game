@@ -1,0 +1,45 @@
+local v1 = Vector3D();
+
+class HomeUI.PanelTransition {
+  view = null;
+  p1 = null;
+  p2 = null;
+
+  constructor() {}
+
+  function init(view, p1, p2) {
+    this.view = view;
+    this.p1 = p1;
+    this.p2 = p2;
+  }
+
+  function perform() {}
+}
+
+class HomeUI.ImmediatePanelTransition extends ::HomeUI.PanelTransition {
+
+  function perform() {
+
+  }
+}
+
+class HomeUI.PopPanelTransition extends ::HomeUI.PanelTransition {
+
+  function perform() {
+
+  }
+}
+
+class HomeUI.PushPanelTransition extends ::HomeUI.PanelTransition {
+
+  function perform() {
+
+  }
+}
+
+class HomeUI.LoadPanelTransition extends ::HomeUI.PanelTransition {
+
+  function perform() {
+
+  }
+}

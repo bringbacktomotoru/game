@@ -1,0 +1,1465 @@
+class ShopPanel extends ::HomeUI.Panel {
+  static need_rank_layer = false;
+  static need_hapiness_info = true;
+  static unique_bgm = "BGM05";
+
+  static TAB_FURNITURE = 0;
+  static TAB_ROOM = 1;
+  static TAB_ITEM = 2;
+  static TAB_COSTUME = 3;
+  static TAB_MOTION = 4;
+  static TAB_RM = 5;
+
+  view = null;
+  btn_change = null;
+  btn_back = null;
+  pnl_tap_lock = null;
+
+  pnl_tab_list = null;
+  tab_list = null;
+  tab_reclist = null;
+  tab_scroll = null;
+
+  pnl_card_list = null;
+  reclist = null;
+  scroll = null;
+  card_list = null;
+  scroll_bar = null;
+
+  select = -1;
+
+  userdata_local = null;
+  userdata = null;
+
+  shop_table = null;
+  costume_list = null;
+  furniture_list = null;
+  motion_list = null;
+  rm_list = null;
+
+  bought_list = null;
+
+  tab_sound = ::SoundConstants.SOUND_MOVETAB;
+
+  first_tab_id = -1;
+
+  btn_filter = null;
+  lbl_filter = null;
+  filter_table = null;
+
+  sort_id = null;
+  sort_condition = null;
+
+  function added() {
+    super.added();
+
+    this.view = ::loadSKView("/ui/ItemListPanel.ui");
+    addChild(this.view);
+
+    this.pnl_tap_lock = this.view.findChild("pnl_tap_lock");
+
+    userdata = ::gamesession.getUserData();
+
+    userdata_local = ::gamesession.getUserDataLocal();
+
+    this.btn_back = this.view.findChild("btn_back");
+    ::TapButton(this.btn_back).view.addEventListener(ACTION_EVENT, actionevent_back);
+
+    this.btn_filter = this.view.findChild("btn_filter");
+    this.btn_filter.visible = true;
+    ::TapButton(this.btn_filter).view.addEventListener(ACTION_EVENT, actionevent_filter);
+    this.lbl_filter = this.view.findChild("lbl_filter");
+    this.lbl_filter.visible = true;
+    this.lbl_filter.setText(::dict.get("filter_dialog"));
+    this.filter_table = [0, 0, 0, 0];
+
+    this.btn_filter.visible = false;
+    this.lbl_filter.visible = false;
+
+    this.view.findChild("btn_performance").visible = false;
+    this.view.findChild("btn_sort").visible = false;
+
+    this.pnl_tab_list = this.view.findChild("pnl_tab_list");
+    this.tab_reclist = ::SKMaskView();
+    this.tab_scroll = ::ScrollPanel(this.tab_reclist);
+    this.tab_scroll.dyscale = 0.0;
+    this.pnl_tab_list.addChild(this.tab_reclist);
+    this.pnl_tab_list.setBuffer(true);
+    _setShopTab();
+    this.tab_scroll.dxscale = 0.0;
+
+    this.pnl_card_list = this.view.findChild("pnl_item_list");
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dyscale = 0.0;
+    this.pnl_card_list.addChild(this.reclist);
+    this.pnl_card_list.setBuffer(true);
+
+    this.scroll_bar = ::ScrollBarH(this.view.findChild("pnl_scroll_bar"));
+
+    this.costume_list = [];
+    this.furniture_list = [];
+    this.motion_list = [];
+    this.rm_list = [];
+    _setShopList();
+
+    local _sel = this.first_tab_id >= 0 ? this.first_tab_id : TAB_FURNITURE;
+    _setCardList(_sel, false);
+    _setTabBg(_sel);
+
+    this.bought_list = [];
+  }
+
+  function removed() {
+    super.removed();
+
+  }
+
+  function show() {
+    this.view.startMethod("show");
+  }
+
+  function setPanelParam(param) {
+    if ("tab" in param) this.first_tab_id = param.tab;
+  }
+
+  function _setShopTab() {
+    this.tab_reclist.clearChildren();
+    this.tab_list = [];
+    local _offset = 0;
+    local _ud = ::gamesession.getUserData();
+    local _rule = ::gamesetting.game_rule;
+    _offset = _addTab(TAB_FURNITURE, ::dict.get("furniture"), _offset);
+    if (::tutorial_manager.isUnlockShopCostume()) _offset = _addTab(TAB_COSTUME, ::dict.get("costume"), _offset);
+    if (::tutorial_manager.isUnlockShopMotion()) _offset = _addTab(TAB_MOTION, ::dict.get("ar_motion"), _offset);
+    if (::tutorial_manager.isUnlockShopRM()) _offset = _addTab(TAB_RM, ::dict.get("game_money"), _offset);
+    this.tab_reclist.setRect(0, 0, _offset, this.pnl_tab_list.bnd.h);
+    this.tab_scroll.setScrollRect(this.tab_reclist.bnd);
+  }
+  function _addTab(kind, name, offset) {
+    local _tab = ShopTab(this, kind);
+    _tab.setName(name);
+    _tab.pos.x = offset;
+    this.tab_reclist.addChild(_tab);
+    _tab.matdirty = true;
+    _tab.repaint();
+    offset += _tab.bnd.w;
+    this.tab_list + _tab;
+
+    return offset;
+  }
+
+  function _createFurnitureList() {
+    local _shop_settings = ::gamesetting.getShopSettings(SHOP_ITEM_TYPE_FURNITURE);
+    local _common_list = [];
+    foreach (ss in _shop_settings) {
+      if (!ss.checkVisibleConditions()) continue;
+      local _list = ss.checkSortCondition() ? this.furniture_list : _common_list;
+      _addAndSort(_list, ss);
+    }
+    this.furniture_list.extend(_common_list);
+  }
+
+  function _createCostumeList() {
+    local _shop_settings = ::gamesetting.getShopSettings(SHOP_ITEM_TYPE_COSTUME);
+    local _common_list = [];
+    local _rule = ::gamesetting.game_rule;
+    local _c_costume = ::tutorial_manager.isUnlockShopCostume() ? false : true;;
+    local _c_setting = ::gamesetting.costume_settings;
+    local _curr_charas = this.userdata.getResideCharas(this.userdata_local.getRoomIndex());
+    local _chara_list = [];
+    foreach (costume_id in _curr_charas) {
+      _chara_list + _c_setting[costume_id].getCharaID();
+    }
+    foreach (ss in _shop_settings) {
+      if (!ss.checkVisibleConditions()) continue;
+      if (_c_costume) continue;
+      local _chara_id = _c_setting[ss.getItemID()].getCharaID();
+
+      if (_chara_list.indexOf(_chara_id) < 0) continue;
+
+      local _list = ss.checkSortCondition() ? this.costume_list : _common_list;
+      _addAndSort(_list, ss);
+    }
+    this.costume_list.extend(_common_list);
+  }
+
+  function _createMotionList() {
+    local _shop_settings = ::gamesetting.getShopSettings(SHOP_ITEM_TYPE_MOTION);
+    local _c_setting = ::gamesetting.costume_settings;
+    local _curr_charas = this.userdata.getResideCharas(this.userdata_local.getRoomIndex());
+    local _chara_list = [];
+    foreach (costume_id in _curr_charas) {
+      _chara_list + _c_setting[costume_id].getCharaID();
+    }
+    foreach (ss in _shop_settings) {
+      if (!ss.checkVisibleConditions()) continue;
+      local _chara_id = ss.getTargetID();
+
+      if (_chara_list.indexOf(_chara_id) < 0) continue;
+
+      _addAndSort(this.motion_list, ss);
+    }
+  }
+
+  function _createRMList() {
+    local _shop_settings = ::gamesetting.getShopSettings(SHOP_ITEM_TYPE_RM);
+    foreach (ss in _shop_settings) {
+      if (!ss.checkVisibleConditions()) continue;
+      _addAndSort(this.rm_list, ss);
+    }
+  }
+
+  function _addAndSort(list, shopsetting) {
+    local _in = false;
+    if (!_checkPurchaseLimit(shopsetting)) {
+      for (local i = 0; i < list.len(); i++) {
+        if (!_checkPurchaseLimit(list[i]) &&
+        list[i].getPriority() >= shopsetting.getPriority()) continue;
+        _in = true;
+        list[i] <- shopsetting;
+        break;
+      }
+    }
+    if (!_in) list + shopsetting;
+  }
+
+  function _setShopList() {
+    _createFurnitureList();
+    _createCostumeList();
+    _createMotionList();
+    _createRMList();
+  }
+
+  function _setMotionShopList() {
+    local _shop_settings = this.motion_list;
+    local _in;
+    this.motion_list = [];
+    local _shop_list = this.motion_list;
+    foreach (ss in _shop_settings) {
+      if (!_shop_list) continue;
+      _in = false;
+      if (!_checkPurchaseLimit(ss)) {
+        for (local i = 0; i < _shop_list.len(); i++) {
+          if (!_checkPurchaseLimit(_shop_list[i]) && _shop_list[i].getPriority() >= ss.getPriority()) continue;
+          _in = true;
+          _shop_list[i] <- ss;
+          break;
+        }
+      }
+      if (!_in) _shop_list + ss;
+    }
+  }
+
+  function _checkPurchaseLimit(ss) {
+    local _ud = ::gamesession.getUserData();
+
+    switch (ss.getType()) {
+    case SHOP_ITEM_TYPE_FURNITURE:
+      local _limit = ss.getLimit();
+      if (_limit < 0) return false;
+      local _prnum = _ud.getPurchaseRecordNums(ss.getID());
+      return _limit - _prnum <= 0;
+    case SHOP_ITEM_TYPE_COSTUME:
+      return _ud.hasCostume(ss.getItemID());
+    case SHOP_ITEM_TYPE_MOTION:
+      local _chara_data = _ud.getCharacterData(ss.getTargetID());
+      return _chara_data && _chara_data.hasMotion(ss.getItemID());
+    }
+    return false;
+  }
+
+  function sortTabList(target_card) {
+    local _target = null;
+    local _tar_ss = target_card.getSetting();
+    local _my_idx = -1;
+
+    foreach (idx, card in this.card_list) {
+      local _ss = card.getSetting();
+      if (_ss != _tar_ss && !_target) continue;
+
+      if (!_target) {
+        _target = Vector3D(card.pos);
+        _my_idx = idx;
+
+        continue;
+      }
+
+      local _temp = _target;
+      _target = Vector3D(card.pos);
+      card.pos.set(_temp);
+      card.matdirty = true;
+    }
+
+    if (_target) {
+      target_card.pos.set(_target);
+      target_card.matdirty = true;
+      delete this.card_list[_my_idx];
+      this.card_list + target_card;
+    }
+  }
+
+  function _setCardList(s, sound = true) {
+    if (this.select == s) return;
+    this.filter_table = [0, 0, 0, 0];
+    this.select = s;
+    this.reclist.clearChildren();
+    this.card_list = [];
+    local _home_ui = getHomeUI();
+    switch (s) {
+    case TAB_FURNITURE:
+      _setupList(SHOP_ITEM_TYPE_FURNITURE, this.furniture_list);
+      _home_ui.setVisibleHapinessValueInfo(true);
+      break;
+
+    case TAB_COSTUME:
+      _setupList(SHOP_ITEM_TYPE_COSTUME, this.costume_list);
+      _home_ui.setVisibleHapinessValueInfo(false);
+      break;
+    case TAB_MOTION:
+      _setMotionShopList();
+      _setupList(SHOP_ITEM_TYPE_MOTION, this.motion_list);
+      _home_ui.setVisibleHapinessValueInfo(false);
+      break;
+    case TAB_RM:
+      _setupList(SHOP_ITEM_TYPE_RM, this.rm_list);
+      _home_ui.setVisibleHapinessValueInfo(false);
+      break;
+    }
+    if (sound) ::playSound(tab_sound);
+  }
+
+  function _setupList(type, type_list) {
+    local _offset = 10;
+    local _cnt = 0;
+    local _size_x = 0;
+    local _line = _getLineNum(type);
+    local _space = getSpacePixel(_line);
+    local platform_type = _getPlatformType();
+    foreach (ss in type_list) {
+      local _card = _createCard(type, ss);
+      if (!_card) continue;
+
+      if (this.filter_table[0] != 0) {
+        local _room_id = ss.getRoomID();
+        local _now_room_id = userdata_local.getRoomIndex();
+
+        if (_room_id != _now_room_id) {
+          _card.getView().visible = true;
+          continue;
+        }
+      }
+
+      if (this.filter_table[1] != 0) {
+        local _amount;
+        if (type == SHOP_ITEM_TYPE_FURNITURE) {
+          _amount = userdata.getFurnitureAmount(ss.getItemID());
+        }
+        else if (type == SHOP_ITEM_TYPE_COSTUME) {
+          _amount = userdata.hasCostume(ss.getItemID());
+          if (_amount) _amount = 1;
+          else { _amount = 0; }
+        }
+        else if (type == SHOP_ITEM_TYPE_MOTION) {
+          _amount = userdata.getCharacterData(ss.getTargetID()).hasMotion(ss.getItemID());
+          if (_amount) _amount = 1;
+          else _amount = 0;
+        }
+        if (this.filter_table[1] == 1 && _amount == 0) {
+          _card.getView().visible = true;
+          continue;
+        }
+        else if (this.filter_table[1] == 2 && _amount != 0) {
+          _card.getView().visible = true;
+          continue;
+        }
+      }
+
+      if (this.filter_table[3] != 0) {
+        local _get_type;
+        if (type == SHOP_ITEM_TYPE_FURNITURE) {
+          _get_type = ::gamesetting.furniture_settings[ss.getItemID()].getType();
+        }
+        else if (type == SHOP_ITEM_TYPE_COSTUME) {
+          _get_type = ::gamesetting.costume_settings[ss.getItemID()].getCharaID();
+        }
+        else if (type == SHOP_ITEM_TYPE_MOTION) {
+          _get_type = ss.getTargetID();
+        }
+
+        if (_get_type != this.filter_table[3]) {
+          _card.getView().visible = true;
+          continue;
+        }
+      }
+
+      _size_x = _card.bnd.w;
+      if (_cnt > 0 && _cnt % _line == 0) _offset += _size_x + _space.x;
+
+      _card.pos.x = _offset;
+      _card.pos.y = (_cnt % _line) * (_card.bnd.h + _space.y);
+      this.reclist.addChild(_card);
+      _card.matdirty = true;
+      _card.repaint();
+
+      this.card_list + _card;
+
+      _cnt++;
+    }
+    _offset += _size_x * 2;
+
+    this.reclist.setRect(0, 0, _offset, this.pnl_card_list.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+    this.scroll_bar.setup(this.scroll, this.pnl_card_list.bnd, true);
+  }
+
+  function _getPlatformType() {
+    switch (skGetOSName()) {
+    case "iOS": return SHOP_ITEM_PLATFORM_IOS;
+    case "Android": return SHOP_ITEM_PLATFORM_ANDROID;
+    case "Windows": return SHOP_ITEM_PLATFORM_WINDOWS;
+    default: return SHOP_ITEM_PLATFORM_UNDEFINED;
+    }
+  }
+
+  function _getLineNum(type) {
+    switch (type) {
+    case SHOP_ITEM_TYPE_FURNITURE: return 1;
+
+    case SHOP_ITEM_TYPE_COSTUME: return 1;
+    case SHOP_ITEM_TYPE_MOTION: return 2;
+    case SHOP_ITEM_TYPE_RM: return 2;
+    }
+    return 2;
+  }
+
+  function getSpacePixel(line) {
+    switch (line) {
+    case 1: return { x = 20, y = 0 };
+    case 2: return { x = 10, y = 10 };
+    }
+    return { x = 0, y = 0 };
+  }
+
+  function _createCard(type, ss) {
+    switch (type) {
+    case SHOP_ITEM_TYPE_FURNITURE: return FurnitureCard(ss, this);
+
+    case SHOP_ITEM_TYPE_COSTUME: return CostumeCard(ss, this);
+    case SHOP_ITEM_TYPE_MOTION: return MotionCard(ss, this);
+    case SHOP_ITEM_TYPE_RM: return RMCard(ss, this);
+    }
+    return null;
+  }
+
+  function updateList() {
+    foreach (card in this.card_list) {
+      card.setup();
+    }
+  }
+
+  function setEnabledButtonBack(b) {
+    this.btn_back.setEnabled(b);
+  }
+
+  function actionevent_back(e) {
+    getHomeUI().backPanel();
+  }
+  function actionevent_sort(e) {
+  }
+  function actionevent_filter(e) {
+    local _dlg = null;
+
+    switch (select) {
+    case 0:
+      local _flm = FilterManag(SHOP_ITEM_TYPE_FURNITURE, this.filter_table, this.furniture_list);
+      _dlg = ::ShopFilterDialog(SHOP_ITEM_TYPE_FURNITURE, _flm.filter_table, _flm.type_list, _flm.number_list);
+      _dlg.show();
+      if (_dlg.ret) {
+        _flm.setTable(this.filter_table, _dlg.filter_table);
+        this.reclist.clearChildren();
+        this.card_list = [];
+        _setupList(SHOP_ITEM_TYPE_FURNITURE, this.furniture_list);
+      }
+      break;
+    case 3:
+      local _flm = FilterManag(SHOP_ITEM_TYPE_COSTUME, this.filter_table, this.costume_list);
+      _dlg = ::ShopFilterDialog(SHOP_ITEM_TYPE_COSTUME, _flm.filter_table, _flm.type_list, _flm.number_list);
+      _dlg.show();
+      if (_dlg.ret) {
+        _flm.setTable(this.filter_table, _dlg.filter_table);
+        this.reclist.clearChildren();
+        this.card_list = [];
+        _setupList(SHOP_ITEM_TYPE_COSTUME, this.costume_list);
+      }
+      break;
+    case 4:
+      local _flm = FilterManag(SHOP_ITEM_TYPE_MOTION, this.filter_table, this.motion_list);
+      _dlg = ::ShopFilterDialog(SHOP_ITEM_TYPE_MOTION, _flm.filter_table, _flm.type_list, _flm.number_list);
+      _dlg.show();
+      if (_dlg.ret) {
+        _flm.setTable(this.filter_table, _dlg.filter_table);
+        this.reclist.clearChildren();
+        this.card_list = [];
+        _setupList(SHOP_ITEM_TYPE_MOTION, this.motion_list);
+      }
+      break;
+    default:
+      _dlg = null;
+    }
+
+  }
+  function actionevent_change(e) {
+    for (local i = 0; i < this.card_list.len(); i++) {
+      this.card_list[i].reverseCard();
+    }
+  }
+
+  function tapShopTab(idx) {
+    if (idx == TAB_RM && !::gamesession.isIAPInitializeSuccess()) {
+      local _dlg = ::IAPCautionDialog();
+      _dlg.show();
+
+      return;
+    }
+
+    _setCardList(idx);
+    _setTabBg(idx);
+
+    local _ud = ::gamesession.getUserData();
+    if (idx == TAB_RM) ::tutorial_manager.checkStartTutorial(TutorialSetting.CHECK_TUTORIAL_SHOWED_ONEROUS_RM);
+  }
+
+  function _setTabBg(idx) {
+    for (local i = 0; i < this.tab_list.len(); i++) {
+      this.tab_list[i].setTabBg(this.tab_list[i].getIndex() == idx);
+      this.tab_list[i].matdirty = true;
+      this.tab_list[i].repaint();
+    }
+  }
+
+  function updateTabs() {
+
+  }
+
+  function addBoughtList(sid) {
+    if (this.bought_list.indexOf(sid) >= 0) return;
+    this.bought_list + sid;
+
+    ::tutorial_manager.checkAndStartTutorialAtShopBuy(this);
+  }
+
+  function hasTypeBougthList(type) {
+    foreach (sid in this.bought_list) {
+      local _ss = ::gamesetting.shop_settings[sid];
+      if (_ss && _ss.getType() == type) return true;
+    }
+    return false;
+  }
+
+  function getShopCardFirst() {
+    return this.card_list[0] || null;
+  }
+
+  function getCostumeTab() {
+    foreach (tab in this.tab_list) {
+      if (tab.getIndex() == TAB_COSTUME) return tab;
+    }
+    return null;
+  }
+
+  function setCardListLock(b) {
+    this.pnl_tap_lock.enabled = b;
+  }
+
+  function getSelectTabIndex() {
+    return this.select;
+  }
+
+  function setTutorialLock() {
+    foreach (tab in this.tab_list) {
+      tab.enabled = false;
+    }
+    foreach (idx, card in this.card_list) {
+      if (idx == 0) continue;
+      card.enabled = false;
+    }
+    this.scroll.dxscale = 0.0;
+    this.scroll_bar.setEnabledKnob(false);
+  }
+
+  function setTutorialLock2() {
+    this.pnl_tap_lock.enabled = true;
+
+    foreach (tab in this.tab_list) {
+      tab.enabled = false;
+    }
+
+    this.scroll.dxscale = 0.0;
+    this.scroll_bar.setEnabledKnob(false);
+  }
+}
+
+class ShopPanel.ShopTab extends SKView {
+  pnl_parent = null;
+  view = null;
+
+  lbl_name = null;
+
+  index = -1;
+
+  img_tab_on = null;
+  img_tab_off = null;
+
+  img_newitem = null;
+  newitem_mark = false;
+
+  constructor(p, idx) {
+    this.pnl_parent = p;
+    this.index = idx;
+
+    this.view = ::loadSKView("/ui/common/PanelTab.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    local _pnl_tab = this.view.findChild("pnl_tab");
+    this.lbl_name = _pnl_tab.findChild("lbl_name");
+
+    this.img_tab_on = _pnl_tab.findChild("img_tab_on");
+    this.img_tab_off = _pnl_tab.findChild("img_tab_off");
+
+    _pnl_tab.addEventListener(MOUSE_EVENT, mouseevent);
+
+    this.img_newitem = _pnl_tab.findChild("img_newitem");
+
+    updateNewItemMark();
+  }
+
+  function getIndex() {
+    return this.index;
+  }
+
+  function setName(s) {
+    this.lbl_name.setText(s);
+  }
+
+  function mouseevent(e) {
+    e.consume();
+
+    switch (e.id) {
+    case MOUSE_CLICKED:
+      this.pnl_parent.tapShopTab(this.index);
+      break;
+    }
+  }
+
+  function setTabBg(select) {
+    this.img_newitem.setVisible(this.newitem_mark);
+    if (select) {
+      this.img_tab_on.visible = true;
+      this.img_tab_off.visible = false;
+      this.img_newitem.setVisible(false);
+    }
+    else {
+      this.img_tab_on.visible = false;
+      this.img_tab_off.visible = true;
+      this.img_newitem.setVisible(this.newitem_mark);
+    }
+    repaint();
+  }
+
+  function _getItemKind() {
+    switch (this.index) {
+    case ::ShopPanel.TAB_FURNITURE: return SHOP_ITEM_TYPE_FURNITURE;
+    case ::ShopPanel.TAB_COSTUME: return SHOP_ITEM_TYPE_COSTUME;
+    }
+    return -1;
+  }
+
+  function updateNewItemMark() {
+
+    local _home_ui = this.pnl_parent.getHomeUI();
+    switch (this.index) {
+    case ::ShopPanel.TAB_FURNITURE: this.newitem_mark = _home_ui.checkShopMarked(SHOP_ITEM_TYPE_FURNITURE); break;
+    case ::ShopPanel.TAB_COSTUME: this.newitem_mark = _home_ui.checkShopMarked(SHOP_ITEM_TYPE_COSTUME); break;
+    default: this.newitem_mark = false;
+    }
+  }
+
+  function getView() {
+    return this.view;
+  }
+}
+
+class ShopPanel.ShopCard extends SKView {
+  pnl_parent = null;
+  view = null;
+  btn_view = null;
+  shop_setting = null;
+
+  static BUY_STATE_OK = 0;
+  static BUY_STATE_SOLD_OUT = 1;
+  static BUY_STATE_SHORTAGE_GM = 2;
+  static BUY_STATE_SHORTAGE_RM = 3;
+  static BUY_STATE_CONDITION = 4;
+  static BUY_STATE_HAD = 5;
+  buy_state = 0;
+
+  constructor(ss, p) {
+    this.shop_setting = ss;
+    this.pnl_parent = p;
+  }
+
+  function getView() {
+    return this.view;
+  }
+
+  function setup() {}
+
+  function _setPrice(lbl, pnl) {
+    local price = this.shop_setting.getPrice();
+    if (typeof(price) == SS_STRING) {
+      lbl.setText(price);
+    }
+    else {
+      lbl.setText(::formatNumberString(price));
+    }
+    local _img_rm = pnl.findChild("img_rm");
+    local _img_gm = pnl.findChild("img_gm");
+    switch (this.shop_setting.getPriceType()) {
+    case PRICE_GM:
+      _img_gm.visible = true;
+      _img_rm.visible = false;
+      break;
+    case PRICE_RM:
+      _img_gm.visible = false;
+      _img_rm.visible = true;
+      break;
+    case PRICE_ONEROUS_RM:
+      _img_gm.visible = false;
+      _img_rm.visible = true;
+      break;
+    case PRICE_CASH:
+      _img_gm.visible = false;
+      _img_rm.visible = false;
+      break;
+    }
+  }
+
+  function _checkPrice(lbl = null) {
+    local _ud = ::gamesession.getUserData();
+    local _price = this.shop_setting.getPrice();
+    local _price_type = this.shop_setting.getPriceType();
+    switch (_price_type) {
+    case PRICE_GM:
+      if (!_ud.hasMoney(_price_type, _price)) {
+        this.buy_state = BUY_STATE_SHORTAGE_GM;
+        if (lbl) lbl.setColor(0xff0000ff);
+      }
+      break;
+
+    }
+  }
+
+  function canBuy() {
+    return this.buy_state == BUY_STATE_OK ? true : false;
+  }
+
+  function showBuyStateDialog() {
+    local _dlg = ::SimpleDialog();
+    _dlg.lbl_msg.setText(getBuyStateMessage(this.buy_state));
+    _dlg.show();
+  }
+
+  static function getBuyStateMessage(state) {
+    switch (state) {
+    case ::ShopPanel.ShopCard.BUY_STATE_SOLD_OUT: return ::dict.get("shop_message_sold_out");
+    case ::ShopPanel.ShopCard.BUY_STATE_SHORTAGE_GM: return ::dict.get("no_have_gm");
+    case ::ShopPanel.ShopCard.BUY_STATE_SHORTAGE_RM: return ::dict.get("lack_rm");
+    case ::ShopPanel.ShopCard.BUY_STATE_CONDITION: return ::dict.get("purchase_condition");
+    case ::ShopPanel.ShopCard.BUY_STATE_HAD: return ::dict.get("purchase_limit_over");
+    }
+    return "";
+  }
+
+  function showConfirmDialog() {
+    if (!this.shop_setting) return 0;
+
+    local _dlg = SimpleDialog2();
+    _dlg.lbl_msg.setText(this.shop_setting.getItemName());
+    _dlg.lbl_caution.setText(::dict.get("shop_confirm"));
+    _dlg.show();
+    return _dlg.ret;
+  }
+
+  function showFailDialog() {
+    local _dlg = ::SimpleDialog();
+    _dlg.lbl_msg.setText(::dict.get("shop_buy_fail"));
+    _dlg.show();
+  }
+
+  function showBoughtenDialog() {
+    if (!this.shop_setting) return 0;
+    local _dlg = SimpleDialog3();
+    _dlg.setShowSE(::SoundConstants.JINGLE_GET_LETTER);
+    _dlg.lbl_msg.setText(this.shop_setting.getItemName());
+    _dlg.lbl_caution.setText(::dict.get("shop_buy_success"));
+    _dlg.show();
+  }
+
+  function reverseCard() {}
+
+  function getSetting() {
+    return this.shop_setting;
+  }
+
+  function isMarkedSetting() {
+    return this.pnl_parent.getHomeUI().isMarkedSetting(this.shop_setting);
+  }
+}
+
+class ShopPanel.FurnitureCard extends ShopPanel.ShopCard {
+  pnl_front = null;
+
+  img_furniture = null;
+  img_rm = null;
+  img_gm = null;
+
+  img_check = null;
+  img_mark = null;
+
+  lbl_price = null;
+  lbl_text_last = null;
+  lbl_tap = null;
+  lbl_amount = null;
+
+  constructor(ss, p) {
+    super(ss, p);
+    this.view = ::loadSKView("/ui/common/FurnitureShopCard.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    local _fs = ::gamesetting.furniture_settings[ss.getItemID()];
+
+    this.btn_view = this.view.findChild("btn_buy");
+    ::TapButton(this.btn_view, false).region.addEventListener(ACTION_EVENT, actionevent_select);
+
+    local _pnl_furni = this.view.findChild("pnl_furni");
+    this.lbl_text_last = _pnl_furni.findChild("lbl_text_last");
+    this.pnl_front = _pnl_furni.findChild("pnl_front");
+    this.lbl_tap = this.pnl_front.findChild("lbl_value_tap");
+    this.lbl_amount = this.pnl_front.findChild("lbl_value_amount");
+
+    this.lbl_price = this.btn_view.findChild("lbl_price");
+    this.img_rm = this.btn_view.findChild("img_rm");
+    this.img_gm = this.btn_view.findChild("img_gm");
+
+    _pnl_furni.findChild("lbl_name").setText(this.shop_setting.getItemName());
+    this.pnl_front.findChild("lbl_text_tap").setText(::dict.get("tap"));
+    this.pnl_front.findChild("lbl_text_amount").setText(::dict.get("possession"));
+
+    local _lbl_caution = _pnl_furni.findChild("lbl_caution");
+
+    _lbl_caution.setVisible(false);
+
+    _setPrice(this.lbl_price, this.btn_view);
+
+    this.img_furniture = _pnl_furni.findChild("img_furniture");
+    local _sp = _fs.getIconSpriteByIndex(0);
+    this.img_furniture.setSprite(_sp);
+    this.img_furniture.updateLayout();
+
+    this.img_check = _pnl_furni.findChild("img_check");
+
+    this.img_mark = _pnl_furni.findChild("img_mark");
+
+    setup();
+  }
+
+  function setup() {
+    local _ud = ::gamesession.getUserData();
+
+    this.buy_state = BUY_STATE_OK;
+    local _color = 0xffffffff;
+    this.img_furniture.setColor(_color);
+    if (this.img_rm.visible) this.img_rm.setColor(_color);
+    if (this.img_gm.visible) this.img_gm.setColor(_color);
+    this.lbl_price.setColor(1548241151);
+
+    _checkPrice(this.lbl_price);
+
+    local _limit = this.shop_setting.getLimit();
+    if (_limit >= 0) {
+      local _prnum = _ud.getPurchaseRecordNums(this.shop_setting.getID());
+      local _last = _limit - _prnum;
+      if (_last > 0) {
+        this.lbl_text_last.setText(::dict.get("nums_more_amount", [::formatNumberString(_last)]));
+      }
+      else {
+        this.buy_state = BUY_STATE_SOLD_OUT;
+        this.lbl_text_last.setText(::dict.get("shop_sold_out"));
+
+        _color = 0xffffff44;
+        this.img_furniture.setColor(_color);
+        if (this.img_rm.visible) this.img_rm.setColor(_color);
+        if (this.img_gm.visible) this.img_gm.setColor(_color);
+        this.lbl_price.setColor(1548240964);
+      }
+    }
+    else {
+      this.lbl_text_last.visible = false;
+    }
+
+    local _amount = _ud.getFurnitureAmount(this.shop_setting.getItemID());
+    this.lbl_amount.setText(::formatNumberString(_amount));
+
+    local _fs = ::gamesetting.furniture_settings[this.shop_setting.getItemID()];
+    local _add_tap_gm = _fs.calcTapGM(_amount + this.shop_setting.getAmount()) - _fs.calcTapGM(_amount);
+    this.lbl_tap.setText("+" + ::formatNumberString(_add_tap_gm));
+
+    this.img_check.visible = isMarkedSetting();
+
+    if (this.shop_setting.isVisibleMark()) {
+      this.img_mark.setSprite(this.shop_setting.getMarkSprite());
+      this.img_mark.updateLayout();
+      this.img_mark.setVisible(true);
+    } else {
+      this.img_mark.setVisible(false);
+    }
+  }
+
+  function actionevent_select(e) {
+    e.consume();
+
+    ::tutorial_manager.checkWaitingActionEvent(getButtonView());
+
+    local _dlg = ::ConfirmShopFurnitureDialog();
+    _dlg.setShopFurniture(this.shop_setting, this.buy_state);
+    _dlg.show();
+    if (!_dlg.ret) return;
+    local _ud = ::gamesession.getUserData();
+    local _ridx = _ud.getCurrentRoomIndex();
+
+    local _buy_items = ::gamesession.shopBuy(this.shop_setting.getID(), _ridx);
+    if (!_buy_items || _buy_items.len() == 0) {
+
+      return;
+    }
+
+    _ud.addRewardItems(_buy_items);
+
+    local _home_ui = pnl_parent.getHomeUI();
+    _home_ui.openedShopTable(this.shop_setting.getID());
+    _ud.applyPurchase(this.shop_setting.getPriceType(), this.shop_setting.getPrice());
+    _home_ui.updateShopMark(false, this.shop_setting.isPriceTypeGM());
+    if (this.shop_setting.hasLimit()) _ud.addPurchaseRecord(this.shop_setting.getID(), 1);
+
+    showBoughtenDialog();
+
+    this.pnl_parent.addBoughtList(this.shop_setting.getID());
+
+    this.pnl_parent.updateTabs();
+
+    newthread().start(function() {
+      while (::tutorial_manager.tutorialThreadRunning()) suspend();
+      foreach (_item in _buy_items) {
+        if (_item.kind != ITEM_TYPE_FURNITURE) continue;
+        local _uids = _ud.getFurnitureAmountData(_item.id).getPropertyUids();
+        if (_uids.len() < 1) continue;
+
+        this.pnl_parent.getHomeUI().movePanel(::RoomEditPanel, false, { "uid" = _uids[0] });
+      }
+    }, this);
+  }
+
+  function getButtonView() {
+    return this.btn_view;
+  }
+}
+
+class ShopPanel.CostumeCard extends ShopPanel.ShopCard {
+  pnl_front = null;
+
+  img_frame = null;
+  img_chara = null;
+  img_costume = null;
+  img_lock = null;
+  img_rm = null;
+  img_gm = null;
+  img_price_bg = null;
+
+  img_check = null;
+  img_mark = null;
+
+  lbl_name = null;
+  lbl_price = null;
+  lbl_sold_out = null;
+
+  constructor(ss, p) {
+    super(ss, p);
+
+    this.view = ::loadSKView("/ui/common/CostumeShopCard.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    this.btn_view = this.view.findChild("btn_buy");
+    ::TapButton(this.btn_view, false).region.addEventListener(ACTION_EVENT, actionevent_select);
+
+    local _pnl_costume = this.view.findChild("pnl_costume");
+    this.img_frame = _pnl_costume.findChild("img_shop_frame");
+    this.pnl_front = _pnl_costume.findChild("pnl_front");
+    this.img_lock = this.pnl_front.findChild("img_lock");
+
+    this.lbl_sold_out = this.btn_view.findChild("lbl_sold_out");
+    this.lbl_price = this.btn_view.findChild("lbl_price");
+    this.img_rm = this.btn_view.findChild("img_rm");
+    this.img_gm = this.btn_view.findChild("img_gm");
+    this.img_price_bg = this.btn_view.findChild("img_price_bg");
+
+    this.lbl_name = _pnl_costume.findChild("lbl_name");
+    this.lbl_name.setText(this.shop_setting.getItemName());
+    this.lbl_sold_out.setText(::dict.get("shop_sold_out"));
+    _setPrice(this.lbl_price, this.btn_view);
+
+    local _costume_setting = ::gamesetting.costume_settings[this.shop_setting.getItemID()];
+    local _chara_setting = _costume_setting.getCharaSetting();
+    this.img_chara = _pnl_costume.findChild("img_chara");
+    local _sp = _chara_setting.getIconSprite();
+    this.img_chara.setSprite(_sp);
+    this.img_chara.updateLayout();
+
+    this.img_costume = _pnl_costume.findChild("img_costume");
+    _sp = _costume_setting.getSpriteCostumeIcon();
+    this.img_costume.setSprite(_sp);
+    this.img_costume.updateLayout();
+
+    this.img_check = _pnl_costume.findChild("img_check");
+
+    this.img_mark = _pnl_costume.findChild("img_mark");
+
+    setup();
+  }
+
+  function setup() {
+    local _ud = ::gamesession.getUserData();
+
+    this.buy_state = BUY_STATE_OK;
+    local _color = 0xffffffff;
+    this.img_costume.setColor(_color);
+    if (this.img_rm.visible) this.img_rm.setColor(_color);
+    if (this.img_gm.visible) this.img_gm.setColor(_color);
+    this.lbl_price.setColor(1548241151);
+
+    _checkPrice(this.lbl_price);
+
+    if (this.shop_setting.checkConditions()) {
+      this.img_lock.visible = false;
+    }
+    else {
+      this.img_lock.visible = true;
+      _color = 0xffffff44;
+      if (this.img_rm.visible) this.img_rm.setColor(_color);
+      if (this.img_gm.visible) this.img_gm.setColor(_color);
+      this.lbl_price.setColor(1548240964);
+      this.buy_state = BUY_STATE_CONDITION;
+    }
+
+    if (_ud.hasCostume(this.shop_setting.getItemID())) {
+      this.buy_state = BUY_STATE_HAD;
+      _color = 0xffffff55;
+      this.img_costume.setColor(_color);
+      if (this.img_rm.visible) this.img_rm.setColor(_color);
+      if (this.img_gm.visible) this.img_gm.setColor(_color);
+      this.img_frame.setColor(0xffffffff);
+      this.img_chara.setColor(_color);
+      this.img_price_bg.setColor(_color);
+      this.lbl_name.setColor(1548240998);
+      this.lbl_price.setColor(1548240998);
+      this.lbl_sold_out.visible = true;
+    }
+    else {
+      this.lbl_sold_out.visible = false;
+    }
+
+    this.img_check.visible = isMarkedSetting();
+
+    if (this.shop_setting.isVisibleMark()) {
+      this.img_mark.setSprite(this.shop_setting.getMarkSprite());
+      this.img_mark.updateLayout();
+      this.img_mark.setVisible(true);
+    } else {
+      this.img_mark.setVisible(false);
+    }
+  }
+
+  function actionevent_select(e) {
+    e.consume();
+
+    local _ud = ::gamesession.getUserData();
+    local _dlg;
+
+    if (this.buy_state == BUY_STATE_CONDITION) {
+      _dlg = ::ConfirmShopCostumeConditionDialog();
+      _dlg.setup(this.shop_setting);
+      _dlg.show();
+      return;
+    }
+
+    ::tutorial_manager.checkWaitingActionEvent(getButtonView());
+
+    _dlg = ::ConfirmShopCostumeDialog();
+    _dlg.setShopCostume(this.shop_setting, this.buy_state);
+    _dlg.show();
+    if (!_dlg.ret) return;
+
+    local _ridx = _ud.getCurrentRoomIndex();
+
+    local _buy_items = ::gamesession.shopBuy(this.shop_setting.getID(), _ridx);
+    if (!_buy_items || _buy_items.len() == 0) {
+
+      return;
+    }
+
+    _ud.addRewardItems(_buy_items);
+
+    local _home_ui = pnl_parent.getHomeUI();
+    _home_ui.openedShopTable(this.shop_setting.getID());
+    _ud.applyPurchase(this.shop_setting.getPriceType(), this.shop_setting.getPrice());
+    _home_ui.updateShopMark(false, this.shop_setting.isPriceTypeGM());
+    if (this.shop_setting.hasLimit()) _ud.addPurchaseRecord(this.shop_setting.getID(), 1);
+
+    showBoughtenDialog();
+
+    this.pnl_parent.addBoughtList(this.shop_setting.getID());
+
+    this.pnl_parent.updateTabs();
+
+    local _cid = this.shop_setting.getItemID();
+    local _cos_setting = ::gamesetting.costume_settings[_cid];
+    local _reside_cid = _ud.getCurrentRoomCharaCostumeID(_cos_setting.getCharaID());
+
+    if (_reside_cid > 0) {
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof ::SanrioGameScene) {
+        local _pm = _scene.getProductionManager();
+        local _pd = _pm.getProductDataByCostumeID(_reside_cid);
+        if (_pd) {
+          _pm.cancelProduct(_pd.getProducerID(), false, false);
+        }
+      }
+
+      _ud.changeResideChara(_ridx, [_reside_cid], [_cid], false);
+
+      local _udl = ::gamesession.getUserDataLocal();
+      _udl.deleteNewItem(ITEM_TYPE_COSTUME, _cid);
+      _udl.save();
+      _home_ui.updateMenuNewMark(::HomeUI.UPDATE_MENU_MARK_COSTUME);
+    }
+
+    _moveNewCostumeEventPanel(_cid);
+  }
+
+  function _moveNewCostumeEventPanel(costume_id) {
+    local _tex = runsk("/dl/loadingbg/download.sk");
+    local _trans = MaskPanelTransition(_tex, ::getTexture("/image/rule/gacha.jpg"), 5.0, 50);
+    _trans.sleeptime = 1000;
+    this.pnl_parent.getHomeUI().movePanel(::NewCostumeEventPanel, false, { costume_ids = [costume_id] }, _trans);
+  }
+
+  function getButtonView() {
+    return this.btn_view;
+  }
+}
+
+class ShopPanel.MotionCard extends ShopPanel.ShopCard {
+  img_frame = null;
+  img_motion = null;
+  img_rm = null;
+  img_gm = null;
+  img_chara = null;
+  img_price_bg = null;
+
+  lbl_name = null;
+  lbl_price = null;
+  lbl_sold_out = null;
+
+  constructor(ss, p) {
+    super(ss, p);
+
+    this.view = ::loadSKView("/ui/common/MotionShopCard.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    this.btn_view = this.view.findChild("btn_buy");
+    ::TapButton(this.btn_view, false).region.addEventListener(ACTION_EVENT, actionevent_select);
+
+    this.lbl_sold_out = this.btn_view.findChild("lbl_sold_out");
+    this.lbl_price = this.btn_view.findChild("lbl_price");
+    this.img_rm = this.btn_view.findChild("img_rm");
+    this.img_gm = this.btn_view.findChild("img_gm");
+
+    local _pnl_motion = this.view.findChild("pnl_motion");
+    this.img_frame = _pnl_motion.findChild("img_frame");
+    this.img_price_bg = this.btn_view.findChild("img_price_bg");
+    this.lbl_name = _pnl_motion.findChild("lbl_name");
+    this.lbl_name.setText(this.shop_setting.getItemName());
+    this.lbl_sold_out.setText(::dict.get("shop_sold_out"));
+    _setPrice(this.lbl_price, this.btn_view);
+
+    local _chara_setting = ::gamesetting.sanrio_chara_settings[this.shop_setting.getTargetID()];
+    this.img_chara = _pnl_motion.findChild("img_chara");
+    local _sp = _chara_setting.getIconSprite();
+    this.img_chara.setSprite(_sp);
+    this.img_chara.updateLayout();
+
+    local _action_setting = ::gamesetting.costume_motion_settings[this.shop_setting.getItemID()];
+    this.img_motion = _pnl_motion.findChild("img_motion");
+    _sp = _action_setting.getIconSprite();
+    this.img_motion.setSprite(_sp);
+    this.img_motion.updateLayout();
+
+    setup();
+  }
+
+  function setup() {
+    local _ud = ::gamesession.getUserData();
+
+    this.buy_state = BUY_STATE_OK;
+    local _color = 0xffffffff;
+    this.img_motion.setColor(_color);
+    if (this.img_rm.visible) this.img_rm.setColor(_color);
+    if (this.img_gm.visible) this.img_gm.setColor(_color);
+    this.lbl_price.setColor(1548241151);
+
+    _checkPrice(this.lbl_price);
+
+    local _chara_data = _ud.getCharacterData(this.shop_setting.getTargetID());
+    local _set_color = false;
+    if (!_chara_data) {
+      this.buy_state = BUY_STATE_CONDITION;
+      _set_color = true;
+      this.lbl_sold_out.visible = false;
+    }
+    else if (_chara_data.hasMotion(this.shop_setting.getItemID())) {
+      this.buy_state = BUY_STATE_HAD;
+      _set_color = true;
+      this.lbl_sold_out.visible = true;
+    }
+    else {
+      this.lbl_sold_out.visible = false;
+    }
+    if (_set_color) {
+      _color = 0xffffff55;
+      this.img_motion.setColor(_color);
+      if (this.img_rm.visible) this.img_rm.setColor(_color);
+      if (this.img_gm.visible) this.img_gm.setColor(_color);
+      this.img_frame.setColor(0xffffffff);
+      this.img_chara.setColor(_color);
+      this.img_price_bg.setColor(_color);
+      this.lbl_name.setColor(1548240998);
+      this.lbl_price.setColor(1548240998);
+    }
+  }
+
+  function actionevent_select(e) {
+    e.consume();
+
+    local _dlg = ::ConfirmShopMotionDialog();
+    _dlg.setShopMotion(this.shop_setting, this.buy_state);
+    _dlg.show();
+    if (!_dlg.ret) return;
+    local _ud = ::gamesession.getUserData();
+    local _ridx = _ud.getCurrentRoomIndex();
+
+    local _buy_items = ::gamesession.shopBuy(this.shop_setting.getID(), _ridx);
+    if (!_buy_items || _buy_items.len() == 0) {
+
+      return;
+    }
+
+    _ud.addRewardItems(_buy_items);
+
+    local _home_ui = pnl_parent.getHomeUI();
+    _ud.applyPurchase(this.shop_setting.getPriceType(), this.shop_setting.getPrice());
+    _home_ui.updateShopMark(false, this.shop_setting.isPriceTypeGM());
+    if (this.shop_setting.hasLimit()) _ud.addPurchaseRecord(this.shop_setting.getID(), 1);
+
+    showBoughtenDialog();
+
+    this.pnl_parent.addBoughtList(this.shop_setting.getID());
+
+    this.pnl_parent.sortTabList(this);
+
+    this.pnl_parent.updateTabs();
+
+    this.pnl_parent.updateList();
+  }
+}
+
+class ShopPanel.RMCard extends ShopPanel.ShopCard {
+  img_rm = null;
+  img_gm = null;
+  img_icon = null;
+
+  lbl_price = null;
+
+  constructor(ss, p) {
+    super(ss, p);
+
+    this.view = ::loadSKView("/ui/common/RMShopCard.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    this.btn_view = this.view.findChild("btn_buy");
+    ::TapButton(this.btn_view, false).region.addEventListener(ACTION_EVENT, actionevent_select);
+
+    this.lbl_price = this.btn_view.findChild("lbl_price");
+    this.img_rm = this.btn_view.findChild("img_rm");
+    this.img_gm = this.btn_view.findChild("img_gm");
+
+    local _pnl_rm = this.view.findChild("pnl_rm");
+    this.img_icon = _pnl_rm.findChild("img_icon");
+    _pnl_rm.findChild("lbl_name").setText(this.shop_setting.getItemName());
+    _setPrice(this.lbl_price, this.btn_view);
+
+    setup();
+  }
+
+  function setup() {
+    this.buy_state = BUY_STATE_OK;
+
+    this.img_icon.setSprite(this.shop_setting.getSpriteRM());
+    this.img_icon.updateLayout();
+  }
+
+  function actionevent_select(e) {
+    e.consume();
+
+    ::gamesession.getCurrentScene().setEnabled(false);
+
+    try {
+      local _dlg = ::ConfirmShopRMDialog();
+      _dlg.setShopRM(this.shop_setting);
+      _dlg.show();
+
+      if (_dlg.ret > 0) {
+        ::gamesession.purchaseRMItem(this.pnl_parent, this.shop_setting, chargeRMCallback);
+      } else {
+        ::gamesession.getCurrentScene().setEnabled(true);
+      }
+    }
+
+    catch (ex) {
+      printexception(ex);
+      sendException(ex, "error in purchase hapiness ....");
+
+      local _dlg = SimpleDialog3();
+      _dlg.lbl_msg.setText(ss.getItemName());
+      _dlg.lbl_caution.setText(::dict.get("shop_buy_rm_failure"));
+      _dlg.show();
+
+      ::gamesession.getCurrentScene().setEnabled(true);
+    }
+  }
+
+  function chargeRMCallback(info, pnl, ss) {
+    local ud = ::gamesession.getUserData();
+    ud.addRealMoney(info.add_rm);
+    ud.addFreeRealMoney(info.bonus_rm);
+
+    if (info.purchase_result) {
+      if (info.server_result) {
+        local _dlg = SimpleDialog3();
+        _dlg.lbl_msg.setText(ss.getItemName());
+        _dlg.lbl_caution.setText(::dict.get("shop_buy_rm_success"));
+        _dlg.show();
+
+        pnl.addBoughtList(ss.getID());
+
+        pnl.updateList();
+
+        ::gamesession.appsflyer.purchase(ss.getIapPriceValue());
+      }
+
+      else {
+        local _dlg = SimpleDialog();
+        _dlg.lbl_msg.setText(::dict.get("shop_buy_rm_failure"));
+        _dlg.show();
+      }
+    }
+
+    else {
+      local _dlg = SimpleDialog3();
+      _dlg.lbl_msg.setText(ss.getItemName());
+      _dlg.lbl_caution.setText(::dict.get("shop_buy_rm_cancel"));
+      _dlg.show();
+    }
+
+    ::gamesession.getCurrentScene().setEnabled(true);
+  }
+}
+
+class ShopPanel.FilterManag {
+  filter_table = null;
+  type_list = null;
+  number_list = null;
+
+  constructor(type, table, shop_list) {
+    filter_table = {};
+    filter_table["room"] <- table[0];
+    filter_table["has"] <- table[1];
+    filter_table["select"] <- table[2];
+
+    type_list = [];
+    number_list = [];
+
+    local _setting = null;
+    local _number = null;
+    local _number_setting = null;
+    local _lbl = null;
+
+    number_list + 0;
+    type_list[0] <- "すべて";
+
+    foreach (ss in shop_list) {
+      if (type == SHOP_ITEM_TYPE_FURNITURE) {
+        _setting = ::gamesetting.furniture_settings[ss.getItemID()];
+        _number = _setting.getType();
+        _number_setting = _setting.getTypeSetting();
+        _lbl = _number_setting.name;
+      }
+      else if (type == SHOP_ITEM_TYPE_COSTUME) {
+        _setting = ::gamesetting.costume_settings[ss.getItemID()];
+        _number = _setting.getCharaID();
+        _number_setting = _setting.getCharaSetting()
+        _lbl = _number_setting.name;
+      }
+      else if (type == SHOP_ITEM_TYPE_MOTION) {
+        _setting = ss.getTargetID();
+        _number = ss.getTargetID();
+        _number_setting = ::gamesetting.sanrio_chara_settings[_setting];
+        _lbl = _number_setting.name;
+      }
+
+      for (local i = 0; i <= this.number_list.len() + 1; i++) {
+        if (this.number_list[i] == _number)
+        break;
+        else if (!this.number_list[i] && i == this.number_list.len()) {
+          this.number_list + _number;
+          this.type_list + _lbl;
+          break;
+        }
+      }
+    }
+
+  }
+
+  function setTable(table, ret_table) {
+    table[0] <- ret_table["room"];
+    table[1] <- ret_table["has"];
+    table[2] <- ret_table["select"];
+    table[3] <- ret_table["select_number"];
+
+  }
+
+}

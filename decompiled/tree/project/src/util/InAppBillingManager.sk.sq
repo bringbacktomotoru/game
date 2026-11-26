@@ -1,0 +1,640 @@
+class InAppBillingManager {
+  processer = null;
+
+  constructor(root) {
+    switch (skGetOSName()) {
+    case "Android": this.processer = ::InAppBillingProcesserForAndroid(root); break;
+    case "iOS": this.processer = ::InAppBillingProcesserForIOS(root); break;
+    default:
+      this.processer = ::InAppBillingProcesserForAndroid(root);
+      ::warnln("unknown OS");
+      break;
+    }
+  }
+
+  function initializeIAP() { return this.processer.initializeIAP(); }
+  function queryItemPrices() { return this.processer.queryItemPrices(); }
+  function restorePurchase(pnl, callback) { this.processer.restorePurchase(pnl, callback); }
+  function purchaseItem(pnl, ss, callback) { this.processer.purchaseItem(pnl, ss, callback); }
+
+  function isIAPInitializeEnd() { return this.processer.iap_initialized }
+  function isIAPInitializeSuccess() { return this.processer.iap_init_successed && this.processer.iap_queryitem_successed }
+}
+
+class InAppBillingProcesser {
+  root = null;
+
+  iap_enabled = false;
+  iap_blocking = false;
+
+  iap_initialized = false;
+  iap_init_successed = false;
+  iap_queryitem_successed = false;
+
+  item_list = null;
+
+  constructor(root) {
+    this.root = root
+  }
+
+  function _getItem(item_id) {
+    foreach (item in this.item_list) {
+      if (item.id != item_id) continue;
+
+      return item;
+    }
+    return null;
+  }
+
+  function _getIAPBlock() {
+    while (this.iap_blocking) {
+      suspend();
+    }
+    this.iap_blocking = true;
+  }
+
+  function initializeIAP() {
+    _getIAPBlock();
+
+    local ctx = { running = true, enabled = false };
+    local iapevent = function(e) {
+
+      switch (e.id) {
+      case IAP_INIT_SUCCESS:
+        enabled = true;
+        running = false;
+        break;
+      case IAP_INIT_FAIL:
+        running = false;
+        break;
+      }
+    };
+
+    local fn = root.addEventListener(IAP_EVENT, iapevent, ctx);
+    skInitializeIAP(getIAPKey());
+    while (ctx.running) {
+      root.suspendOrUpdate();
+    }
+    root.removeEventListener(IAP_EVENT, fn);
+    this.iap_enabled = ctx.enabled;
+    this.iap_blocking = false;
+
+    this.iap_initialized = true;
+    this.iap_init_successed = ctx.enabled;
+
+    return this.iap_enabled;
+  }
+
+  function getIAPKey() {
+    return "";
+  }
+
+  function queryItemPrices() {
+    _getIAPBlock();
+    return null;
+  }
+
+  function restorePurchase(pnl, callback) {
+    _getIAPBlock();
+  }
+
+  function purchaseItem(pnl, ss, callback) {
+    _getIAPBlock();
+  }
+}
+
+class InAppBillingProcesser.PurchaseInfo {
+  item_id = null;
+  purchase_info = null;
+  purchase_price = null;
+
+  purchase_result = false;
+  server_result = false;
+  consume_result = false;
+
+  add_rm = 0;
+  bonus_rm = 0;
+
+  function printResult() {
+    ::debugln("[[ In App Billing Result ]]" +
+    "\n\titem id : " + item_id +
+    "\n\tpurchase info : " + purchase_info +
+    "\n\tpurchase price : " + purchase_price +
+    "\n\tpurchase result : " + purchase_result +
+    "\n\tserver result : " + server_result +
+    "\n\tadd rm : " + add_rm +
+    "\n\tbonus rm : " + bonus_rm);
+  }
+}
+
+local _decodePurchaseInfo = function(purchase_info) {
+  local info = purchase_info.replace(10, 32);
+  local list = decodeJSON(info);
+  if (typeof(list) == SS_ARRAY) {
+    foreach (item in list) {
+      if (item["receipt"]) {
+        item.receipt = item.receipt.replace(32, 10);
+      }
+    }
+  }
+  else {
+    if (list["receipt"]) {
+      list.receipt = list.receipt.replace(32, 10);
+    }
+  }
+
+  return list;
+}
+
+class InAppBillingProcesserForAndroid extends InAppBillingProcesser {
+  static KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlzvIU+ut6QCzINLW3esbbdKDKAezHbEGpYRrQWODc54N4Uo+OYGmSh27YhNhdZf5Z2A9su6zoPwQk1PZeNnAG0mC9gFh78CBU4bJl/YrhH7hJ8H7RXJkjw1YIxTIKCjgBbc3pF7OlxDN6Mk5wEqAvhQJ6hAw5K5YxgI8Vz8niFzUXy6YA4HkEn8ot6TZ4kumxvcaZu3YEzSWX0tzYGbm83BkbvnyvTUpnzm2UDTubaHpBTZt9vCILWCz0rsT7lnggmXtF5SSKwq0XBE1YEtiY2AnH15ydv44UsBEzYJsbdq8+VQPhJ9HWD3iZa+SGzHPV9/bSrMwQiH3L4T9S0EC9QIDAQAB"
+
+  function getIAPKey() {
+    return KEY;
+  }
+
+  function queryItemPrices() {
+    super.queryItemPrices();
+
+    this.item_list = ::gamesetting.iaplists[skGetOSName()];
+    local idlist = [];
+    foreach (item in this.item_list) {
+      idlist + item.id;
+    }
+
+    local ctx = { running = true, infos = null };
+    local iapevent = function(e) {
+
+      switch (e.id) {
+      case IAP_INFO_SUCCESS:
+        try {
+          infos = {};
+          foreach (i in decodeJSON(e.actioncmd)) { infos[i.itemid] <- i; };
+        } catch (ex) {
+          printexception(ex);
+          printf("query JSON error? :\n%S\n", e.actioncmd);
+        }
+        running = false;
+        break;
+      case IAP_INFO_FAIL:
+        running = false;
+        break;
+      }
+    };
+    local fn = root.addEventListener(IAP_EVENT, iapevent, ctx);
+    skQueryIAPItemsInfo(idlist);
+    while (ctx.running) {
+      root.suspendOrUpdate();
+    }
+    root.removeEventListener(IAP_EVENT, fn);
+    foreach (item in this.item_list) {
+      local info = ctx.infos[item.id];
+      if (info) {
+        item.pricetxt = info.pricetxt;
+        item.priceamt = info.priceamt;
+      }
+    }
+    this.iap_blocking = false;
+    this.iap_queryitem_successed = ctx.infos != null;
+
+    return ctx.infos != null;
+  }
+
+  function restorePurchase(pnl, callback) {
+    super.restorePurchase(pnl, callback);
+
+    local ctx = { running = true, success = false, purchase_info = null };
+
+    local iapevent = function(e) {
+
+      switch (e.id) {
+      case IAP_OWN_SUCCESS:
+        purchase_info = e.actioncmd;
+        running = false;
+        break;
+      case IAP_OWN_FAIL:
+        running = false;
+        break;
+      }
+    };
+
+    local fn = root.addEventListener(IAP_EVENT, iapevent, ctx);
+    skQueryIAPOwnItems();
+    while (ctx.running) {
+      root.suspendOrUpdate();
+    }
+    root.removeEventListener(IAP_EVENT, fn);
+
+    if (ctx.purchase_info) {
+      local info = _decodePurchaseInfo(ctx.purchase_info);
+      local receipts = [];
+
+      if (info && info.len() > 0) {
+        foreach (e in info) {
+          receipts + e["receipt"];
+        }
+        local res = ::gamesession.requestChargeRMbyRestore(receipts);
+        if (res) {
+          local ud = ::gamesession.getUserData();
+          ud.addRealMoney(res.add_rm);
+          ud.addFreeRealMoney(res.bonus_rm);
+          if ("consumes" in res) {
+            local _cids = decodeJSON(res.consumes);
+            foreach (id in _cids) {
+              _consumeProcessById(id);
+            }
+          }
+        }
+      }
+    }
+
+    this.iap_blocking = false;
+  }
+
+  function purchaseItem(pnl, ss, callback) {
+    super.purchaseItem(pnl, ss, callback);
+
+    local _iap = ::gamesetting.iap_settings[ss.item_id];
+    local info = PurchaseInfo();
+    info.item_id = ::gamesetting.getIAPItemByItemId(_iap.item_id).id;
+
+    if (_purchaseProcess(info).purchase_result) {
+
+      if (_sendPurchaseInfo(info).server_result) {
+
+        if (_iap.needConstume()) _consumeProcess(info);
+
+      }
+    }
+
+    this.iap_blocking = false;
+
+    callback(info, pnl, ss);
+  }
+
+  function _purchaseProcess(info) {
+    local ctx = { running = true, success = false, purchase_info = null };
+    local requestevent = function(e) {
+
+      switch (e.id) {
+      case IAP_PURCHASE_SUCCESS:
+        purchase_info = e.actioncmd;
+        running = false;
+        success = true;
+        break;
+      case IAP_PURCHASE_FAIL:
+        running = false;
+        success = false;
+        break;
+      }
+    };
+
+    local fn = root.addEventListener(IAP_EVENT, requestevent, ctx);
+    skRequestIAP(info.item_id);
+    while (ctx.running) {
+      root.suspendOrUpdate();
+    }
+    root.removeEventListener(IAP_EVENT, fn);
+
+    info.purchase_price = ::gamesetting.getIAPItemByItemId(info.item_id).pricetxt;
+    if (ctx.purchase_info) info.purchase_info = _decodePurchaseInfo(ctx.purchase_info);
+    info.purchase_result = ctx.success;
+    return info;
+  }
+
+  function _sendPurchaseInfo(info) {
+    local res = ::gamesession.requestChargeRM(info);
+    local is_success = res["ret"] == ::ServletConstants.RESPONSE_SUCCEED;
+    info.server_result = is_success;
+    if (is_success) {
+      info.add_rm = res["add_rm"];
+      info.bonus_rm = res["bonus_rm"];
+    }
+    return info;
+  }
+
+  function _consumeProcess(info) {
+    local is_success = _consumeProcessById(info.item_id);
+    info.consume_result = is_success;
+
+    return info;
+  }
+  function _consumeProcessById(id) {
+    local ctx = { running = true, success = false };
+    local consumeevent = function(e) {
+
+      switch (e.id) {
+      case IAP_CONSUME_SUCCESS:
+        running = false;
+        success = true;
+        break;
+      case IAP_CONSUME_FAIL:
+        running = false;
+        success = false;
+        break;
+      }
+    };
+
+    local fn = root.addEventListener(IAP_EVENT, consumeevent, ctx);
+    skConsumeIAP(id);
+    while (ctx.running) {
+      root.suspendOrUpdate();
+    }
+    root.removeEventListener(IAP_EVENT, fn);
+
+    return ctx.success;
+  }
+}
+
+class InAppBillingProcesserForIOS extends InAppBillingProcesser {
+
+  function queryItemPrices() {
+    super.queryItemPrices();
+
+    this.item_list = ::gamesetting.iaplists[skGetOSName()];
+    local idlist = [];
+    foreach (item in this.item_list) {
+      idlist + item.id;
+    }
+
+    local ctx = { running = true, infos = null };
+    local iapevent = function(e) {
+
+      switch (e.id) {
+      case IAP_INFO_SUCCESS:
+        infos = {};
+        try {
+
+          local _jsons = decodeJSON(e.actioncmd);
+          foreach (_json in _jsons) {
+            infos[_json.itemid] <- _json;
+          }
+        } catch (ex) {
+          printexception(ex);
+          printf("query JSON error? :\n%S\n", e.actioncmd);
+        }
+        running = false;
+        break;
+      case IAP_INFO_FAIL:
+        running = false;
+        break;
+      }
+    };
+    local fn = root.addEventListener(IAP_EVENT, iapevent, ctx);
+    skQueryIAPItemsInfo(idlist);
+    while (ctx.running) {
+      root.suspendOrUpdate();
+    }
+    root.removeEventListener(IAP_EVENT, fn);
+
+    foreach (item in this.item_list) {
+      local info = ctx.infos[item.id];
+      if (info) {
+        item.pricetxt = info.pricetxt;
+        item.priceamt = info.priceamt;
+      }
+    }
+
+    this.iap_blocking = false;
+    this.iap_queryitem_successed = ctx.infos != null;
+    return ctx.infos != null;
+  }
+
+  function purchaseItem(pnl, ss, callback) {
+    super.purchaseItem(pnl, ss, callback);
+
+    local info = PurchaseInfo();
+    info.item_id = ::gamesetting.getIAPItem(ss.item_id).id;
+
+    if (_purchaseProcess(info).purchase_result) {
+
+      newthread().start(
+      function() {
+
+        _sendPurchaseInfo(info);
+
+        this.iap_blocking = false;
+        callback(info, pnl, ss);
+      },
+      this
+      );
+      return;
+    }
+
+    this.iap_blocking = false;
+    callback(info, pnl, ss);
+  }
+
+  function _purchaseProcess(info) {
+    local ctx = { running = true, success = false, purchase_info = null, itemList = this.item_list };
+    local requestevent = function(e) {
+
+      switch (e.id) {
+      case IAP_PURCHASE_SUCCESS:
+        local _json = decodeJSON(e.actioncmd);
+
+        local _priceMap = {};
+        foreach (item in itemList) {
+          if (item.id == _json.itemid) {
+            _priceMap[item.id] <- item.pricetxt;
+            break;
+          }
+        }
+
+        purchase_info = {
+          receipt = _json.receipt,
+          priceMap = _priceMap
+        };
+
+        running = false;
+        success = true;
+        break;
+      case IAP_PURCHASE_FAIL:
+        running = false;
+        success = false;
+        break;
+      }
+    };
+
+    local fn = root.addEventListener(IAP_EVENT, requestevent, ctx);
+    skRequestIAP(info.item_id);
+
+    local _timeout = false;
+    local _st = skGetTime();
+    while (ctx.running) {
+      root.suspendOrUpdate();
+
+    }
+    root.removeEventListener(IAP_EVENT, fn);
+
+    if (_timeout) {
+      local _dlg = ::SimpleDialog();
+      _dlg.lbl_msg.setText(::dict.get("iap_init_fail_ios"));
+      _dlg.show();
+      info.purchase_result = false;
+    }
+    if (ctx.purchase_info) info.purchase_info = ctx.purchase_info;
+    info.purchase_result = ctx.success;
+
+    return info;
+  }
+
+  function _sendPurchaseInfo(info) {
+    local res = ::gamesession.requestChargeRM(info);
+    local code = res["ret"];
+    local productIds = ::split(res["productIds"], ",");
+
+    if (productIds == null || productIds.len() == 0) {
+      info.server_result = false;
+    }
+    else {
+
+      foreach (id in productIds) {
+        _consumeProcessById(id);
+      }
+
+      if (code == ::ServletConstants.RESPONSE_SUCCEED) {
+        info.server_result = true;
+        info.add_rm = res["add_rm"];
+        info.bonus_rm = res["bonus_rm"];
+      }
+
+      else {
+
+      }
+    }
+    return info;
+  }
+
+  function _consumeProcessById(id) {
+    local ctx = { running = true, success = false };
+    local consumeevent = function(e) {
+
+      switch (e.id) {
+      case IAP_CONSUME_SUCCESS:
+        running = false;
+        success = true;
+        break;
+      case IAP_CONSUME_FAIL:
+        running = false;
+        success = false;
+        break;
+      }
+    };
+
+    local fn = root.addEventListener(IAP_EVENT, consumeevent, ctx);
+    skConsumeIAP(id);
+    while (ctx.running) {
+      root.suspendOrUpdate();
+    }
+    root.removeEventListener(IAP_EVENT, fn);
+
+    return ctx.success;
+  }
+
+  function restorePurchase(pnl, callback) {
+    super.restorePurchase(pnl, callback);
+
+    local _consumeIds = [];
+    local ctx = { running = true, success = false, purchase_info = null, itemList = this.item_list };
+
+    local iapevent = function(e) {
+
+      switch (e.id) {
+      case IAP_OWN_SUCCESS:
+        local _jsons = decodeJSON(e.actioncmd);
+
+        if (_jsons.len() > 0) {
+
+          local _priceAllMap = {};
+          foreach (item in itemList) {
+            _priceAllMap[item.id] <- item.pricetxt;
+          }
+
+          local _receipts = [];
+          local _priceMap = {};
+          local _ud = ::gamesession.getUserData();
+          foreach (_json in _jsons) {
+
+            if (_ud.hasRoomByProductId(_json.itemid)) {
+
+              if (_consumeIds.indexOf(_json.itemid) == -1) {
+                _consumeIds + _json.itemid;
+              }
+              continue;
+            }
+
+            if (_receipts.indexOf(_json.receipt) == -1) {
+              _receipts + _json.receipt;
+            }
+
+            local _price = _priceAllMap[_json.itemid];
+            if (_price) _priceMap[_json.itemid] <- _price;
+          }
+
+          if (_receipts.len() > 0) {
+            purchase_info = {
+              receipt = _receipts,
+              priceMap = _priceMap
+            };
+          }
+        }
+
+        running = false;
+        break;
+      case IAP_OWN_FAIL:
+        running = false;
+        break;
+      }
+    };
+
+    local fn = root.addEventListener(IAP_EVENT, iapevent, ctx);
+    skQueryIAPOwnItems();
+    while (ctx.running) {
+      root.suspendOrUpdate();
+    }
+    root.removeEventListener(IAP_EVENT, fn);
+
+    local _do_restore = false;
+    if (ctx.purchase_info) {
+      local res = ::gamesession.requestChargeRMbyRestore4Ios(ctx.purchase_info);
+      local code = res["ret"];
+      local productIds = ::split(res["productIds"], ",");
+      if (productIds != null && productIds.len() > 0) {
+
+        foreach (id in productIds) {
+          _consumeProcessById(id);
+        }
+
+        if (code == ::ServletConstants.RESPONSE_SUCCEED) {
+          if (res["add_rm"] && res["add_rm"] > 0) _do_restore = true;
+          if (res["bonus_rm"] && res["bonus_rm"] > 0) _do_restore = true;
+          if (res["room_ids"]) {
+            local _rids = decodeJSON(res["room_ids"]);
+            if (_rids.len() > 0) _do_restore = true;
+          }
+
+          if (_do_restore) {
+
+            local ud = ::gamesession.getUserData();
+            ud.addRealMoney(res["add_rm"]);
+            ud.addFreeRealMoney(res["bonus_rm"]);
+
+            local _dlg = SimpleDialog();
+            _dlg.lbl_msg.setText(::dict.get("shop_buy_rm_restore"));
+            _dlg.show();
+          }
+        }
+      }
+    }
+
+    else if (_consumeIds.len() > 0) {
+      foreach (id in _consumeIds) {
+        _consumeProcessById(id);
+      }
+    }
+
+    this.iap_blocking = false;
+    if (callback) callback(pnl, _do_restore);
+  }
+}

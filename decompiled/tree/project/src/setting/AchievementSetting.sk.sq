@@ -1,0 +1,14 @@
+class AchievementSetting extends Setting {
+  id = 0;
+  title = null;
+
+  type = 0;
+  score = 0;
+  score_type = null;
+
+  reward_type = 0;
+  reward_id = 0;
+  reward_amount = 0;
+
+  conditions = null;
+}

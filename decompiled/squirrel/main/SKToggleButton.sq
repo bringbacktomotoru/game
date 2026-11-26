@@ -1,0 +1,51 @@
+class SKToggleButton extends SKToggleButtonBase
+{
+  static deffontattr = FontAttribute(Fonts.ui, 12, 0xffffffff, SK_FONT_BOLD);
+
+  splist = null;
+  sp = null;
+  textbox = null;
+
+  constructor(txt = "", g = null, type = 0) {
+    splist = [
+    ::getSprite("/system/ui.silver/ui.clp#togbtn11"),
+    ::getSprite("/system/ui.silver/ui.clp#togbtn12"),
+    ::getSprite("/system/ui.silver/ui.clp#togbtn13"),
+    ::getSprite("/system/ui.silver/ui.clp#togbtn14"),
+    ];
+    sp = splist[0];
+    textbox = TextBox(deffontattr, txt);
+    textbox.colormask = 255;
+    textbox.align = 4;
+    group = g;
+  }
+
+  function updateLayout() {
+    super.updateLayout();
+    foreach (b in splist) {
+      if (b) b.bnd.set(0, 0, bnd.w, bnd.h);
+    }
+    textbox.setSize(bnd.w, bnd.h);
+  }
+
+  function render() {
+    skDrawSprite(sp);
+    skDrawTextBox(textbox);
+  }
+
+  function updateComponentState() {
+    if (viewenabled) {
+      if (selected) {
+        sp = splist[2];
+      } else
+      if (mousein) {
+        sp = splist[1];
+      } else {
+        sp = splist[0];
+      }
+    } else {
+      sp = splist[3];
+    }
+    repaint();
+  }
+}

@@ -1,0 +1,668 @@
+{
+  "ID": "9e9c4b52-5bdf-48ad-86b3-6f7e15aa7042",
+  "Version": "2.3.3.0",
+  "Name": "stagelayout_0",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 5,
+        "Children": [
+          {
+            "FontSize": 28,
+            "LabelText": "1,345,120",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/MICROSBE.TTF",
+              "Plist": ""
+            },
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": 0.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 517.9528,
+              "Y": 968.9756
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7194,
+              "Y": 0.757
+            },
+            "PreSize": {
+              "X": 0.225,
+              "Y": 0.0273
+            },
+            "LeftMargin": 436.9528,
+            "RightMargin": 121.0472,
+            "TopMargin": 293.5244,
+            "BottomMargin": 951.4756,
+            "Tag": 13,
+            "ActionTag": 476115642,
+            "Size": {
+              "X": 162.0,
+              "Y": 35.0
+            },
+            "Name": "lbl_score",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "stage/lbl_score.png",
+              "Plist": "stage/ss_stage.plist"
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 470.6318,
+              "Y": 989.4731
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.6537,
+              "Y": 0.773
+            },
+            "PreSize": {
+              "X": 0.0903,
+              "Y": 0.0102
+            },
+            "LeftMargin": 438.1318,
+            "RightMargin": 216.8682,
+            "TopMargin": 284.0269,
+            "BottomMargin": 982.9731,
+            "Tag": 22,
+            "ActionTag": -566992598,
+            "Size": {
+              "X": 65.0,
+              "Y": 13.0
+            },
+            "Name": "lbl_score_12",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "stage/btn_pause.png",
+              "Plist": "stage/ss_stage.plist"
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 790.6887,
+              "Y": 968.5486
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 1.0982,
+              "Y": 0.7567
+            },
+            "PreSize": {
+              "X": 0.0833,
+              "Y": 0.0469
+            },
+            "LeftMargin": 760.6887,
+            "RightMargin": -100.6887,
+            "TopMargin": 281.4514,
+            "BottomMargin": 938.5486,
+            "Tag": 27,
+            "ActionTag": -1121311449,
+            "Size": {
+              "X": 60.0,
+              "Y": 60.0
+            },
+            "Name": "btn_pause",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 206.3195,
+              "Y": 971.4805
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2866,
+              "Y": 0.759
+            },
+            "PreSize": {
+              "X": 0.5556,
+              "Y": 0.0437
+            },
+            "LeftMargin": 6.3195,
+            "RightMargin": 313.6805,
+            "TopMargin": 280.5195,
+            "BottomMargin": 943.4805,
+            "Tag": 76,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "stage/ico_time.png",
+                  "Plist": "stage/ss_stage.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.801,
+                  "ScaleY": 0.8391
+                },
+                "Position": {
+                  "X": 43.1577,
+                  "Y": 42.5349
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1079,
+                  "Y": 0.7596
+                },
+                "PreSize": {
+                  "X": 0.105,
+                  "Y": 0.75
+                },
+                "LeftMargin": 9.5157,
+                "RightMargin": 348.4843,
+                "TopMargin": 6.7073,
+                "BottomMargin": 7.2927,
+                "Tag": 79,
+                "ActionTag": -1989797252,
+                "Size": {
+                  "X": 42.0,
+                  "Y": 42.0
+                },
+                "Name": "ico_time",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 24,
+                "LabelText": "/ 180",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/MICROSBE.TTF",
+                  "Plist": ""
+                },
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 0.0,
+                "ShadowOffsetY": 0.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 339.1213,
+                  "Y": 24.8704
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 191,
+                  "G": 191,
+                  "B": 191
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8478,
+                  "Y": 0.4441
+                },
+                "PreSize": {
+                  "X": 0.205,
+                  "Y": 0.5536
+                },
+                "LeftMargin": 298.1213,
+                "RightMargin": 19.8787,
+                "TopMargin": 15.6296,
+                "BottomMargin": 9.3704,
+                "Tag": 78,
+                "ActionTag": -845568156,
+                "Size": {
+                  "X": 82.0,
+                  "Y": 31.0
+                },
+                "Name": "lbl_timelimit",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 47,
+                "LabelText": "049.13",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/MICROSBE.TTF",
+                  "Plist": ""
+                },
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 0.0,
+                "ShadowOffsetY": 0.0,
+                "AnchorPoint": {
+                  "ScaleY": 1.0
+                },
+                "Position": {
+                  "X": 66.6117,
+                  "Y": 56.9906
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1665,
+                  "Y": 1.0177
+                },
+                "PreSize": {
+                  "X": 0.4775,
+                  "Y": 1.0
+                },
+                "LeftMargin": 66.6117,
+                "RightMargin": 142.3883,
+                "TopMargin": -0.9906,
+                "BottomMargin": 0.9906,
+                "Tag": 77,
+                "ActionTag": -446047201,
+                "Size": {
+                  "X": 191.0,
+                  "Y": 56.0
+                },
+                "Name": "lbl_time",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 2100050865,
+            "Size": {
+              "X": 400.0,
+              "Y": 56.0
+            },
+            "VisibleForFrame": false,
+            "Name": "pnl_time",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "stage/koban.png",
+              "Plist": "stage/ss_stage.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 631.9595,
+              "Y": 969.0403
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.8777,
+              "Y": 0.7571
+            },
+            "PreSize": {
+              "X": 0.025,
+              "Y": 0.0219
+            },
+            "LeftMargin": 622.9595,
+            "RightMargin": 79.0405,
+            "TopMargin": 296.9597,
+            "BottomMargin": 955.0403,
+            "Tag": 320,
+            "ActionTag": 2131724787,
+            "Size": {
+              "X": 18.0,
+              "Y": 28.0
+            },
+            "Name": "koban_1",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FontSize": 28,
+            "LabelText": "1,345",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/MICROSBE.TTF",
+              "Plist": ""
+            },
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": 0.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 697.9308,
+              "Y": 968.9756
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "B": 153
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.9693,
+              "Y": 0.757
+            },
+            "PreSize": {
+              "X": 0.1319,
+              "Y": 0.0273
+            },
+            "LeftMargin": 650.4308,
+            "RightMargin": -25.4308,
+            "TopMargin": 293.5244,
+            "BottomMargin": 951.4756,
+            "Tag": 321,
+            "ActionTag": 1314805600,
+            "Size": {
+              "X": 95.0,
+              "Y": 35.0
+            },
+            "Name": "lbl_koban",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "stage/EquipOn.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 251.9742,
+              "Y": 276.9861
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.35,
+              "Y": 0.2164
+            },
+            "PreSize": {
+              "X": 0.2,
+              "Y": 0.1125
+            },
+            "LeftMargin": 251.9742,
+            "RightMargin": 324.0258,
+            "TopMargin": 859.0139,
+            "BottomMargin": 276.9861,
+            "Tag": 41,
+            "ActionTag": -830961045,
+            "Size": {
+              "X": 144.0,
+              "Y": 144.0
+            },
+            "Name": "eq1",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "stage/EquipOn.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 393.9689,
+              "Y": 276.9861
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.5472,
+              "Y": 0.2164
+            },
+            "PreSize": {
+              "X": 0.2,
+              "Y": 0.1125
+            },
+            "LeftMargin": 393.9689,
+            "RightMargin": 182.0311,
+            "TopMargin": 859.0139,
+            "BottomMargin": 276.9861,
+            "Tag": 47,
+            "ActionTag": -774855303,
+            "Size": {
+              "X": 144.0,
+              "Y": 144.0
+            },
+            "Name": "eq2",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "stage/EquipOn.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 543.9661,
+              "Y": 310.9832
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.7555,
+              "Y": 0.243
+            },
+            "PreSize": {
+              "X": 0.2,
+              "Y": 0.1125
+            },
+            "LeftMargin": 543.9661,
+            "RightMargin": 32.0339,
+            "TopMargin": 825.0168,
+            "BottomMargin": 310.9832,
+            "Tag": 53,
+            "ActionTag": 1151181287,
+            "Size": {
+              "X": 144.0,
+              "Y": 144.0
+            },
+            "Name": "eq3",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "stage/EquipOn.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 693.9594,
+              "Y": 344.9847
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.9638,
+              "Y": 0.2695
+            },
+            "PreSize": {
+              "X": 0.2,
+              "Y": 0.1125
+            },
+            "LeftMargin": 693.9594,
+            "RightMargin": -117.9594,
+            "TopMargin": 791.0153,
+            "BottomMargin": 344.9847,
+            "Tag": 59,
+            "ActionTag": -1824384512,
+            "Size": {
+              "X": 144.0,
+              "Y": 144.0
+            },
+            "Name": "eq4",
+            "ctype": "ProjectNodeObjectData"
+          }
+        ],
+        "Size": {
+          "X": 720.0,
+          "Y": 1280.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/MICROSBE.TTF",
+        "EquipOn.json",
+        "ss_stage.plist",
+        "ss_stage.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

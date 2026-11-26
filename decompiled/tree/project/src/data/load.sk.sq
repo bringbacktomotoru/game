@@ -1,0 +1,25 @@
+foreach (f_name in [
+"UserData.sk"
+"UserDataLocal.sk"
+
+"ProductData.sk"
+
+"CostumeData.sk"
+"FurnitureAmountData.sk"
+"FurnitureData.sk"
+"FurnitureLayoutData.sk"
+"RoomEditData.sk"
+
+"WorkData.sk"
+"WorkRewardData.sk"
+"RoomSlotData.sk"
+"ItemBoostData.sk"
+"GachaData.sk"
+"CostumeRequestData.sk"
+"MailData.sk"
+"CharacterData.sk"
+"PanelMissionData.sk"
+"MissionData.sk"
+]) {
+  runsk("/src/data/" + f_name);
+}

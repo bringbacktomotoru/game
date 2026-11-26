@@ -1,0 +1,65 @@
+class SliderH {
+  view = null;
+  knob = null;
+
+  left = 0.0;
+  bar_length = 0;
+
+  prev_pos = 0.0;
+  clamp_remainder = 0.0;
+
+  constructor(view, bar_length) {
+    this.view = view;
+    this.knob = view.findChild("knob");
+
+    this.left = knob.pos.x;
+    this.bar_length = bar_length;
+
+    this.knob.addEventListener(MOUSE_EVENT, knobevent);
+
+    this.view.pickable = true;
+    this.knob.pickable = true;
+  }
+
+  function setValue(v) {
+    this.prev_pos = 0.0;
+    this.clamp_remainder = 0.0;
+
+    _knobDragged(Math.clamp(v, 0.0, 1.0) * this.bar_length);
+  }
+
+  function getValue() {
+    return (knob.pos.x - left) / bar_length;
+  }
+
+  function _knobDragged(delta) {
+    local dx = clamp_remainder + delta;
+    local pos = Math.clamp(knob.pos.x + dx, left, left + bar_length);
+    this.clamp_remainder = knob.pos.x + dx - pos;
+    if (knob.pos.x != pos) {
+      knob.pos.x = pos;
+      knob.matdirty = true;
+
+      view.postActionEvent("dragged");
+    }
+  }
+
+  function knobevent(e) {
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.prev_pos = e.x;
+      this.clamp_remainder = 0.0;
+
+      e.consume();
+      break;
+    case MOUSE_DRAGGED:
+      if (e.x != this.prev_pos) {
+        _knobDragged((e.x - prev_pos) / ::getDisplayScale());
+        this.prev_pos = e.x;
+      }
+
+      e.consume();
+      break;
+    }
+  }
+}

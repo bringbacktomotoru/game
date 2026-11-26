@@ -1,0 +1,45 @@
+model =
+{
+  root = {
+  }
+  lshot = {
+    pm = "lshot.pm"
+    parent = "root"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+    setHPB(-90.0, -30.0, 0);
+    setScale(3.0, 3.0, 3.0);
+  }
+
+  function start() {
+    $lshot.setBlend(SK_ADD);
+    generate({ view = "lstraight.sk3" });
+
+    for (;;) {
+      $lshot.spin(0, 0, 15, 390);
+
+      fadeColor(1153171455, 30);
+      pass(65);
+      pass(65);
+      fadeColor(255, 30);
+      pass(65);
+
+      fadeColor(0xffff22ff, 30);
+      pass(65);
+      pass(65);
+      fadeColor(255, 30);
+      pass(65);
+    }
+  }
+
+  function die() {
+    pass(600);
+    kill();
+  }
+}

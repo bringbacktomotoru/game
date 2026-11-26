@@ -1,0 +1,103 @@
+class CollisionLine
+{
+  x1 = 0.0; y1 = 0.0;
+  x2 = 0.0; y2 = 0.0;
+
+  hx = 0.0;
+  hy = 0.0;
+  hlen2 = 0.0;
+  a = 0.0; b = 0.0; c = 0.0;
+  aabb = 0.0;
+
+  constructor(_x1, _y1, _x2, _y2) {
+    x1 = _x1 + 0.0;
+    y1 = _y1 + 0.0;
+    x2 = _x2 + 0.0;
+    y2 = _y2 + 0.0;
+    a = _y1 - _y2;
+    b = _x2 - _x1;
+    c = -a * _x1 - b * _y1;
+    aabb = a * a + b * b;
+    hlen2 = Math.sqrt((_x2 - _x1) * (_x2 - _x1) + (_y2 - _y1) * (_y2 - _y1));
+    hlen2 *= hlen2;
+    hx = (_x1 + _x2) * 0.5;
+    hy = (_y1 + _y2) * 0.5;
+  }
+
+  function rayTest(q, w, out) {
+    local qx = q.x, qy = q.y;
+    local wx = w.x, wy = w.y;
+    local _t = -(a * qx + b * qy + c) / (a * wx + b * wy);
+    if (_t >= 0.0 && _t < 1.0) {
+      local dx = hx - (qx + wx * _t);
+      local dy = hy - (qy + wy * _t);
+      if (dx * dx + dy * dy > hlen2) return -1.0;
+      local d = -(a * (qx + wx) + b * (qy + wy) + c) / aabb;
+      if (d < 0.0) return -1.0;
+      out.set(a * d, b * d, 0.0);
+      return _t;
+    } else {
+      return -1.0;
+    }
+  }
+
+  function cubeTest(q, r) {
+    local qx = q.x, qy = q.y;
+    local _t = -Math.abs(a * qx + b * qy + c) / Math.sqrt(a * a + b * b);
+    return _t <= r ? 1.0 : -0.0;
+
+  }
+}
+
+local intersects = function(p, s) {
+  return (p <= s && p >= -s);
+}
+
+class CollisionRect
+{
+  x = 0.0; y = 0.0;
+  r = 0.0; s = 0.0;
+
+  constructor(_x, _y, _r, _s) {
+    x = _x; y = _y; r = _r; s = _s;
+  }
+
+  function rayTest(q, w, out) {
+    local qx = q.x, qy = q.y;
+    local wx = w.x, wy = w.y;
+    local _t;
+
+    if (wx > 0) {
+      _t = (x - r - qx);
+      if ((_t >= 0) && (_t <= wx) && intersects(qy - y + wy * (_t /= wx), s)) {
+        out.set(wx * _t - wx, 0.0, 0.0);
+        return _t;
+      }
+    } else {
+      _t = (x + r - qx);
+      if ((_t <= 0) && (_t >= wx) && intersects(qy - y + wy * (_t /= wx), s)) {
+        out.set(wx * _t - wx, 0.0, 0.0);
+        return _t;
+      }
+    }
+
+    if (wy > 0) {
+      _t = (y - s - qy);
+      if ((_t >= 0) && (_t <= wy) && intersects(qx - x + wx * (_t /= wy), r)) {
+        out.set(0.0, wy * _t - wy, 0.0);
+        return _t;
+      }
+    } else {
+      _t = (y + s - qy); local tt = _t; tt /= wy;
+      if ((_t <= 0.0) && (_t >= wy) && intersects(qx - x + wx * (_t /= wy), r)) {
+        out.set(0.0, wy * _t - wy, 0.0);
+        return _t;
+      }
+    }
+    return -1.0;
+  }
+
+  function cubeTest(q, r) {
+    return 1.0;
+  }
+}

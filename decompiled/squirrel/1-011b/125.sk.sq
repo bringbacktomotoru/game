@@ -1,0 +1,119 @@
+class RoomInfoManager {
+  rooms = null;
+  scene = null;
+
+  constructor(scene) {
+    this.scene = scene;
+  }
+
+  function initRooms(room_layout) {
+    rooms = array(length(room_layout));
+    foreach (fi, _ in rooms) {
+      rooms[fi] = array(length(room_layout[fi]));
+      foreach (ri, _ in rooms[fi]) {
+
+        rooms[fi][ri] = RoomInfo();
+      }
+    }
+  }
+
+  function getGrid(pos) {
+    return rooms[0][0].getGrid(pos.x, pos.z);
+  }
+
+  function getRoomInfo(fi = 0, ri = 0) {
+    return rooms[0][0];
+  }
+
+  function addFurnitureModel(fi, ri, model) {
+    rooms[fi][ri].addFurniture(model);
+  }
+  function furnitureAdded(f) {
+
+    foreach (f_idx, floor in rooms) {
+      foreach (r_idx, room in floor) {
+        if (!room.isSet(f)) continue;
+
+        if (f.iy == f_idx && f.ix == r_idx) {
+          return;
+        }
+
+        room.removeFurniture(f);
+      }
+    }
+
+    this.rooms[f.iy][f.ix].addFurniture(f);
+  }
+
+  function furnitureRemoved(f) {
+    this.rooms[f.iy][f.ix].removeFurniture(f);
+  }
+
+  function allFurnitureRemoved(y, x) {
+    this.rooms[y][x].removeAllFurniture();
+  }
+
+  function getEnableUseFurnitureList(f) {
+    if (this.rooms[f.iy][f.ix] == undefined) {
+      print("RoomInfo is undefined !!!!!!! f.iy = " + f.iy + " , f.ix = " + f.ix + "\n");
+      currentthread().printStackTrace();
+
+      return [];
+    }
+
+    return this.rooms[f.iy][f.ix].getEnableUseFurnitureList();
+  }
+
+  function updateAllRoomInfo() {
+    local room_layout = ::gamesession.getUserData().getRoomLayout();
+    foreach (floor_idx, floor in room_layout) {
+      foreach (room_idx, uid in floor) {
+        updateRoomInfo(floor_idx, room_idx);
+      }
+    }
+  }
+
+  function updateRoomInfo(floor_idx, room_idx, edit_info = null) {
+    local _ud = ::gamesession.getUserData()
+    local _ruid = _ud.getUidRoomLayout(floor_idx, room_idx);
+
+    if (_ruid == 0) {
+
+      return;
+    }
+    else if (edit_info) {
+      local room_info = this.rooms[floor_idx][room_idx];
+      if (edit_info[0] && !edit_info[1]) {
+        local _fm = scene.getHouseManager().getFurnitureLayoutManager().getFurnitureModel(edit_info[0][0].getUID());
+        room_info.removeFurniture(_fm);
+      }
+      else if (!edit_info[0] && edit_info[1]) {
+        room_info.addFurniture(edit_info[1]);
+      }
+
+    }
+    else {
+      local _flm = scene.getHouseManager().getFurnitureLayoutManager();
+
+      local room_info = this.rooms[floor_idx][room_idx];
+      room_info.removeAllFurniture();
+      local _fld_list = _ud.getRoomEditData(_ruid).getFurnitureLayouts();
+      for (local i = 0; i < _fld_list.len(); i++) {
+        local model = _flm.getFurnitureModel(_fld_list[i].getUID());
+
+        if (model) room_info.addFurniture(model.getLayoutData());
+      }
+
+      this.rooms[floor_idx][room_idx].setup(_ruid);
+
+    }
+  }
+
+  function setEditTmpGrids(floor_idx, room_idx, fm, is_del) {
+    return this.rooms[floor_idx][room_idx].setEditTmpGrids(fm.getFurnitureSetting(), fm.getLocalPos(), fm.getLayoutData().getAngle(), is_del);
+  }
+
+  function enableEditFurniture(floor_idx, room_idx, edit_info) {
+    return this.rooms[floor_idx][room_idx].enableEditFurniture(edit_info);
+  }
+}

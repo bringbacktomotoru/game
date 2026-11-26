@@ -1,0 +1,191 @@
+class FlickPanel extends ScrollPanel
+{
+
+  flick_rate = null;
+
+  drag_enabled = true;
+
+  current_block = null;
+  flick_start_time = -1;
+  flick_start_pos = null;
+
+  blockchanged_func = null;
+
+  constructor(v, consume = true) {
+    super(v, consume);
+
+    flick_rate = [0.5, 0.5];
+    current_block = [0.0, 0.0];
+  }
+
+  function mouseevent(e) {
+    if (!this.is_scroll_locked) {
+      switch (e.id) {
+      case MOUSE_PRESSED:
+        scrollvel.set(0, 0, 0);
+        scrolling = true;
+        mousex = e.x;
+        mousey = e.y;
+        dxlog = 0.0;
+        dylog = 0.0;
+        presstime = mousetime = e.time;
+        if (intr) {
+          clearInterval(intr);
+          intr = null;
+        }
+        this.drag_enabled = true;
+        this.flick_start_time = -1;
+        break;
+      case MOUSE_DRAGGED:
+
+        if (presstime) {
+          if (Math.abs(mousex - e.x) > 24 || Math.abs(mousey - e.y) > 24) {
+            presstime = 0;
+
+          } else
+          if (skGetTime() >= presstime + 100) {
+            presstime = 0;
+            mousex = e.x;
+            mousey = e.y;
+
+          } else {
+            break;
+          }
+        }
+        local _len = Math.sqrt((mousex - e.x) * (mousex - e.x) + (mousey - e.y) * (mousey - e.y));
+
+        local dx = (mousex - e.x) * dxscale;
+        local dy = (mousey - e.y) * dyscale;
+        view.pos.x -= dx;
+        view.pos.y -= dy;
+        view.matdirty = true;
+        view.repaint();
+        mousex = e.x;
+        mousey = e.y;
+        local dt = 1.0 + ((e.time - mousetime) + 0.0) * 0.1;
+        dxlog = dxlog / dt - dx;
+        dylog = dylog / dt - dy;
+        mousetime = e.time;
+
+        if (_len > 10.0 && this.flick_start_time < 0) {
+          this.flick_start_time = skGetTime();
+          this.flick_start_pos = Vector3D(this.view.pos);
+
+        }
+
+        if (movfunc) movfunc(this);
+        break;
+      case MOUSE_RELEASED:
+        local dt = 1.0 + ((e.time - mousetime) + 0.0) * 0.1;
+        dxlog = dxlog / dt;
+        dylog = dylog / dt;
+        local w = view.getWindowRect();
+        local d = dxlog * dxlog + dylog * dylog;
+        if (!intr) {
+          local _FLICK_TIME = 100;
+          local _FLICK_DISTANCE = 80.0 * getDisplayScale();
+
+          local _arr = [adjust(view.pos.x, w.w, scrollrect.x, scrollrect.w, block[0], flick_rate[0]), adjust(view.pos.y, w.h, scrollrect.y, scrollrect.h, block[1], flick_rate[1])];
+          if (current_block[0] == _arr[0] && current_block[1] == _arr[1] && flick_start_pos) {
+
+            local _dist = (this.view.pos - this.flick_start_pos);
+            local _time = skGetTime() - flick_start_time;
+
+            if (flick_start_time > 0 && _time < _FLICK_TIME && _dist.length() > _FLICK_DISTANCE) {
+
+              if (Math.abs(_dist.x) - Math.abs(_dist.y) > 0.0) {
+
+                local _sign = _dist.x / Math.abs(_dist.x);
+                _arr[0] = adjust(view.pos.x + block[0] * dxscale * (_sign), w.w, scrollrect.x, scrollrect.w, block[0], flick_rate[0]);
+              } else {
+
+                local _sign = _dist.y / Math.abs(_dist.y);
+                _arr[1] = adjust(view.pos.y + block[1] * dyscale * (_sign), w.h, scrollrect.y, scrollrect.h, block[1], flick_rate[1]);
+              }
+            }
+          }
+          current_block = _arr;
+
+          _moveto(
+          _arr[0],
+          _arr[1],
+          150
+          );
+        }
+        view.matdirty = true;
+        view.repaint();
+
+        break;
+      }
+    }
+
+    if (consume) e.consume();
+  }
+
+  function updateCurrentBlock(v) {
+    local w = this.view.getWindowRect();
+    local _arr = [adjust(v.x, w.w, scrollrect.x, scrollrect.w, block[0], flick_rate[0]), adjust(v.y, w.h, scrollrect.y, scrollrect.h, block[1], flick_rate[1])];
+    this.current_block = _arr;
+    this.view.pos.set(_arr[0], _arr[1], 0.0);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function getFlickRate() {
+    return this.flick_rate;
+  }
+
+  function setFlickRate(arr) {
+    this.flick_rate.clear();
+    this.flick_rate.extend(arr);
+  }
+
+  function setBlockChangedFunc(func) {
+    this.blockchanged_func = func;
+  }
+
+  function adjust(x, w, sx, sw, blk, rate = 0.5) {
+    blk = int(blk);
+    local x0 = int(x);
+    local _r = 1.0 - rate;
+    x = ((int(x0 + blk * (x0 < 0 ? -_r : _r)) | 0) / blk) * blk;
+    if (sw < w) sw = w;
+    if (sw >= w) {
+      if (x > sx) {
+        return sx;
+      }
+      if (x + sw < w) {
+        return w - sw;
+      }
+    }
+    return x;
+  }
+
+  function _moveto(x, y, time) {
+    local env = {
+      self = this
+      view = view
+      p0 = Vector3D(view.pos)
+      p1 = Vector3D(x, y, 0)
+      t = 0
+    }
+    local func = function(dt) {
+      if ((t += dt) >= time) {
+        view.pos(p1);
+        view.matdirty = true;
+        view.repaint();
+        if (self.movfunc) self.movfunc(this);
+        if (self.blockchanged_func) self.blockchanged_func(this);
+        self.intr = null;
+        return undefined;
+      } else {
+        view.pos(p0.lerp(p1, Math.pow((t + 0.0) / time, 0.4)));
+        view.matdirty = true;
+        view.repaint();
+        if (self.movfunc) self.movfunc(this);
+      }
+    }.bindenv(env);
+
+    intr = setInterval(func, 1);
+  }
+}

@@ -1,0 +1,147 @@
+class SKContextMenuBase extends SKView
+{
+  adapt = null;
+  popupshown = true;
+  selecteditem = null;
+
+  menustack = null;
+
+  mgnx = 4;
+  mgny = 4;
+  lsb = -8;
+
+  nextintervalid = 0;
+
+  constructor() {
+    adapt = MenuAdaptor();
+  }
+
+  function setMenuAdaptor(a) {
+    adapt = a;
+  }
+
+  function processEvent(e) {
+    if (e.src == this) {
+      switch (e.id) {
+      case MOUSE_PRESSED:
+        endMenu(null);
+        break;
+      }
+    }
+    return super.processEvent(e);
+  }
+
+  function show(x, y) {
+    local focus = ::rootview.focusview;
+
+    local root = ::rootview;
+    setRect(0, 0, root.bnd.w, root.bnd.h);
+    root.addChild(this);
+    popupshown = true;
+
+    menustack = [];
+    local p = Vector3D(x, y, 0);
+    showMenu(p, adapt.rootnode);
+
+    modal = 1;
+    startModal();
+    if (focus) focus.requestFocus();
+    return selecteditem;
+  }
+
+  function endMenu(item) {
+    popupshown = false;
+    clearnext();
+    clearMenu(0);
+    parent.removeChild(this);
+    if (item) {
+      selecteditem = item;
+    }
+  }
+
+  function showMenu(comp, obj) {
+    local list = createListView();
+    local listadapt = adapt.getListAdaptor(obj);
+    local board;
+    local scroll;
+
+    local r = Rect2D();
+    if (comp instanceof SKView) {
+      r.set(comp.bnd);
+      r.transform(comp.mat);
+    } else {
+      local sw = ::rootview.bnd.w;
+      r.set(comp.x, comp.y, adapt.getListWidth(obj), 10.0);
+      if (r.x + r.w >= sw) r.x = sw - r.w;
+    }
+    local sh = ::rootview.bnd.h;
+    if (length(menustack) == 0) {
+
+      local h1 = sh - (r.y + r.h);
+      local h2 = r.y;
+      r.x += mgnx;
+      r.w -= mgnx * 2;
+      local lh = listadapt.getCount() * listadapt.getCellHeight();
+      local rh = Math.min(sh / 3, lh) | 0;
+      if (r.y + r.h + rh + mgny * 2 > sh) {
+        r.h = Math.min(lh, sh / 3) | 0;
+        r.y = r.y - r.h - mgny;
+      } else {
+        r.y += r.h + mgny;
+        r.h = rh;
+      }
+    } else {
+      local sw = ::rootview.bnd.w;
+      local w = adapt.getListWidth(obj);
+
+      if (r.x + r.w + w + lsb * mgnx * 2 >= sw) {
+        r.x = r.x - r.w + w - lsb - mgnx;
+      } else {
+        r.x = r.x + r.w + lsb + mgnx;
+      }
+      r.w = w;
+
+      local lh = listadapt.getCount() * listadapt.getCellHeight();
+      local rh = Math.min(lh, sh * 2 / 3) | 0;
+      r.h = rh;
+    }
+    list.setListAdaptor(listadapt);
+    board = createMenuBoard(r);
+    r.x = mgnx; r.y = mgny;
+    scroll = createScrollPane(r);
+    scroll.setContent(list);
+    board.addChild(scroll);
+    this.addChild(board);
+
+    local listener = PulldownListener(this, list, length(menustack));
+    list.addEventListener(MOUSE_EVENT, listener.procevent, listener);
+    list.addEventListener(ITEM_EVENT, listener.procevent, listener);
+    list.requestFocus();
+
+    menustack.append(board);
+  }
+
+  function clearMenu(depth) {
+    for (local l = length(menustack) - 1; l >= depth; l--) {
+      this.removeChild(menustack.pop());
+    }
+  }
+
+  function clearnext() {
+    if (nextintervalid) {
+      clearInterval(nextintervalid);
+      nextintervalid = 0;
+    }
+  }
+
+  function createListView() {
+    return ListView();
+  }
+
+  function createScrollPane() {
+    return null;
+  }
+
+  function createMenuBoard(r) {
+  }
+}

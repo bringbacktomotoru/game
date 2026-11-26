@@ -1,0 +1,140 @@
+class ARModel {
+  angle = 0.0;
+  another_pos = null;
+  another_rot = null;
+  another_scale = null;
+  visible = true;
+
+  capture_model = null;
+  shadow_obj = null;
+
+  is_AR_mode = true;
+  ar_module = null;
+
+  scene = null;
+  model_viewer = null;
+
+  v_1 = Vector3D();
+
+  constructor(scene) {
+    this.scene = scene;
+
+    another_pos = Vector3D();
+    another_scale = Vector3D(1.0);
+    another_rot = Quaternion();
+
+    is_AR_mode = ::ENABLE_AR;
+  }
+
+  function update(dt) {
+  }
+
+  function release() {
+  }
+
+  function setModelViewer(viewer) {
+    this.model_viewer = viewer;
+    if (capture_model) capture_model.setModelViewer(viewer);
+  }
+
+  function setARModule(module) {
+    this.ar_module = module;
+    if (capture_model) capture_model.setARModule(module);
+  }
+
+  function getPos() {
+    return null;
+  }
+
+  function getRotation() {
+    return null;
+  }
+
+  function getScale() {
+    return null;
+  }
+
+  function getAngle() {
+    return this.angle * Math.RTOD;
+  }
+
+  function setPos(pos) {
+  }
+
+  function setBothModelPos(pos) {
+    setPos(pos);
+    capture_model.setPos(pos);
+  }
+
+  function setPosXYZ(x, y, z) {
+  }
+
+  function setAngle(angle) {
+    this.angle = angle * Math.DTOR;
+  }
+  function addAngle(angle) {
+    setAngle(getAngle() + angle);
+  }
+
+  function setBothModelAngle(angle) {
+    setAngle(angle);
+    capture_model.setAngle(angle);
+  }
+
+  function setRotation(rot) {
+    local _hpb = rot.toMatrix().getHPB();
+
+    this.angle = -_hpb.x;
+  }
+
+  function setBothModelRotation(rot) {
+    setRotation(rot);
+    capture_model.setRotation(rot);
+  }
+
+  function setScale(sc) {
+  }
+
+  function setBothModelScale(scale) {
+    setScale(scale);
+    capture_model.setScale(scale);
+  }
+
+  function setVisible(visible) {
+    this.visible = visible;
+  }
+
+  function setARMode(is_ar) {
+
+    if (this.is_AR_mode != is_ar) {
+      _swapAttribute();
+      if (is_AR_mode) {
+        another_pos.set(0, 0, 0);
+        another_rot.setHPB(0, 0, 0);
+      }
+    }
+    this.is_AR_mode = is_ar;
+    if (capture_model) {
+      capture_model.setARMode(is_ar);
+    }
+  }
+
+  function _swapAttribute() {
+
+  }
+
+  function writeToCaptureModel() {
+    if (capture_model) {
+      capture_model.setPos(getPos());
+      capture_model.setRotation(getRotation());
+    }
+  }
+
+  function getCaptureModel() {
+    return capture_model;
+  }
+
+  function isCaptureModel() {
+    return capture_model ? false : true;
+  }
+}

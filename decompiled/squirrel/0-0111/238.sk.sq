@@ -1,0 +1,17 @@
+return {
+  modeldata = "cocktail.mdl"
+  bnd = [0.0, 0.045714, 0.0, 0.287484, 0.327502, 0.287484]
+
+  material = [
+  {
+    name = "cocktail_mt"
+    tec = "shading.basic"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 2139062271
+    Ke = 151587327
+    shiness = 20.0
+    texture0 = "tex/cocktail.png"
+  }
+  ]
+}

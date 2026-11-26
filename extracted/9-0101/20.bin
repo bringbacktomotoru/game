@@ -1,0 +1,809 @@
+
+[changeroom id=5]
+[playbgm bgm="BGM04"]
+;使用する家具
+
+;本棚
+;[popfurniture id=5405 x=-0.5 y=0 z=-2 angle=180]
+;ラグ
+[popfurniture id=1713 x=0 y=0 z=0 angle=0]
+;本
+[popfurniture id=100002 x=-0.8 y=0.2 z=-0.8 angle=230]
+;テーブル
+[popfurniture id=100003 x=-4.5 y=0 z=-5 angle=180]
+;椅子
+[popfurniture id=5701  x=-5.5 y=0 z=-6 angle=180]
+[popfurniture id=5701  x=-3.5 y=0 z=-6 angle=180]
+;電話
+[popfurniture id=14602   x=2 y=0 z=-9.5 angle=180]
+
+[focusdoor]
+
+; 位置確認用カメラ----------------------
+;[movecamera type=1 x=2 y=55 z=-9 time=0]
+;[rotatecamera pitch=90]
+;------------------------------------
+;カメラ初期位置
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+
+;キャラ出現 初期カメラの表示範囲外に
+[popchara costume=111101 x=2.5 z=-8 angle=70 relative=true]
+;シナモン
+[popchara costume=1104102 x=0 z=-9 angle=210 relative=true]
+;メロディ
+[popchara costume=904002 x=-1.3 z=-7 angle=220 relative=true]
+[popchara costume=112105 x=3.8 z=-9 angle=145 relative=true]
+;キティ
+[popchara costume=906001 x=4.9 z=-7 angle=145 relative=true]
+
+; キャラアクション
+[startanime name=purin time=0 script=lag_neteru_set script_args={["meisou",1000]}]
+
+[startscene]
+
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile"]}]
+
+[wait time=1000]
+
+; カメラワーク指定----------------------
+;ラグの上にプリンがねている
+;それをシナモン、みんなが囲んでいる
+;------------------------------------
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=kubikashige script_args={[3,"biku"]}]
+[voice name=cinnamon voice_key="e26"]
+[balloon name=cinnamon time=3000]
+Did you figure out/n
+who the culprit is?#q1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[movecamera type=0 x=-0.5 y=2.5 z=8.5 time=0]
+[rotatecamera pitch=5 head=160 time=0]
+
+[turnchara name=keroppi script=walk_face angle=190 script_args={["kyomi"]} time=300]
+[wait time=300]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kyomi"]}]
+
+; キティアクション
+[startanime name=kitty time=2000 script=munehari script_args={["smile",3]}]
+[balloonoffset x=-1 y=-0.6]
+[voice name=kitty voice_key="e10"]
+[balloon name=kitty time=3000 type=2]
+Yes./n
+Quite elementary, my friends.
+[wait time=1000]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kyomi"]}]
+[wait time=2000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+; キティアクション
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+[turnchara name=kitty script=walk_face angle=100 script_args={["def"]} time=300]
+[wait time=300]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["def"]}]
+[startanime name=kitty time=2000 script=clock_yubisashi_set script_args={[1,"def"]}]
+[balloonoffset]
+[balloon name=kitty time=3000 type=2]
+Take a look at this book.
+[wait time=1000]
+[turnchara name=keroppi script=walk_face angle=145 script_args={["kyomi"]} time=300]
+[wait time=300]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=keroppi time=2000 script=kubikashige script_args={[3,"kyomi"]}]
+[turnchara name=mymelo script=walk_face angle=260 script_args={["kyomi"]} time=300]
+[wait time=300]
+[startanime name=mymelo time=2000 script=kubikashige script_args={[3,"kyomi"]}]
+[wait time=1000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+;演出---------------------------------------------
+;倒れているプリンにフォーカス
+;多分難しいと思うので0秒切り替えでいいです
+;落ちている本を映す
+;0.5～1秒ほど映したら元の位置にカメラを戻す
+;------------------------------------------------
+[movecamera type=0 x=-1 y=2 z=8 time=0]
+[wait time=2000]
+
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+
+;けろっぴアクション
+[startanime name=keroppi time=2000 script=mitsuketa_set script_args={["biku","kyomi_blink"]}]
+[voice name=keroppi voice_key="e23"]
+[balloon name=keroppi time=3000]
+There's a book on/n
+the floor near Purin#e1#
+[wait time=1500]
+[startanime name=mymelo time=2000 script=mitsuketa_set script_args={["biku","kyomi_blink"]}]
+[startanime name=cinnamon time=2000 script=uun2_set script_args={[3,"biku"]}]
+[turnchara name=kitty script=walk_face angle=160 script_args={["meisou"]} time=300]
+[wait time=300]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["meisou"]}]
+[movechara name=kitty type=0 x=-3 z=7 script=movie_walk neutral=stand time=2500]
+[wait time=3000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+; キティアクション
+[startanime name=kitty time=2000 script=bou_unaduku_face script_args={[2,"smile"]}]
+[balloon name=kitty time=3000]
+I handed that book/n
+to Purin yesterday.
+[wait time=1500]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kyomi"]}]
+[turnchara name=mymelo script=walk_face angle=220 script_args={["kyomi"]} time=300]
+[wait time=300]
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kyomi"]}]
+[wait time=1500]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+[movecamera type=0 x=1.5 y=2.5 z=11 time=0]
+
+; キティアクション
+[startanime name=kitty time=2000 script=clock_nayamu_set script_args={[3,"meisou"]}]
+[balloonoffset x=-1.5 y=-0.6]
+[voice name=kitty voice_key="e26"]
+[balloon name=kitty time=3000 type=2]
+See how far/n
+he's read
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+; キティアクション
+[startanime name=kitty time=2000 script=kubikashige script_args={[3,"smile"]}]
+[voice name=kitty voice_key="e8"]
+[balloon name=kitty time=3000 type=2]
+It's an entertaining/n
+novel, I'm sure he was/n
+up late reading it.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+[movecamera type=0 x=3 y=2.5 z=7 time=0]
+[rotatecamera pitch=5 head=220 time=0]
+[charavisible name=purin visible=false]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=mitsuketa_set script_args={["biku","def"]}]
+[balloonoffset]
+[balloon name=mymelo time=3000]
+Ah#e1#
+[wait time=1500]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+[startanime name=cinnamon time=2000 script=clock_nayamu_set script_args={[5,"biku"]}]
+
+[movecamera type=0 x=-2.3 y=2.3 z=4.8 time=0]
+[rotatecamera pitch=5 head=145 time=0]
+[charavisible name=purin visible=true]
+;けろっぴアクション
+[startanime name=keroppi time=2000 script=sentence_picture_kansou1
+ script_args={[{loop_num = 3, face=["biku"]}]}]
+[balloon name=keroppi time=3000]
+Then...
+[wait time=2000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+;演出--------
+;キティにフォーカス
+;0秒でもいい
+;キティがプレイヤーの方を向くイメージで正面を向く
+;-------------------------------
+	
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+
+; キティアクション
+[startanime name=kitty time=2000 script=stand_end2 script_args={["meisou"]}]
+[balloon name=kitty time=3000]
+Yes, the truth behind/n
+this incident...
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+[movecamera type=0 x=1.5 y=2.5 z=11 time=0]
+[charavisible name=cinnamon visible=false]
+[turnchara name=kitty script=walk_face angle=180 script_args={["meisou"]} time=300]
+[wait time=300]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["meisou"]}]
+; キティアクション
+[startanime name=kitty time=2000 script=kubikashige script_args={[3,"smile2"]}]
+[balloonoffset x=-1.5 y=-0.6]
+[voice name=kitty voice_key="e80_1"]
+[balloon name=kitty time=3000 type=2]
+#playername,/n
+have you figured it out#q1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+;分岐
+[diarybranch]
+[wait time=1000]
+
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kyomi"]}]
+[wait time=1000]
+
+[s]
+
+*branch1
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+[charavisible name=cinnamon visible=true]
+[turnchara name=kitty script=walk_face angle=330 script_args={["smile"]} time=300]
+[wait time=300]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile"]}]
+[movechara name=kitty type=0 x=3 z=-7 script=movie_dash neutral=stand time=1800]
+[wait time=1800]
+
+[turnchara name=kitty script=walk_face angle=145 script_args={["smile2"]} time=300]
+[wait time=300]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile2"]}]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cos_bishi]
+[balloonoffset]
+[voice name=mymelo voice_key="e15"]
+[balloon name=mymelo time=3000 type=1]
+Melody figured it out#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+;演出--------
+;メロディにフォーカス
+;-------------------------------
+[movecamera type=0 x=3 y=2.5 z=7 time=0]
+[rotatecamera pitch=5 head=220 time=0]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cos_udekumi]
+[balloonoffset x=2 y=-0.7]
+[voice name=mymelo voice_key="e26"]
+[balloon name=mymelo time=3000 type=1]
+This case has no culprit#e1#
+[wait time=1000]
+[startanime name=cinnamon time=2000 script=bou_unaduku_face script_args={[2,"meisou"]}]
+[startanime name=kitty time=2000 script=bou_unaduku_face script_args={[1,"smile"]}]
+[startanime name=keroppi time=2000 script=mitsuketa_set script_args={["biku","def"]}]
+[wait time=2000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+[movecamera type=0 x=1.5 y=2.5 z=6.5 time=0]
+[charavisible name=cinnamon visible=false]
+[charavisible name=kitty visible=false]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["meisou"]}]
+[balloon name=mymelo time=3000 type=1]
+Purin...
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["def"]}]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["def"]}]
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+;演出--------
+;寝ているプリンの表情にフォーカス
+;0秒切り替え
+;-------------------------------
+
+[movecamera type=0 x=-0.3 y=1.3 z=-7 time=0]	
+[rotatecamera pitch=0 head=0 time=0]
+[wait time=2500]
+
+[movecamera type=0 x=1.5 y=2.5 z=6.5 time=0]
+[rotatecamera pitch=5 head=220 time=0]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cos_bishi]
+[voice name=mymelo voice_key="e8"]
+[balloon name=mymelo time=3000 type=1]
+only fell asleep#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+;演出--------
+;カメラ位置をもとに戻す
+;-------------------------------
+
+[charavisible name=cinnamon visible=true]
+[charavisible name=kitty visible=true]
+[movecamera type=0 x=3 y=2.5 z=7 time=0]
+[rotatecamera pitch=5 head=220 time=0]
+
+; シナモンアクション
+[turnchara name=cinnamon script=walk_face angle=180 script_args={["sad2"]} time=300]
+[wait time=300]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["sad2"]}]
+[startanime name=cinnamon time=2000 script=sentence_ketsui2
+ script_args={[{loop_num = 3, face=["sad2"]}]}]
+[balloonoffset]
+[voice name=cinnamon voice_key="e18"]
+[balloon name=cinnamon time=2500]
+That's correct#e1#
+[wait time=2500]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["def"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["def"]}]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+; シナモンアクション
+[turnchara name=mymelo script=walk_face angle=270 script_args={["kyomi"]} time=300]
+[wait time=300]
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["meisou"]}]
+[startanime name=cinnamon time=2000 script=pyonpyon_set script_args={[3,"ita","ita"]}]
+[voice name=cinnamon voice_key="e22"]
+[balloon name=cinnamon time=3000]
+I tried to tell/n
+Melody from the/n
+very beginning#e1#
+[wait time=3000]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["def"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["def"]}]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+;プリンアクション
+[startanime name=purin time=2000 script=lag_tatu]
+[wait time=3000]
+[movechara name=purin type=0 x=-0.5 z=0 script=movie_dash neutral=stand time=300]
+[wait time=500]
+[turnchara name=cinnamon script=walk_face angle=210 script_args={["def"]} time=300]
+[wait time=300]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["def"]}]
+[turnchara name=mymelo script=walk_face angle=220 script_args={["def"]} time=300]
+[wait time=300]
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["def"]}]
+;確認用キャラローテート-----------
+[turnchara name=purin script=walk_face angle=180 script_args={["bonyari"]} time=300]
+[wait time=300]	
+;---------------------
+;演出--------
+;プリンにフォーカス
+;-------------------------------
+[movecamera type=0 x=0 y=2.5 z=8 time=0]
+;プリンアクション
+[startanime name=purin time=2000 script=nobi]
+[voice name=purin voice_key="e27_1"]
+[balloon name=purin time=3000]
+Yaaaaaaawn/n
+I slept like a log.
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=pyonpyon_set]
+
+;プリンアクション
+[startanime name=purin time=2000 script=kubikashige script_args={[3,"nimaime"]}]
+[voice name=purin voice_key="e76_2"]
+[balloon name=purin time=3000]
+Huh#q1#/n
+What's going on#q1#
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=pyonpyon_set]
+
+;演出--------
+;カメラを戻す
+;-------------------------------
+
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+
+;けろっぴアクション
+[startanime name=keroppi time=2000 script=pyonpyon_set script_args={[3,"warau","warau"]}]
+[voice name=keroppi voice_key="e24"]
+[balloon name=keroppi time=3000]
+Thank goodness/n
+you're alright, Purin#e1#
+[wait time=1500]
+[startanime name=kitty time=2000 script=yokoyure_set2 script_args={[10,"smile"]}]
+[startanime name=cinnamon time=2000 script=yokoyure_set2 script_args={[10,"warau"]}]
+[wait time=1500]
+[endballoon name=keroppi]
+
+[startanime name=purin time=2000 script=yokoyure_set2 script_args={[3,"def"]}]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=sentence_kurukuru 
+ script_args={[{loop_num = 1, face=["tere", "tere"]}]}]
+[voice name=mymelo voice_key="e8"]
+[balloon name=mymelo time=2000 type=1]
+Heehee#e1#
+[wait time=2000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+[charavisible name=cinnamon visible=false]
+[movecamera type=0 x=1.5 y=2.5 z=6.5 time=0]
+[rotatecamera pitch=5 head=220 time=0]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=munehari script_args={["smile2",3]}]
+[balloonoffset x=2 y=-0.7]
+[voice name=mymelo voice_key="e13"]
+[balloon name=mymelo time=3000 type=1]
+That's another/n
+case closed for/n
+Detective Melody#e1#
+[wait time=1000]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kyomi"]}]
+[wait time=2000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+[charavisible name=cinnamon visible=true]
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+
+[turnchara name=cinnamon script=walk_face angle=160 script_args={["sad2"]} time=300]
+[wait time=300]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["sad2"]}]
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=kubikashige script_args={[3,"sad2"]}]
+[balloonoffset]
+[voice name=cinnamon voice_key="e20"]
+[balloon name=cinnamon time=3000]
+Wasn't Kitty the/n
+one who figured it out...
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+[turnchara name=cinnamon script=walk_face angle=210 script_args={["sad2"]} time=300]
+[wait time=300]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["sad2"]}]
+[jump target={"*branch_end"}]
+
+*branch2
+
+;演出-------------
+;キティにフォーカス
+;------------------------
+
+; キティアクション
+[startanime name=kitty time=2000 script=bou_unaduku_face script_args={[1,"meisou"]}]
+[balloonoffset x=-1.5 y=-0.6]
+[voice name=kitty voice_key="e9"]
+[balloon name=kitty time=3000 type=2]
+That's right,/n
+there is no culprit#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+[charavisible name=cinnamon visible=true]
+[turnchara name=kitty script=walk_face angle=330 script_args={["smile"]} time=300]
+[wait time=300]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile"]}]
+[movechara name=kitty type=0 x=3 z=-7 script=movie_dash neutral=stand time=1800]
+[wait time=1800]
+
+; キティアクション
+[turnchara name=kitty script=walk_face angle=120 script_args={["smile"]} time=300]
+[wait time=300]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile"]}]
+
+[movecamera type=0 x=-4.5 y=2 z=9 time=0]	
+[rotatecamera pitch=0 head=145 time=0]
+
+[startanime name=kitty time=2000 script=kubikashige script_args={[3,"smile"]}]
+[balloonoffset x=-1.2 y=-0.3]
+[balloon name=kitty time=3000 type=2]
+Purin was just/n
+asleep, that's all#e1#
+[wait time=3000]
+[startanime name=cinnamon time=2000 script=bou_unaduku_face script_args={[2,"meisou"]}]
+[startanime name=keroppi time=2000 script=mitsuketa_set script_args={["biku","def"]}]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+;演出--------
+;寝ているプリンの表情にフォーカス
+;0秒切り替え
+;-------------------------------
+[charavisible name=kitty visible=false]
+[movecamera type=0 x=-0.3 y=1.3 z=-7 time=0]	
+[rotatecamera pitch=0 head=0 time=0]
+[wait time=2500]
+;演出----------------
+;カメラを全体が映るように戻す
+;0秒切り替え
+;----------------------------
+[movecamera type=0 x=3 y=2.5 z=7 time=0]
+[rotatecamera pitch=5 head=220 time=0]
+
+[charavisible name=kitty visible=true]
+[turnchara name=kitty script=walk_face angle=145 script_args={["smile"]} time=300]
+[wait time=300]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile"]}]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=mitsuketa_set script_args={["bikkuri","bikkuri"]}]
+[balloonoffset]
+[balloon name=mymelo time=3000]
+Really#eq#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+; シナモンアクション
+[turnchara name=cinnamon script=walk_face angle=180 script_args={["sad2"]} time=300]
+[wait time=300]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["sad2"]}]
+[startanime name=cinnamon time=2000 script=sentence_ketsui2
+ script_args={[{loop_num = 3, face=["sad2"]}]}]
+[balloonoffset]
+[voice name=cinnamon voice_key="e18"]
+[balloon name=cinnamon time=2500]
+That's right#e1#
+[wait time=2500]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["def"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["def"]}]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+; シナモンアクション
+[turnchara name=mymelo script=walk_face angle=270 script_args={["kyomi"]} time=300]
+[wait time=300]
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["meisou"]}]
+[startanime name=cinnamon time=2000 script=pyonpyon_set script_args={[3,"ita","ita"]}]
+[voice name=cinnamon voice_key="e22"]
+[balloon name=cinnamon time=3000]
+I tried to tell/n
+Melody from the/n
+very beginning#e1#
+[wait time=3000]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["def"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["def"]}]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+;プリンアクション
+[startanime name=purin time=2000 script=lag_tatu]
+[wait time=3000]
+[movechara name=purin type=0 x=-0.5 z=0 script=movie_dash neutral=stand time=300]
+[wait time=500]
+[turnchara name=cinnamon script=walk_face angle=210 script_args={["def"]} time=300]
+[wait time=300]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["def"]}]
+[turnchara name=mymelo script=walk_face angle=220 script_args={["def"]} time=300]
+[wait time=300]
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["def"]}]
+;確認用キャラローテート-----------
+[turnchara name=purin script=walk_face angle=180 script_args={["bonyari"]} time=300]
+[wait time=300]	
+;---------------------
+;演出--------
+;プリンにフォーカス
+;-------------------------------
+[movecamera type=0 x=0 y=2.5 z=8 time=0]
+;プリンアクション
+[startanime name=purin time=2000 script=nobi]
+[voice name=purin voice_key="e27_1"]
+[balloon name=purin time=3000]
+Yaaaaaaawn/n
+I slept like a log.
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=pyonpyon_set]
+
+;プリンアクション
+[startanime name=purin time=2000 script=kubikashige script_args={[3,"nimaime"]}]
+[voice name=purin voice_key="e76_2"]
+[balloon name=purin time=3000]
+Huh#q1#/n
+What's going on#q1#
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=pyonpyon_set]
+
+;演出--------
+;カメラを戻す
+;-------------------------------
+
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+
+;けろっぴアクション
+[startanime name=keroppi time=2000 script=pyonpyon_set script_args={[3,"warau","warau"]}]
+[voice name=keroppi voice_key="e24"]
+[balloon name=keroppi time=3000]
+Thank goodness/n
+you're alright, Purin#e1#
+[wait time=1500]
+[startanime name=kitty time=2000 script=yokoyure_set2 script_args={[10,"smile"]}]
+[startanime name=cinnamon time=2000 script=yokoyure_set2 script_args={[10,"warau"]}]
+[wait time=1500]
+[endballoon name=keroppi]
+
+[startanime name=purin time=2000 script=yokoyure_set2 script_args={[3,"def"]}]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cos_udekumi]
+[voice name=mymelo voice_key="e22"]
+[balloon name=mymelo time=2000]
+An incredible deduction,/n
+Detective Kitty.
+[wait time=1500]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["def"]}]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kyomi"]}]
+[wait time=1500]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+[movecamera type=0 x=1.5 y=2.5 z=6.5 time=0]
+[rotatecamera pitch=5 head=220 time=0]
+[charavisible name=cinnamon visible=false]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=bou_unaduku_face script_args={[2,"meisou"]}]
+[balloonoffset x=2 y=-0.7]
+[voice name=mymelo voice_key="e24"]
+[balloon name=mymelo time=3000 type=1]
+Melody lost this time.
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=munehari script_args={["kiri2",3]}]
+[voice name=mymelo voice_key="e9"]
+[balloon name=mymelo time=3000 type=1]
+But next time,/n
+Melody will solve/n
+the case first#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+[charavisible name=cinnamon visible=true]
+
+; キティアクション
+[startanime name=kitty time=2000 script=kubikashige script_args={[1,"smile"]}]
+[balloonoffset]
+[voice name=kitty voice_key="e8"]
+[balloon name=kitty time=3000 type=2]
+Heehee,/n
+Melody's ideas/n
+were quite sharp.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=kubikashige script_args={[3,"fuman_blink"]}]
+[voice name=cinnamon voice_key="e20"]
+[balloon name=cinnamon time=3000]
+Are you sure/n
+about that#q1#
+[startanime name=keroppi time=2000 script=kubikashige script_args={[3,"mu2"]}]
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[jump target={"*branch_end"}]
+
+;------------------------------------------------------------
+*branch_end
+
+;演出--------
+;メロディとシナモンにフォーカス
+;0秒切り替え
+;-------------------------------
+
+[movecamera type=0 x=0 y=2.5 z=9 time=0]
+[rotatecamera pitch=5 head=200 time=0]
+[charavisible name=purin visible=false]
+
+; マイメロアクション
+[turnchara name=mymelo script=walk_face angle=180 script_args={["smile"]} time=500]
+[wait time=500]
+[movechara name=mymelo type=1 z=10  script=dash_face script_args={["smile"]} neutral=stand time=1800]
+[wait time=1800]
+
+[movecamera type=0 x=3.5 y=2.5 z=8.3 time=0]
+[rotatecamera pitch=5 head=220 time=0]
+
+[turnchara name=mymelo script=walk_face angle=320 script_args={["smile"]} time=300]
+[wait time=300]
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["smile"]}]
+[startanime name=mymelo time=2000 script=tefuri_set2 script_args={[3,"kiri2","kiri2"]}]
+[voice name=mymelo voice_key="e8"]
+[balloon name=mymelo time=3000]
+Heehee#e1#/n
+Come on#e1#/n
+Let's go, Cinnamon#e1#
+[wait time=1500]
+[startanime name=kitty time=2000 script=yokoyure_set2 script_args={[5,"def"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kyomi"]}]
+[wait time=1500]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+; シナモンアクション
+[turnchara name=cinnamon script=walk_face angle=160 script_args={["biku"]} time=300]
+[wait time=300]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["biku"]}]
+[startanime name=cinnamon time=2000 script=mitsuketa_set script_args={["biku","def"]}]
+[balloon name=cinnamon time=2000]
+Huh#q1#
+[wait time=2000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[turnchara name=mymelo script=walk_face angle=220 script_args={["kiri2"]} time=300]
+[wait time=300]
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["kiri2"]}]
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cos_bishi]
+[balloonoffset x=2 y=-0.5]
+[balloon name=mymelo time=3000 type=1]
+The next case/n
+awaits Detective/n
+Melody and her assistant#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+[turnchara name=kitty script=walk_face angle=160 script_args={["smile"]} time=300]
+[wait time=300]
+[startanime name=kitty time=2000 script=kubikashige script_args={[3,"smile"]}]
+
+[charavisible name=purin visible=true]
+[movecamera type=0 x=-0.3 y=3.3 z=15 time=0]
+[rotatecamera pitch=5 head=180 time=0]
+
+[turnchara name=purin script=walk_face angle=160 script_args={["yaa"]} time=300]
+[wait time=300]
+[startanime name=purin time=2000 script=tefuri_set2 script_args={[7,"warau","warau"]}]
+
+[turnchara name=mymelo script=walk_face angle=180 script_args={["smile"]} time=500]
+[wait time=500]
+[movechara name=mymelo type=1 z=10  script=dash_face script_args={["smile"]} neutral=stand time=1800]
+[wait time=1800]
+
+[turnchara name=keroppi script=walk_face angle=160 script_args={["kyomi"]} time=300]
+[wait time=300]
+[startanime name=keroppi time=2000 script=tefuri_set2 script_args={[7,"smile","smile"]}]
+[startanime name=kitty time=2000 script=stand_end2 script_args={["smile"]}]
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=sentence_banzai3
+ script_args={[{loop_num = 3, face=["ita", "ita"]}]}]
+[balloonoffset]
+[voice name=cinnamon voice_key="e20"]
+[balloon name=cinnamon time=3000]
+Already#eq#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[wait time=1500]
+
+[jump target={"*end"}]
+
+*end
+[fadeoutbgm spd=12]
+[wait time=2300]

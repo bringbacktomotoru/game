@@ -1,0 +1,366 @@
+class SoundManager
+{
+  rootmixer = null;
+  bgmmixer = null;
+  semixer = null;
+  searchpath = null;
+
+  bgmvol = 0.85;
+  sevol = 0.8;
+  voicevol = 0.9;
+
+  sounds = null;
+  soundch = null;
+
+  conf = null;
+  alias = null;
+
+  currentbgm = null;
+
+  constructor() {
+    sounds = {};
+    searchpath = [];
+
+    addPath("/snd/");
+
+    soundch = {};
+  }
+
+  function addPath(p) {
+    searchpath + p;
+  }
+
+  function checkmixer() {
+    if (!rootmixer) {
+      rootmixer = skGetRootMixer();
+      bgmmixer = rootmixer;
+      semixer = rootmixer;
+    }
+  }
+
+  function loadConf(path) {
+    local bb = ::getResourceContent(path);
+    if (bb) {
+      try {
+        conf = decodeJSON(bb);
+      } catch (ex) {
+        printexception(ex);
+      }
+    }
+    if (!conf) {
+      conf = {
+        sounds = {},
+        tags = ["UI", "バトル"],
+      };
+    }
+    updateAliases();
+  }
+
+  function getConf() {
+    if (!conf) loadConf("/sndconf.json");
+    return conf;
+  }
+
+  function updateAliases() {
+    alias = {};
+    foreach (i, v in conf.sounds) {
+      if (length(v["alias"])) alias[v.alias] <- i;
+    }
+  }
+
+  function flushSound(name) {
+    delete sounds[name];
+  }
+
+  function setBGMVolume(vol) {
+    bgmvol = vol;
+    if (currentbgm) currentbgm.setVolume((vol * 255) | 0);
+  }
+  function setSEVolume(vol) {
+    sevol = vol;
+  }
+  function setVoiceVolume(vol) { voicevol = vol; }
+
+  function playSound(param, cln = false) {
+    checkmixer();
+    local ss = getSound(param);
+    if (ss) {
+      if (cln) ss = clone ss;
+      local ch = param["ch"];
+      if (ch >= 0) {
+        local s = realref(soundch[ch]);
+        if (s) s.stop();
+        soundch[ch] <- weekref(ss);
+      }
+      ss.stplay(semixer);
+    }
+    return ss;
+  }
+
+  function getSound(param) {
+    if (!conf) loadConf("/sndconf.json");
+    local name;
+    switch (typeof(param)) {
+    case SS_TABLE:
+    case SS_INSTANCE:
+      if (param["name"]) {
+        name = string(param["name"]);
+        if (alias[name]) name = alias[name];
+      } else {
+        name = param["path"];
+      }
+
+      if (param["vol"] == undefined) param["vol"] <- conf["sounds"][name]["vol"];
+      if (param["speed"] == undefined) param["speed"] <- conf["sounds"][name]["speed"];
+      break;
+    default:
+      name = string(param);
+      if (alias[name]) name = alias[name];
+      param = conf["sounds"][name];
+      break;
+    }
+    local ss = sounds[name];
+    if (ss) {
+      ss = _setParam(ss, param);
+      return ss;
+    }
+
+    local r = null;
+    if (name.startsWith("/")) {
+      r = ::getResource(name);
+    } else {
+      foreach (p in searchpath) {
+        r = ::getResource(p + name);
+        if (r) break;
+      }
+    }
+    if (!r) return null;
+    local wav = r.getContent();
+    r.flush();
+    ss = wav.toSoundSource();
+
+    ss = _setParam(ss, param);
+
+    sounds[name] <- ss;
+    return ss;
+  }
+
+  function _setParam(ss, param) {
+    if ("vol" in param) {
+      ss[0] = Math.min((param.vol * sevol * 255) | 0, 255);
+    } else {
+      ss[0] = Math.min((sevol * 255) | 0, 255);
+    }
+    if ("pitch" in param) {
+      ss[1] = (param.pitch * 96.0) | 0;
+    } else
+    if ("speed" in param) {
+      ss[1] = (Math.logn(param.speed, 2.0) * 96.0 * 12.0) | 0;
+    }
+    return ss;
+  }
+
+  function stopChannel(ch) {
+    if (ch >= 0) {
+      local ss = realref(soundch[ch]);
+      soundch[ch] = null;
+      if (ss) {
+        ss.stop();
+      }
+    }
+  }
+
+  function playBGM(param) {
+    checkmixer();
+    local oldbgm = currentbgm;
+    if (currentbgm) {
+      if (currentbgm.param == param && currentbgm.playing) return;
+    }
+    stopBGM();
+    local t;
+    if (param instanceof BGMThread) {
+      t = param
+    } else {
+      t = BGMThread(param);
+    }
+    t.start();
+    currentbgm = t;
+    return t;
+  }
+
+  function fadeBGM(param, fadetime = 800) {
+    checkmixer();
+    local oldbgm = currentbgm;
+    if (currentbgm) {
+      if (currentbgm.param == param && currentbgm.playing) return;
+      currentbgm.fadeout(fadetime);
+    }
+    local t;
+    if (param instanceof BGMThread) {
+      t = param
+    } else {
+      t = BGMThread(param);
+    }
+    t.fadein(fadetime, fadetime / 2);
+    currentbgm = t;
+    return t;
+  }
+
+  function fadeoutBGM(fadetime = 1400) {
+    local oldbgm = currentbgm;
+    if (currentbgm) {
+      currentbgm.fadeout(fadetime);
+      currentbgm = null;
+    }
+    return oldbgm;
+  }
+
+  function stopBGM() {
+    local oldbgm = currentbgm;
+    if (currentbgm) {
+      currentbgm.stop();
+      currentbgm = null;
+    }
+    return oldbgm;
+  }
+}
+
+class BGMThread
+{
+  param = null;
+  name = null;
+  snd = null;
+  ov = null;
+  playing = false;
+  wavbuf = null;
+  thread = null;
+
+  vol = 255;
+
+  constructor(p) {
+    param = p;
+    name = param.name;
+    local r = ::getResource("/music/" + name);
+    wavbuf = ByteBuffer(44100 * 2 * 2 * 2);
+
+    local bb = r.getContent();
+    ov = VorbisDecoder(bb);
+    r.flush();
+
+    local s = param["startpoint"] || 0;
+    local e = param["endpoint"] || -1;
+    local lp = param["looppoint"] || 0;
+    if ("vol" in param) {
+      vol = Math.min((param.vol * ::soundmanager.bgmvol * 255) | 0, 255);
+    } else {
+      vol = Math.min((::soundmanager.bgmvol * 255) | 0, 255);
+    }
+    ov.setRange(s, e, lp);
+    snd = StreamSoundSource(ov.freq, ov.ch, SK_WAVE_SHORTLE, 44100 * 2 * ov.ch * 6);
+  }
+
+  function stop() {
+    if (!playing) return;
+    playing = false;
+    if (thread) {
+      thread.wakeupThrow("stop");
+      thread = null;
+    }
+  }
+
+  function start() {
+    snd[0] = vol;
+    thread = newthread();
+    thread.start(run, this);
+    playing = true;
+  }
+
+  function fadein(fadetime, predelay = 0) {
+    local t = newthread();
+    t.start(function() {
+      if (predelay) sleep(predelay);
+      start();
+      local t0 = skGetTime();
+      snd[0] = 0;
+      suspend();
+      for (;;) {
+        local w = (skGetTime() - t0 + 0.0) / fadetime;
+        if (w >= 1.0) {
+          snd[0] = vol;
+          break;
+        } else {
+          snd[0] = Math.lerp(0, vol, w) | 0;
+        }
+        suspend();
+      }
+    }, this);
+  }
+
+  function fadeout(fadetime) {
+    local t = newthread();
+    t.start(function() {
+      local t0 = skGetTime(), v0 = snd[0];
+      suspend();
+      for (;;) {
+        local w = (skGetTime() - t0 + 0.0) / fadetime;
+        if (w >= 1.0) {
+          break;
+        } else {
+          snd[0] = Math.lerp(v0, 0, w) | 0;
+        }
+        suspend();
+      }
+      stop();
+    }, this);
+  }
+
+  function charge(chargeframes) {
+    local rem = snd.getRemaining();
+    if (!ov.invokeDecode(chargeframes)) {
+      printf("ov.invokeDecode fail???? \n");
+      return false;
+    }
+    while (ov.isDecoding()) {
+      suspend();
+    }
+    snd + ov.toByteBuffer(wavbuf);
+  }
+
+  function setVolume(vol) {
+    snd[0] = vol;
+  }
+
+  function run() {
+    try {
+      charge(44100);
+      snd.setLoop(true);
+      snd.play();
+      snd.pause(false);
+      snd.setStreamCharger(ov);
+      for (;;) {
+        suspend();
+      }
+    } catch (ex) {
+      if (ex != "stop") {
+        printf("BGMThread caused an Exception .. %S\n", name);
+        printexception(ex);
+      }
+    }
+    snd.setLoop(false);
+    playing = false;
+
+    snd.pause(true);
+    snd.stop();
+    snd.setStreamCharger(null);
+  }
+}
+
+local m = SoundManager();
+::soundmanager <- m;
+
+::playSound <- m.playSound.bindenv(m);
+::getSound <- m.getSound.bindenv(m);
+::playBGM <- m.playBGM.bindenv(m);
+::fadeBGM <- m.fadeBGM.bindenv(m);
+::fadeoutBGM <- m.fadeoutBGM.bindenv(m);
+::stopBGM <- m.stopBGM.bindenv(m);

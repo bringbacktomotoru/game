@@ -1,0 +1,44 @@
+class WebViewDialog extends ::Dialog {
+  url = null;
+
+  web_view = null;
+  epx = null;
+  epy = null;
+  size_w = null;
+  size_h = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/WebViewDialog.ui"));
+
+    local _pnl_web_view = this.view.findChild("pnl_web_view");
+    local _ds = getDisplayScale();
+    this.epx = (_pnl_web_view.pos.x - (view.bnd.w / 2.0 - ::screenWidth / 2.0)) * _ds;
+    this.epy = (_pnl_web_view.pos.y - (view.bnd.h / 2.0 - ::screenHeight / 2.0)) * _ds;
+    this.size_w = _pnl_web_view.bnd.w * _ds;
+    this.size_h = _pnl_web_view.bnd.h * _ds;
+
+    this.view.findChild("lbl_close").setText(::dict.get("close"));
+  }
+
+  function setURL(url) {
+    this.url = url;
+  }
+
+  function show() {
+    this.web_view = WebView();
+    this.web_view.setType(-1);
+    this.web_view.setRect(this.epx, this.epy, this.size_w, this.size_h);
+
+    this.web_view.openURL(this.url);
+    this.web_view.show();
+
+    super.show();
+  }
+
+  function actionevent(e) {
+    this.web_view.close();
+    this.web_view = null;
+
+    super.actionevent(e);
+  }
+}

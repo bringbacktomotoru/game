@@ -1,0 +1,207 @@
+local wavbb = ByteBuffer(44100 * 8 * 2);
+local vpcaches = [];
+
+local rnd = Random(skGetTime() ^ 3072147);
+
+class VoicePlayer
+{
+  res = null;
+  ch = -1;
+  table = null;
+  alias = null;
+
+  ov = null;
+  snd = null;
+  wavcache = null;
+
+  decodethread = null;
+
+  constructor(t) {
+    table = t;
+
+    alias = {};
+    foreach (vid, v in t.voices) {
+      local a = v["alias"];
+      if (length(a) == 0) continue;
+      local s = 0, e = a.indexOf(",");
+      while (e >= 0) {
+        addalias(a.substring(s, e).trim(), vid);
+        e = a.indexOf(",", s = e + 1);
+      }
+      addalias(a.substring(s).trim(), vid);
+    }
+    if (t["ch"] >= 0) ch = t["ch"];
+    wavcache = {};
+  }
+
+  function setResource(r) {
+    res = r;
+  }
+
+  function addalias(i, s) {
+    if (i in alias) alias[i] + s;
+    else alias[i] <- [s];
+  }
+
+  function _cloned(old) {
+    ov = null;
+  }
+
+  function free() {
+    ov.cancel();
+  }
+
+  function prepare() {
+    if (!ov) {
+      local r = getVorbisResource();
+      local src = r.getDataSource();
+      if (src instanceof FileRef) {
+        ov = VorbisDecoder(src);
+      } else
+      if (src instanceof SxrEntity) {
+        ov = VorbisDecoder(src);
+      } else {
+        local bb = r.getContent();
+        ov = VorbisDecoder(bb);
+        r.flush();
+      }
+    }
+  }
+
+  function getVoice(vid) {
+    {
+      local aid = alias[vid];
+      if (aid) vid = aid[rnd.nexti(length(aid) - 1)];
+    }
+    return table.voices[vid];
+  }
+
+  function playVoice(vid, cueidx = null) {
+    {
+      local aid = alias[vid];
+      if (aid) vid = aid[rnd.nexti(length(aid) - 1)];
+    }
+    local v = table.voices[vid];
+    if (!v) {
+      printf("voice not found [ %S ]\n", vid);
+      return false;
+    }
+    prepare();
+    local wid, cuelen = length(v["cue"]);
+    if (cuelen > 0 && cueidx >= 0 && cueidx <= cuelen) {
+      wid = (string(vid) + "_" + cueidx);
+    } else {
+      wid = vid; cueidx = null;
+    }
+    if (decodethread) {
+      decodethread.wakeupThrow("playVoice()");
+    }
+    if (wavcache[wid]) {
+      snd = playwav(v, wavcache[wid]);
+    } else {
+      (decodethread = newthread()).start(decodeplay, this, wid, v, cueidx);
+    }
+  }
+
+  function getVorbisResource() {
+    local n = res.name;
+    local r = res.getResource(sprintf("./%S.ogg", n.substring(0, n.indexOf("."))));
+    return r;
+  }
+
+  function decodeplay(wid, v, cueidx) {
+    try {
+      local t0 = skGetTime();
+      local s = v.s, e = v.e;
+      if (cueidx != null) {
+        s = v.s + (cueidx == 0 ? 0 : v.cue[cueidx - 1]);
+        e = (cueidx == length(v.cue)) ? v.e : v.s + v.cue[cueidx];
+      }
+      ov.setRange(s, e);
+      ov.invokeDecode(e - s);
+      while (ov.isDecoding()) {
+        suspend();
+      }
+
+      ov.toByteBuffer(wavbb);
+      local wd = skCreateWaveData(wavbb, ov.freq, ov.ch, SK_WAVE_SHORTLE, e - s);
+      wavcache[wid] <- wd;
+      snd = playwav(v, wavcache[wid]);
+    } catch (ex) {
+      printf("decodeplay thread interrupted by %S\n", ex);
+      ov.cancel();
+    }
+    decodethread = null;
+  }
+
+  function playwav(v, w) {
+    local ss = w.toSoundSource();
+    if ("vol" in v) {
+      ss[0] = Math.min((v.vol * ::soundmanager.voicevol * 256) | 0, 256);
+    } else {
+      ss[0] = Math.min((::soundmanager.voicevol * 256) | 0, 256);
+    }
+    if ("speed" in v) {
+      ss[1] = (Math.logn(v.speed, 2.0) * 96.0 * 12.0) | 0;
+    }
+    stop();
+    ::soundmanager.stopChannel(ch);
+    ss.stplay();
+    if (ch >= 0) ::soundmanager.soundch[ch] <- ss;
+    return ss;
+  }
+
+  function isPlaying() {
+    return snd && snd.isPlaying();
+  }
+
+  function stop() {
+    if (decodethread) {
+      decodethread.wakeupThrow("stop()");
+    }
+    if (snd) {
+      snd.stop();
+      snd = null;
+    }
+  }
+
+  function fadeout(time = 1000) {
+    if (decodethread) {
+      decodethread.wakeupThrow("stop()");
+    }
+    if (snd) {
+      local _snd = snd;
+      local v0 = _snd[0];
+      local t0 = skGetTime();
+      setInterval(function() {
+        local w = skGetTime(t0) * 1.0 / time;
+        if (w >= 1.0) {
+          _snd.stop();
+          return undefined;
+        } else {
+          _snd[0] = (v0 * (1.0 - w)) | 0;
+        }
+      }, 7);
+    }
+  }
+
+  static function getPlayer(r) {
+    if (typeof(r) == SS_STRING) {
+      local res = ::getResource(r);
+      if (!res) {
+        printf("WARNING vo file is not found. r=[ %S ]\n", r);
+        return null;
+      }
+      r = res;
+    }
+    if (r["userdata"]) {
+      return clone r.userdata;
+    }
+    local t = decodeJSON(r.getContent());
+    r.flush();
+    local v = VoicePlayer(t);
+    v.setResource(r);
+    r.userdata = v;
+    return clone v;
+  }
+}

@@ -1,0 +1,107 @@
+diary_condition_settings[1] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [101]
+  };
+});
+
+diary_condition_settings[2] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [102]
+  };
+});
+
+diary_condition_settings[3] <- ConditionSetting({
+  condition = {
+    "has_room" = [2]
+  };
+});
+
+diary_condition_settings[4] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [201]
+  };
+});
+
+diary_condition_settings[5] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [202]
+  };
+});
+
+diary_condition_settings[6] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [203]
+  };
+});
+
+diary_condition_settings[7] <- ConditionSetting({
+  condition = {
+    "has_room" = [3]
+  };
+});
+
+diary_condition_settings[8] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [301]
+  };
+});
+
+diary_condition_settings[9] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [302]
+  };
+});
+
+diary_condition_settings[10] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [303]
+  };
+});
+
+diary_condition_settings[11] <- ConditionSetting({
+  condition = {
+    "has_room" = [4]
+  };
+});
+
+diary_condition_settings[12] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [401]
+  };
+});
+
+diary_condition_settings[13] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [402]
+  };
+});
+
+diary_condition_settings[14] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [403]
+  };
+});
+
+diary_condition_settings[15] <- ConditionSetting({
+  condition = {
+    "has_room" = [5]
+  };
+});
+
+diary_condition_settings[16] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [501]
+  };
+});
+
+diary_condition_settings[17] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [502]
+  };
+});
+
+diary_condition_settings[18] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [503]
+  };
+});

@@ -1,0 +1,164 @@
+class TalkWindowLayer {
+  scene = null;
+
+  tw_scale = null;
+  offset = null;
+
+  v_1 = Vector3D();
+
+  queue = null;
+  current_tw = null;
+  showing_tw_table = null;
+
+  view = null;
+
+  constructor(view) {
+    this.view = view;
+    this.scene = ::gamesession.getCurrentScene();
+    view.enabled = false;
+
+    tw_scale = 1.0;
+    offset = [0, 2.5, 0];
+
+    this.queue = [];
+    this.current_tw = null;
+    this.showing_tw_table = {};
+
+    this.view.setUpdateFunc(updateQueue.bindenv(this));
+  }
+
+  function setScale(sc = 1.0) {
+    tw_scale = sc;
+  }
+
+  function setOffset(x, y, z) {
+    offset = [x, y, z];
+  }
+
+  function _processPanelMission(talk_key, chara_key) {
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof ::SanrioGameScene) {
+      _scene.getPanelMissionManager().showUniqueTalk(talk_key, chara_key);
+    }
+  }
+
+  function addTalk(sk3d, talk_key, chara_key, big = false, small = false) {
+
+    local _data = { sk3d = sk3d, talk = talk_key, chara = chara_key, is_small = small };
+    _addQueue(_data);
+  }
+
+  function addTalkWindowForce(sk3d, talk_key, chara_key, big = false, small = false, use_talk_bal = false) {
+    local tw = _createTalkWindow(sk3d, talk_key, chara_key, big, small, use_talk_bal);
+    tw.setShowTime(700, 200);
+    this.view.addChild(tw);
+    tw.startRandomTalk();
+
+    _removeOldTalkWindow(chara_key, tw);
+
+    _processPanelMission(talk_key, chara_key);
+
+    return tw;
+  }
+
+  function addTalkSentenceWindow(sk3d, sentence, chara_key, big_size = false, small_size = false, use_talk_bal = false) {
+    local _tsw = ::SentenceTalkWindow(chara_key, big_size, small_size, use_talk_bal);
+    _tsw.setSK3D(sk3d);
+    _tsw.setScale(tw_scale);
+    _tsw.setOffset(offset[0], offset[1], offset[2]);
+    _tsw.setRendererCamera(scene.getStage().renderer.camera);
+    if (sk3d.parent) {
+      local bone = sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(sk3d.parent.gmat);
+      _tsw.setBoneOffset(v_1);
+    }
+    _tsw.setLayer(this);
+
+    this.view.addChild(_tsw);
+    _tsw.startTalk(sentence);
+
+    return _tsw;
+  }
+
+  function addTalkSentenceWindowForBuilder(sk3d, sentence, chara_key, idx) {
+    local _tsw = ::SentenceTalkWindow(chara_key, false, false, true);
+    _tsw.setSK3D(sk3d);
+    _tsw.setScale(tw_scale);
+    _tsw.setOffset(offset[0], offset[1], offset[2]);
+    _tsw.setRendererCamera(scene.canvas.camera);
+    if (sk3d.parent) {
+      local bone = sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(sk3d.parent.gmat);
+      _tsw.setBoneOffset(v_1);
+    }
+
+    return _tsw;
+  }
+
+  function _createTalkWindow(sk3d, talk_key, chara_key, big = false, small = false, use_talk_bal = false) {
+    local _tw = ::TalkWindow(talk_key, chara_key, big, small, use_talk_bal);
+    _tw.setSK3D(sk3d);
+    _tw.setScale(tw_scale);
+    _tw.setOffset(offset[0], offset[1], offset[2]);
+    _tw.setRendererCamera(scene.getStage().renderer.camera);
+    if (sk3d.parent) {
+      local bone = sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(sk3d.parent.gmat);
+      _tw.setBoneOffset(v_1);
+    }
+    _tw.setLayer(this);
+
+    _processPanelMission(talk_key, chara_key);
+
+    return _tw;
+  }
+
+  function _addQueue(data) {
+    this.queue + data;
+  }
+  function removeQueue(sk3d) {
+    foreach (idx, data in this.queue) {
+      if (data.sk3d != sk3d) continue;
+      delete this.queue[idx];
+      break;
+    }
+  }
+
+  function _startTalkWindow(data) {
+    local tw = _createTalkWindow(data.sk3d, data.talk, data.chara, false, data.is_small);
+
+    this.view.addChild(tw);
+    tw.startRandomTalk();
+
+    this.current_tw = tw;
+
+    _removeOldTalkWindow(data.chara, tw);
+  }
+  function removeTalkWindow(tw) {
+    this.view.removeChild(tw);
+    if (this.current_tw == tw) this.current_tw = null;
+  }
+
+  function removeAllTalkWindow() {
+    this.view.clearChildren();
+    this.queue.clear();
+    this.current_tw = null;
+  }
+
+  function _removeOldTalkWindow(chara_key, new_tw) {
+    if (chara_key in this.showing_tw_table) {
+      local _tw = delete this.showing_tw_table[chara_key];
+      removeTalkWindow(_tw);
+    }
+    this.showing_tw_table[chara_key] <- new_tw;
+  }
+
+  function updateQueue(dt) {
+    if (!this.current_tw && this.queue.len() > 0) {
+      _startTalkWindow(delete this.queue[0]);
+    }
+  }
+}

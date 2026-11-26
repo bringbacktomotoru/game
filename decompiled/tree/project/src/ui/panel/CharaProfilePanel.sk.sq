@@ -1,0 +1,1038 @@
+class CharaProfilePanel extends ::HomeUI.Panel {
+  static need_money_layer = false;
+  static need_rank_layer = false;
+  static need_menu_layer = false;
+
+  static TAB_COSTUME_LIST = 1;
+  static TAB_MOTION_LIST = 2;
+  static TAB_PROFILE = 3;
+
+  view = null;
+
+  pnl_tab_list = null;
+  tab_reclist = null;
+  tab_scroll = null;
+  tab_list = null;
+  tab_select = -1;
+  select_costume_id = -1;
+
+  pnl_chara = null;
+  btn_l = null;
+  btn_r = null;
+  pnl_chara_name = null;
+
+  pnl_profile = null;
+  pnl_motion_list = null;
+  pnl_costume_list = null;
+
+  chara_index = null;
+  current_costumes = null;
+  select_costumes = null;
+  chara_list = null;
+
+  function added() {
+    super.added();
+
+    this.view = ::loadSKView("/ui/CharaProfilePanel.ui");
+    addChild(this.view);
+    this.view.findChild("menu_tab_bg").pickable = false;
+
+    this.pnl_tab_list = this.view.findChild("pnl_tab_list");
+    this.tab_reclist = ::SKMaskView();
+    this.tab_scroll = ::ScrollPanel(this.tab_reclist);
+    this.tab_scroll.dxscale = 0.0;
+    this.tab_scroll.dyscale = 0.0;
+    this.pnl_tab_list.addChild(this.tab_reclist);
+
+    this.tab_list = [];
+    _setProfileTab();
+    _setTabBg(-1);
+
+    this.select_costumes = clone this.current_costumes;
+    this.pnl_chara = ProfileCharaView(this.view.findChild("pnl_chara_view"));
+    this.pnl_profile = Profile(this, this.view.findChild("pnl_profile"));
+    this.pnl_motion_list = MotionList(this, this.view.findChild("pnl_motion_list"));
+    this.pnl_costume_list = CostumeList(this, this.view.findChild("pnl_costume_list"));
+    this.pnl_chara_name = this.view.findChild("pnl_chara_name");
+
+    setupCharaView();
+    tapProfileTab(TAB_COSTUME_LIST);
+
+    this.btn_l = this.view.findChild("btn_L");
+    this.btn_r = this.view.findChild("btn_R");
+    this.btn_l.visible = false;
+    this.btn_r.visible = false;
+    if (this.chara_list.len() > 1) {
+
+      ::TapButton(this.btn_l).view.addEventListener(ACTION_EVENT, actionevent_l);
+      ::TapButton(this.btn_r).view.addEventListener(ACTION_EVENT, actionevent_r);
+      _updateBtnCharaIcon();
+    }
+    else {
+      this.btn_l.visible = false;
+      this.btn_r.visible = false;
+    }
+
+    this.view.findChild("btn_chara_list").visible = false;
+    ::TapButton(this.view.findChild("btn_back")).view.addEventListener(ACTION_EVENT, actionevent_back);
+
+  }
+
+  function setPanelParam(param) {
+    this.current_costumes = [];
+    if ("index" in param) {
+      chara_index = param.index;
+    }
+    if ("costume_ids" in param) {
+      current_costumes = param.costume_ids;
+    }
+    this.chara_list = [];
+    local _costume_setting = ::gamesetting.costume_settings;
+    local _chara_settings = ::gamesetting.sanrio_chara_settings;
+    foreach (cos_id in current_costumes) {
+      this.chara_list + _chara_settings[_costume_setting[cos_id].getCharaID()];
+    }
+
+  }
+
+  function _updateBtnCharaIcon() {
+
+    local _temp_idx;
+
+    _temp_idx = this.chara_index - 1;
+    if (_temp_idx < 0) this.btn_l.visible = false;
+    else {
+      this.btn_l.visible = true;
+      _setCharaIcon(this.btn_l, this.chara_list[_temp_idx]);
+    }
+
+    _temp_idx = this.chara_index + 1;
+    if (_temp_idx >= this.chara_list.len()) this.btn_r.visible = false;
+    else {
+      this.btn_r.visible = true;
+      _setCharaIcon(this.btn_r, this.chara_list[_temp_idx]);
+    }
+  }
+
+  function _setCharaIcon(btn, chara_setting) {
+    btn.visible = true;
+    local _img = btn.findChild("img_chara");
+    _img.setSprite(chara_setting.getIconSprite());
+    _img.updateLayout();
+  }
+
+  function _setProfileTab() {
+    this.tab_reclist.clearChildren();
+    local _offset = 0;
+    this.tab_list.clear();
+
+    _offset = _addTab(TAB_COSTUME_LIST, _offset);
+    _offset = _addTab(TAB_MOTION_LIST, _offset);
+    _offset = _addTab(TAB_PROFILE, _offset);
+
+    this.tab_reclist.setRect(0, 0, _offset, this.pnl_tab_list.bnd.h);
+    this.tab_scroll.setScrollRect(this.tab_reclist.bnd);
+  }
+
+  function _addTab(tab_idx, offset) {
+    local _tab = ProfileTab(this, tab_idx);
+    local _key = "";
+    switch (tab_idx) {
+    case TAB_COSTUME_LIST: _key = "prof_costume"; break;
+    case TAB_MOTION_LIST: _key = "ar_motion"; break;
+    case TAB_PROFILE: _key = "prof_profile"; break;
+    }
+    _tab.setName(::dict.get(_key));
+    _tab.pos.x = offset;
+    this.tab_reclist.addChild(_tab);
+    _tab.matdirty = true;
+    offset += _tab.bnd.w;
+    this.tab_list + _tab;
+    return offset;
+  }
+
+  function _changeChara() {
+    _updateBtnCharaIcon();
+    setupCharaView();
+    setupCharaInfo(this.tab_select);
+  }
+
+  function startScript(as) {
+    this.pnl_chara.startScript(as);
+  }
+
+  function setupCharaView() {
+
+    local _cos_id = this.select_costumes[this.chara_index];
+    if (!_cos_id) return;
+    this.pnl_chara.setCostume(_cos_id);
+
+    local _chara_setting = this.chara_list[this.chara_index];
+    this.pnl_chara_name.findChild("lbl_chara_name").setText(_chara_setting.getNickName());
+    _setCharaIcon(this.pnl_chara_name, _chara_setting);
+  }
+
+  function changeCostume(cos_id) {
+    local _cd = ::gamesession.getUserData().getCostumeData(cos_id);
+    if (!_cd && _cd.getCharaID() != this.chara_list[this.chara_index].getID()) return;
+    this.pnl_chara.setCostume(cos_id);
+    this.select_costumes[this.chara_index] = cos_id;
+  }
+
+  function setupCharaInfo(sel) {
+    switch (sel) {
+    case TAB_PROFILE:
+      _setupProfile();
+      break;
+    case TAB_MOTION_LIST:
+      _setupMotionList();
+      break;
+    case TAB_COSTUME_LIST:
+      _setupCostumeList();
+      break;
+    }
+  }
+
+  function _setupProfile() {
+    this.pnl_profile.setup();
+    this.pnl_profile.setVisible(true);
+    this.pnl_motion_list.setVisible(false);
+    this.pnl_costume_list.setVisible(false);
+  }
+
+  function _setupMotionList() {
+    this.pnl_motion_list.setup();
+    this.pnl_profile.setVisible(false);
+    this.pnl_motion_list.setVisible(true);
+    this.pnl_costume_list.setVisible(false);
+  }
+
+  function _setupCostumeList() {
+    this.pnl_costume_list.setup();
+    this.pnl_profile.setVisible(false);
+    this.pnl_motion_list.setVisible(false);
+    this.pnl_costume_list.setVisible(true);
+  }
+
+  function getCharaSetting() {
+    return this.chara_list[this.chara_index];
+  }
+
+  function getCharaData() {
+    local _setting = getCharaSetting();
+    if (!_setting) return null;
+    return ::gamesession.getUserData().getCharacterData(_setting.getID());
+  }
+
+  function getChara3dView() {
+    if (!this.pnl_chara) return null;
+    return this.pnl_chara.getChara3dView();
+  }
+
+  function tapProfileTab(idx) {
+    if (this.tab_select == idx) return;
+    this.tab_select = idx;
+    setupCharaInfo(idx);
+    _setTabBg(idx);
+    ::playSound(::SoundConstants.SOUND_MOVETAB);
+  }
+
+  function _setTabBg(idx) {
+    for (local i = 0; i < this.tab_list.len(); i++) {
+      this.tab_list[i].setTabBg(this.tab_list[i].getIndex() == idx);
+    }
+  }
+
+  function getCostumeList() {
+    return this.pnl_costume_list;
+  }
+
+  function getSelectCostumeID() {
+    return this.select_costumes[this.chara_index];
+  }
+
+  function actionevent_l(e) {
+    e.consume();
+    this.chara_index--;
+    if (this.chara_index < 0) this.chara_index = this.current_costumes.len() - 1;
+    _changeChara();
+  }
+  function actionevent_r(e) {
+    e.consume();
+    this.chara_index++;
+    if (this.chara_index >= this.current_costumes.len()) this.chara_index = 0;
+    _changeChara();
+  }
+
+  function actionevent_chara_list(e) {
+    e.consume();
+    getHomeUI().movePanel(::CharaListPanel);
+  }
+
+  function actionevent_back(e) {
+    e.consume();
+
+    local _add_ids = [];
+    local _remove_ids = [];
+    foreach (idx, cur in current_costumes) {
+      local _select = select_costumes[idx];
+      if (cur != _select) {
+        _add_ids + _select;
+        _remove_ids + cur;
+      }
+    }
+
+    if (_add_ids.len() > 0) {
+      local _userdata = ::gamesession.getUserData();
+      _userdata.changeResideChara(_userdata.getCurrentRoomIndex(), _remove_ids, _add_ids);
+    }
+
+    getHomeUI().backPanel();
+  }
+}
+
+class CharaProfilePanel.ProfileTab extends SKView {
+  pnl_parent = null;
+  view = null;
+
+  lbl_name = null;
+
+  index = -1;
+
+  img_tab_on = null;
+  img_tab_off = null;
+  img_icon_new = null;
+
+  constructor(p, idx) {
+    this.pnl_parent = p;
+    this.index = idx;
+
+    this.view = ::loadSKView("/ui/common/PanelTab.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    local _pnl_tab = this.view.findChild("pnl_tab");
+    this.lbl_name = _pnl_tab.findChild("lbl_name");
+
+    this.img_tab_on = _pnl_tab.findChild("img_tab_on");
+    this.img_tab_off = _pnl_tab.findChild("img_tab_off");
+    this.img_icon_new = _pnl_tab.findChild("img_icon_new");
+
+    _pnl_tab.addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function getIndex() {
+    return this.index;
+  }
+
+  function setName(s) {
+    this.lbl_name.setText(s);
+  }
+
+  function mouseevent(e) {
+    switch (e.id) {
+    case MOUSE_CLICKED:
+      this.pnl_parent.tapProfileTab(this.index);
+      break;
+    }
+  }
+
+  function setTabBg(sel) {
+    if (sel) {
+      this.img_tab_on.visible = true;
+      this.img_tab_off.visible = false;
+    }
+    else {
+      this.img_tab_on.visible = false;
+      this.img_tab_off.visible = true;
+    }
+  }
+
+  function setTabNewIcon(b) {
+    this.img_icon_new.setVisible(b);
+    repaint();
+  }
+}
+
+class CharaProfilePanel.ProfileCharaView {
+  view = null;
+  sk3dview = null;
+  chara_id = -1;
+  costume_id = -1;
+
+  last_x = null;
+  angle = 0;
+
+  constructor(v) {
+    this.view = v;
+    this.view.findChild("lbl_slide").setText(::dict.get("rewarddialog_slide_desc"));
+    this.view.addEventListener(MOUSE_EVENT, mouseevent_viewer);
+    this.sk3dview = Chara3DView();
+    this.sk3dview.setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    this.view.addChild(this.sk3dview);
+  }
+
+  function setVisible(b) {
+    this.view.visible = b;
+  }
+
+  function setChara(id) {
+    if (this.chara_id == id) return;
+    this.chara_id = id;
+    this.costume_id = 0;
+
+    this.sk3dview.setCharaId(id);
+    this.sk3dview.build(true);
+    this.sk3dview.setMoveFuncLock(true);
+  }
+
+  function setCostume(id) {
+    if (this.costume_id == id) return;
+    this.chara_id = ::gamesetting.costume_settings[id].getCharaID();
+    this.costume_id = id;
+
+    this.sk3dview.setCostumeId(id);
+    this.sk3dview.build(true);
+    this.sk3dview.setMoveFuncLock(true);
+  }
+
+  function startScript(as) {
+    if (!as) return;
+    this.sk3dview.charaScript("end_common");
+    this.sk3dview.charaScript(as.getActionName());
+  }
+
+  function getChara3dView() {
+    return this.sk3dview;
+  }
+
+  function mouseevent_viewer(e) {
+    e.consume();
+
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.last_x = e.x;
+      break;
+    case MOUSE_DRAGGED:
+      local diff = e.x - this.last_x;
+      this.angle -= diff;
+      this.sk3dview.obj.setAngle(this.angle);
+      this.last_x = e.x;
+      break;
+    }
+  }
+}
+
+class CharaProfilePanel.ProfileView {
+  pnl_parent = null;
+  view = null;
+  setting = null;
+
+  constructor(p, v) {
+    this.pnl_parent = p;
+    this.view = v;
+  }
+
+  function setup() {
+    local _s = getCharaSetting();
+    if (!_s || this.setting == _s) return;
+    this.setting = _s;
+  }
+
+  function setVisible(b) {
+    this.view.visible = b;
+  }
+
+  function getCharaSetting() {
+    if (!this.pnl_parent) return null;
+    return this.pnl_parent.getCharaSetting();
+  }
+
+  function getCharaData() {
+    if (!this.pnl_parent) return null;
+    return this.pnl_parent.getCharaData();
+  }
+}
+
+class CharaProfilePanel.Profile extends CharaProfilePanel.ProfileView {
+  lbl_desc = null;
+  lbl_birth = null;
+  lbl_constellation = null;
+
+  constructor(p, v) {
+    super(p, v);
+
+    this.lbl_desc = this.view.findChild("lbl_desc");
+    this.lbl_birth = this.view.findChild("lbl_birth");
+    this.lbl_constellation = this.view.findChild("lbl_constellation");
+  }
+
+  function setup() {
+    local _s = getCharaSetting();
+    println("profile setup!!!!! _s:" + _s);
+    if (!_s || this.setting == _s) return;
+    this.setting = _s;
+
+    this.lbl_desc.setText(this.setting.getDesc());
+    this.lbl_birth.setText(this.setting.getBirthText());
+    this.lbl_constellation.setText(this.setting.getConstellationText());
+  }
+}
+
+class CharaProfilePanel.MotionList extends CharaProfilePanel.ProfileView {
+  static SPACE_X = 10;
+  static SPACE_Y = 10;
+  static ROW_NUM = 2;
+  static OFFSET_Y = 50;
+
+  lbl_motion_num = null;
+  lbl_motion_reward = null;
+  img_btn_ok = null;
+  img_btn_ng = null;
+  need_motion = -1;
+
+  pnl_icon_list = null;
+  reclist = null;
+  scroll = null;
+  motion_list = null;
+  scroll_bar = null;
+
+  view_thread = null;
+
+  constructor(p, v) {
+    super(p, v);
+
+    this.motion_list = [];
+
+    this.lbl_motion_num = this.view.findChild("lbl_motion_num");
+
+    this.pnl_icon_list = this.view.findChild("pnl_motion_icon_list");
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dxscale = 0.0;
+    this.pnl_icon_list.addChild(this.reclist);
+    this.pnl_icon_list.setBuffer(true);
+    this.scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+
+    this.lbl_motion_reward = this.view.findChild("lbl_motion_reward");
+    this.lbl_motion_reward.visible = false;
+    local _btn_reward = this.view.findChild("btn_reward");
+    ::TapButton(_btn_reward, false).view.addEventListener(ACTION_EVENT, actionevent_reward);
+    _btn_reward.visible = false;
+    this.img_btn_ok = _btn_reward.findChild("img_bg_ok");
+    this.img_btn_ng = _btn_reward.findChild("img_bg_ng");
+    _btn_reward.findChild("lbl_recieve").setText(::dict.get("btn_recieve_product"));
+  }
+
+  function setup() {
+    local _s = getCharaSetting();
+    if (!_s || this.setting == _s) return;
+    this.setting = _s;
+
+    local _data = getCharaData();
+    if (!_data) return;
+
+    this.motion_list.clear();
+    this.reclist.clearChildren();
+    local _offset = 0;
+    local _size_y = 0;
+    local _motions = ::gamesetting.costume_motion_settings;
+    local _motions_list = [];
+    local _hit = false;
+
+    foreach (m in _motions) {
+      if (m.isDeny()) continue;
+      _hit = false;
+      for (local i = 0; i < _motions_list.len(); i++) {
+        if (_motions_list[i].getPriority() >= m.getPriority()) continue;
+        _hit = true;
+        _motions_list[i] <- m;
+        break;
+      }
+      if (!_hit) _motions_list + m;
+
+    }
+
+    local _cnt = 0;
+    foreach (m in _motions_list) {
+      local _has = _data.hasMotion(m.getID());
+      local _card = MotionCard(this.pnl_parent, m, _has);
+
+      _size_y = _card.bnd.h;
+      if (_cnt > 0 && _cnt % ROW_NUM == 0) _offset += _size_y + SPACE_Y;
+      _card.pos.x = (_cnt % ROW_NUM) * (_card.bnd.w + SPACE_X);
+      _card.pos.y = _offset;
+      this.reclist.addChild(_card);
+      _card.matdirty = true;
+      _card.repaint();
+
+      this.motion_list + _card;
+      _cnt++;
+    }
+
+    this.lbl_motion_num.setText(::dict.get("prof_nums_slash", [_data.getMotionNums(), _cnt]));
+
+    _offset += _size_y + OFFSET_Y;
+    this.reclist.setRect(0, 0, this.pnl_icon_list.bnd.w, _offset);
+    this.scroll.setScrollRect(this.reclist.bnd);
+
+    this.scroll_bar.setup(this.scroll, this.pnl_icon_list.bnd, true);
+
+    setupMotionReward();
+
+    if (this.view_thread) this.view_thread.interruptGoto("END");
+    this.view_thread = newthread();
+    this.view_thread.start(_setupCardViews, this);
+  }
+
+  function setupMotionReward() {
+    local _data = getCharaData();
+    if (!_data) return;
+
+    local _reward_info = ::gamesetting.game_rule.getMotionRewardInfo(_data.getRecievedMotionRewardIndex() + 1);
+    if (_reward_info) {
+      this.need_motion = _reward_info.need_motion - _data.getMotionNums();
+      if (this.need_motion < 0) this.need_motion = 0;
+      this.lbl_motion_reward.setText(::dict.get("prof_need_motion", [this.need_motion]));
+
+      if (this.need_motion > 0) {
+
+        this.img_btn_ok.visible = false;
+        this.img_btn_ng.visible = true;
+      }
+      else {
+
+        this.img_btn_ok.visible = true;
+        this.img_btn_ng.visible = false;
+      }
+    }
+    else {
+
+      this.need_motion = -1;
+      this.lbl_motion_reward.setText(::dict.get("prof_need_motion", "--"));
+      this.img_btn_ok.visible = false;
+      this.img_btn_ng.visible = true;
+    }
+  }
+
+  function _setupCardViews() {
+    sleep(150);
+    local t = skGetTime();
+    foreach (card in motion_list) {
+      card.setupViews();
+
+      local t2 = skGetTime();
+      if (t + 16 < t2) {
+        t = t2;
+        suspend();
+      }
+    }
+    END:
+    view_thread = null;
+  }
+
+  function actionevent_reward(e) {
+    e.consume();
+
+    if (!this.setting) return;
+    local _data = getCharaData();
+    if (!_data) return;
+
+    ::gamesession.messagelayer.closeAllMessage();
+
+    if (this.need_motion != 0) {
+      local _text = "";
+      if (this.need_motion < 0) _text = ::dict.get("prof_no_reward");
+      else _text = ::dict.get("prof_request_motion", [this.need_motion]);
+      local _message = ::Message();
+      _message.setMsec(4 * 1000);
+      _message.setText(_text);
+      _message.setFontSize(32);
+      _message.setPosition(::screenWidth / 2.0, ::screenHeight / 2.0);
+      _message.show();
+      return;
+    }
+
+    if (::gamesession.reciveCharaMotionReward(this.setting.getID())) {
+      local _reward_idx = _data.getRecievedMotionRewardIndex() + 1;
+      local _reward_info = ::gamesetting.game_rule.getMotionRewardInfo(_reward_idx);
+      if (!_reward_info) return;
+
+      ::gamesession.getUserData().addFreeRealMoney(_reward_info.num);
+      _data.setRecievedMotionRewardIndex(_reward_idx);
+
+      local _dlg = RewardDialog();
+      _dlg.setReward(ITEM_TYPE_FREERM, -1, _reward_info.num);
+      _dlg.show();
+
+      setupMotionReward();
+    }
+  }
+}
+
+class CharaProfilePanel.MotionList.MotionCard extends SKView {
+  pnl_parent = null;
+  view = null;
+
+  img_icon = null;
+  lbl_play = null;
+  img_play = null;
+  img_playing = null;
+  img_select = null;
+
+  setting = null;
+
+  interval_id = -1;
+
+  constructor(p, as, has) {
+    this.pnl_parent = p;
+    this.setting = as;
+
+    this.view = ::loadSKView("/ui/common/ProfileMotionCard.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    this.img_icon = this.view.findChild("img_icon");
+    this.img_select = this.view.findChild("img_select");
+
+    local _lbl_name = this.view.findChild("lbl_name");
+    _lbl_name.setText(as.getDesc());
+
+    local _btn_motion = this.view.findChild("btn_motion");
+    this.lbl_play = _btn_motion.findChild("lbl_play");
+    this.img_play = _btn_motion.findChild("img_play");
+    this.img_playing = _btn_motion.findChild("img_playing");
+
+    local _pnl_lock = this.view.findChild("pnl_lock");
+
+    if (has) {
+      ::TapButton(_btn_motion, false).view.addEventListener(ACTION_EVENT, actionevent_select_motion);
+      _pnl_lock.visible = false;
+    }
+    else {
+      ::TapButton(_pnl_lock.findChild("btn_lock"), false).view.addEventListener(ACTION_EVENT, actionevent_lock);
+    }
+    _updatePlayingState(false);
+  }
+
+  function setupViews() {
+    if (!this.setting) return;
+
+    this.img_icon.setSprite(this.setting.getIconSprite());
+    this.img_icon.updateLayout();
+  }
+
+  function actionevent_select_motion(e) {
+    e.consume();
+    this.pnl_parent.startScript(this.setting);
+    _updatePlayingState(true);
+
+    this.interval_id = setInterval(function(dt) {
+      timer += dt;
+      if (timer < 500) return null;
+      local _running_scp = sk3dview.getCurrentScriptName();
+      if (_running_scp && _running_scp.equals(scp) && sk3dview.isScriptRunning()) return null;
+
+      updState(false);
+      self.interval_id = -1;
+      return undefined;
+    }.bindenv({
+      self = this,
+      timer = 0,
+      sk3dview = this.pnl_parent.getChara3dView(),
+      scp = this.setting.getActionName(),
+      updState = _updatePlayingState.bindenv(this)
+    }), 100);
+
+  }
+
+  function _updatePlayingState(play) {
+    if (play) {
+
+      this.img_select.visible = true;
+      this.img_play.visible = false;
+      this.img_playing.visible = true;
+      this.lbl_play.setText(::dict.get("prof_motion_playing"));
+    }
+    else {
+
+      this.img_select.visible = false;
+      this.img_play.visible = true;
+      this.img_playing.visible = false;
+      this.lbl_play.setText(::dict.get("prof_motion_play"));
+    }
+  }
+
+  function actionevent_lock(e) {
+    e.consume();
+
+    local _dlg = ::SimpleDialog();
+    _dlg.lbl_msg.setText(::dict.get("prof_sell_room_motion"));
+    _dlg.show();
+  }
+}
+
+class CharaProfilePanel.CostumeList extends CharaProfilePanel.ProfileView {
+  static SPACE_X = 10;
+  static SPACE_Y = 10;
+  static ROW_NUM = 2;
+  static OFFSET_Y = 50;
+
+  lbl_costume_num = null;
+
+  pnl_icon_list = null;
+  reclist = null;
+  scroll = null;
+  costume_list = null;
+  scroll_bar = null;
+
+  view_thread = null;
+
+  current_card = null;
+
+  constructor(p, v) {
+    super(p, v);
+    this.costume_list = [];
+
+    this.lbl_costume_num = this.view.findChild("lbl_costume_num");
+
+    this.pnl_icon_list = this.view.findChild("pnl_costume_icon_list");
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dxscale = 0.0;
+    this.pnl_icon_list.addChild(this.reclist);
+    this.pnl_icon_list.setBuffer(true);
+    this.scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+  }
+
+  function setup() {
+    local _s = getCharaSetting();
+    if (!_s || this.setting == _s) return;
+    this.setting = _s;
+
+    this.costume_list.clear();
+    this.reclist.clearChildren();
+    local _offset = 0;
+    local _size_y = 0;
+    local _chara_id = this.setting.getID();
+    local _ud = ::gamesession.getUserData();
+    local _costumes = ::gamesetting.costume_settings;
+    local _costumes_list = [];
+    local _hit = false;
+
+    foreach (c in _costumes) {
+      if (c.isDeny()) continue;
+      _hit = false;
+      for (local i = 0; i < _costumes_list.len(); i++) {
+        if (_costumes_list[i].getPriority() >= c.getPriority()) continue;
+        _hit = true;
+        _costumes_list[i] <- c;
+        break;
+      }
+      if (!_hit) _costumes_list + c;
+    }
+    local _cnt = 0;
+    local _possession = 0;
+
+    local _cur_cos_id = this.pnl_parent.getSelectCostumeID();
+    foreach (c in _costumes_list) {
+      if (c.getCharaID() != _chara_id) continue;
+      local _cd = _ud.getCostumeData(c.getID());
+      local _card = null;
+
+      if (_cur_cos_id == c.getID()) {
+        _card = CostumeCard(this.pnl_parent, c, _cd, true);
+        this.current_card = _card;
+      }
+      else {
+        _card = CostumeCard(this.pnl_parent, c, _cd, false);
+      }
+
+      _size_y = _card.bnd.h;
+      if (_cnt > 0 && _cnt % ROW_NUM == 0) _offset += _size_y + SPACE_Y;
+      _card.pos.x = (_cnt % ROW_NUM) * (_card.bnd.w + SPACE_X);
+      _card.pos.y = _offset;
+      this.reclist.addChild(_card);
+      _card.matdirty = true;
+      _card.repaint();
+
+      this.costume_list + _card;
+      _cnt++;
+      if (_cd) _possession++;
+    }
+
+    this.lbl_costume_num.setText(::dict.get("prof_nums_slash", [_possession, _cnt]));
+
+    _offset += (_size_y + OFFSET_Y);
+    this.reclist.setRect(0, 0, this.pnl_icon_list.bnd.w, _offset);
+    this.scroll.setScrollRect(this.reclist.bnd);
+
+    this.scroll_bar.setup(this.scroll, this.pnl_icon_list.bnd, true);
+
+    if (this.view_thread) this.view_thread.interruptGoto("END");
+    this.view_thread = newthread();
+    this.view_thread.start(_setupCardViews, this);
+  }
+
+  function _setupCardViews() {
+    sleep(150);
+    local t = skGetTime();
+    foreach (card in costume_list) {
+      card.setupViews();
+
+      local t2 = skGetTime();
+      if (t + 16 < t2) {
+        t = t2;
+        suspend();
+      }
+    }
+    END:
+    view_thread = null;
+  }
+
+  function selectCostume(card) {
+    this.current_card.update_ui_change();
+    this.current_card = card;
+  }
+}
+
+class CharaProfilePanel.CostumeList.CostumeCard extends SKView {
+  pnl_parent = null;
+  view = null;
+  pnl_icon = null;
+
+  btn_change = null;
+  btn_img_chang = null;
+  lbl_change = null;
+  img_select = null;
+  btn_detail = null;
+  pnl_lock = null;
+
+  data = null;
+  setting = null;
+
+  select_costume = null;
+
+  constructor(p, cs, cd, wearing) {
+    this.pnl_parent = p;
+    this.setting = cs;
+    this.data = cd;
+
+    this.view = ::loadSKView("/ui/common/ProfileCostumeCard.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    local _pnl_card = this.view.findChild("pnl_card");
+    this.pnl_icon = _pnl_card.findChild("pnl_icon");
+    this.btn_change = this.view.findChild("btn_change");
+    ::TapButton(this.btn_change, false).view.addEventListener(ACTION_EVENT, actionevent_select_costume);
+    this.btn_img_chang = this.btn_change.findChild("img_chang");
+    this.lbl_change = this.btn_change.findChild("lbl_change");
+    this.btn_detail = this.view.findChild("btn_detail");
+    this.pnl_lock = this.view.findChild("pnl_lock");
+    this.img_select = this.view.findChild("img_select");
+    _updateUIs(wearing);
+
+  }
+
+  function _updateUIs(flag) {
+
+    if (this.data) {
+      this.btn_detail.visible = true;
+      this.pnl_lock.visible = false;
+      ::TapButton(this.btn_detail, false).view.addEventListener(ACTION_EVENT, actionevent_detail);
+
+      if (flag) {
+        update_ui_wearing();
+        this.btn_change.enabled = false;
+      }
+
+      else {
+        update_ui_change();
+      }
+    }
+
+    else {
+      this.btn_detail.visible = false;
+      this.pnl_lock.visible = true;
+      this.lbl_change.setText(::dict.get("prof_wearing_change"));
+      this.img_select.visible = false;
+      local _btn_lock = this.pnl_lock.findChild("lock");
+      ::TapButton(_btn_lock, false).view.addEventListener(ACTION_EVENT, actionevent_show_shopinfo);
+    }
+  }
+
+  function update_ui_wearing() {
+    this.btn_img_chang.visible = false;
+    this.lbl_change.setText(::dict.get("prof_wearing"));
+    this.img_select.visible = true;
+  }
+
+  function update_ui_change() {
+    this.btn_img_chang.visible = true;
+    this.lbl_change.setText(::dict.get("prof_wearing_change"));
+    this.img_select.visible = false;
+    this.btn_change.enabled = true;
+
+  }
+
+  function setupViews() {
+    if (!this.setting) return;
+
+    this.pnl_icon.clearChildren();
+    local _img_chara = ::SKImageView();
+    CostumeIcon(this.setting.getID(), _img_chara, false, false);
+    _img_chara.setRect(0, 0, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+    this.pnl_icon.addChild(_img_chara);
+
+    if (this.data) _img_chara.setColor(0xffffffff);
+    else _img_chara.setColor(0xffffff44);
+  }
+
+  function actionevent_select_costume(e) {
+    e.consume();
+    local _cos_id = this.setting.getID();
+    this.pnl_parent.changeCostume(_cos_id);
+    update_ui_wearing();
+    this.pnl_parent.getCostumeList().selectCostume(this);
+    this.btn_change.enabled = false;
+  }
+
+  function actionevent_detail(e) {
+    e.consume();
+    local _dlg = ::CostumeDetailDialog();
+    _dlg.setData(this.data);
+    _dlg.show();
+  }
+
+  function actionevent_show_shopinfo(e) {
+    e.consume();
+    local _dlg = ::CostumeInfoDialog(this.setting);
+    _dlg.show();
+
+  }
+
+}
+
+class CostumeInfoDialog extends ::SimpleDialog
+{
+  constructor(cos_setting) {
+    super();
+    local _set_desc = null;
+
+    local _shop_setting = ::gamesetting.getShopSettings(SHOP_ITEM_TYPE_COSTUME);
+
+    foreach (ss in _shop_setting) {
+      if (ss.getItemID() == cos_setting.getID()) {
+        local _room_name = ::gamesetting.room_settings[ss.getRoomID()].getName();
+        _set_desc = ::dict.get("prof_sell_room_costume", [_room_name]);
+        break;
+      }
+    }
+    if (!_set_desc) {
+      _set_desc = ::dict.get("prof_sell_room_not");
+    }
+    lbl_msg.setText(_set_desc);
+
+  }
+}

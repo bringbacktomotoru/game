@@ -1,0 +1,117 @@
+class CircleMaskView extends SKView
+{
+  sp = null;
+  mm = null;
+  cr = null;
+  over = false;
+
+  movfunc = null;
+
+  constructor() {
+    setRect(0, 0, 1280, ::screenHeight);
+    cr = Rect2D(640.0, 360.0, 1200.0, 1200.0);
+    sp = Sprite();
+    sp.blend = SK_MIX;
+    sp.bnd.set(0, 0, 1280, ::screenHeight);
+    sp.color = 0;
+    mm = sp.miscmat = Matrix();
+    sp.shadersrc = skFXFindTechnique("dashsprite.circlemask").getShaderSource(0);
+    enabled = 0;
+  }
+
+  function setRect(x, y, w, h, px = 0, py = 0) {
+    super.setRect(x, y, w, h, px, py);
+
+    if (sp) {
+      sp.bnd.set(x, y, w, h);
+    }
+  }
+
+  function render() {
+    skDrawSprite(sp);
+  }
+
+  function calc() {
+    local r = cr;
+    mm[0] = r[0] / 1280.0;
+    mm[1] = r[1] / ::screenHeight;
+    mm[2] = 1280.0 / r[2];
+    mm[3] = ::screenHeight / r[3];
+    mm[4] = r[2] * 0.1;
+  }
+
+  function focusover(time) {
+    local r0 = clone cr;
+    local r1 = Rect2D(cr.x, cr.y, 4, 4);
+    local c0 = sp.color;
+    local c = [0];
+    visible = true;
+    movfunc = function(dt) {
+      c[0] += dt;
+      local w = Math.min(1.0, c[0] * 1.0 / time);
+      w = Math.pow(w, 0.5);
+      sp.color = Math.lerpcolor(c0, 128, w);
+      cr << r0.lerp(r1, w);
+      calc();
+      repaint();
+      if (c[0] >= time) {
+        mm[4] = 0.0;
+        cr.x = 640;
+        cr.y = 360;
+        over = true;
+        setUpdateFunc(null);
+      }
+    }.bindenv(this);
+    setUpdateFunc(movfunc);
+  }
+
+  function focusin(x, y, sx, sy, time) {
+    local r0 = clone cr;
+    if (over) {
+      r0.x = x;
+      r0.y = y;
+      over = false;
+    }
+    local r1 = Rect2D(x, y, sx, sy);
+    local c0 = sp.color;
+    local c = [0];
+    visible = true;
+    movfunc = function(dt) {
+      c[0] += dt;
+      local w = Math.min(1.0, c[0] * 1.0 / time);
+      w = Math.pow(w, 0.5);
+      sp.color = Math.lerpcolor(c0, 128, w);
+      cr << r0.lerp(r1, w);
+      calc();
+      repaint();
+      if (c[0] >= time) {
+        setUpdateFunc(null);
+      }
+    }.bindenv(this);
+    setUpdateFunc(movfunc);
+  }
+
+  function focusout(time) {
+    over = false;
+    local r0 = clone cr;
+    local r1 = Rect2D(cr.x, cr.y, 1200, 1200);
+    local c0 = sp.color;
+    local c = [0];
+    movfunc = function(dt) {
+      c[0] += dt;
+      local w = Math.min(1.0, c[0] * 1.0 / time);
+      w = Math.pow(w, 0.5);
+      sp.color = Math.lerpcolor(c0, 0, w);
+      cr << r0.lerp(r1, w);
+      calc();
+      repaint();
+      if (c[0] >= time) {
+        mm[4] = 0.0;
+        setUpdateFunc(null);
+        visible = false;
+      }
+    }.bindenv(this);
+    setUpdateFunc(movfunc);
+  }
+
+}

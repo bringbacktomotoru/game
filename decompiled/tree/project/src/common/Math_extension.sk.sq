@@ -1,0 +1,73 @@
+PUBLIC_RANDOM <- Random((Date.currentTime() / 13)[0]);
+
+local random_ir = function(min, max, inc_zero = true, randomizer = null) {
+  if (min == max) return min;
+
+  if (min > max) { local swap_val = min; min = max; max = swap_val; }
+  if (!randomizer) randomizer = ::PUBLIC_RANDOM;
+
+  if (!inc_zero && min <= 0 && max >= 0) {
+    local val = min + randomizer.nexti(max - min);
+    if (val >= 0) return val + 1;
+    else return val;
+  }
+
+  return min + randomizer.nexti(max - min + 1);
+}
+
+local random_i = function(max, inc_zero = true, randomizer = null) {
+  local min = inc_zero ? 0 : 1;
+  return random_ir(min, max, inc_zero, randomizer);
+}
+
+local random_ic = function(val, inc_zero = true, randomizer = null) {
+  return random_ir(-val, val, inc_zero, randomizer);
+}
+
+local random_fr = function(min, max, inc_zero = true, randomizer = null) {
+  if (min == max) return min;
+
+  if (!randomizer) randomizer = ::PUBLIC_RANDOM;
+
+  local val = min + randomizer.nextf(max - min);
+  if (val == 0.0 && inc_zero == false) return random_fr(min, max, inc_zero, randomizer);
+  return val;
+}
+
+local random_f = function(max, inc_zero = true, randomizer = null) {
+  return random_fr(0.0, max, inc_zero, randomizer);
+}
+
+local random_fc = function(val, inc_zero = true, randomizer = null) {
+  return random_fr(-val, val, inc_zero, randomizer);
+}
+
+local random_b = function(prop = 0.5, randomizer = null) {
+  local val = random_fr(0.0, 1.0, true, randomizer);
+  return val <= prop;
+}
+
+local random_arr = function(arr, randomizer = null) {
+  local idx = random_ir(0, length(arr) - 1, true, randomizer);
+  return arr[idx];
+}
+
+local random_pick = function(arr, randomizer = null) {
+  local idx = random_ir(0, length(arr) - 1, true, randomizer);
+  return delete arr[idx];
+}
+
+with Math {
+  rndi <- random_i
+  rndir <- random_ir
+  rndic <- random_ic
+
+  rndf <- random_f
+  rndfr <- random_fr
+  rndfc <- random_fc
+
+  rndb <- random_b
+
+  rndArray <- random_arr
+  rndPick <- random_pick
+}

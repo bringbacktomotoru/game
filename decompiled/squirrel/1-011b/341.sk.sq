@@ -1,0 +1,27 @@
+class LevelupDialog extends ::Dialog {
+  static CLOSE_TIME = 5000;
+
+  pnl_mouseevent = null;
+  lbl_lv = null;
+
+  constructor() {
+    super(::loadSKView("/ui/common/Levelup.ui"));
+
+    this.lbl_lv = this.view.findChild("lbl_lv");
+    setShowSE(::SoundConstants.SOUND_LEVELUP_CHARA);
+    setSEVolume(1.5);
+  }
+
+  function setLevel(lv) {
+    this.lbl_lv.setText(lv);
+  }
+
+  function showed() {
+    this.view.startMethod("start");
+
+    newthread().start(function() {
+      sleep(CLOSE_TIME);
+      close();
+    }.bindenv(this), this);
+  }
+}

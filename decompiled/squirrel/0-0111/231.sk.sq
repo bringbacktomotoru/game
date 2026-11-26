@@ -1,0 +1,18 @@
+return {
+  modeldata = "book.mdl"
+  motiondata = "book_base.mot"
+  bnd = [0.0, 0.026843, -0.0, 0.410083, 0.040384, 0.239528]
+
+  material = [
+  {
+    name = "book_mt"
+    tec = "shading.basic"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 2139062271
+    Ke = 151587327
+    shiness = 20.0
+    texture0 = "tex/book.png"
+  }
+  ]
+}

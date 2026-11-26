@@ -1,0 +1,40 @@
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+
+  function start(x, y, z) {
+
+    generate({ view = "/res/efx/ptd/bubble.ptd", scale = 0.15, connect = true });
+
+    local efxs = [];
+
+    for (local i = 1; i <= 2; i++) {
+      local h = ::PUBLIC_RANDOM.nexti(90) - 45;
+      efxs + generate({ view = "/res/efx/ptd/complete_product_efx.sk3", scale = 0.15, hpb = [0, 0, h], connect = true, script = "start" });
+    }
+    for (local i = 1; i <= 2; i++) {
+      local h = ::PUBLIC_RANDOM.nexti(90) - 135;
+      efxs + generate({ view = "/res/efx/ptd/complete_product_efx.sk3", scale = 0.15, hpb = [0, 0, h], connect = true, script = "start" });
+    }
+    for (local i = 1; i <= 2; i++) {
+      local h = ::PUBLIC_RANDOM.nexti(90) - 225;
+      efxs + generate({ view = "/res/efx/ptd/complete_product_efx.sk3", scale = 0.15, hpb = [0, 0, h], connect = true, script = "start" });
+    }
+    for (local i = 1; i <= 2; i++) {
+      local h = ::PUBLIC_RANDOM.nexti(90) - 315;
+      efxs + generate({ view = "/res/efx/ptd/complete_product_efx.sk3", scale = 0.15, hpb = [0, 0, h], connect = true, script = "start" });
+    }
+
+    pass(400);
+    foreach (efx in efxs) {
+      efx.startScript("start2");
+    }
+    pass(400);
+
+    moveToGlobal(x, y, z, 2000);
+    pass(600);
+
+    pass(1000);
+  }
+}

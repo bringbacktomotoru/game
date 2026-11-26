@@ -1,0 +1,17 @@
+model =
+{
+  root = {
+    pm = "shugyo.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function start() {
+    setBlend(SK_ADD);
+    uvscroll(0.6, 1.0);
+    generate({ view = "shugyo_efx.sk3", scale = [1.2, 1.2, 1] });
+  }
+}

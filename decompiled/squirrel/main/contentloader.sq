@@ -1,0 +1,37 @@
+::contentloaders +
+function(name, exp, bbuf, res) {
+  switch (exp) {
+  case "clp":
+    return ImageClipSet(decodeJSON(bbuf));
+  case "sk3":
+    local sk3 = SK3();
+    sk3.res = res;
+    local func = bbuf.compile(res.path).bindenv(sk3);
+    func();
+    sk3.setup();
+    return sk3;
+  case "ui":
+    local j = decodeJSON(bbuf);
+    local d = SKViewData();
+    d.readJSON(j);
+    return d;
+  case "sd":
+    local j = decodeJSON(bbuf);
+    local d = SK3DStageData();
+    d.readJSON(j);
+    return d;
+  }
+  return null;
+}
+
+::aliasloaders +
+function(res) {
+  if (res.name.endsWith(".ss.png") || res.name.endsWith(".ss.webp")) {
+    local r = SpriteSheet(res);
+    r.name = res.name.substring(0, res.name.indexOf("."));
+    r.pres = res.pres;
+    r.flags |= 8192;
+    return r;
+  }
+  return null;
+}

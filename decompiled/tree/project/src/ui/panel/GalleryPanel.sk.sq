@@ -1,0 +1,256 @@
+class GalleryPanel extends ::HomeUI.Panel {
+  static need_money_layer = false;
+  static need_rank_layer = false;
+  static need_menu_layer = false;
+  static need_panel_name = false;
+
+  current_index = 0;
+  current_info = null;
+  first_costumes = null;
+
+  picture_list = null;
+
+  back_to_home = false;
+  file_list = null;
+
+  taking_id_table = null;
+  picture_state_table = null;
+
+  still_image_size = null;
+
+  picture_num = 0;
+
+  function create() {
+    return ::loadSKView("/ui/GalleryPanel.ui", ::GalleryPanel);
+  }
+
+  function added() {
+    super.added();
+
+    local _filepath = ::FilePathManager.getFilePath(::FilePathManager.FILE_TYPE_THUMBNAIL, ::FilePathManager.APPLICATION_MODE_NONE);
+    local _dir = FileRef(_filepath);
+    local _pt = skGetTime();
+    this.file_list = _dir.getList();
+    local _ct = skGetTime();
+    _pt = _ct;
+    local _textures = [];
+    local _idxes = [];
+    foreach (_file in this.file_list) {
+      local _b = _file.name.contains("_thumb.png") || _file.name.contains("_thumb.jpg");
+      if (!_b) continue;
+
+      local _str = _file.name.substring(0, _file.name.len() - 10);
+      _b = _str.contains("_m_");
+      if (_b) if (_str.contains("_m_l")) continue;
+
+      local _tex = ::getTexture(FileResource(_file));
+
+      if (_b) _str = _str.substring(0, _str.len() - 4);
+
+      _textures + { tex = _tex, idx = int(_str), movie = _b };
+
+      this.picture_num++;
+    }
+
+    picture_list = PictureList(this, _textures);
+    ::TapButton(findChild("btn_back")).view.addEventListener(ACTION_EVENT, _actionevent_back);
+
+    local _pnl_desc = findChild("pnl_desc");
+    _pnl_desc.findChild("lbl_title").setText(::dict.get("gallery_panel_title"));
+    _pnl_desc.findChild("lbl_desc").setText(::dict.get("gallery_panel_desc"));
+
+  }
+
+  function removed() {
+    super.removed();
+    this.picture_list.destructor();
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (getclass(_scene) != ::SanrioGameScene) return;
+    local _home_ui = _scene.getUI();
+    if (getclassname(_home_ui.getCurrentPanel()) != "HomeTopPanel") return;
+    _home_ui.updateShopMark(true, true);
+  }
+
+  function setPanelParam(param) {
+    if ("back_to_home" in param) {
+      this.back_to_home = true;
+    }
+
+    if ("taking_id_table" in param) {
+      this.taking_id_table = param.taking_id_table;
+    }
+
+    if ("picture_state_table" in param) {
+      this.picture_state_table = param.picture_state_table;
+    }
+
+    if ("image_size" in param) {
+      this.still_image_size = param.image_size;
+    }
+  }
+
+  function getFileList() {
+    return file_list;
+  }
+
+  function getPictureStateTable() {
+    return this.picture_state_table;
+  }
+
+  function getStillImageSize() {
+    return this.still_image_size;
+  }
+
+  function _actionevent_back(e) {
+    e.consume();
+
+    local _cnt = 0;
+    foreach (_pst in this.picture_state_table) {
+      if (_pst.saved) _cnt++;
+    }
+    if (_cnt < picture_num) {
+
+      local _dlg = SimpleDialog2();
+      _dlg.lbl_msg.setText(::dict.get("gallery_panel_back_caution"));
+      if (this.back_to_home) _dlg.lbl_caution.setText(::dict.get("gallery_panel_back_confirm_room"));
+      else _dlg.lbl_caution.setText(::dict.get("gallery_panel_back_confirm"));
+      _dlg.show();
+      if (!_dlg.ret) return;
+    }
+
+    foreach (_file in file_list) {
+      _file.deleteFile();
+    }
+    file_list = null;
+
+    local _filepath = ::FilePathManager.getFilePath(::FilePathManager.FILE_TYPE_CACHE_IMAGE, ::FilePathManager.APPLICATION_MODE_NONE);
+    local _dir = FileRef(_filepath);
+    local _file_list = _dir.getList();
+    foreach (_file in _file_list) {
+      _file.deleteFile();
+    }
+
+    this.picture_state_table = null;
+
+    local _home_ui = getHomeUI();
+    if (this.back_to_home) {
+      _home_ui.clearPanelHistory();
+      _home_ui.backPanel();
+    } else {
+      _home_ui.movePanel(::ARPanel, false, { disable_panel_anime = true; taking_id_table = this.taking_id_table; });
+    }
+
+  }
+}
+
+class GalleryPanel.PictureList {
+  static COL_NUM = 2;
+  static OFFSET_X = 20;
+  static OFFSET_Y = 20;
+
+  view = null;
+  pnl_list = null;
+  reclist = null;
+  scroll = null;
+
+  pnl_list = null;
+  textures = null;
+
+  constructor(view, textures) {
+    this.view = view;
+    this.pnl_list = view.findChild("pnl_item_list");
+    this.textures = textures;
+
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dyscale = 0.0;
+    this.pnl_list.addChild(this.reclist);
+    this.pnl_list.setBuffer(true);
+
+    _setup();
+  }
+
+  function destructor() {
+    this.textures = null;
+    this.reclist = null;
+    this.scroll = null;
+    this.pnl_list = null;
+  }
+
+  function _setup() {
+    this.reclist.clearChildren();
+
+    local _offset = 20;
+    local _size_x = 0;
+    local _size_y = 0;
+    local _cnt = 0;
+
+    local _scale = 0.0;
+
+    local _siz = this.view.getStillImageSize();
+    local _s_aspect = float(_siz[0]) / _siz[1];
+
+    local _pst = this.view.getPictureStateTable();
+    foreach (_idx, _tex_table in textures) {
+      local _picture = ::PictureButton(null);
+      _picture.setIndex(_idx);
+
+      local _btn = _picture.getPicture();
+      local _w = _btn.bnd.w;
+      local _h = _btn.bnd.h;
+      if (_s_aspect > 1.0) {
+        _h = _w * (float(_siz[1]) / _siz[0]);
+      } else {
+        _w = _h * (float(_siz[0]) / _siz[1]);
+      }
+
+      _picture.setPictureBound(_w, _h);
+      _picture.setTexImage(_tex_table.tex);
+
+      if (_tex_table.movie) _picture.setPlayButton();
+
+      _picture.setTapFunc(_tapFunc.bindenv({ self = this, picture = _picture }));
+
+      if (_pst[_idx] && _pst[_idx].saved) _picture.saved();
+
+      if (_cnt == 0) {
+        local _iv = _picture.getImageView();
+        if (!_iv) continue;
+        _size_y = (this.pnl_list.bnd.h - OFFSET_Y) / 2.0;
+
+        _scale = _size_y / _h;
+        _size_x = _w * _scale;
+      }
+      _picture.scale(_scale);
+
+      this.reclist.addChild(_picture);
+
+      if (_cnt > 0 && _cnt % 2 == 0) _offset += _size_x + OFFSET_X;
+
+      _picture.pos.x = _offset;
+      _picture.pos.y = (_cnt % 2) * (_size_y + OFFSET_Y);
+
+      _picture.matdirty = true;
+      _picture.repaint();
+      _cnt++;
+    }
+    _offset += _size_x * 2;
+
+    this.reclist.setRect(0, 0, _offset, this.pnl_list.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+
+    local _scroll_bar = ::ScrollBarH(this.view.findChild("pnl_scroll_bar"));
+    _scroll_bar.setup(this.scroll, this.pnl_list.bnd, true);
+  }
+
+  function _tapFunc() {
+
+    local _idx = picture.getIndex();
+
+    local _pst = self.view.getPictureStateTable();
+    local _is = self.view.getStillImageSize();
+
+    self.view.getHomeUI().movePanel(::PictureDetailPanel, false, { textures = self.textures, picture_state_table = _pst, index = _idx, image_size = _is });
+  }
+}

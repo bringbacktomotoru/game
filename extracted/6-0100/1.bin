@@ -1,0 +1,941 @@
+{
+  "ID": "1affbe70-40bf-4e31-8396-9e2a2cd67f0a",
+  "Version": "2.3.3.0",
+  "Name": "gacha_koban",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 295,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/startstage_bg.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 1.0
+            },
+            "Position": {
+              "X": 420.0005,
+              "Y": 359.9998
+            },
+            "Scale": {
+              "ScaleX": -1.0,
+              "ScaleY": -1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.5881,
+              "Y": 0.6861
+            },
+            "LeftMargin": -73.9995,
+            "RightMargin": 419.9995,
+            "TopMargin": -133.9998,
+            "BottomMargin": 359.9998,
+            "Tag": 333,
+            "ActionTag": 477471951,
+            "Size": {
+              "X": 494.0,
+              "Y": 494.0
+            },
+            "Name": "dummy_startstage_bg_1_1_0",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/startstage_bg.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 1.0
+            },
+            "Position": {
+              "X": 420.0001,
+              "Y": 359.9998
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": -1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.5881,
+              "Y": 0.6861
+            },
+            "LeftMargin": -73.9999,
+            "RightMargin": 419.9999,
+            "TopMargin": -133.9998,
+            "BottomMargin": 359.9998,
+            "Tag": 334,
+            "ActionTag": 659276662,
+            "Size": {
+              "X": 494.0,
+              "Y": 494.0
+            },
+            "Name": "dummy_startstage_bg_1_1",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/startstage_bg.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 1.0
+            },
+            "Position": {
+              "X": 419.9997,
+              "Y": 359.9996
+            },
+            "Scale": {
+              "ScaleX": -1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.5881,
+              "Y": 0.6861
+            },
+            "LeftMargin": -74.0003,
+            "RightMargin": 420.0003,
+            "TopMargin": -133.9996,
+            "BottomMargin": 359.9996,
+            "Tag": 335,
+            "ActionTag": 1384508590,
+            "Size": {
+              "X": 494.0,
+              "Y": 494.0
+            },
+            "Name": "dummy_startstage_bg_1_0",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/startstage_bg.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 1.0
+            },
+            "Position": {
+              "X": 420.0005,
+              "Y": 360.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.5881,
+              "Y": 0.6861
+            },
+            "LeftMargin": -73.9995,
+            "RightMargin": 419.9995,
+            "TopMargin": -134.0,
+            "BottomMargin": 360.0,
+            "Tag": 336,
+            "ActionTag": -301955297,
+            "Size": {
+              "X": 494.0,
+              "Y": 494.0
+            },
+            "Name": "dummy_startstage_bg_1",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/gacha/title_koban.png",
+              "Plist": "image/ss_gacha.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 420.0,
+              "Y": 652.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.9056
+            },
+            "PreSize": {
+              "X": 0.4071,
+              "Y": 0.1083
+            },
+            "LeftMargin": 249.0,
+            "RightMargin": 249.0,
+            "TopMargin": 29.0,
+            "BottomMargin": 613.0,
+            "Tag": 349,
+            "ActionTag": -1022441904,
+            "Size": {
+              "X": 342.0,
+              "Y": 78.0
+            },
+            "Name": "title_premium_21",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/gacha/btn_1.png",
+              "Plist": "image/ss_gacha.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 203.9998,
+              "Y": 213.9999
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2429,
+              "Y": 0.2972
+            },
+            "PreSize": {
+              "X": 0.2548,
+              "Y": 0.2972
+            },
+            "LeftMargin": 96.9998,
+            "RightMargin": 529.0002,
+            "TopMargin": 399.0001,
+            "BottomMargin": 106.9999,
+            "Tag": 350,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/gacha/icon_koban.png",
+                  "Plist": "image/ss_gacha.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 63.9998,
+                  "Y": 84.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2991,
+                  "Y": 0.3925
+                },
+                "PreSize": {
+                  "X": 0.1308,
+                  "Y": 0.1963
+                },
+                "LeftMargin": 49.9998,
+                "RightMargin": 136.0002,
+                "TopMargin": 109.0,
+                "BottomMargin": 63.0,
+                "Tag": 402,
+                "ActionTag": -580221401,
+                "Size": {
+                  "X": 28.0,
+                  "Y": 42.0
+                },
+                "Name": "icon_nijikoban_42",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 36,
+                "LabelText": "無料!",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 204,
+                  "G": 153,
+                  "B": 51
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 120.0,
+                  "Y": 84.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5607,
+                  "Y": 0.3925
+                },
+                "PreSize": {
+                  "X": 0.4159,
+                  "Y": 0.1869
+                },
+                "LeftMargin": 75.5,
+                "RightMargin": 49.5,
+                "TopMargin": 110.0,
+                "BottomMargin": 64.0,
+                "Tag": 405,
+                "ActionTag": -1881644304,
+                "Size": {
+                  "X": 89.0,
+                  "Y": 40.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/gacha/icon_tomorrow.png",
+                  "Plist": "image/ss_gacha.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 107.0,
+                  "Y": 108.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5047
+                },
+                "PreSize": {
+                  "X": 0.8411,
+                  "Y": 0.8411
+                },
+                "LeftMargin": 17.0,
+                "RightMargin": 17.0,
+                "TopMargin": 16.0,
+                "BottomMargin": 18.0,
+                "Tag": 709,
+                "ActionTag": 387715585,
+                "Size": {
+                  "X": 180.0,
+                  "Y": 180.0
+                },
+                "Name": "icon_tomorrow",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": 2132558131,
+            "Size": {
+              "X": 214.0,
+              "Y": 214.0
+            },
+            "Name": "btn_1",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/gacha/btn_3.png",
+              "Plist": "image/ss_gacha.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 419.9998,
+              "Y": 213.9999
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.2972
+            },
+            "PreSize": {
+              "X": 0.2548,
+              "Y": 0.2972
+            },
+            "LeftMargin": 312.9998,
+            "RightMargin": 313.0002,
+            "TopMargin": 399.0001,
+            "BottomMargin": 106.9999,
+            "Tag": 351,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/gacha/icon_koban.png",
+                  "Plist": "image/ss_gacha.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 53.9999,
+                  "Y": 84.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2523,
+                  "Y": 0.3925
+                },
+                "PreSize": {
+                  "X": 0.1308,
+                  "Y": 0.1963
+                },
+                "LeftMargin": 39.9999,
+                "RightMargin": 146.0001,
+                "TopMargin": 109.0,
+                "BottomMargin": 63.0,
+                "Tag": 403,
+                "ActionTag": -1558752451,
+                "Size": {
+                  "X": 28.0,
+                  "Y": 42.0
+                },
+                "Name": "icon_nijikoban_43",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 36,
+                "LabelText": "2000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 204,
+                  "G": 153,
+                  "B": 51
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 119.9999,
+                  "Y": 83.9998
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5607,
+                  "Y": 0.3925
+                },
+                "PreSize": {
+                  "X": 0.4533,
+                  "Y": 0.1869
+                },
+                "LeftMargin": 71.4999,
+                "RightMargin": 45.5001,
+                "TopMargin": 110.0002,
+                "BottomMargin": 63.9998,
+                "Tag": 406,
+                "ActionTag": -190364154,
+                "Size": {
+                  "X": 97.0,
+                  "Y": 40.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/gacha/icon_tomorrow.png",
+                  "Plist": "image/ss_gacha.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 107.0001,
+                  "Y": 108.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5047
+                },
+                "PreSize": {
+                  "X": 0.8411,
+                  "Y": 0.8411
+                },
+                "LeftMargin": 17.0001,
+                "RightMargin": 16.9999,
+                "TopMargin": 16.0,
+                "BottomMargin": 18.0,
+                "Tag": 710,
+                "ActionTag": 1375148565,
+                "Size": {
+                  "X": 180.0,
+                  "Y": 180.0
+                },
+                "Name": "icon_tomorrow",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": 2129846735,
+            "Size": {
+              "X": 214.0,
+              "Y": 214.0
+            },
+            "Name": "btn_3",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/gacha/btn_10.png",
+              "Plist": "image/ss_gacha.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 636.0005,
+              "Y": 213.9999
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7571,
+              "Y": 0.2972
+            },
+            "PreSize": {
+              "X": 0.2548,
+              "Y": 0.2972
+            },
+            "LeftMargin": 529.0005,
+            "RightMargin": 96.9995,
+            "TopMargin": 399.0001,
+            "BottomMargin": 106.9999,
+            "Tag": 352,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/gacha/icon_koban.png",
+                  "Plist": "image/ss_gacha.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 49.9998,
+                  "Y": 84.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2336,
+                  "Y": 0.3925
+                },
+                "PreSize": {
+                  "X": 0.1308,
+                  "Y": 0.1963
+                },
+                "LeftMargin": 35.9998,
+                "RightMargin": 150.0002,
+                "TopMargin": 109.0,
+                "BottomMargin": 63.0,
+                "Tag": 404,
+                "ActionTag": -1740206141,
+                "Size": {
+                  "X": 28.0,
+                  "Y": 42.0
+                },
+                "Name": "icon_nijikoban_44",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 36,
+                "LabelText": "5000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 204,
+                  "G": 153,
+                  "B": 51
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 120.0,
+                  "Y": 83.9998
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5607,
+                  "Y": 0.3925
+                },
+                "PreSize": {
+                  "X": 0.4533,
+                  "Y": 0.1869
+                },
+                "LeftMargin": 71.5,
+                "RightMargin": 45.5,
+                "TopMargin": 110.0002,
+                "BottomMargin": 63.9998,
+                "Tag": 407,
+                "ActionTag": -1524941541,
+                "Size": {
+                  "X": 97.0,
+                  "Y": 40.0
+                },
+                "Name": "lbl_price",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/gacha/icon_tomorrow.png",
+                  "Plist": "image/ss_gacha.plist"
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 107.0001,
+                  "Y": 108.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5047
+                },
+                "PreSize": {
+                  "X": 0.8411,
+                  "Y": 0.8411
+                },
+                "LeftMargin": 17.0001,
+                "RightMargin": 16.9999,
+                "TopMargin": 16.0,
+                "BottomMargin": 18.0,
+                "Tag": 711,
+                "ActionTag": 1655363608,
+                "Size": {
+                  "X": 180.0,
+                  "Y": 180.0
+                },
+                "Name": "icon_tomorrow",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": -979374708,
+            "Size": {
+              "X": 214.0,
+              "Y": 214.0
+            },
+            "Name": "btn_10",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/gacha/btn_buyniji.png",
+              "Plist": "image/ss_gacha.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 420.0001,
+              "Y": -75.9997
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": -0.1056
+            },
+            "PreSize": {
+              "X": 0.3595,
+              "Y": 0.1222
+            },
+            "LeftMargin": 269.0001,
+            "RightMargin": 268.9999,
+            "TopMargin": 751.9997,
+            "BottomMargin": -119.9997,
+            "Tag": 401,
+            "ActionTag": 813725628,
+            "Size": {
+              "X": 302.0,
+              "Y": 88.0
+            },
+            "Name": "btn_buyniji",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "gacha/0129_KG.jpg",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 420.0,
+              "Y": 462.9999
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.6431
+            },
+            "PreSize": {
+              "X": 0.7619,
+              "Y": 0.3472
+            },
+            "LeftMargin": 100.0,
+            "RightMargin": 100.0,
+            "TopMargin": 132.0001,
+            "BottomMargin": 337.9999,
+            "Tag": 40,
+            "ActionTag": -1663008087,
+            "Size": {
+              "X": 640.0,
+              "Y": 250.0
+            },
+            "Name": "Sprite_1",
+            "ctype": "SpriteObjectData"
+          }
+        ],
+        "Size": {
+          "X": 840.0,
+          "Y": 720.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/ss_gacha.plist",
+        "../image/ss_gacha.png",
+        "../image/startstage_bg.png",
+        "0129_KG.jpg"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

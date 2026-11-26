@@ -1,0 +1,1100 @@
+class FurnitureModel extends ProducerModel {
+  static MODE_NONE = 0;
+  static MODE_MOVE = 1;
+  static MODE_ROTATE = 2;
+
+  static SCRIPT_PURCHASE = "purchase";
+  static SCRIPT_DECIDED = "decided";
+  static SCRIPT_SELECT_TAPPED = "select_tapped";
+  static SCRIPT_SELECT_INTERRUPT = "select_tapped_end";
+  static SCRIPT_VIEW_CHANGED = "view_changed";
+  static SCRIPT_CAUSE = "cause";
+  static SCRIPT_ON_DELIVERY = "delivery_on";
+  static SCRIPT_END_DELIVERY = "delivery_end";
+  static SCRIPT_COMPLETE_DELIVERY = "delivery_complete";
+  static SCRIPT_START_LEVELUP = "start_levelup";
+  static SCRIPT_LEVELUP_ENABLED = "levelup_enabled";
+  static SCRIPT_LEVELUP = "levelup";
+  static SCRIPT_END_LEVELUP = "levelup_end";
+  static SCRIPT_COMPLETE_LEVELUP = "levelup_complete";
+  static SCRIPT_INTERRUPTED_LEVELUP = "levelup_interrupt"
+  static SCRIPT_PRODUCTSELECT_START = "productselect_start"
+  static SCRIPT_PRODUCTSELECT_CHANGE = "productselect_change"
+  static SCRIPT_PRODUCTSELECT_END = "productselect_end"
+
+  furniture_data = null;
+  furniture_setting = null;
+
+  layout_mode = 0;
+
+  base_pos = null;
+  layout_data = null;
+
+  obj = null;
+  obj_bound = null;
+  is_show_bound_obj = null;
+  b3body = null;
+
+  is_ready = true;
+  last_product_state = null;
+
+  target_cos_table = null;
+  waiting_chara_list = null;
+  waiting_product_charas = null;
+  interval_id = null;
+
+  v_1 = Vector3D();
+  v_2 = Vector3D();
+  last_angle = null;
+
+  current_script_name = null;
+  current_effect_name = null;
+
+  use_start_pos = null;
+
+  constructor(scene) {
+    super(scene);
+    this.obj = ::StageObject(this.scene);
+
+    this.target_cos_table = null;
+    this.waiting_chara_list = [];
+    this.waiting_product_charas = [];
+
+    interval_id = -1;
+
+    this.is_show_bound_obj = false;
+    this.last_angle = 0;
+    this.current_script_name = null;
+  }
+
+  function build(furniture_data, shop_id = -1) {
+    super.build();
+
+    this.furniture_data = furniture_data;
+    this.furniture_setting = ::gamesetting.furniture_settings[furniture_data.getID()];
+    resetWaitingProductCharas();
+
+    if (furniture_data.hasProductData()) {
+      last_product_state = furniture_data.getProductData().getState();
+    }
+    local _pos;
+    if (this.obj.sk3d) { _pos = clone this.obj.sk3d.pos; }
+    ::ViewFactory.buildFurnitureModel(this.obj, furniture_data);
+    if (_pos) this.obj.sk3d.pos.set(_pos);
+
+    if (furniture_setting.getEffectScript() && !furniture_setting.getEffectScript().equals("")) {
+      local _res = ::getResource("/res/furniture" + furniture_setting.getEffectScript());
+      this.obj.setEffectScript(_res);
+      this.obj.startEffect("start");
+    }
+
+    this.obj.registerModifierParameters();
+
+    this.obj.addToStage();
+    if (furniture_data.hasProductData()) {
+      local _product_data = furniture_data.getProductData();
+      if (last_product_state == ::ProductData.STATE_FINISHED) {
+        switch (_product_data.getType()) {
+        case ::ProductData.TYPE_DELIVER: startEffect(SCRIPT_END_DELIVERY); break;
+        case ::ProductData.TYPE_LEVELUP: startEffect(SCRIPT_END_LEVELUP); break;
+        }
+      } else if (last_product_state == ::ProductData.STATE_PRODUCTING) {
+        switch (_product_data.getType()) {
+        case ::ProductData.TYPE_DELIVER: startEffect(SCRIPT_ON_DELIVERY); break;
+        case ::ProductData.TYPE_LEVELUP: startEffect(SCRIPT_LEVELUP); break;
+        }
+      }
+    }
+    if (this.obj) {
+      if (this.b3body) this.obj.scene.b3world.removeBody(this.b3body);
+      _createB3body();
+      this.obj.scene.b3world.addBody(this.b3body);
+    }
+
+    startUpdate();
+  }
+
+  function buildByID(fid) {
+    super.build();
+
+    this.furniture_setting = ::gamesetting.furniture_settings[fid];
+    resetWaitingProductCharas();
+
+    local _pos;
+    if (this.obj.sk3d) { _pos = clone this.obj.sk3d.pos; }
+    ::ViewFactory.buildFurnitureModelByID(this.obj, fid);
+    if (_pos) this.obj.sk3d.pos.set(_pos);
+
+    if (furniture_setting.getEffectScript() && !furniture_setting.getEffectScript().equals("")) {
+      local _res = ::getResource("/res/furniture" + furniture_setting.getEffectScript());
+      this.obj.setEffectScript(_res);
+      this.obj.startEffect("start");
+    }
+
+    this.obj.registerModifierParameters();
+    this.obj.addToStage();
+
+    if (this.obj) {
+      if (this.b3body) this.obj.scene.b3world.removeBody(this.b3body);
+      _createB3body();
+      this.obj.scene.b3world.addBody(this.b3body);
+    }
+
+    startUpdate();
+  }
+
+  function rebuild() {
+    removeBoundObject();
+    build(this.furniture_data);
+  }
+
+  function _createB3body() {
+    local _bnd = this.obj.sk3d.bnd;
+    local pm = ::PrimitiveMeshes.createBox(_bnd.r, _bnd.s, _bnd.t);
+    local shp = b3Shape.createMesh(pm.vtx.getStream(SK_POSITION), [pm.face[0].idx]);
+    b3body = b3Body(0.0, shp, Matrix(), ::ViewFactory.RAYTEST_GROUP, ::ViewFactory.RAYTEST_MASK);
+    b3body.updateAABB();
+  }
+
+  function release(remove_obj = true) {
+    super.release();
+    removeBoundObject();
+    clearInterval(this.interval_id);
+    this.interval_id = -1;
+
+    if (this.obj && remove_obj) {
+      this.obj.removeFromStage();
+      removeB3body();
+    }
+  }
+
+  function removeB3body() {
+    if (this.b3body) {
+      this.obj.scene.b3world.removeBody(this.b3body);
+      this.b3body = null;
+    }
+  }
+
+  function resetParam() {
+    if (isRunningProductScript() || isFinishUseFurnitureScriptRunning()) stopScript();
+    startScript("start");
+    getObject().startEffect("removeSelectArrow");
+
+    this.current_script_name = null;
+    this.target_cos_table = null;
+    this.waiting_chara_list = [];
+    this.waiting_product_charas = [];
+
+    if (interval_id != -1) clearInterval(this.interval_id);
+    interval_id = -1;
+  }
+
+  function update(dt) {
+    super.update(dt);
+    this.obj.update(dt);
+    if (this.obj_bound && this.is_show_bound_obj) _updateBoundObj();
+    if (this.b3body && this.obj.sk3d) _updateB3body();
+
+    if (furniture_data && furniture_data.hasProductData()) {
+      local product_data = furniture_data.getProductData();
+      local state = product_data.getState();
+      if (last_product_state != state) {
+        last_product_state = state;
+
+        if (state == ::ProductData.STATE_FINISHED) {
+          switch (product_data.getType()) {
+          case ::ProductData.TYPE_DELIVER: startEffect(SCRIPT_END_DELIVERY); break;
+          case ::ProductData.TYPE_LEVELUP: startEffect(SCRIPT_END_LEVELUP); break;
+          }
+        }
+      }
+
+      if (state == ::ProductData.STATE_PRODUCTING) {
+        switch (product_data.getType()) {
+        case ::ProductData.TYPE_DELIVER:
+          if (!obj.isEffectRunning(SCRIPT_ON_DELIVERY)) startEffect(SCRIPT_ON_DELIVERY);
+          break;
+        case ::ProductData.TYPE_LEVELUP:
+          if (!obj.isEffectRunning(SCRIPT_LEVELUP)) startEffect(SCRIPT_LEVELUP);
+          break;
+        }
+      }
+    } else {
+      last_product_state = ::ProductData.STATE_NONE;
+    }
+  }
+  function _updateB3body() {
+    local _pos = this.obj.sk3d.pos;
+    local _bnd = this.obj.sk3d.bnd;
+
+    b3body.setTransform(Matrix.fromTranslate(_pos.x + _bnd.x, _pos.y + _bnd.y, _pos.z + _bnd.z).rotate(this.angle * Math.DTOR, 0, 0));
+    b3body.updateAABB();
+  }
+
+  function _checkFinishedApproachAndStartScript(dt) {
+    local wait_nums = this.waiting_chara_list.len();
+    local count = 0;
+    local _wait_script_name = getFurnitureSetting().getStayActionSettingAtUseFurniture().action_name;
+    local _is_failed = false;
+
+    local _cos_list = [];
+
+    foreach (idx, chara_model in this.waiting_chara_list) {
+      if (chara_model.isStateNone()) {
+        _is_failed = true;
+        break;
+      }
+      if (chara_model.getCurrentScriptName() != _wait_script_name) continue;
+      if (!chara_model.isFurnitureScriptRunning()) chara_model.setFurnitureScriptRunning(true);
+      count++;
+      _cos_list + chara_model.getCostumeData().getID();
+    }
+
+    if (_is_failed) {
+      this.waiting_chara_list.clear();
+      this.interval_id = -1;
+      return undefined;
+    }
+
+    if (wait_nums <= count) {
+
+      newthread().start(function() {
+        local _ud = ::gamesession.getUserData();
+        local _scene = ::gamesession.getCurrentScene();
+
+        local _ret = _scene.getProductionManager().registerFurnitureProduct(getFurnitureData(), _cos_list, _ud.getCurrentRoomIndex());
+        if (_ret) _startUseFurnitureScript();
+      }.bindenv(this), this);
+
+      this.interval_id = -1;
+      return undefined;
+
+    }
+  }
+
+  function _startUseFurnitureScript(is_restart = false) {
+    local _ud = ::gamesession.getUserData();
+    local _scene = ::gamesession.getCurrentScene();
+    local stage = _scene.getStage();
+    local _chara_table = {};
+    local _cos_list = [];
+
+    foreach (cos_id, bone in this.target_cos_table) {
+      _cos_list + cos_id;
+    }
+
+    local chara_model = null;
+    v_1.set(getPos()).sub(0, ::HouseModel.FLOOR_DEPTH, 0);
+
+    foreach (cos_id, bone in this.target_cos_table) {
+      chara_model = stage.getChara(cos_id);
+      if (bone != null) {
+        _chara_table[bone] <- chara_model;
+      } else {
+        _chara_table["null"] <- chara_model;
+        this.use_start_pos = Vector3D(0, 0, 0).set(v_1).sub(chara_model.getPos());
+        this.use_start_pos.y = 0;
+      }
+
+      chara_model.setAutoAction(false);
+      chara_model.clearTasks(false, false);
+    }
+
+    local fd = this.getFurnitureData();
+    ::gamesession.getUserDataLocal().addFurnitureActionCharaTable(fd.getUID(), this.target_cos_table);
+    ::gamesession.saveUserDataLocal();
+
+    startScript("start_product0", _chara_table, is_restart);
+  }
+
+  function startUseFurnitureScript() {
+    _startUseFurnitureScript();
+  }
+
+  function startUseFurnitureScriptAtEventScene(scpname, cm, bone = null, args = null) {
+    startScript(scpname, cm, bone, args);
+  }
+
+  function finishUseFurnitureScript(is_complete, reward = null) {
+    if (!isRunningProductScript()) return;
+
+    local has_chara_task = false;
+    if (this.interval_id != -1) {
+      clearInterval(this.interval_id);
+      this.interval_id = -1;
+      has_chara_task = true;
+    }
+
+    local _ud = ::gamesession.getUserData();
+    local _now = skGetTime();
+
+    local _chara_table = {};
+    local chara_model = null;
+    local stage = ::gamesession.getCurrentScene().getStage();
+    foreach (cos_id, bone in this.target_cos_table) {
+      chara_model = stage.getChara(cos_id);
+      chara_model.pauseBound();
+      chara_model.setLastUseFurniture(this, _now);
+      _ud.failHapinessAction(cos_id);
+
+      if (has_chara_task) {
+        chara_model.finishProduct();
+        chara_model.setAutoAction(true);
+        chara_model.clearTasks();
+      }
+
+      if (bone) {
+        _chara_table[bone] <- chara_model;
+      } else {
+        _chara_table["null"] <- chara_model;
+      }
+    }
+
+    if (has_chara_task) {
+
+      this.target_cos_table = null;
+      this.waiting_chara_list = null;
+      this.use_start_pos = null;
+
+      return;
+    }
+
+    local _action_pos_data = getFurnitureSetting().getActionPosData();
+    local _data_table = {};
+    local _data = null;
+
+    println("*** finishUseFurnitureScript :" + getFurnitureSetting().getID());
+    foreach (idx, val in _action_pos_data) {
+      local bone = val["bone"] || null;
+
+      if (bone) {
+        local chara_model = _chara_table[bone];
+        if (chara_model == undefined) {
+          println("bone = " + bone);
+          println("target_cos_table.len = " + length(this.target_cos_table));
+          foreach (cid, bone in this.target_cos_table) {
+            println("--- cid = " + cid + ", bone = " + bone)
+          }
+        }
+
+        if (chara_model.isFurnitureScriptRunning()) {
+          if (chara_model.obj.sk3d.parent) {
+            v_1.set(_calcEndFurniturePos(bone, val.type, val.dist, chara_model));
+          } else {
+            v_1.set(0, 0, 0);
+          }
+
+        } else {
+          v_1.set(0, 0, 0);
+        }
+        _data_table[bone] <- { pos = Vector3D(0, 0, 0).set(v_1) };
+      } else {
+        local chara_model = _chara_table["null"];
+
+        if (chara_model == undefined) {
+          println("bone = " + bone);
+          println("target_cos_table.len = " + length(this.target_cos_table));
+          foreach (cid, bone in this.target_cos_table) {
+            println("--- cid = " + cid + ", bone = " + bone)
+          }
+        }
+
+        if (chara_model.isFurnitureScriptRunning()) {
+          v_1.set(_calcEndFurniturePos(bone, val.type, val.dist, chara_model));
+        } else {
+          v_1.set(0, 0, 0);
+        }
+        _data_table["null"] <- { pos = Vector3D(0, 0, 0).set(v_1) };
+      }
+    }
+
+    if (reward) {
+      _data_table["reward"] <- reward;
+    }
+
+    if (is_complete) {
+      startScript("end_product", _chara_table, _data_table);
+    } else {
+      startScript("interrupted_product", _chara_table, _data_table);
+    }
+
+    foreach (cos_id, bone in this.target_cos_table) {
+
+      chara_model = stage.getChara(cos_id);
+
+      chara_model.finishProduct();
+      chara_model.setAutoAction(true);
+
+    }
+
+    local udl = ::gamesession.getUserDataLocal();
+    udl.removeFurnitureActionCharaTable(getFurnitureData().getUID());
+    ::gamesession.saveUserDataLocal();
+
+    this.target_cos_table = null;
+    this.waiting_chara_list = null;
+    this.use_start_pos = null;
+  }
+
+  function restartUserFurnitureAction(target_cos_table) {
+    this.target_cos_table = target_cos_table;
+    local stage = ::gamesession.getCurrentScene().getStage();
+    local uid = this.getFurnitureData().getUID();
+
+    local _script = getFurnitureSetting().getStayActionSettingAtUseFurniture().action_name;
+    foreach (cos_id, bone in this.target_cos_table) {
+      local chara_model = stage.getChara(cos_id);
+      chara_model.setAutoAction(false);
+
+      local _bone = bone != "null" ? bone : null;
+
+      v_1.set(_calcUseFurniturePos(_bone));
+      chara_model.setPosXYZ(v_1.x, v_1.y, v_1.z);
+      if (!_bone) {
+
+        v_1.sub(this.getPos());
+        local _r = Math.atan2(v_1.x, v_1.z);
+        chara_model.obj.setAngle(_r * Math.RTOD);
+      } else {
+
+        chara_model.obj.setAngle(0);
+      }
+
+      chara_model.clearTasks();
+      chara_model.setFurnitureScriptRunning(true);
+      chara_model.setTargetFurnitureUID(uid);
+      chara_model.startScript(_script, this, bone);
+    }
+
+    _startUseFurnitureScript(true);
+  }
+
+  function tapProduct() {
+    if (!getFurnitureData().hasProductData()) return;
+
+    local has_chara_task = false;
+    if (this.interval_id != -1) {
+      clearInterval(this.interval_id);
+      this.interval_id = -1;
+      has_chara_task = true;
+    }
+
+    local _ud = ::gamesession.getUserData();
+    local _stage = ::gamesession.getCurrentScene().getStage();
+    local _now = skGetTime();
+
+    local _chara_table = {};
+    local _data_table = {};
+
+    local _action_pos_data = getFurnitureSetting().getActionPosData();
+    local _searchPosData = function(bone_name) {
+      foreach (idx, data in _action_pos_data) {
+        local _bone = data["bone"] || "null";
+        if (_bone == bone_name) return data;
+      }
+      return null;
+    }
+
+    local _hapiness_cid = -1;
+    local _ftype = getFurnitureSetting().getType();
+
+    foreach (cos_id, bone in this.target_cos_table) {
+      local _cm = _stage.getChara(cos_id);
+      _cm.pauseBound();
+      _cm.setLastUseFurniture(this, _now);
+
+      local _key = bone ? bone : "null";
+      _chara_table[_key] <- _cm;
+
+      local _posdata = _searchPosData(_key);
+      v_1.set(_calcEndFurniturePos(bone, _posdata.type, _posdata.dist, _cm));
+      _data_table[_key] <- { pos = Vector3D(0, 0, 0).set(v_1) };
+
+    }
+
+    local _fd = getFurnitureData();
+    local _ret = ::gamesession.tapHapinessProduct(_fd.getUID());
+
+    if (_ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      local _scene = ::gamesession.getCurrentScene();
+      local _pd = _fd.getProductData();
+      _scene.getPanelMissionManager().showTalkFurniture(_fd.getID(), _pd.getCostumeIDList());
+    }
+
+    local _add_gm = _ret["add_gm"] || 0;
+    local _bonus_hapiness = _ret["bonus_hapiness"] || 0;
+    _data_table["bonus_hapiness"] <- _bonus_hapiness;
+
+    startScript("tap_product", _chara_table, _data_table, _add_gm);
+
+    return _ret;
+  }
+
+  function isFinishUseFurnitureScriptRunning() {
+    if (!isScriptRunning()) return false;
+    if (current_script_name != "tap_product" && current_script_name != "interrupted_product") return false;
+
+    return true;
+  }
+
+  function _calcUseFurniturePos(bone) {
+    local setting = getFurnitureSetting();
+    local pos_data_list = setting.getActionPosData();
+
+    local _pos_data = null;
+    foreach (pos_data in pos_data_list) {
+      if (bone) {
+        if (pos_data["bone"] != bone) continue;
+        _pos_data = pos_data;
+        break;
+      } else {
+        if ("bone" in pos_data) continue;
+        _pos_data = pos_data;
+        break;
+      }
+    }
+
+    v_1.set(0, 0, 0);
+    if ("bone" in _pos_data) {
+      local parts = null;
+      foreach (v, val in this.obj.sk3d.motion.parts) {
+        if (val.name != bone) continue;
+        parts = val;
+        break;
+      }
+
+      if (parts && parts != undefined) {
+        local p0 = parts.bindpose;
+        v_1.set(p0[12], 0, p0[14]).transform0(this.obj.sk3d.gmat);
+      }
+    } else {
+
+      local _target_angle = _pos_data.type != ::FurnitureSetting.ACTION_AREA_SIDE ? 0 : 90;
+      local _dir = (getAngle() + _target_angle) * Math.DTOR;
+      local _dist = _pos_data.dist;
+      v_1.add(_dist * Math.sin(_dir) * -1, 0, _dist * Math.cos(_dir) * -1);
+    }
+
+    local f_local_pos = getLocalPos();
+    return Vector3D(0, 0, 0).add(v_1).add(getPos());
+  }
+
+  function _calcEndFurniturePos(bone, type, dist, cm = null) {
+    v_1.set(0, 0, 0);
+
+    local _dist_y = 0;
+    if (bone == "null") bone = null;
+    if (bone) {
+      local _sk3d = this.obj.sk3d;
+      local _b = _sk3d.findBone(bone);
+      local p0 = _b.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(_sk3d.gmat);
+
+      _dist_y = p0[13] * -1;
+    }
+    v_1.add(getPos());
+
+    if (!bone || bone == "null") {
+      if (this.use_start_pos && cm) {
+        v_2.set(v_1).sub(cm.getPos());
+        v_1.set(this.use_start_pos).sub(v_2);
+        return Vector3D(0, 0, 0).set(v_1);
+      }
+      return Vector3D(0, 0, 0);
+    }
+
+    local check_angle;
+    switch (type) {
+    case ::FurnitureSetting.ACTION_AREA_ALL: check_angle = [0, 90, 180, 270]; break;
+    case ::FurnitureSetting.ACTION_AREA_FRONT: check_angle = [0]; break;
+    case ::FurnitureSetting.ACTION_AREA_SIDE: check_angle = [90, 270]; break;
+    case ::FurnitureSetting.ACTION_AREA_IGUNORE_BACK: check_angle = [0, 90, 270]; break;
+    case ::FurnitureSetting.ACTION_AREA_RIGHT: check_angle = [270]; break;
+    case ::FurnitureSetting.ACTION_AREA_LEFT: check_angle = [90]; break;
+    }
+
+    local _hm = ::gamesession.getCurrentScene().getStage().getHouseManager();
+
+    foreach (_a in check_angle) {
+      local _rad = (this.angle + _a) * Math.DTOR;
+      local _dist_x = dist * Math.sin(_rad) * -1;
+      local _dist_z = dist * Math.cos(_rad) * -1;
+
+      local _x = v_1.x + _dist_x;
+      local _z = v_1.z + _dist_z;
+
+      if (_hm.isValidNodesAtPos(_x, _z)) {
+        return Vector3D(_dist_x, _dist_y, _dist_z);
+      }
+    }
+
+    local pos = _hm.getEnabledNodeByVortex(v_1.x, v_1.z);
+    return pos.sub(v_1.x, -_dist_y, v_1.z);
+  }
+
+  function calcEndFurniturePos(bone = null, charamodel = null) {
+    local _action_pos_data = this.getFurnitureSetting().getActionPosData();
+    if (bone) {
+      foreach (posdata in _action_pos_data) {
+        if (bone != posdata["bone"]) continue;
+        return _calcEndFurniturePos(bone, posdata.type, posdata.dist, charamodel);
+      }
+      return v_1.set(0, 0, 0);
+    } else {
+      local posdata = _action_pos_data[0];
+      return _calcEndFurniturePos(null, posdata.type, posdata.dist, charamodel);
+    }
+  }
+
+  function getTargetCostumeTable() {
+    return this.target_cos_table;
+  }
+
+  function resetLayout() {
+
+    setPosXYZ(base_pos.x + layout_data.x, base_pos.y + layout_data.y, base_pos.z + layout_data.z);
+    setAngle(layout_data.angle);
+  }
+
+  function setupLayout(base_pos, layout_data) {
+    this.base_pos = base_pos;
+    this.layout_data = layout_data;
+
+    applyLayout();
+  }
+
+  function applyLayout() {
+
+    resetLayout();
+
+    this.is_ready = false;
+  }
+
+  function getObject() {
+    return this.obj;
+  }
+
+  function getB3body() {
+    return this.b3body;
+  }
+
+  function getCurrentScriptName() {
+    return current_script_name;
+  }
+
+  function getCurrentEffectName() {
+    return current_effect_name;
+  }
+
+  function getFurnitureSettingId() {
+    return furniture_setting.getID();
+  }
+  function getFurnitureSetting() {
+    return furniture_setting;
+  }
+
+  function getFurnitureData() {
+    return furniture_data;
+  }
+
+  function getFurnitureUID() {
+    if (!furniture_data) return -1;
+    return furniture_data.getUID();
+  }
+
+  function getLayoutData() {
+    return this.layout_data;
+  }
+
+  function getLayoutMode() {
+    return this.layout_mode;
+  }
+
+  function isOverlaidModel() {
+    return this.furniture_setting.isOverlaid();
+  }
+
+  function disableTouch() {
+    return this.furniture_setting.disableTouch();
+  }
+
+  function startEffect(name, ...) {
+    if (!this.obj) {
+      return;
+    }
+
+    this.current_effect_name = name;
+
+    switch (vargc) {
+    case 1: return this.obj.startEffect(name, vargv[0]);
+    case 2: return this.obj.startEffect(name, vargv[0], vargv[1]);
+    case 3: return this.obj.startEffect(name, vargv[0], vargv[1], vargv[2]);
+    case 4: return this.obj.startEffect(name, vargv[0], vargv[1], vargv[2], vargv[3]);
+    default: return this.obj.startEffect(name);
+    }
+  }
+
+  function startScript(name, ...) {
+    if (!this.obj || !this.obj.sk3d) return;
+
+    this.current_script_name = name;
+
+    switch (vargc) {
+    case 1: return this.obj.sk3d.startScript(name, vargv[0]);
+    case 2: return this.obj.sk3d.startScript(name, vargv[0], vargv[1]);
+    case 3: return this.obj.sk3d.startScript(name, vargv[0], vargv[1], vargv[2]);
+    case 4: return this.obj.sk3d.startScript(name, vargv[0], vargv[1], vargv[2], vargv[3]);
+    default: return this.obj.sk3d.startScript(name);
+    }
+  }
+
+  function isScriptRunning() {
+    if (!obj.sk3d.scprunner) return false;
+    return obj.sk3d.scprunner.running
+  }
+
+  function isEffectRunning(key) {
+    return obj.isEffectRunning(key);
+  }
+
+  function setScriptLock(b) {
+    this.obj.sk3d.setScriptLock(b);
+  }
+
+  function stopScript() {
+    if (this.obj && this.obj.sk3d) this.obj.sk3d.stopScript();
+  }
+
+  function getProductByLevel() {
+    return this.furniture_data.getProductByLevel();
+  }
+  function hasProductData() {
+    super.hasProductData();
+    return this.furniture_data.hasProductData();
+  }
+  function getProductData() {
+    super.getProductData();
+    return this.furniture_data.getProductData();
+  }
+  function getProductState() {
+    super.getProductState();
+
+    local pd = this.furniture_data.getProductData();
+    return pd ? pd.getState() : ::ProductData.STATE_NONE;
+  }
+  function hasProductID() {
+    return this.furniture_setting.hasProductionID();
+  }
+  function isRunningProductScript() {
+    if (!this.current_script_name) return false;
+
+    if (isScriptRunning()) {
+      if (this.current_script_name.indexOf("start_product") != -1) return true;
+      if (this.current_script_name == "tap_product") return true;
+      if (this.current_script_name == "interrupted_product") return true;
+    }
+
+    return false;
+  }
+
+  function setPos(pos) {
+    if (this.obj) this.obj.setPos(pos);
+  }
+  function setPosXYZ(x, y, z) {
+    if (this.obj) this.obj.setPosXYZ(x, y, z);
+  }
+  function applyPos() {
+
+    if (this.obj) {
+      this.obj.applyPos();
+    }
+  }
+  function getPos() {
+    return this.obj.getPos();
+  }
+
+  function applyAngle() {
+    super.applyAngle();
+    if (this.obj) {
+      this.obj.setAngle(this.angle);
+    }
+  }
+
+  function applyVisible() {
+    super.applyVisible();
+    if (this.obj) {
+      this.obj.setVisible(this.is_visible);
+    }
+
+    local _children = this.obj.sk3d.children;
+    foreach (_child in _children) {
+      _child.setVisible(this.is_visible);
+    }
+  }
+
+  function inBounds(pos) {
+
+    if (!this.obj) {
+      println("Warning obj is already removed.");
+      return false;
+    }
+    return this.obj.inBounds(pos);
+  }
+
+  function getLocalPos() {
+    local _pos = { x = layout_data.x, y = layout_data.y, z = layout_data.z };
+    return _pos;
+  }
+
+  function addBoundObject() {
+    if (this.obj_bound) {
+      this.obj_bound.removeFromParent();
+    }
+
+    local setting = this.furniture_setting;
+    local grid_len = ::RoomInfo.Grid.GRID_LENGTH;
+
+    local _round_grid = RoomInfo.roundGrid;
+
+    local mb = PolygonMeshBuilder();
+    local m = Material();
+    m.tec = skFXFindTechnique("decal.def");
+
+    mb.setMaterial(m);
+    mb.begin(SK_TRIANGLESTRIP);
+
+    local ox = setting.size_origin_x;
+    local oz = setting.size_origin_z;
+    local _hw = ::round(setting.size_w / 2.0, 0.001);
+    local _hd = ::round(setting.size_d / 2.0, 0.001);
+    local pl = RoomInfo.getFurnitureVertex(ox, oz, _hw, _hd, this.angle);
+
+    if (this.angle % 90 == 0) {
+
+      mb.vertex(pl[0].x, 0, pl[0].z);
+      mb.vertex(pl[1].x, 0, pl[1].z);
+      mb.vertex(pl[2].x, 0, pl[2].z);
+      mb.vertex(pl[3].x, 0, pl[3].z);
+    } else {
+
+      local _inRect = RoomInfo.isInRect;
+      local pos = getPos();
+      local posx = pos.x;
+      local posz = pos.z;
+      local angle = this.angle;
+      local cover_rect = ::RoomInfo._getGridRectIncludeRect(pl, posx, posz);
+      local left = cover_rect[0];
+      local right = cover_rect[1];
+      local bottom = cover_rect[2];
+      local top = cover_rect[3];
+      local x1, x2, z1, z2;
+      local x3, x4, z3, z4;
+      for (local z = bottom; z <= top; z += grid_len) {
+        for (local x = left; x <= right; x += grid_len) {
+          x1 = x;
+          x2 = x + grid_len;
+          z1 = z;
+          z2 = z + grid_len;
+          x3 = x1 - posx;
+          x4 = x2 - posx;
+          z3 = z1 - posz;
+          z4 = z2 - posz;
+
+          local is_in_rect_all = _inRect(x3, z3, ox, oz, _hw, _hd, angle) && _inRect(x3, z4, ox, oz, _hw, _hd, angle) && _inRect(x4, z3, ox, oz, _hw, _hd, angle) && _inRect(x4, z4, ox, oz, _hw, _hd, angle);
+          if (is_in_rect_all) {
+            mb.vertex(x3, 0, z3);
+            mb.vertex(x3, 0, z4);
+            mb.vertex(x4, 0, z3);
+            mb.vertex(x4, 0, z4);
+          }
+        }
+      }
+    }
+    mb.end();
+
+    this.obj_bound = SK3DObject();
+    this.obj_bound.setPolygonMesh(mb.toPolygonMesh());
+    this.obj_bound.setScript(::getResource("/res/efx/furniture_area.sk3"));
+    this.obj.sk3d.addChild(this.obj_bound);
+    this.obj_bound.rot.setHPB(this.angle * Math.DTOR * -1, 0, 0);
+    this.obj_bound.pos.set(0, 0.01, 0);
+    this.obj_bound.matdirty = true;
+
+    this.last_angle = this.angle;
+  }
+
+  function updateBoundObjView() {
+    _updateBoundObj();
+  }
+
+  function _updateBoundObj() {
+    if (this.last_angle != this.angle) {
+      addBoundObject();
+      showBoundAreaEffect(true);
+    }
+  }
+
+  function removeBoundObject() {
+    if (!this.obj_bound) return;
+
+    if (this.obj_bound.parent) this.obj_bound.removeFromParent();
+    this.obj_bound = null;
+  }
+
+  function select() {
+    if (!this.obj_bound) {
+      addBoundObject();
+    }
+
+    this.layout_mode = MODE_MOVE;
+    this.obj_bound.startScript("selected");
+  }
+
+  function deselect() {
+    if (!this.obj_bound) {
+      addBoundObject();
+    }
+
+    this.layout_mode = MODE_NONE;
+    this.obj_bound.startScript("deselected");
+  }
+
+  function showBoundAreaEffect(is_select) {
+    if (!this.obj_bound) {
+      addBoundObject();
+    }
+    this.is_show_bound_obj = true;
+    if (is_select) {
+      this.obj_bound.startScript("selected");
+    } else {
+      this.obj_bound.startScript("deselected");
+    }
+
+  }
+
+  function stopBoundAreaEffect() {
+    if (!this.obj_bound) return;
+    this.obj_bound.startScript("stop");
+    this.is_show_bound_obj = false;
+  }
+
+  function setReady() {
+    this.is_ready = true;
+  }
+
+  function isReady() {
+    return this.is_ready;
+  }
+
+  function setFurnitureAction(target_cos_table) {
+    if (length(target_cos_table) == 0) {
+      currentthread().printStackTrace();
+    }
+
+    this.target_cos_table = target_cos_table;
+    local stage = ::gamesession.getCurrentScene().getStage();
+    this.waiting_chara_list = [];
+
+    foreach (cos, bone in this.target_cos_table) {
+      local chara_model = stage.getChara(cos);
+      chara_model.approachFurniture(this, bone);
+      this.waiting_chara_list + chara_model;
+    }
+
+    if (this.interval_id != -1) {
+      clearInterval(this.interval_id);
+      this.interval_id = -1;
+    }
+
+    this.interval_id = setInterval(_checkFinishedApproachAndStartScript.bindenv(this), 100);
+
+  }
+
+  function addWaitingProductChara(cm, is_auto = false) {
+    local _need = getFurnitureSetting().getEnableActionNum();
+
+    if (interval_id != -1) return false;
+
+    if (_need <= this.waiting_product_charas.len()) {
+
+      return false;
+    }
+    if (this.waiting_product_charas.indexOf(cm) >= 0) {
+
+      return false;
+    }
+    this.waiting_product_charas + cm;
+    cm.setWaitingProductModel(this);
+    if (_need == this.waiting_product_charas.len()) startProduct(is_auto);
+
+    return true;
+  }
+
+  function removeWaitingProductChara(cm) {
+    local _idx = this.waiting_product_charas.indexOf(cm);
+    if (_idx < 0) return;
+    delete this.waiting_product_charas[_idx];
+  }
+
+  function resetWaitingProductCharas() {
+    foreach (cm in this.waiting_product_charas) {
+      cm.setWaitingProductModel(null);
+    }
+    this.waiting_product_charas.clear();
+  }
+
+  function startProduct(is_auto = false) {
+    if (interval_id != -1) {
+      println("---------- StartProduct Failded !!!!!!! already interval_id set!!!!!!")
+      return false;
+    }
+    local _need = getFurnitureSetting().getEnableActionNum();
+    if (_need > this.waiting_product_charas.len()) {
+      println("---------- StartProduct Failded !!!!!!! Not enough  need = " + _need + ", waiting = " + this.waiting_product_charas.len() + " !!!!!!!!!!!")
+      return false;
+    }
+    local _pos_list = getFurnitureSetting().getActionPosData();
+    local _cos_table = {};
+    local _cos_list = [];
+    foreach (idx, pos in _pos_list) {
+      local _bone = pos["bone"] || null;
+      local _cm = this.waiting_product_charas[idx];
+      local _cid = _cm.getCostumeData().getID();
+      _cos_table[_cid] <- _bone;
+      _cos_list + _cid;
+      _cm.setWaitingProductModel(null);
+    }
+    setFurnitureAction(_cos_table);
+    local _scene = ::gamesession.getCurrentScene();
+
+    resetWaitingProductCharas();
+    if (!is_auto) ::playSound(::SoundConstants.SOUND_PRODUCT_START);
+    return true;
+  }
+
+  function canSelectedProduct() {
+    if (isRunningProductScript()) return false;
+    if (this.interval_id != -1) return false;
+
+    return true;
+  }
+
+  function _showAttractTapEffect(gm) {
+    local _ud = ::gamesession.getUserData();
+    newthread().start(function() {
+      local _ptd = ::SK3DObject();
+      _ptd.pos.set(getPos()).add(0, 1.5, 0);
+
+      _ptd.setParticle(getParticleEffect(::getResource("/res/efx/ptd/tap_attract.ptd")));
+      _ptd.scale.set(0.5, 0.5, 0.5);
+      this.obj.scene.addObject(_ptd);
+      _ptd.startParticle();
+
+      sleep(200);
+
+      _ud.addGameMoney(gm);
+      ::playSound(::SoundConstants.SOUND_PLUS);
+    }.bindenv(this), this);
+  }
+
+}

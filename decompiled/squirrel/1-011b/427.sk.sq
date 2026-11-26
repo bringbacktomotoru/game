@@ -1,0 +1,186 @@
+function checkOverDate(d) {
+  if (!d) return false;
+
+  local _now = Date(Date.currentTime() + ::timeoffset);
+  if ((_now.getTime() - d.getTime())[0] >= 0) return true;
+  return false;
+}
+
+function checkDateFromYMD(y, m, d) {
+  return checkOverDate(Date(y - 1900, m - 1, d, 0, 0, 0));
+}
+
+function checkDateFromYMDh(y, m, d, h) {
+  return checkOverDate(Date(y - 1900, m - 1, d, h, 0, 0));
+}
+
+function getDayOfWeek(y, m, d) {
+  local _y = y - 1900;
+  local _m = m - 1;
+  local _date = Date(_y, _m, d);
+  return _date.tm_wday;
+}
+
+function getDayOfWeekTextFromDate(y, m, d) {
+  local _dow = getDayOfWeek(y, m, d);
+  if (_dow < 0) return "";
+  return getDayOfWeekText(_dow);
+}
+
+function getDayOfWeekText(n) {
+  local _text = "";
+  switch (n) {
+  case 0: _text = ::dict.get("sunday"); break;
+  case 1: _text = ::dict.get("monday"); break;
+  case 2: _text = ::dict.get("tuesday"); break;
+  case 3: _text = ::dict.get("wednesday"); break;
+  case 4: _text = ::dict.get("thursday"); break;
+  case 5: _text = ::dict.get("friday"); break;
+  case 6: _text = ::dict.get("saturday"); break;
+  }
+  return _text;
+}
+
+function getDateTableFromYYYYMMDD(d) {
+  if (!d || d.len() != 8) return null;
+  return { year = int(d.slice(0, 4)), mon = int(d.slice(4, 6)), day = int(d.slice(6, 8)) }
+}
+
+function getDateTableFromYYYYMMDDhh(d) {
+  if (!d || d.len() != 10) return null;
+  return { year = int(d.slice(0, 4)), mon = int(d.slice(4, 6)), day = int(d.slice(6, 8)), hour = int(d.slice(8, 10)) }
+}
+
+function getTimeText(time, slice = -1) {
+  local _param = _calcTime(time);
+  local _text = "";
+  local _cnt = 0;
+
+  if (_param.day > 0) {
+    _text = _text + ::dict.get("timer_d", [_param.day]);;
+    _cnt++;
+    if (slice >= 0 && _cnt >= slice) return _text;
+  }
+  if (_param.hour > 0) {
+    _text = _text + ::dict.get("timer_h", [_param.hour]);
+    _cnt++;
+  }
+  else if (_cnt > 0) {
+    _cnt++;
+  }
+  if (slice >= 0 && _cnt >= slice) return _text;
+
+  if (_param.minute > 0) {
+    _text = _text + ::dict.get("timer_m", [_param.minute]);
+    _cnt++;
+    if (slice >= 0 && _cnt >= slice) return _text;
+  }
+  else if (_cnt > 0) {
+    _cnt++;
+  }
+  if (slice >= 0 && _cnt >= slice) return _text;
+
+  if (_param.sec > 0) {
+    _text = _text + ::dict.get("timer_s", [_param.sec]);
+    _cnt++;
+    if (slice >= 0 && _cnt >= slice) return _text;
+  }
+  else if (_cnt > 0) {
+    _cnt++;
+  }
+  if (slice >= 0 && _cnt >= slice) return _text;
+
+  return _text;
+}
+
+function dateToLimitText(date) {
+  local year = date.tm_year + 1900;
+  local month = date.tm_mon + 1;
+  local day = date.tm_mday;
+  local w_text = ::getDayOfWeekText(date.tm_wday);
+  local hour = date.tm_hour;
+  local min = date.tm_min;
+
+  return ::dict.get("limit_timeYYYYMMDDWhhmm", [year, month, day, w_text, hour, min]);
+}
+
+function dateToLimitText(date) {
+  local year = date.tm_year + 1900;
+  local month = date.tm_mon + 1;
+  local day = date.tm_mday;
+  local hour = date.tm_hour;
+  local min = date.tm_min;
+  local sec = date.tm_sec;
+
+  return ::dict.get("timeYYYYMMDDhhmmss", [year, month, day, hour, min, sec]);
+}
+
+function _calcTime(time) {
+  local D_SCALE = 60 * 60 * 24;
+  local H_SCALE = 60 * 60;
+  local M_SCALE = 60;
+
+  local _param = {};
+  _param.day <- time / D_SCALE;
+  _param.hour <- (time - _param.day * D_SCALE) / H_SCALE;
+  _param.minute <- (time - _param.day * D_SCALE - _param.hour * H_SCALE) / M_SCALE;
+  _param.sec <- (time - _param.day * D_SCALE - _param.hour * H_SCALE - _param.minute * M_SCALE);
+
+  return _param;
+}
+
+function calcTimePart(time, param) {
+  local D_SCALE = 60 * 60 * 24;
+  local H_SCALE = 60 * 60;
+  local M_SCALE = 60;
+
+  local _remain = time;
+  if ("day" in param) {
+    param.day = _remain / D_SCALE;
+    _remain -= param.day * D_SCALE;
+  }
+  if ("hour" in param) {
+    param.hour = _remain / H_SCALE;
+    _remain -= param.hour * H_SCALE;
+  }
+  if ("minute" in param) {
+    param.minute = _remain / M_SCALE;
+    _remain -= param.minute * M_SCALE;
+  }
+  if ("sec" in param) {
+    param.sec = _remain;
+  }
+
+  return param;
+}
+
+function isOtherDay(t1, t2 = -1) {
+  local _date1 = Date(long(t1) + ::time201511);
+  local _date2;
+  if (t2 >= 0) _date2 = Date(long(t2) + ::time201511);
+  else _date2 = Date(Date.currentTime() + ::timeoffset);
+
+  return _date1.tm_year != _date2.tm_year || _date1.tm_yday != _date2.tm_yday;
+}
+
+function isOtherMonth(t1, t2 = -1) {
+  local _date1 = Date(long(t1) + ::time201511);
+  local _date2;
+  if (t2 >= 0) _date2 = Date(long(t2) + ::time201511);
+  else _date2 = Date(Date.currentTime() + ::timeoffset);
+
+  return _date1.tm_year != _date2.tm_year || _date1.tm_mon != _date2.tm_mon;
+}
+
+function acrossWeek(t1, t2 = -1) {
+  local _date1 = Date(long(t1) + ::time201511);
+  local _date2;
+  if (t2 >= 0) _date2 = Date(long(t2) + ::time201511);
+  else _date2 = Date(Date.currentTime() + ::timeoffset);
+
+  local _offset = _date2.tm_sec + _date2.tm_min * 60 + _date2.tm_hour * 60 * 60 + _date2.tm_wday * 24 * 60 * 60;
+  local _reset_time = (_date2.getTime() - _offset * 1000)[0];
+
+  if ((_date1.currentTime() - _reset_time)[0] < 0) return true;
+  return false;
+}

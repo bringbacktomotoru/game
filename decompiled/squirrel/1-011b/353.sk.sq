@@ -1,0 +1,44 @@
+foreach (f_name in [
+"Dialog.sk"
+"FlickDialog.sk"
+
+"SimpleDialog.sk"
+
+"ImageViewDialog.sk"
+"ImageViewDialogNoTitle.sk"
+"DiaryRewardDialog.sk"
+"PanelMissionAllCompleteDialog.sk"
+
+"InputPlayerInfoDialog.sk"
+"ConfirmShopRMDialog.sk"
+
+"TextInputDialog.sk"
+
+"Message.sk"
+
+"RoomDetailDialog.sk"
+
+"MotionViewDialog.sk"
+"RewardDialog.sk"
+
+"OutputSelectDialog.sk"
+
+"PropDialog.sk"
+"ARCharaSelectDialog.sk"
+"Levelup.sk"
+"ConfirmShopMotionDialog.sk"
+"ConfirmShopFurnitureDialog.sk"
+"ConfirmShopCostumeDialog.sk"
+"ConfirmShopCostumeConditionDialog.sk"
+"FurnitureDetailDialog.sk"
+"GachaListDialog.sk"
+"CostumeDetailDialog.sk"
+"AssumptionDialog.sk"
+"SelectTranseDialog.sk"
+"FilterDialog.sk"
+"IAPCautionDialog.sk"
+"WebViewDialog.sk"
+
+]) {
+  runsk("/src/ui/dialog/" + f_name);
+}

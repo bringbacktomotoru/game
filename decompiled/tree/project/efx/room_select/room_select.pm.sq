@@ -1,0 +1,16 @@
+return {
+  modeldata = "room_select.mdl"
+  bnd = [-0.003653, 2.504383, -0.0, 5.475073, 2.495617, 0.0]
+
+  material = [
+  {
+    name = "select_mt"
+    tec = "shading.basic"
+    Ka = 286331153
+    Kd = 0
+    Ks = 2139062271
+    Ke = 0
+    shiness = 20.0
+  }
+  ]
+}

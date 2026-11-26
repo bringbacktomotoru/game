@@ -1,0 +1,68 @@
+runsk("/conf/iaplists.conf");
+
+runsk("/conf/stageenv.conf");
+
+runsk("/conf/snd.conf");
+runsk("/conf/voice.conf");
+
+if (::READ_LOCAL_CONF) {
+  runsk("/conf/game_rule.conf");
+
+  runsk("/conf/furniture_item_productions.conf");
+  runsk("/conf/furnitures.conf");
+  runsk("/conf/shop.conf");
+  runsk("/conf/shop_sale.conf");
+  runsk("/conf/level_table.conf");
+  runsk("/conf/gacha.conf");
+  runsk("/conf/gacha_items.conf");
+  runsk("/conf/costume_motions.conf");
+  runsk("/conf/room_motions.conf");
+
+  runsk("/conf/tutorials.conf");
+  runsk("/conf/helps.conf");
+  runsk("/conf/actions.conf");
+
+  runsk("/conf/sanrio_charas.conf");
+  runsk("/conf/costumes.conf");
+  runsk("/conf/rooms.conf");
+  runsk("/conf/room_condition.conf");
+  runsk("/conf/room_slots.conf");
+
+  runsk("/conf/furniture_types.conf");
+  runsk("/conf/series.conf");
+  runsk("/conf/condition.conf");
+  runsk("/conf/room_slot_unlock_condition.conf");
+  runsk("/conf/tutorial_condition.conf");
+
+  runsk("/conf/eventscenes.conf");
+  runsk("/conf/costume_action.conf");
+  runsk("/conf/items.conf");
+
+  runsk("/conf/room_exp.conf");
+  runsk("/conf/costume_health.conf");
+  runsk("/conf/costume_exp.conf");
+  runsk("/conf/release_motions.conf");
+  runsk("/conf/room_parameters.conf");
+
+  runsk("/conf/costume_requests.conf");
+  runsk("/conf/motion_drop_items.conf");
+  runsk("/conf/rental_costumes.conf");
+
+  runsk("/conf/chara_pat_rewards.conf");
+
+  runsk("/conf/diarys.conf");
+  runsk("/conf/diary_contents.conf");
+  runsk("/conf/diary_condition.conf");
+  runsk("/conf/panel_missions.conf");
+  runsk("/conf/panel_mission_condition.conf");
+  runsk("/conf/missions.conf");
+}
+runsk("/conf/letters.conf");
+runsk("/conf/menu_buttons.conf");
+runsk("/conf/window_titles.conf");
+runsk("/conf/chara_sentence_lists.conf");
+runsk("/conf/chara_sentence_list_condition.conf");
+runsk("/conf/new_costume_events.conf");
+runsk("/conf/prop.conf");
+runsk("/conf/reply_texts.conf");
+runsk("/conf/iaps.conf");

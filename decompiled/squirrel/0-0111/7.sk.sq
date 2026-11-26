@@ -1,0 +1,37 @@
+runsk("/res/anime/base.sk");
+
+model =
+{
+
+  body = { pm = "../clothes/default/hangyo.pm" }
+  face = { pm = "../facial/hangyo_face.pm" parentname = "body" shadowbones = "body" }
+  r_hand = { pm = "../hand/hangyo/paR.pm" parentname = "body" shadowbones = "body" }
+  l_hand = { pm = "../hand/hangyo/paL.pm" parentname = "body" shadowbones = "body" }
+}
+
+with script {
+
+  function setup() {
+    setCharaSetting(::gamesetting.sanrio_chara_settings[109]);
+    morphFace("def", 0);
+    changeHand("pa", "pa");
+    setCostumeSetting(::gamesetting.costume_settings[106109]);
+    sk3d.setMotion(getMotionData(::getResource("/res/anime/scene01.mot")));
+  }
+
+  function first_chara_select() {
+    hyahho_set(3);
+    ketsui(2);
+  }
+
+  function drink_stand() {
+
+    drink_stand_set(40);
+  }
+
+  function drink_walk() {
+
+    drink_walk_set(40);
+  }
+
+}

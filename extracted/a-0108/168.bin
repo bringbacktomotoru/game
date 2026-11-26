@@ -1,0 +1,221 @@
+{
+  "ID": "99d013be-f1e8-41c8-a69a-dd4021af9f32",
+  "Version": "2.3.3.0",
+  "Name": "ActionAssist",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 136,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/base/rect_bw2.png",
+              "Plist": "image/ss_base.plist"
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 10,
+            "Scale9OriginY": 17,
+            "Scale9Width": 12,
+            "Scale9Height": 18,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 25.0,
+              "Y": 0.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.098,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.902,
+              "Y": 0.9
+            },
+            "LeftMargin": 25.0,
+            "TopMargin": 4.9999,
+            "BottomMargin": 0.0001,
+            "Tag": 28,
+            "ActionTag": 46269311,
+            "Size": {
+              "X": 230.0,
+              "Y": 45.0
+            },
+            "Name": "img_back",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 20,
+            "LabelText": "assist\ntext\n",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 50.0,
+              "Y": 3.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.1961,
+              "Y": 0.06
+            },
+            "PreSize": {
+              "X": 0.7843,
+              "Y": 0.8
+            },
+            "LeftMargin": 50.0,
+            "RightMargin": 5.0,
+            "TopMargin": 7.0,
+            "BottomMargin": 3.0,
+            "Tag": 29,
+            "ActionTag": 889002189,
+            "Size": {
+              "X": 200.0,
+              "Y": 40.0
+            },
+            "Name": "lbl_comment",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/icon/finger.png",
+              "Plist": "image/ss_icon.plist"
+            },
+            "Scale9Width": 156,
+            "Scale9Height": 150,
+            "AnchorPoint": {
+              "ScaleY": 1.0
+            },
+            "Position": {
+              "X": 0.5414,
+              "Y": 48.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0021,
+              "Y": 0.96
+            },
+            "PreSize": {
+              "X": 0.1529,
+              "Y": 0.75
+            },
+            "LeftMargin": 0.5414,
+            "RightMargin": 215.4586,
+            "TopMargin": 2.0,
+            "BottomMargin": 10.5,
+            "Tag": 27,
+            "ActionTag": 1238613056,
+            "Size": {
+              "X": 39.0,
+              "Y": 37.5
+            },
+            "Name": "img_finger",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/menu_secret.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "Scale9Width": 128,
+            "Scale9Height": 128,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 31.0101,
+              "Y": 44.3884
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.1216,
+              "Y": 0.8878
+            },
+            "PreSize": {
+              "X": 0.251,
+              "Y": 1.28
+            },
+            "LeftMargin": -0.9899,
+            "RightMargin": 191.9899,
+            "TopMargin": -26.3884,
+            "BottomMargin": 12.3884,
+            "Tag": 5,
+            "ActionTag": -255036596,
+            "Size": {
+              "X": 64.0,
+              "Y": 64.0
+            },
+            "Name": "Image_1",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 255.0,
+          "Y": 50.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/ss_base.plist",
+        "../image/ss_base.png",
+        "../image/ss_btn.plist",
+        "../image/ss_btn.png",
+        "../image/ss_icon.plist",
+        "../image/ss_icon.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

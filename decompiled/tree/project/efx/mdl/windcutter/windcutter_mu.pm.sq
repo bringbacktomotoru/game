@@ -1,0 +1,19 @@
+return {
+  modeldata = "windcutter.mdl"
+  bnd = [0.0, 0.0, 0.019099, 0.800995, 0.090207, 0.78138]
+
+  material = [
+  {
+    name = "windcutter"
+    tec = "decal.def"
+    Ka = 0xffffff00
+    Kd = 0xffffffff
+    Ks = 0xffffff00
+    Ke = 0
+    shiness = 25.0
+    alphatest = 1
+    alpharef = 0.7
+    texture0 = "tex/windcutter_mu.png"
+  }
+  ]
+}

@@ -1,0 +1,549 @@
+function loadCocos(r) {
+  if (typeof(r) == SS_STRING) {
+    local s = r;
+    r = ::getResource(s);
+    if (!r) {
+      throw Exception(sprintf("loadCocos file not found=%S\n", s));
+    }
+  }
+  try {
+    local loader = CocosLoader(r);
+    local view = loader.load();
+    return view;
+  } catch (ex) {
+    printf("loadCocos failure. file=%S\n", r.path);
+    throw ex;
+  }
+}
+
+function setCocosBase(r) {
+  if (typeof(r) == SS_STRING) {
+    r = ::getResource(r);
+  }
+  ::cocosbase = r;
+
+  local fdir = r.getResource("font");
+  foreach (fr in fdir.getList()) {
+    local font = getFont(fr);
+    if (font) {
+      Fonts.registerFont(fr.name, font);
+    }
+  }
+}
+
+::cocosbase <- null;
+
+class CocosLoader
+{
+  parsers = null;
+  loadparsers = null;
+  res = null;
+
+  constructor(r) {
+    res = r;
+    parsers = {
+      SingleNodeObjectData = initSingleNode,
+      NodeObjectData = initSingleNode,
+      LayerObjectData = initSingleNode,
+      SpriteObjectData = initSprite,
+
+      PanelObjectData = initPanel,
+      TextObjectData = initText,
+      ButtonObjectData = initButton,
+
+      ImageViewObjectData = initImageView,
+
+      ProjectNodeObjectData = initProjectNode,
+
+    };
+
+    loadparsers = {
+      SingleNodeObjectData = initSingleNode,
+      LayerObjectData = initSingleNode,
+    };
+
+  }
+
+  function load() {
+    local bbuf = res.getContent();
+    local json = decodeJSON(bbuf);
+    res.flush();
+
+    local ojson = json["Content"]["Content"]["ObjectData"];
+    local func = loadparsers[ojson["ctype"]];
+    local node;
+    if (func) {
+      node = func(ojson, Rect2D(0, 0, ojson.Size.X, ojson.Size.Y), res.name);
+      parseChild(node, ojson["Children"]);
+    } else {
+
+      throw Exception("invalid ctype : " + ojson["ctype"] + " " + json);
+      return null;
+    }
+    if ("loadFinished" in node) node.loadFinished();
+
+    node.updateMatrixAll();
+    return node;
+  }
+
+  function readdim(s, st, a) {
+    for (local l = st;; l++) {
+      switch (s[l]) {
+      case 125:
+        a + int(s.substring(st, l).trim());
+        return l + 1;
+      case 123:
+        local na = [];
+        l = readdim(s, l + 1, na);
+        a + na;
+        break;
+      case 44:
+        a + int(s.substring(st, l).trim());
+        st = l + 1;
+        break;
+      case undefined:
+        return l;
+      }
+    }
+  }
+
+  function getSpriteSheet(path) {
+    local r = ::cocosbase.getResource(path);
+    if (!r.userdata) {
+      local plist = r.getContent();
+
+      local tex = getTexture(r.getResource(plist.metadata.realTextureFileName));
+      local sheet = {};
+
+      foreach (i, v in plist.frames) {
+        local sp = Sprite(tex);
+        local d = [];
+
+        readdim(v.frame, 1, d);
+
+        sp.setSubBounds(Rect2D(d[0][0], d[0][1], d[1][0], d[1][1]));
+
+        d.clear();
+        readdim(v.sourceSize, 1, d);
+        sp.bnd.set(0.0, 0.0, d[0], d[1]);
+
+        sheet[i] <- sp;
+      }
+      r.userdata = sheet;
+    }
+    return r.userdata;
+  }
+
+  function loadSprite(json) {
+    if (json) {
+      local path = json["Path"];
+      local plist = json["Plist"];
+      if (length(plist) > 0) {
+        local sheet = getSpriteSheet(plist);
+        if (plist) {
+          if (!sheet[path]) {
+            throw Exception("not found in spritesheet : " + path);
+          }
+          return clone sheet[path] || null;
+        }
+      } else {
+        local sp = Sprite(::cocosbase.getResource(path));
+        return sp
+      }
+    } else {
+      return null;
+    }
+  }
+
+  function getColor(json) {
+    if (!json) return 0xffffffff;
+    local r = json["R"] != undefined ? json["R"] : 255;
+    local g = json["G"] != undefined ? json["G"] : 255;
+    local b = json["B"] != undefined ? json["B"] : 255;
+    local a = json["A"] != undefined ? json["A"] : 255;
+    return (r << 24) | (g << 16) | (b << 8) | (a);
+  }
+
+  function generalAttributes(node, json, pbnd) {
+    node.name = json["Name"] || null;
+
+    local position = json["Position"];
+    if (position) {
+      node.pos.set(position["X"], pbnd.h - position["Y"], 0.0);
+    }
+
+    local scale = json["Scale"];
+    if (scale) {
+      node.scale.set(scale["ScaleX"], scale["ScaleY"], 1.0);
+    }
+
+    local rotation = json["Rotation"];
+    if (rotation) {
+      node.rot(0.0, 0.0, rotation * Math.DTOR);
+    } else {
+      local rotx = json["RotationSkewX"];
+      if (rotx) {
+        node.rot(0.0, 0.0, rotx * Math.DTOR);
+      }
+    }
+
+    node.visible = "VisibleForFrame" in json ? json["VisibleForFrame"] : 1;
+
+    local size = json["Size"];
+    node.bnd.w = size["X"];
+    node.bnd.h = size["Y"];
+
+    local anchor = json["AnchorPoint"];
+    if (anchor) {
+      node.bnd.x = -node.bnd.w * (anchor["ScaleX"] || 0.0);
+      node.bnd.y = -node.bnd.h * (1.0 - (anchor["ScaleY"] || 0.0));
+    }
+
+  }
+
+  function widgetAttributes(widget, json, enableContent, pbnd) {
+
+    if (enableContent) {
+      local size = json["Size"];
+      widget.bnd.w = size["X"];
+      widget.bnd.h = size["Y"];
+    }
+
+    widget.name = json["Name"] || null;
+
+    local rotation = json["Rotation"];
+    if (rotation) {
+      widget.rot(0.0, 0.0, rotation * Math.DTOR);
+    } else {
+      local rotx = json["RotationSkewX"];
+      if (rotx) {
+        widget.rot(0.0, 0.0, rotx * Math.DTOR);
+      }
+    }
+
+    widget.visible = json["VisibleForFrame"] || 1;
+
+    widget.pickable = json["TouchEnable"] || false;
+
+    local position = json["Position"];
+    if (position) {
+      widget.pos.set(position["X"], pbnd.h - position["Y"], 0.0);
+    }
+
+    local scale = json["Scale"];
+    if (scale) {
+      widget.scale.set(scale["ScaleX"], scale["ScaleY"], 1.0);
+    }
+
+    local anchor = json["AnchorPoint"];
+    if (anchor) {
+      widget.bnd.x = -widget.bnd.w * (anchor["ScaleX"] || 0.0);
+      widget.bnd.y = -widget.bnd.h * (1.0 - (anchor["ScaleY"] || 0.0));
+    }
+
+  }
+
+  function setScale9(sp, json) {
+    if (json["Scale9Enable"]) {
+      local scale9OriginX = json["Scale9OriginX"] || 0;
+      local scale9OriginY = json["Scale9OriginY"] || 0;
+      local scale9Width = scale9OriginX + (json["Scale9Width"] || 0);
+      local scale9Height = scale9OriginY + (json["Scale9Height"] || 0);
+      scale9Width = sp.bnd.w - scale9Width;
+      scale9Height = sp.bnd.h - scale9Height;
+      sp.streach = Rect2D(scale9OriginX, scale9OriginY, scale9Width, scale9Height);
+
+      return true;
+    } else
+    return false;
+  }
+
+  function parseChild(node, children) {
+    if (!node || !children) return;
+    foreach (childjson in children) {
+      if (childjson) {
+        if (childjson["Name"] && childjson["Name"].indexOf("dummy") >= 0) {
+          continue;
+        }
+        local func = parsers[childjson["ctype"]];
+        if (func) {
+          local n = func(childjson, node.bnd);
+          parseChild(n, childjson["Children"]);
+          node.addChild(n);
+        } else {
+
+        }
+
+        {
+
+        }
+      }
+    }
+  }
+
+  function initSingleNode(json, pbnd, resname = "") {
+    local node;
+    local i1 = resname.indexOf("@");
+    if (i1 >= 0) {
+      local i2 = resname.indexOf(".", i1 + 1);
+      local classname = resname.substring(i1 + 1, i2 >= 0 ? i2 : length(resname));
+      local cls = null;
+      try {
+        cls = getroottable()[classname];
+      } catch (ex) {
+        printf("WARN: initSingleNode classname not found : %S\n", classname);
+      }
+      if (cls) {
+        node = cls();
+      } else {
+        node = SKView();
+      }
+    } else {
+      node = SKView();
+    }
+    generalAttributes(node, json, pbnd);
+    return node;
+  }
+
+  function initSprite(json, pbnd) {
+    local sp = loadSprite(json["FileData"]);
+
+    local node = SKImageView(sp);
+    sp = node.sp;
+
+    local blendData = json["BlendFunc"];
+    if (json["BlendFunc"]) {
+
+      sp.blend = SK_MIX;
+
+    }
+    if (json["UserData"]) {
+      try {
+        local t = decodeJSON(json["UserData"]);
+        if (t["blend"]) {
+          sp.blend = t["blend"];
+        }
+      } catch (ex) {
+        printexception(ex);
+      }
+    }
+
+    generalAttributes(node, json, pbnd);
+    local color = json["CColor"];
+    local alpha = json["Alpha"];
+    if (color) node.setColor((getColor(color) & 0xffffff00) | (alpha == undefined ? 255 : alpha));
+
+    return node;
+  }
+
+  function initPanel(json, pbnd) {
+    local widget = SKCocosPanel();
+
+    widgetAttributes(widget, json, true, pbnd);
+
+    local clipEnabled = json["ClipAble"];
+
+    local colorType = json["ComboBoxIndex"] || 0;
+
+    local bgColorOpacity = json["BackColorAlpha"] || 255;
+
+    local sp = loadSprite(json["FileData"]);
+    if (sp) {
+      widget.backsp = sp;
+      setScale9(sp, json);
+    }
+
+    widget.updateLayout();
+    return widget;
+  }
+
+  function getFontAttribute(json, pbnd) {
+    local fa = FontAttribute(Fonts[json["FontName"]] || Fonts.ui, json["FontSize"] || 12);
+    local fontResource = json["FontResource"];
+    if (fontResource) {
+      local path = fontResource["Path"];
+      if (path) {
+        local font = ::getFont(::cocosbase.getResource(path));
+        if (font) fa.font = font;
+      }
+    }
+    if (json["OutlineEnabled"] && json["OutlineColor"]) {
+      fa.flags |= (json["OutlineSize"] || 1) << 4;
+      fa.strokecolor = getColor(json["OutlineColor"]);
+    }
+
+    if (json["TextColor"]) fa.color = (getColor(json["TextColor"]));
+    else
+    if (json["CColor"]) fa.color = (getColor(json["CColor"]));
+
+    return fa;
+  }
+
+  function initText(json, pbnd) {
+
+    local fa = getFontAttribute(json, pbnd);
+    local text = json["LabelText"] || "";
+
+    local widget = SKLabelView(text, fa);
+
+    local areaWidth = json["AreaWidth"];
+    local areaHeight = json["areaHeight"];
+
+    local align = 0;
+    switch (json["HorizontalAlignmentType"]) {
+    case "HT_Right": align = 2; break;
+    case "HT_Center": align = 1; break;
+    }
+    switch (json["VerticalAlignmentType"]) {
+    case "VT_Bottom": align += 6; break;
+    case "VT_Center": align += 3; break;
+    }
+    widget.textbox.align = align;
+
+    if (json["IsCustomSize"]) {
+      widget.textbox.wrapmode = 1;
+    }
+
+    widgetAttributes(widget, json, true, pbnd);
+
+    widget.updateLayout();
+    return widget;
+  }
+
+  function initImageView(json, pbnd) {
+    local sp = loadSprite(json["FileData"]);
+    setScale9(sp, json);
+
+    local widget = SKImageView(sp);
+    sp = widget.sp;
+
+    generalAttributes(widget, json, pbnd);
+    local color = json["CColor"];
+    if (color) {
+      local alpha = (json["Alpha"] == undefined) ? 255 : json["Alpha"];
+      widget.setColor(getColor(color) & (0xffffff00 | alpha));
+      if (alpha) {
+        sp.blend = SK_MIX;
+      }
+    }
+    if (json["UserData"]) {
+      try {
+        local t = decodeJSON(json["UserData"]);
+        if (t["blend"]) {
+          sp.blend = t["blend"];
+        }
+      } catch (ex) {
+        printexception(ex);
+      }
+    }
+
+    widgetAttributes(widget, json, true, pbnd);
+
+    widget.updateLayout();
+    return widget;
+  }
+
+  function initButton(json, pbnd) {
+    local widget = SKCocosButton();
+    local sp1 = loadSprite(json["NormalFileData"]);
+    local sp2 = loadSprite(json["PressedFileData"]) || clone sp1;
+    local sp3 = loadSprite(json["DisabledFileData"]) || clone sp1;
+    sp1.blend = SK_MIX;
+    sp2.blend = SK_MIX;
+    sp3.blend = SK_MIX;
+    setScale9(sp1, json);
+    setScale9(sp2, json);
+    setScale9(sp3, json);
+    widget.sp1 = sp1;
+    widget.sp2 = sp2;
+    widget.sp3 = sp3;
+
+    local fa = getFontAttribute(json, pbnd);
+    local text = json["ButtonText"] || "";
+    widget.title = TextBox(fa, text);
+    widget.title.align = 4;
+
+    widgetAttributes(widget, json, true, pbnd);
+
+    widget.updateLayout();
+    return widget;
+  }
+
+  function initProjectNode(json, pbnd) {
+    local r = cocosbase.getResource(json.FileData.Path);
+    local bbuf = r.getContent();
+    local rjson = decodeJSON(bbuf);
+    r.flush();
+
+    local node = null;
+    local ojson = rjson["Content"]["Content"]["ObjectData"];
+    local func = loadparsers[ojson["ctype"]];
+    if (func) {
+      node = func(ojson, Rect2D(0, 0, ojson.Size.X, ojson.Size.Y), r.name);
+      parseChild(node, ojson["Children"]);
+    } else {
+
+    }
+
+    generalAttributes(node, json, pbnd);
+
+    if ("loadFinished" in node) node.loadFinished();
+    return node;
+  }
+}
+
+class SKCocosButton extends SKButtonBase
+{
+  sp1 = null;
+  sp2 = null;
+  sp3 = null;
+  sp = null;
+
+  title = null;
+
+  function updateLayout() {
+    local w = bnd.w, h = bnd.h;
+    sp1.bnd.set(0, 0, w, h);
+    sp2.bnd.set(0, 0, w, h);
+    sp3.bnd.set(0, 0, w, h);
+    title.setSize(w, h);
+    updateButtonState(mousestate | (isEnabled() * 4));
+  }
+
+  function updateButtonState(st) {
+
+    switch (st) {
+    case 4:
+      sp = sp1; break;
+    case 5:
+      sp = sp2; break;
+    case 6:
+      sp = sp3; break;
+    case 7:
+      sp = sp3; break;
+    default:
+      sp = sp1; break;
+    }
+  }
+
+  function render() {
+    skDrawSprite(sp);
+    skDrawTextBox(title);
+  }
+}
+
+class SKCocosPanel extends SKView
+{
+  backsp = null;
+
+  function updateLayout() {
+    local w = bnd.w, h = bnd.h;
+    if (backsp) {
+      backsp.bnd.set(0, 0, w, h);
+    }
+  }
+
+  function render() {
+    if (backsp) skDrawSprite(backsp);
+  }
+}

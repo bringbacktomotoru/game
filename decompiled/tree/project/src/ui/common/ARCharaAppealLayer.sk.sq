@@ -1,0 +1,345 @@
+class ARCharaAppealLayer {
+  static BALLOON_TYPE_ATTRACT = 0;
+  static BALLOON_TYPE_NOTICE = 1;
+  static BALLOON_TYPE_HAPINESS = 2;
+  static BALLOON_TYPE_SHUTTER = 3;
+
+  balloons = null;
+
+  view = null;
+  viewer = null;
+
+  constructor(viewer) {
+    this.viewer = viewer;
+    this.view = viewer.getTalkView();
+
+    this.balloons = {};
+  }
+
+  function update(dir, dt) {
+
+    local _sk_time = skGetTime();
+    foreach (bl in this.balloons) {
+      if (!bl.isValidate()) {
+        releaseBalloon(bl);
+      }
+      bl.update(dir, _sk_time);
+    }
+
+  }
+
+  function addAttractBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_ATTRACT)
+    } else {
+      if (bl instanceof AttractBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_ATTRACT)
+      }
+    }
+  }
+
+  function addNoticeBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_NOTICE)
+    } else {
+      if (bl instanceof NoticeBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_NOTICE)
+      }
+    }
+  }
+
+  function addHapinessBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_HAPINESS);
+    } else {
+      if (bl instanceof HapinessBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_HAPINESS);
+      }
+    }
+  }
+
+  function addShutterBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_SHUTTER);
+    } else {
+      if (bl instanceof ShutterBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_SHUTTER);
+      }
+    }
+  }
+
+  function addNewBalloon(model, type) {
+    local bl;
+    switch (type) {
+    case BALLOON_TYPE_ATTRACT: bl = AttractBalloon(this); break;
+    case BALLOON_TYPE_NOTICE: bl = NoticeBalloon(this); break;
+    case BALLOON_TYPE_HAPINESS: bl = HapinessBalloon(this); break;
+    case BALLOON_TYPE_SHUTTER: bl = ShutterBalloon(this); break;
+    }
+    if (!bl) return;
+    bl.build(model);
+    this.view.addChild(bl.view);
+    this.balloons[model] <- bl;
+  }
+
+  function releaseAllBalloons() {
+    foreach (bl in this.balloons) {
+      this.view.removeChild(bl.view);
+    }
+    this.balloons = {};
+  }
+
+  function releaseBalloon(bl) {
+    this.view.removeChild(bl.view);
+    delete this.balloons[bl.getModel()];
+  }
+
+  function hasShutterBalloon(model) {
+    local _bl = this.balloons[model];
+    if (!_bl || !(_bl instanceof ShutterBalloon)) return false;
+    return true;
+  }
+}
+
+class ARCharaAppealLayer.CharaBalloon {
+  layer = null;
+  camera = null;
+
+  view = null;
+
+  model = null;
+
+  click_func = null;
+
+  v_1 = Vector3D();
+
+  constructor(layer, view) {
+    this.layer = layer;
+    this.camera = layer.viewer.renderer.camera;
+    this.view = view;
+    this.view.addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function build(model) {
+    this.model = model;
+  }
+
+  function update(dir, sk_time) {
+    if (!this.model || !this.view) return;
+    _updateViewPosition(dir);
+  }
+
+  function _updateViewPosition(dir) {
+    v_1.set(0, 0, 0);
+
+    local sk3d = this.model.sk3d;
+    if (sk3d.parent) {
+      local bone = sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(sk3d.parent.gmat);
+      v_1.add(sk3d.parent.pos);
+    }
+
+    v_1.add(this.model.getPos()).add(0, 2.5, 0.0);
+
+    local v = this.camera.project(v_1);
+
+    local x = (layer.view.bnd.w - ::screenWidth) / 2.0 + ::screenWidth * v.x;
+    local y = (layer.view.bnd.h - ::screenHeight) / 2.0 + ::screenHeight * v.y;
+    this.view.pos.set(x, y, v.z);
+    this.view.rot.set(0.0, 0.0, dir);
+
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function getModel() {
+    return this.model;
+  }
+
+  function isValidate() {
+    return false;
+  }
+
+  function setRotation(x, y, z) {
+    this.view.rot.set(x, y, z);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function setClickFunc(f) {
+    this.click_func = f;
+  }
+
+  function mouseevent(e) {
+    e.consume();
+
+    switch (e.id) {
+    case MOUSE_CLICKED:
+      if (this.click_func) this.click_func();
+      break;
+    }
+  }
+}
+
+class ARCharaAppealLayer.AttractBalloon extends ARCharaAppealLayer.CharaBalloon {
+  static START_BLINK = 2000;
+
+  static STATE_INIT = 0;
+  static STATE_BLINK = 1;
+  state = null;
+
+  constructor(layer, view = null) {
+    super(layer, ::loadSKView("/ui/common/CharaAppealIcon.ui"));
+  }
+
+  function build(model) {
+    this.model = model;
+    local _tm = this.model.getAttractTarget();
+
+    local _fd = _tm.getFurnitureData();
+    local _sp = _fd.getCurrentIconSprite();
+    local _icon = this.view.findChild("img_icon");
+    _icon.setSprite(_sp);
+    _icon.updateLayout();
+
+    state = STATE_INIT;
+  }
+
+  function update(dir, sk_time) {
+
+    local _remain = this.model.getLoseAttractTime() - sk_time;
+    if (_remain > START_BLINK && this.state != STATE_INIT) {
+      this.view.startMethod("init");
+      this.state = STATE_INIT;
+    } else if (_remain <= START_BLINK && this.state != STATE_BLINK) {
+      this.view.startMethod("blink");
+      this.state = STATE_BLINK;
+    }
+
+    _updateViewPosition(dir);
+  }
+
+  function isValidate() {
+    if (!this.model.hasAttractTarget()) return false;
+    local _mdl = layer.viewer.getChara(this.model.getCostumeData().getCharaID());
+    if (!_mdl) return false;
+
+    return true;
+  }
+}
+
+class ARCharaAppealLayer.NoticeBalloon extends ARCharaAppealLayer.CharaBalloon {
+  static DISP_LIMIT = 3000;
+
+  limit_time = -1;
+
+  constructor(layer, view = null) {
+    super(layer, ::loadSKView("/ui/common/CharaNoticeIcon.ui"));
+
+  }
+
+  function build(model) {
+    this.model = model;
+    this.limit_time = skGetTime() + DISP_LIMIT;
+  }
+
+  function isValidate() {
+    return skGetTime() < this.limit_time;
+  }
+
+  function _charaFocus() {
+  }
+}
+
+class ARCharaAppealLayer.HapinessBalloon extends ARCharaAppealLayer.CharaBalloon {
+  user_data = null;
+  cos_id = null;
+
+  constructor(layer, view = null) {
+    super(layer, ::loadSKView("/ui/common/CharaHapinessIcon.ui"));
+    setClickFunc(_tapped);
+
+    this.user_data = ::gamesession.getUserData();
+  }
+
+  function build(model) {
+    this.model = model;
+    this.cos_id = this.model.getCostumeData().getID();
+  }
+
+  function _tapped() {
+    if (!this.model) return;
+    layer.viewer.tappedCharaModel(this.model);
+  }
+  function isValidate() {
+    if (this.user_data.isHapinessAction(this.cos_id)) return true;
+    return false;
+  }
+}
+
+class ARCharaAppealLayer.ShutterBalloon extends ARCharaAppealLayer.CharaBalloon {
+  old_state = -1;
+  img_wait = null;
+  img_start = null;
+
+  constructor(layer, view = null) {
+    super(layer, ::loadSKView("/ui/common/CharaShutterIcon.ui"));
+    this.img_wait = this.view.findChild("img_wait");
+    this.img_start = this.view.findChild("img_start");
+    _updateIcon();
+  }
+
+  function build(model) {
+    this.model = model;
+  }
+
+  function update(dir, sk_time) {
+    if (!this.model || !this.view) return;
+    _updateViewPosition(dir);
+    _updateIcon();
+  }
+
+  function _updateIcon() {
+    local _state = this.layer.viewer.getShutterChanceState();
+    if (this.old_state == _state) return;
+
+    this.old_state = _state;
+    switch (_state) {
+    case ::ARShutterChanceManager.SHUTTER_CHANCE_STATE_WAIT:
+      this.img_wait.visible = true;
+      this.img_start.visible = false;
+      break;
+
+    case ::ARShutterChanceManager.SHUTTER_CHANCE_STATE_START_IN:
+    case ::ARShutterChanceManager.SHUTTER_CHANCE_STATE_START_OUT:
+      this.img_wait.visible = false;
+      this.img_start.visible = true;
+      break;
+    }
+  }
+
+  function isValidate() {
+    return this.layer.viewer.isShutterChance(this.model);
+  }
+}

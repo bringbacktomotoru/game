@@ -1,0 +1,477 @@
+;
+;----------- 初期登場 -------------
+[playbgm bgm="BGM07"]
+[changeroom id=3]
+
+;ミントカフェスタイルテーブル
+[popfurniture id=7002 x=5.5 y=0 z=-2 angle=135]
+;クリーミィカフェカウンター
+[popfurniture id=903 x=-0.5 y=0 z=-4 angle=180]
+;ブルーカフェプラント
+[popfurniture id=907 x=3 y=0 z=-5 angle=180]
+;ブルーカフェチェア
+[popfurniture id=11201 x=6 y=0 z=-4 angle=135]
+;ブルーカフェチェア
+[popfurniture id=11201 x=7.5 y=0 z=-2.5 angle=135]
+;ピンクカフェチェア
+[popfurniture id=10801 x=-1.5 y=0 z=-5.5 angle=180]
+;ピンクカフェチェア
+[popfurniture id=10801 x=0.5 y=0 z=-5.5 angle=180]
+;ミントラテ本棚
+[popfurniture id=906 x=-4.5 y=0 z=-4.5 angle=225]
+
+;↓↓↓↓↓↓;;;;;;;;;;;;;;;;;;;
+
+[focusdoor]
+
+; 位置確認用カメラ----------------------
+[movecamera type=0 x=-3.6 y=2.2 z=12 time=0]
+[rotatecamera pitch=0 head=165]
+
+;キャラ出現 予め部屋の中にいたような位置
+;プリン
+[popchara costume=204101 x=0 z=-10 angle=180 relative=true]
+;シナモン
+[popchara costume=207102 x=2.5 z=-9 angle=165 relative=true]
+;けろっぴ
+[popchara costume=202105 x=4.7 z=-8 angle=140 relative=true]
+;------------------------------------
+
+[startscene]
+	
+;演出指定-------------------
+;家具があるスペースの前にキャラを配置して映す
+;--------------------------
+[wait time=500]
+[startanime name=purin time=2000 script=kurukuru_set script_args={[3,"smile2","smile2"]}]
+[voice name=purin voice_key="e80_1"]
+[balloon name=purin time=3000]
+えへへ/n
+カフェっぽく/n
+なったね～#e1#
+[wait time=1500]
+[startanime name=keroppi time=2000 script=bou_unaduku_face script_args={[1,"smile"]}]
+[startanime name=cinnamon time=2000 script=banzai]
+[wait time=1500]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+[startanime name=keroppi time=2000 script=cos_bishi]
+[voice name=keroppi voice_key="e9"]
+[balloon name=keroppi time=3000]
+だいたい必要なものは/n
+そろったよね#e1#
+[startanime name=purin time=2000 script=stand_end2 script_args={["smile"]}]
+[wait time=3000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+;シナモンフォーカス
+[charavisible name=keroppi visible=false]
+[charavisible name=purin visible=false]
+[movecamera type=1 x=1.7 y=-0.5 z=-6 time=0]
+
+[startanime name=cinnamon time=2000 script=kubikashige script_args={[3,"meisou"]}]
+[voice name=cinnamon voice_key="e24"]
+[balloonoffset x=1.2 y=-0.6]
+[balloon name=cinnamon time=3000 type=1]
+あとは…
+[startanime name=purin time=2000 script=stand_end2 script_args={["def"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["def"]}]
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[startanime name=cinnamon time=2000 script=sentence_picture_kansou1 
+ script_args={[{loop_num = 3, face=["kyomi"]}]}]
+[balloon name=cinnamon time=3000 type=1]
+ほかにカフェにあったら/n
+いいものってあるかな#q1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+;3人フォーカス
+[charavisible name=keroppi visible=true]
+[charavisible name=purin visible=true]
+[movecamera type=1 x=-1.7 y=0.5 z=6 time=0]
+
+[startanime name=keroppi time=2000 script=uun2_set script_args={[3,"kiss2"]}]
+[voice name=keroppi voice_key="e21"]
+[balloonoffset]
+[balloon name=keroppi time=2000]
+う～ん…
+[wait time=2000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+	
+[startanime name=cinnamon time=2000 script=uun2_set script_args={[3,"kiss"]}]
+[voice name=cinnamon voice_key="e21"]
+[balloon name=cinnamon time=2500]
+う～～ん…
+[wait time=2500]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[startanime name=purin time=2000 script=uun2_set script_args={[3,"nimaime"]}]
+[voice name=purin voice_key="e21"]
+[balloon name=purin time=3000]
+う～～～ん…
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+;プリンフォーカス
+[charavisible name=cinnamon visible=false]
+[movecamera type=1 x=-0.7 y=-0.5 z=-7 time=0]
+
+[startanime name=purin time=2000 script=mitsuketa_set script_args={["biku","def"]}]
+[balloonoffset x=1.2 y=-0.7]
+[balloon name=purin time=2000 type=1]
+あ#e1#
+[wait time=500]
+[startanime name=keroppi time=2000 script=mitsuketa_set script_args={["biku","def"]}]
+[startanime name=cinnamon time=2000 script=mitsuketa_set script_args={["biku","def"]}]
+[wait time=1500]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+[startanime name=purin time=2000 script=munehari script_args={["kiri2",3]}]
+[voice name=purin voice_key="e76_1"]
+[balloon name=purin time=3000 type=1]
+ねぇねぇ/n
+ぼくね～/n
+いいこと思いついた#e1#
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+;3人フォーカス
+[charavisible name=cinnamon visible=true]
+[movecamera type=1 x=0.7 y=0.5 z=7 time=0]
+[wait time=1000]
+
+[startanime name=keroppi time=2000 script=tefuri_set2 script_args={[3,"kirasmile","kirasmile"]}]
+[voice name=keroppi voice_key="e16"]
+[balloonoffset]
+[balloon name=keroppi time=3000]
+なになに～#e1#
+[startanime name=cinnamon time=2000 script=kubikashige script_args={[3,"kirasmile"]}]
+[wait time=3000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+[startanime name=purin time=2000 script=yokopatapata_set script_args={[3,"kya"]}]
+[balloon name=purin time=3000]
+えへへ～/n
+なんだと思う#q1#
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["def"]}]
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+;分岐
+[diarybranch]
+[wait time=2000];
+[s]
+
+*branch1
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kyomi"]}]
+
+[startanime name=purin time=2000 script=bou_unaduku_face script_args={[1,"smile"]}]
+[voice name=purin voice_key="e9"]
+[balloon name=purin time=3000]
+うん#e1#
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+;プリンフォーカス
+[charavisible name=cinnamon visible=false]
+[movecamera type=1 x=-0.7 y=-0.5 z=-7 time=0]
+
+[startanime name=purin time=2000 script=kubikashige script_args={[3,"nikawink"]}]
+[balloonoffset x=1.2 y=-0.7]
+[balloon name=purin time=3000 type=1]
+ここにソファを/n
+置いたらどうかな#q1#
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+[startanime name=purin time=2000 script=sentence_hatena2 
+ script_args={[{loop_num = 3, face=["meisou_cheek"]}]}]
+[voice name=purin voice_key="e8"]
+[balloon name=purin time=3000 type=1]
+ふかふかのソファに/n
+ゆったり座ったら/n
+気持ちよさそう#e1#
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kiraniko"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kiraniko"]}]
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+;3人フォーカス
+[charavisible name=cinnamon visible=true]
+[movecamera type=1 x=0.7 y=0.5 z=7 time=0]
+
+[startanime name=keroppi time=2000 script=pyonpyon_set script_args={[3,"kya","kya"]}]
+[voice name=keroppi voice_key="e39_1"]
+[balloonoffset]
+[balloon name=keroppi time=3000]
+それいいね#e1#
+[wait time=3000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+[startanime name=cinnamon time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[voice name=cinnamon voice_key="e9"]
+[balloon name=cinnamon time=3000]
+うん#e1#/n
+いいアイデアだよ
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[startanime name=keroppi time=2000 script=event_onegai2 script_args={["kirasmile"]}]
+[balloon name=keroppi time=3000]
+あっ#e1# そうだ#e1#
+[wait time=1000]
+[startanime name=cinnamon time=2000 script=kubikashige script_args={[3,"biku"]}]
+[startanime name=purin time=2000 script=mitsuketa_set script_args={["biku","biku"]}]
+[wait time=2000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+;けろっぴフォーカス
+[charavisible name=cinnamon visible=false]
+[movecamera type=1 x=3.8 y=-0.6 z=-5 time=0]
+
+[startanime name=keroppi time=2000 script=pyonpyon_set script_args={[3,"kirasmile","kirasmile"]}]
+[voice name=keroppi voice_key="e31_1"]
+[balloonoffset x=-1.2 y=-0.7]
+[balloon name=keroppi time=3000 type=2]
+ソファのところに/n
+テレビも置いたら/n
+置いたらどうかな#q1#
+[wait time=3000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+[startanime name=cinnamon time=2000 script=bou_unaduku_face script_args={[2,"smile"]}]
+[startanime name=purin time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+
+[startanime name=keroppi time=2000 script=sentence_banzai3
+ script_args={[{loop_num = 1, face=["smile3_cheek", "smile3_cheek"]}]}]
+[balloon name=keroppi time=3000 type=2]
+きっと/n
+もっとリラックス/n
+できるよ#e1#
+[wait time=3000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+;3人フォーカス
+[charavisible name=cinnamon visible=true]
+[movecamera type=1 x=-3.8 y=0.6 z=5 time=0]
+
+[startanime name=purin time=2000 script=sentence_kubikashige
+ script_args={[{loop_num = 3, face=["meisou_cheek"]}]}]
+[balloonoffset]
+[balloon name=purin time=3000]
+ソファで、のんびりテレビも/n
+見れちゃうカフェ#e1#
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["smile"]}]
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+[startanime name=purin time=2000 script=sentence_picture_kansou1 
+ script_args={[{loop_num = 3, face=["tere"]}]}]
+[voice name=purin voice_key="e14"]
+[balloon name=purin time=3000]
+いいかも～#o1#
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+[startanime name=cinnamon time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[balloon name=cinnamon time=3000]
+どっちも/n
+いいアイデアだね#e1#/n
+両方用意しようよ#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[startanime name=cinnamon time=2000 script=sentence_kubikashige
+ script_args={[{loop_num = 3, face=["smile2"]}]}]
+[voice name=cinnamon voice_key="e8"]
+[balloon name=cinnamon time=3000]
+えへへ#o1#/n
+のんびりできるカフェに/n
+なりそうだね#e1#
+[wait time=1500]
+[startanime name=keroppi time=2000 script=sentence_banzai3 
+ script_args={[{loop_num = 3, face=["tere", "tere"]}]}]
+[startanime name=purin time=2000 script=sentence_uun_unaduki
+ script_args={[{loop_num = 3, face=["tere"]}]}]
+[wait time=1500]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[jump target={"*end"}]
+
+*branch2
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kyomi"]}]
+[startanime name=purin time=2000 script=bou_unaduku_face script_args={[1,"smile"]}]
+[voice name=purin voice_key="e9"]
+[balloon name=purin time=3000]
+うん#e1#
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+;プリンフォーカス
+[charavisible name=cinnamon visible=false]
+[movecamera type=1 x=-0.7 y=-0.5 z=-7 time=0]
+
+[startanime name=purin time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[balloonoffset x=1.2 y=-0.7]
+[balloon name=purin time=3000 type=1]
+ここにテレビが/n
+あったらいいと思うんだ#e1#
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+[startanime name=purin time=2000 script=pyonpyon_set script_args={[3,"kya","kya"]}]
+[voice name=purin voice_key="e8"]
+[balloon name=purin time=3000 type=1]
+みんなでテレビを/n
+見れるカフェって/n
+楽しそうだなって#o1#
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kiraniko"]}]
+[startanime name=keroppi time=2000 script=stand_end2 script_args={["kiraniko"]}]
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+;3人フォーカス
+[charavisible name=cinnamon visible=true]
+[movecamera type=1 x=0.7 y=0.5 z=7 time=0]
+
+[startanime name=keroppi time=2000 script=cos_bishi]
+[voice name=keroppi voice_key="e39_1"]
+[balloonoffset]
+[balloon name=keroppi time=3000]
+いいね#e1#/n
+すごく楽しそう#e1#
+[wait time=3000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+[startanime name=cinnamon time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[voice name=cinnamon voice_key="e9"]
+[balloon name=cinnamon time=3000]
+うん#e1#/n
+いいアイデアだよ
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[startanime name=keroppi time=2000 script=sentence_ketsui2 
+ script_args={[{loop_num = 3, face=["kirasmile"]}]}]
+[balloon name=keroppi time=3000]
+あっ#e1# そうだ#e1#
+[wait time=1000]
+[startanime name=cinnamon time=2000 script=kubikashige script_args={[3,"biku"]}]
+[startanime name=purin time=2000 script=mitsuketa_set script_args={["biku","biku"]}]
+[wait time=2000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+;けろっぴフォーカス
+[charavisible name=cinnamon visible=false]
+[movecamera type=1 x=3.8 y=-0.6 z=-5 time=0]
+
+[startanime name=keroppi time=2000 script=pyonpyon_set script_args={[3,"warau","warau"]}]
+[voice name=keroppi voice_key="e31_1"]
+[balloonoffset x=-1.2 y=-0.7]
+[balloon name=keroppi time=3000 type=2]
+テレビのそばに/n
+ソファも/n
+置いたらどうかな#q1#
+[wait time=1000]
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["kiraniko"]}]
+[startanime name=purin time=2000 script=stand_end2 script_args={["kiraniko"]}]
+[wait time=2000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+[startanime name=keroppi time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[balloon name=keroppi time=3000 type=2]
+きっと/n
+もっと楽しく/n
+テレビを見れるよ#e1#
+[wait time=3000]
+[endballoon name=keroppi]
+[waitaction name=keroppi script=tefuri_set2]
+
+;3人フォーカス
+[charavisible name=cinnamon visible=true]
+[movecamera type=1 x=-3.8 y=0.6 z=5 time=0]
+
+[startanime name=purin time=2000 script=sentence_picture_kansou1 
+ script_args={[{loop_num = 3, face=["meisou"]}]}]
+[voice name=purin voice_key="e14"]
+[balloonoffset]
+[balloon name=purin time=3000]
+いいね～#e1#/n
+ソファでテレビが/n
+見れるカフェ#e1#
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["smile"]}]
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+[startanime name=purin time=2000 script=sentence_hyahho 
+ script_args={[{face=["tere", "tere"],loop_num = 3}]}]
+[balloon name=purin time=3000]
+考えたら楽しく/n
+なってきたよ～#e1#
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+[startanime name=cinnamon time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[balloon name=cinnamon time=3000]
+どっちも/n
+いいアイデアだね#e1#/n
+両方用意しようよ#e1#
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[startanime name=cinnamon time=2000 script=sentence_yokopatapata
+ script_args={[{loop_num = 3, face=["tere"]}]}]
+[voice name=cinnamon voice_key="e8"]
+[balloon name=cinnamon time=3000]
+えへへ#o1#/n
+楽しいカフェになるね#e1#
+[wait time=1500]
+[startanime name=keroppi time=2000 script=pyonpyon_set script_args={[3,"kya","kya"]}]
+[startanime name=purin time=2000 script=sentence_hyahho
+ script_args={[{loop_num = 3, face=["kya", "kya"]}]}]
+[wait time=1500]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=tefuri_set2]
+
+[jump target={"*end"}]
+
+*end
+[fadeoutbgm spd=12]
+[wait time=2300]

@@ -1,0 +1,554 @@
+class TutorialManager {
+  movepanel_tutorials = null;
+  unique_tutorials = null;
+  product_tutorials = null;
+  work_tutorials = null;
+  roomedit_tutorials = null;
+  chara_appeal_tutorials = null;
+  tap_balloon_tutorials = null;
+  shop_buy_tutorials = null;
+  mission_mark_tutorials = null;
+  approach_furniture_tutorials = null;
+
+  tutorial_thread = null;
+
+  show_tutorial_id = null;
+  end_ids = null;
+  first_production_check = true;
+
+  waiting_actionevent_button = null;
+
+  constructor() {
+    this.end_ids = [];
+  }
+
+  function init() {
+    this.movepanel_tutorials = [];
+    this.unique_tutorials = [];
+    this.product_tutorials = [];
+    this.work_tutorials = [];
+    this.roomedit_tutorials = [];
+    this.chara_appeal_tutorials = [];
+    this.tap_balloon_tutorials = [];
+    this.shop_buy_tutorials = [];
+    this.mission_mark_tutorials = [];
+    this.approach_furniture_tutorials = [];
+    this.end_ids = [];
+    this.show_tutorial_id = -1;
+    this.waiting_actionevent_button = null;
+
+    local ud = ::gamesession.getUserData();
+    foreach (setting in ::gamesetting.tutorial_settings) {
+      local id = setting.getID();
+      if (ud.isEndTutorialId(id)) continue;
+
+      switch (setting.getType()) {
+      case ::TutorialSetting.TYPE_MOVEPANEL:
+        movepanel_tutorials + setting;
+        break;
+      case ::TutorialSetting.TYPE_UNIQUE:
+        unique_tutorials + setting;
+        break;
+      case ::TutorialSetting.TYPE_PRODUCT:
+        product_tutorials + setting;
+        break;
+      case ::TutorialSetting.TYPE_WORK:
+        work_tutorials + setting;
+        break;
+      case ::TutorialSetting.TYPE_ROOMEDIT:
+        roomedit_tutorials + setting;
+        break;
+      case ::TutorialSetting.TYPE_SHOP_BUY:
+        shop_buy_tutorials + setting;
+        break;
+      case ::TutorialSetting.TYPE_ADD_APPEAL_BALLOON:
+        chara_appeal_tutorials + setting;
+        break;
+      case ::TutorialSetting.TYPE_TAP_BALLOON:
+        tap_balloon_tutorials + setting;
+        break;
+      case ::TutorialSetting.TYPE_MISSION_MARK:
+        mission_mark_tutorials + setting;
+        break;
+      case ::TutorialSetting.TYPE_APPROACH_FURNITURE:
+        approach_furniture_tutorials + setting;
+        break;
+      }
+    }
+  }
+
+  function interruptTutorial() {
+    this.end_ids.clear();
+    if (this.tutorial_thread) {
+      this.tutorial_thread.interruptGoto("END");
+      this.tutorial_thread = null;
+    }
+    this.show_tutorial_id = -1;
+  }
+
+  function tutorialThreadRunning() {
+    return this.tutorial_thread && ::isThreadRunning(this.tutorial_thread);
+  }
+
+  function _showTutorial(settings, same_thread = false, panel = null) {
+
+    if (!this.tutorial_thread) this.tutorial_thread = newthread();
+    if (same_thread) _showTutorialThreadFunc(settings, panel);
+    else this.tutorial_thread.start(_showTutorialThreadFunc, this, settings, panel);
+  }
+  function _showTutorialThreadFunc(settings, panel = null) {
+    local _home_ui = ::gamesession.getCurrentScene().getUI();
+    foreach (setting in settings) {
+      show_tutorial_id = setting.getID();
+      local _has_next = setting.hasNext();
+      local _event_id = setting.getEventId();
+      if (_event_id >= 0) {
+        sleep(setting.getTime());
+
+        local _end_func = function() {
+          self.processEndTutorial(setting, has_next);
+        }.bindenv({ self = this, setting = setting, has_next = _has_next });
+        ::event_manager.startEventSceneTalk(_event_id, this, _end_func, setting.getEventCostumeId());
+
+        while (::event_manager.isTalkEvent()) {
+          suspend();
+        }
+      } else if (setting.guide_func) {
+
+        local _func = panel[setting.guide_func] || getroottable()[setting.clazz][setting.guide_func];
+        _func(setting);
+        processEndTutorial(setting, _has_next);
+      } else {
+        if (setting.getImagePathList()) {
+          local dlg = ::ImageViewDialog();
+          dlg.setNoReadFlag(false);
+          dlg.setup(setting);
+          dlg.show(true, setting.getTime());
+        }
+        processEndTutorial(setting, _has_next);
+      }
+
+      show_tutorial_id = -1;
+      if (_has_next) checkStartTutorial(setting.getNextId(), panel);
+    }
+    END:
+    show_tutorial_id = -1;
+  }
+
+  function _checkWithEndID(tid, ueids) {
+
+    local _settings = ::gamesetting.tutorial_settings;
+    local _ts = _settings[tid];
+    if (!_ts) return;
+    local _with = _ts.getWithEndIDs();
+    if (!_with) return;
+
+    foreach (wid in _with) {
+      if (ueids.indexOf(wid) >= 0 || this.end_ids.indexOf(wid) >= 0) continue;
+      addEndTutorial(wid);
+      local _setting = _settings[wid];
+      deleteTutorial(_setting);
+      _checkWithEndID(wid, ueids);
+    }
+  }
+
+  function processEndTutorial(setting, has_next = false) {
+
+    local id = setting.getID();
+    addEndTutorial(id);
+
+    local _tmp_end_ids = clone this.end_ids;
+    if (!has_next) {
+
+      local _settings = ::gamesetting.tutorial_settings;
+      local _ud_ids = ::gamesession.getUserData().getEndTutorials();
+      foreach (eid in _tmp_end_ids) {
+        _checkWithEndID(eid, _ud_ids);
+      }
+      if (!endTutorial()) return;
+    }
+
+    deleteTutorial(setting);
+  }
+
+  function deleteTutorial(setting) {
+
+    switch (setting.getType()) {
+    case ::TutorialSetting.TYPE_MOVEPANEL:
+      local idx = this.movepanel_tutorials.indexOf(setting);
+      if (idx != -1) delete this.movepanel_tutorials[idx];
+      break;
+    case ::TutorialSetting.TYPE_UNIQUE:
+      local idx = this.unique_tutorials.indexOf(setting);
+      if (idx != -1) delete this.unique_tutorials[idx];
+      break;
+    case ::TutorialSetting.TYPE_PRODUCT:
+      local idx = this.product_tutorials.indexOf(setting);
+      if (idx != -1) delete this.product_tutorials[idx];
+      break;
+    case ::TutorialSetting.TYPE_WORK:
+      local idx = this.work_tutorials.indexOf(setting);
+      if (idx != -1) delete this.work_tutorials[idx];
+    case ::TutorialSetting.TYPE_ROOMEDIT:
+      local idx = this.roomedit_tutorials.indexOf(setting);
+      if (idx != -1) delete this.roomedit_tutorials[idx];
+      break;
+    case ::TutorialSetting.TYPE_SHOP_BUY:
+      local idx = this.shop_buy_tutorials.indexOf(setting);
+      if (idx != -1) delete this.shop_buy_tutorials[idx];
+      break;
+    case ::TutorialSetting.TYPE_ADD_APPEAL_BALLOON:
+      local idx = this.chara_appeal_tutorials.indexOf(setting);
+      if (idx != -1) delete this.chara_appeal_tutorials[idx];
+      break;
+    case ::TutorialSetting.TYPE_TAP_BALLOON:
+      local idx = this.tap_balloon_tutorials.indexOf(setting);
+      if (idx != -1) delete this.tap_balloon_tutorials[idx];
+      break;
+    case ::TutorialSetting.TYPE_MISSION_MARK:
+      local idx = this.mission_mark_tutorials.indexOf(setting);
+      if (idx != -1) delete this.mission_mark_tutorials[idx];
+      break;
+    case ::TutorialSetting.TYPE_APPROACH_FURNITURE:
+      local idx = this.approach_furniture_tutorials.indexOf(setting);
+      if (idx != -1) delete this.approach_furniture_tutorials[idx];
+      break;
+    }
+  }
+
+  function _startTutorialByPanel(panel, tutorials, process_func = null) {
+    if (!panel) return;
+    if (tutorials.len() == 0) return;
+
+    local class_name = getclassname(getclass(panel));
+    local settings = _getTutorialSettings(class_name, tutorials);
+    if (!settings || length(settings) == 0) return;
+
+    if (process_func && process_func(settings)) return;
+
+    _showTutorial(settings, false, panel);
+  }
+
+  function checkStartTutorial(id, panel = null) {
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    local _ud = ::gamesession.getUserData();
+    if (_ud.isEndTutorialId(id)) return;
+    if (this.end_ids && this.end_ids.indexOf(id) >= 0) return;
+
+    local setting = ::gamesetting.tutorial_settings[id];
+
+    _showTutorial([setting], true, panel);
+  }
+
+  function checkAndStartTutorialAtMovePanel(panel) {
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    _startTutorialByPanel(panel, this.movepanel_tutorials);
+  }
+
+  function checkAndStartTutorialAtProduction(finished_product) {
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (getclass(_scene) != ::SanrioGameScene) return;
+
+    _startTutorialByPanel(_scene.getUI().getCurrentPanel(), this.product_tutorials);
+  }
+
+  function checkAndStartTutorialAtWork(is_complete = false) {
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    if (is_complete) {
+      local c_settings = ::gamesetting.tutorial_condition_settings;
+      local _ids = [];
+      foreach (setting in this.work_tutorials) {
+        local _conditions = setting.getConditions();
+        foreach (_con in _conditions) {
+          if (::contains(_ids, _con)) continue;
+          _ids + _con;
+        }
+      }
+      foreach (_id in _ids) {
+        local _condition = c_settings[_id].condition;
+        if (!("work_complete" in _condition)) continue;
+        local _udl = ::gamesession.getUserDataLocal();
+        _udl.setLocalFlag("work_complete", true);
+      }
+    }
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (getclass(_scene) != ::SanrioGameScene) return;
+
+    _startTutorialByPanel(_scene.getUI().getCurrentPanel(), this.work_tutorials);
+  }
+
+  function checkAndStartTutorialAtRoomEdit(panel) {
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    _startTutorialByPanel(panel, this.roomedit_tutorials);
+  }
+
+  function checkAndStartTutorialAtShopBuy(panel) {
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    _startTutorialByPanel(panel, this.shop_buy_tutorials);
+  }
+
+  function checkAndStartTutorialAtCharaAppealBalloon(panel) {
+
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    _startTutorialByPanel(panel, this.chara_appeal_tutorials);
+  }
+
+  function checkAndStartTutorialAtTapBalloon(panel) {
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    _startTutorialByPanel(panel, this.tap_balloon_tutorials);
+  }
+
+  function checkAndStartTutorialAtMissionMark(panel) {
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    _startTutorialByPanel(panel, this.mission_mark_tutorials);
+  }
+
+  function checkAndStartTutorialAtApproachFurniture(panel) {
+    local _rule = ::gamesetting.game_rule;
+    if (_rule.disableTutorial() || isShowing()) return;
+
+    _startTutorialByPanel(panel, this.approach_furniture_tutorials);
+  }
+
+  function addEndTutorial(id) {
+    end_ids + id;
+  }
+
+  function endTutorial() {
+
+    newthread().start(function() {
+      ::gamesession.endTutorial(ids);
+    }.bindenv({
+      ids = clone end_ids
+    }), 1);
+    ::gamesession.getUserData().addEndTutorials(end_ids);
+
+    foreach (id in end_ids) {
+      checkTutorialLimit(id);
+    }
+    end_ids.clear();
+    return true;
+  }
+
+  function checkTutorialLimit(id) {
+    if (id < 0) return;
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (getclass(_scene) != ::SanrioGameScene) return;
+
+    if (id == ::TutorialSetting.TUTORIAL_LIMIT_SHOP_BUY) {
+      _scene.getUI().getSlideMenu().shopLimit(true);
+      _scene.getUI().updateShopMark(true, true);
+    }
+
+    if (id == ::TutorialSetting.TUTORIAL_LIMIT_PROPERTY) {
+      _scene.getUI().getSlideMenu().propertyLimit(true);
+    }
+
+    if (id == ::TutorialSetting.TUTORIAL_LIMIT_ROOM_EDIT) {
+      _scene.getUI().getSlideMenu().layoutLimit(true);
+    }
+
+    if (id == ::TutorialSetting.TUTORIAL_LIMIT_SHOP_COSTUME) {
+      _scene.getUI().updateShopMark(true, true);
+    }
+
+    if (id == ::TutorialSetting.TUTORIAL_LIMIT_EDIT_COSTUME) {
+      _scene.getUI().getSlideMenu().teamLimit(true);
+    }
+
+    if (id == ::TutorialSetting.TUTORIAL_LIMIT_DIARY) {
+      _scene.getUI().getSlideMenu().diaryLimit(true);
+    }
+
+    if (id == ::TutorialSetting.TUTORIAL_LIMIT_ROOM_SELECT) {
+      _scene.getUI().getSlideMenu().roomLimt(true);
+    }
+
+    if (id == ::TutorialSetting.TUTORIAL_LIMIT_SHOP_COSTUME) {
+
+      _scene.getUI().getShopCheckManager().setupShopCheckManager();
+    }
+
+    if (id == ::TutorialSetting.TUTORIAL_LIMIT_SHOP_RM) {
+      _scene.getUI().shopRmLimit(true);
+    }
+
+    if (id == ::TutorialSetting.TUTORIAL_APPS_FLYER_EVENT_ID) {
+      ::gamesession.appsflyer.completeTutorial();
+    }
+  }
+
+  function _procTutorialAddCostume(key) {
+    local _scs = ::gamesetting.getSanrioCharaSettingByNameKey(key);
+    if (_scs) {
+      local _def_cos = _scs.getDefaultCostumeID();
+      local _ud = ::gamesession.getUserData();
+      _ud.addCostumeID(_def_cos);
+      _ud.addResideChara(0, _def_cos, false);
+      ::gamesession.getCurrentScene().addCurrentRoomSanrioCharas();
+    }
+  }
+
+  function _getTutorialSettings(class_name, _settings) {
+    local ret = [];
+    local _ids = [];
+    if (this.end_ids) _ids = this.end_ids;
+    foreach (setting in _settings) {
+      local _tid = setting.getID();
+      if (_ids.indexOf(_tid) >= 0) continue;
+      if (setting.clazz && setting.clazz != class_name) continue;
+      if (setting.conditions && !setting.checkConditions()) continue;
+
+      ret + setting;
+    }
+    return ret;
+  }
+
+  function isShowing() {
+    return this.show_tutorial_id < 0 ? false : true;
+  }
+
+  function getShowingTutorialID() {
+    return this.show_tutorial_id;
+  }
+
+  function canSkipFocusTalk() {
+    if (::gamesetting.game_rule.disableTutorial()) return true;
+    local _ud = ::gamesession.getUserData();
+    local _tid = TutorialSetting.TUTORIAL_LIMIT_FOCUS_TALK_SKIP;
+    if (_tid < 0 || _ud.isEndTutorialId(_tid)) return true;
+    return false;
+  }
+
+  function enableHapinessAction() {
+    if (::gamesetting.game_rule.disableTutorial()) return true;
+
+    local _ud = ::gamesession.getUserData();
+    local _tid = TutorialSetting.TUTORIAL_LIMIT_FOCUS_TALK;
+    if (_tid >= 0 && !_ud.isEndTutorialId(_tid)) return false;
+
+    _tid = TutorialSetting.TUTORIAL_LIMIT_FOCUS_TALK1;
+    local _tid2 = TutorialSetting.TUTORIAL_LIMIT_FOCUS_TALK2;
+    if (_tid >= 0 && _ud.isEndTutorialId(_tid) &&
+    _tid2 >= 0 && !_ud.isEndTutorialId(_tid2)) return false;
+
+    return true;
+  }
+  function canExecBonusHapinessTutorial() {
+    if (::gamesetting.game_rule.disableTutorial()) return false;
+
+    local _ud = ::gamesession.getUserData();
+    local _tid = ::TutorialSetting.TUTORIAL_LIMIT_FOCUS_TALK;
+    if (_tid >= 0 && !_ud.isEndTutorialId(_tid)) return false;
+
+    _tid = ::TutorialSetting.CHECK_TUTORIAL_FIRSTFOCUSTALK;
+    if (_tid >= 0 && !_ud.isEndTutorialId(_tid)) return true;
+    return false;
+  }
+
+  function isEndFirstLetterTutorial() {
+    if (::gamesetting.game_rule.disableTutorial()) return true;
+    local _id = ::TutorialSetting.TUTORIAL_LETTER_FIRST_MOVE;
+    if (_id < 0) return true;
+    local _ud = ::gamesession.getUserData();
+    if (_ud.isEndTutorialId(_id)) return true;
+    return false;
+  }
+
+  function enableFurnitureAttract() {
+    if (::gamesetting.game_rule.disableTutorial()) return true;
+    local _limit = ::TutorialSetting.TUTORIAL_LIMIT_FURNITURE_ATTRACT;
+    if (_limit < 0) return true;
+    local _ud = ::gamesession.getUserData();
+    if (_ud.isEndTutorialId(_limit)) return true;
+    return false;
+  }
+
+  function isUnlockShopCostume() {
+    if (::gamesetting.game_rule.disableTutorial()) return true;
+    local _limit = ::TutorialSetting.TUTORIAL_LIMIT_SHOP_COSTUME;
+    if (_limit < 0) return true;
+    local _ud = ::gamesession.getUserData();
+    if (_ud.isEndTutorialId(_limit) || this.show_tutorial_id == _limit) return true;
+    return false;
+  }
+
+  function isUnlockShopMotion() {
+    if (::gamesetting.game_rule.disableTutorial()) return true;
+    local _limit = ::TutorialSetting.TUTORIAL_LIMIT_SHOP_MOTION;
+    if (_limit < 0) return true;
+    local _ud = ::gamesession.getUserData();
+    if (_ud.isEndTutorialId(_limit) || this.show_tutorial_id == _limit) return true;
+    return false;
+  }
+
+  function isUnlockShopRM() {
+    if (::gamesetting.game_rule.disableTutorial()) return true;
+    local _limit = ::TutorialSetting.TUTORIAL_LIMIT_SHOP_RM;
+    if (_limit < 0) return true;
+    local _ud = ::gamesession.getUserData();
+    if (_ud.isEndTutorialId(_limit)) return true;
+    return false;
+  }
+
+  function isTutorialTapLock() {
+    if (::gamesetting.game_rule.disableTutorial()) return false;
+    local _ud = ::gamesession.getUserData();
+    if (!_ud.isEndTutorialId(::TutorialSetting.TUTORIAL_CHARA_TAP_LOCK1) || _ud.isEndTutorialId(::TutorialSetting.TUTORIAL_CHARA_TAP_LOCK2)) return false;
+    return true;
+  }
+
+  function isUnlockCamera() {
+    if (::gamesetting.game_rule.disableTutorial()) return true;
+    local _limit = ::TutorialSetting.TUTORIAL_LIMIT_CAMERA;
+    if (_limit < 0) return true;
+    local _ud = ::gamesession.getUserData();
+    if (_ud.isEndTutorialId(_limit)) return true;
+    return false;
+  }
+
+  function canCancelUseFurniture() {
+    if (::gamesetting.game_rule.disableTutorial()) return true;
+    local _ud = ::gamesession.getUserData();
+    if (!_ud.isEndTutorialId(::TutorialSetting.TUTORIAL_LIMIT_CANCEL_USE_FURNITURE1)) return false;
+    if (_ud.isEndTutorialId(::TutorialSetting.TUTORIAL_LIMIT_CANCEL_USE_FURNITURE2) &&
+    !_ud.isEndTutorialId(::TutorialSetting.TUTORIAL_LIMIT_CANCEL_USE_FURNITURE3)) {
+      return false;
+    }
+    return true;
+  }
+
+  function setWaitActionEvent(view) {
+    this.waiting_actionevent_button = view;
+  }
+  function checkWaitingActionEvent(view) {
+    if (!this.waiting_actionevent_button || this.waiting_actionevent_button != view) return;
+    this.waiting_actionevent_button = null;
+  }
+  function isWaitingActionEvent() {
+    return this.waiting_actionevent_button ? true : false;
+  }
+}
+
+::tutorial_manager <- TutorialManager();

@@ -1,0 +1,168 @@
+class House3DView extends SK3DView {
+  static DEFAULT_DIST_X = 0.0;
+  static DEFAULT_DIST_Y = 3.0;
+  static DEFAULT_DIST_Z = -30.0;
+
+  built = false;
+
+  data = null;
+
+  model = null;
+  info = null;
+  obj = null;
+
+  camera_work = null;
+
+  constructor() {
+    super();
+
+    this.scn.getB3World();
+    local cameraobj = SK3DObject();
+    this.renderer.setCameraObject(cameraobj);
+
+    this.camera_work = ::StageScene.CameraWork(this.renderer.cameraobj, 0.0, 0.0, 0.0);
+
+    local env = SK3DEnvironment(::gamesetting.scnenv["morning"]);
+    this.scn.setEnvironment(env);
+    local renderset = ::createRenderSetting({ type = 101 });
+    this.renderer.setRenderSetting(renderset);
+
+    local _passes = this.renderer.passes;
+    foreach (i, _ps in _passes) {
+      if (!renderset.passes[i].clearparam) continue;
+      _ps.clearparam.clearmask = 0;
+      local _setting_param = renderset.passes[i].clearparam;
+      if (_setting_param["color"]) _ps.clearparam.clearmask |= SK_CLEAR_COLOR;
+      if (_setting_param["depth"]) _ps.clearparam.clearmask |= SK_CLEAR_DEPTH;
+      if (_setting_param["stencil"]) _ps.clearparam.clearmask |= SK_CLEAR_STENCIL;
+    }
+
+    local light1 = Light();
+    light1.setDirLight(Vector3D(0, 0.4, -1.0));
+    light1.power = 0.8 / 255.0;
+    light1.pixellight = 1;
+    scn.addLight(light1);
+
+    local light2 = Light();
+    light2.setDirLight(Vector3D(0.0, -0.3, -1.0));
+    light2.power = 0.7 / 255.0;
+    light2.scolor = 0;
+    scn.addLight(light2);
+
+    local env = scn.env;
+    env.ambup = 0xffcc99ff;
+    env.ambdown = 0xccccffff;
+
+    this.model = ::HouseModel(this.scn);
+    this.info = ::RoomInfo();
+
+    setUpdateFunc(update);
+
+    _setCamera();
+  }
+
+  function _setCamera() {
+    this.camera_work.setTrackingPointer();
+    this.camera_work.input_lock = false;
+    this.camera_work.setTargetXYZ(::TARGET_DEFAULT_X, ::TARGET_DEFAULT_Y, ::TARGET_DEFAULT_Z, true);
+    local _v = Vector3D(DEFAULT_DIST_X, DEFAULT_DIST_Y, DEFAULT_DIST_Z);
+    _v.transform0(this.renderer.cameraobj.gmat);
+    this.camera_work.setDist(_v, true);
+    this.camera_work.input_lock = false;
+
+    this.camera_work.rotateTo(::CAMERA_ROTATE_H * Math.DTOR, ::CAMERA_ROTATE_P * Math.DTOR, ::CAMERA_ROTATE_B * Math.DTOR, false, true, true);
+
+  }
+
+  function update(dt) {
+    this.camera_work.update(dt);
+    updateScene(dt);
+  }
+
+  function updateLayout() {
+
+    local w = bnd.w, h = bnd.h;
+
+    local a = ::CAMERA_ANGLE_OF_VIEW * ::screenWidth / w * h / ::screenHeight;
+    this.renderer.camera.perspective(a, w / h, 1.0, 100.0);
+  }
+
+  function setRoomEditData(data) {
+    this.data = data;
+  }
+
+  function clearObjects() {
+    this.scn.clearObjects();
+  }
+
+  function build(rebuild = false) {
+    if (this.built && !rebuild) return;
+    this.built = true;
+
+    model.build(data.getRoomID());
+    this.obj = model.getFloor();
+
+    this.info.setupByRoomEditData(this.data, ::RoomInfo.SETUP_ALL);
+    _registerWalls();
+    model.setAngle(0.0);
+    updateVisibleWall();
+    repaint();
+  }
+
+  function getSk3d() {
+    return this.obj.sk3d;
+  }
+
+  function getModel() {
+    return this.model;
+  }
+
+  function updateVisibleWall() {
+
+    local wall_infos = this.info.wall_infos;
+    local wall_objs = this.model.walls;
+    local pillar_objs = this.model.pillars;
+
+    local _angle = -this.model.getAngle() + 45;
+    if (_angle < 0) _angle += 360;
+    else if (_angle > 360) _angle -= 360;
+    local _dir = (_angle) * Math.DTOR;
+
+    foreach (pillar in pillar_objs) {
+      if (pillar) pillar.setVisible(false);
+    }
+
+    local pillar_num = length(pillar_objs);
+    foreach (info in wall_infos) {
+      local uid = info.getWallModelUID();
+      foreach (idx, obj in wall_objs) {
+        if (obj.getUID() != uid) continue;
+
+        local prev_visible = obj.isVisible();
+        obj.updateVisible(_dir);
+        local current_visible = obj.isVisible();
+        if (current_visible == true) {
+
+          if (pillar_objs[idx]) pillar_objs[idx].setVisible(true);
+          local _tmp_idx = (idx + 1) % pillar_num;
+          if (pillar_objs[_tmp_idx]) pillar_objs[_tmp_idx].setVisible(true);
+        }
+        if (prev_visible != current_visible) {
+          local wall_obj_uids = info.getWallObjectUIDs();
+          foreach (uid in wall_obj_uids) {
+
+          }
+        }
+      }
+    }
+
+  }
+
+  function _registerWalls() {
+    local wall_infos = this.info.wall_infos;
+    local wall_objs = this.model.walls;
+    foreach (idx, info in wall_infos) {
+      info.setWallModelUID(wall_objs[idx].getUID());
+    }
+  }
+}

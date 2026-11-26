@@ -1,0 +1,177 @@
+class SKTreeViewBase extends SKListView
+{
+
+  expands = null;
+
+  constructor() {
+    expands = {};
+    adapt = TreeAdaptor();
+  }
+
+  function setListAdaptor(a) {
+    throw Exception("do not setListAdaptor()");
+  }
+
+  function setTreeAdaptor(a) {
+    adapt = a;
+    expands = {};
+    a.list.resize(0);
+    extractNode(a.rootnode, a.list);
+    revalidate();
+  }
+
+  function exposeNode(o) {
+    local i = adapt.itemIndexOf(o);
+    if (i >= 0) {
+      setSelectedIndex(i);
+      expandTreeNode(i, false);
+      return true;
+    } else {
+      local po = adapt.getParent(o);
+      if (!po) return false;
+      if (exposeNode(po)) {
+        local i = adapt.itemIndexOf(o);
+        if (i >= 0) {
+          setSelectedIndex(i);
+          expandTreeNode(i, false);
+        }
+      }
+    }
+  }
+
+  function expandTreeNode(i, anim = true) {
+    local o = adapt.getItem(i);
+    local k = adapt.getNodeKey(o);
+    if (expands[k]) return false;
+    local o = adapt.list[i];
+    local a = [];
+    expands[k] <- true;
+    extractNode(o, a);
+    insertList(i + 1, a, anim);
+    return true;
+  }
+
+  function shrinkTreeNode(i) {
+    local o = adapt.getItem(i);
+    local k = adapt.getNodeKey(o);
+    if (!expands[k]) return false;
+    delete expands[k];
+
+    removeRegion(i + 1, getLastChildIndex(i));
+    return true;
+  }
+
+  function refleshTreeNode(i = -1) {
+    local list = adapt.list;
+    if (i < 0) {
+
+      list.resize(0);
+      extractNode(adapt.rootnode, list);
+      revalidate();
+    } else {
+
+      local o = list[i];
+      if (expands[adapt.getNodeKey(o)]) {
+        local s = i + 1, e = getLastChildIndex(i);
+        for (local l = e - s; l >= 0; l--) {
+          delete list[s];
+        }
+        local a = [];
+        extractNode(o, a);
+        insertList(i, a);
+        revalidate();
+      } else {
+        refleshItemAt(i);
+      }
+    }
+  }
+
+  function insertList(i, a, anim = true) {
+    if (anim) {
+      local func = function() {
+        local list = adapt.list;
+        local si = i;
+        local t = 14;
+        for (local l = length(a) - 1; l >= 0; l--) {
+          list[i] <- a[l];
+          revalidate();
+          scrollIndexToVisible(si++);
+          scrollIndexToVisible(i - 1);
+          if (t > 1) sleep((t = t - 1) / 2);
+        }
+      }
+      startMethod(func);
+      waitForMethod();
+    } else {
+      local list = adapt.list;
+      local si = i;
+      for (local l = length(a) - 1; l >= 0; l--) {
+        list[i] <- a[l];
+        scrollIndexToVisible(si++);
+        scrollIndexToVisible(i - 1);
+      }
+      revalidate();
+    }
+  }
+
+  function removeRegion(s, e) {
+    local func = function() {
+      local list = adapt.list;
+      local t = 14;
+      for (local l = e - s; l >= 0; l--) {
+        delete list[s];
+        revalidate();
+        if (t > 1) sleep((t = t - 1) / 2);
+      }
+    }
+    startMethod(func);
+    waitForMethod();
+  }
+
+  function getLastChildIndex(i) {
+    local list = adapt.list;
+    local indent = adapt.getIndent(list[i]);
+    for (local l = i + 1; l < list.len(); l++) {
+
+      if (adapt.getIndent(list[l]) <= indent) {
+        return l - 1;
+      }
+    }
+    return list.len() - 1;
+  }
+
+  function extractNode(o, a) {
+    local list = adapt.getChildren(o);
+    foreach (i, v in adapt.getChildren(o)) {
+      a.append(v);
+      if (expands[adapt.getNodeKey(v)] && adapt.getChildCount(o)) {
+        extractNode(v, a);
+      }
+    }
+  }
+
+  function processEvent(e) {
+    switch (e.id) {
+    case ACTION_PERFORMED:
+      if (e.src == this) {
+        local o = e.actioncmd;
+        local i = adapt.itemIndexOf(o);
+        local k = adapt.getNodeKey(o);
+        if (expands[k]) {
+          shrinkTreeNode(i);
+        } else {
+          expandTreeNode(i);
+        }
+      }
+
+      if (e.actioncmd == "expand") {
+        expandTreeNode(e.src.idx);
+      } else
+      if (e.actioncmd == "shrink") {
+        shrinkTreeNode(e.src.idx);
+      }
+      break;
+    }
+    return super.processEvent(e);
+  }
+}

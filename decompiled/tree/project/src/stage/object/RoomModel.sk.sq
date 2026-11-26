@@ -1,0 +1,8 @@
+class RoomModel extends Model {
+  static FLOOR_DEPTH = 0.5 * TEST_ROOM_SCALE_Y;
+  static WALL_THICKNESS = 0.5 * TEST_ROOM_SCALE_X;
+  static ROOM_WIDTH = 11.0 * TEST_ROOM_SCALE_X;
+  static ROOM_HEIGHT = 7.0 * TEST_ROOM_SCALE_Y;
+  static ROOM_DEPTH = 6.0 * TEST_ROOM_SCALE_Z;
+
+}

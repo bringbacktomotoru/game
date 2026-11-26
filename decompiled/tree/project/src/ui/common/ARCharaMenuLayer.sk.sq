@@ -1,0 +1,1064 @@
+class ARCharaMenuLayer {
+  static TAB_FAVORITE = 0;
+  static TAB_MOTION = 1;
+  static TAB_COSTUME = 2;
+  static TAB_PROP = 3;
+
+  pnl_parent = null;
+  view = null;
+
+  chara_model = null;
+
+  pnl_tab_list = null;
+  tab_list = null;
+  select = -1;
+
+  extra_tab = null;
+  extra_state = false;
+
+  favorite_list = null;
+  motion_list = null;
+  costume_list = null;
+  prop_list = null;
+
+  pnl_card_list = null;
+  lbl_list_desc = null;
+
+  playing_motion_id = -1;
+
+  constructor(panel, view) {
+    this.pnl_parent = panel;
+    this.view = view;
+
+    this.view.findChild("pnl_close").addEventListener(MOUSE_EVENT, mouseevent);
+
+    this.select = TAB_FAVORITE;
+
+    this.tab_list = [];
+    this.pnl_tab_list = this.view.findChild("pnl_tab_list");
+    _setupTabList();
+    _setTabBg(this.select);
+
+    this.extra_tab = ExtraTab(this, this.view.findChild("pnl_extra_tab"));
+    this.extra_tab.setIcon(this.select);
+
+    this.pnl_card_list = this.view.findChild("pnl_card_list");
+    this.lbl_list_desc = this.view.findChild("lbl_list_desc");
+    this.lbl_list_desc.visible = false;
+  }
+
+  function setEnable(b) {
+    this.view.enabled = b;
+  }
+
+  function setEnableListButtons(b) {
+    if (b) this.playing_motion_id = -1;
+    else this.playing_motion_id = this.pnl_parent.getLastExecuteMotionID();
+
+    applyCurrentMotionCardListEnabled();
+  }
+
+  function applyCurrentMotionCardListEnabled() {
+    local _list;
+    switch (this.select) {
+    case TAB_FAVORITE: _list = this.favorite_list; break;
+    case TAB_MOTION: _list = this.motion_list; break;
+    }
+    if (!_list) return;
+    _list.applyMotionCardList();
+  }
+
+  function applyCurrentMotionCardListDisabled() {
+    local _list;
+    switch (this.select) {
+    case TAB_FAVORITE: _list = this.favorite_list; break;
+    case TAB_MOTION: _list = this.motion_list; break;
+    }
+    if (!_list) return;
+    _list.disableMotionCardList();
+  }
+
+  function getPlayingMotionID() {
+    return this.playing_motion_id;
+  }
+
+  function setCharaModel(cm) {
+    if (!cm) return;
+    this.chara_model = cm;
+
+    _setCardList(this.select, true);
+  }
+
+  function getCharaModel() {
+    return this.chara_model;
+  }
+
+  function getListPanel() {
+    return this.pnl_card_list;
+  }
+
+  function getList(tab_id) {
+    switch (tab_id) {
+    case TAB_FAVORITE: return this.favorite_list;
+    case TAB_MOTION: return this.motion_list;
+    case TAB_COSTUME: return this.costume_list;
+    case TAB_PROP: return this.prop_list;
+    }
+    return null;
+  }
+
+  function setListDesc(s) {
+    this.lbl_list_desc.setText(s);
+  }
+  function setListDescVisible(b) {
+    this.lbl_list_desc.visible = b;
+  }
+
+  function _setupTabList() {
+    this.pnl_tab_list.clearChildren();
+    this.tab_list.clear();
+    local _offset = 0;
+
+    _offset = _setupTab(TAB_FAVORITE, "ar_menu_favorite", _offset);
+    _offset = _setupTab(TAB_MOTION, "ar_menu_motion", _offset);
+
+  }
+  function _setupTab(idx, name_key, offset) {
+    local _tab = Tab(this, idx);
+    _tab.setName(::dict.get(name_key));
+    _tab.pos.x = offset;
+    this.pnl_tab_list.addChild(_tab);
+    _tab.matdirty = true;
+    _tab.repaint();
+    offset += _tab.bnd.w;
+    this.tab_list + _tab;
+
+    return offset;
+  }
+
+  function tapTab(idx) {
+    if (_setCardList(idx)) {
+      _setTabBg(idx);
+      this.extra_tab.setIcon(idx);
+    }
+  }
+
+  function _setTabBg(idx) {
+    for (local i = 0; i < this.tab_list.len(); i++) {
+      this.tab_list[i].setTabBg(this.tab_list[i].getIndex() == idx);
+    }
+  }
+
+  function _setCardList(s, force = false) {
+    if (!force && this.select == s) return false;
+    this.select = s;
+
+    switch (this.select) {
+    case TAB_FAVORITE: _setFavoriteList(); break;
+    case TAB_MOTION: _setMotionList(); break;
+    case TAB_COSTUME: _setCostumeList(); break;
+    case TAB_PROP: _setPropList(); break;
+    default: return false;
+    }
+
+    updateListVisible();
+    return true;
+  }
+
+  function _setFavoriteList() {
+    if (!this.favorite_list) this.favorite_list = FavoriteList(this);
+    this.favorite_list.setup();
+    this.favorite_list.applyEditIdList();
+    this.favorite_list.applyMotionCardList();
+    this.favorite_list.setFavoriteButtonVisible(this.extra_state);
+  }
+
+  function _setMotionList() {
+    if (!this.motion_list) this.motion_list = MotionList(this);
+    this.motion_list.setup();
+    this.motion_list.applyMotionCardList();
+    this.motion_list.setFavoriteButtonVisible(this.extra_state);
+  }
+
+  function _setCostumeList() {
+    if (!this.costume_list) this.costume_list = CostumeList(this);
+    this.costume_list.setup();
+  }
+
+  function _setPropList() {
+    if (!this.prop_list) this.prop_list = PropList(this);
+    this.prop_list.setup();
+  }
+
+  function updateListVisible() {
+    if (this.favorite_list) this.favorite_list.setVisible(this.select == TAB_FAVORITE);
+    if (this.motion_list) this.motion_list.setVisible(this.select == TAB_MOTION);
+    if (this.costume_list) this.costume_list.setVisible(this.select == TAB_COSTUME);
+    if (this.prop_list) this.prop_list.setVisible(this.select == TAB_PROP);
+  }
+
+  function tappedMotionCard(as) {
+    this.pnl_parent.setCharaMotion(as);
+  }
+
+  function resetParentPanelMotion() {
+    this.pnl_parent.resetMotion();
+  }
+
+  function tappedCostumeCard(cid) {
+    this.pnl_parent.changeSanrioChara(cid);
+  }
+
+  function tappedPropCard(ps) {
+    if (ps) this.chara_model.startProp(ps);
+    else this.chara_model.endProp();
+
+    local _fl = ::gamesession.getUserDataLocal().getFavoriteMotionsByARCharaModel(chara_model);
+    if (_fl.len() < 1) return;
+    this.pnl_parent.setCharaMotionIcon(::gamesetting.costume_motion_settings[_fl[0]]);
+  }
+
+  function updateNextMotionButton() {
+    this.pnl_parent.updateNextMotionButtonVisible();
+  }
+
+  function tappedExtraButton() {
+    switch (this.select) {
+    case TAB_FAVORITE:
+      if (this.favorite_list) {
+        this.extra_state = this.extra_state ? false : true;
+        this.favorite_list.setFavoriteButtonVisible(this.extra_state);
+      }
+      break;
+
+    case TAB_MOTION:
+      if (this.motion_list) {
+        this.extra_state = this.extra_state ? false : true;
+        this.motion_list.setFavoriteButtonVisible(this.extra_state);
+      }
+      break;
+    }
+  }
+
+  function getExtraState() {
+    return this.extra_state;
+  }
+
+  function mouseevent(e) {
+    e.consume();
+
+    switch (e.id) {
+    case MOUSE_CLICKED:
+
+      this.pnl_parent.hideCharaMenu();
+    }
+  }
+}
+
+class ARCharaMenuLayer.Tab extends SKView {
+  pnl_parent = null;
+  view = null;
+
+  lbl_name = null;
+  index = -1;
+
+  img_tab_on = null;
+  img_tab_off = null;
+
+  constructor(p, idx) {
+    this.pnl_parent = p;
+    this.index = idx;
+
+    this.view = ::loadSKView("/ui/common/PanelTab.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    local _pnl_tab = this.view.findChild("pnl_tab");
+    this.lbl_name = _pnl_tab.findChild("lbl_name");
+
+    this.img_tab_on = _pnl_tab.findChild("img_tab_on");
+    this.img_tab_off = _pnl_tab.findChild("img_tab_off");
+
+    _pnl_tab.addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function getIndex() {
+    return this.index;
+  }
+
+  function setName(s) {
+    this.lbl_name.setText(s);
+  }
+
+  function mouseevent(e) {
+    switch (e.id) {
+    case MOUSE_CLICKED:
+      this.pnl_parent.tapTab(this.index);
+    }
+  }
+
+  function setTabBg(select) {
+    if (select) {
+      this.img_tab_on.visible = true;
+      this.img_tab_off.visible = false;
+    }
+    else {
+      this.img_tab_on.visible = false;
+      this.img_tab_off.visible = true;
+    }
+  }
+}
+
+class ARCharaMenuLayer.ExtraTab {
+  pnl_parent = null;
+  view = null;
+
+  pnl_icon = null;
+
+  constructor(p, v) {
+    this.pnl_parent = p;
+    this.view = v;
+
+    this.pnl_icon = this.view.findChild("pnl_icon");
+    ::TapButton(this.pnl_icon).view.addEventListener(ACTION_EVENT, actionevent_extra);
+  }
+
+  function setIcon(sel) {
+    this.pnl_icon.clearChildren();
+
+    local _sp;
+    switch (sel) {
+    case ARCharaMenuLayer.TAB_FAVORITE:
+
+      _sp = ::getSprite("/ui/image/ar/ar/btn_AR_favorite.png");
+      break;
+    case ARCharaMenuLayer.TAB_MOTION:
+      _sp = ::getSprite("/ui/image/ar/ar/btn_AR_favorite.png");
+      break;
+    }
+    if (!_sp) return;
+    _sp.blend = SK_MIX;
+    local _imageview = SKImageView(_sp);
+    _imageview.setRect(0, 0, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+    this.pnl_icon.addChild(_imageview);
+  }
+
+  function actionevent_extra(e) {
+    e.consume();
+    this.pnl_parent.tappedExtraButton();
+  }
+}
+
+class ARCharaMenuLayer.CardList {
+  static CARD_OFFSET = 10;
+
+  pnl_parent = null;
+
+  old_chara_model = null;
+
+  view = null;
+  card_list = null;
+  reclist = null;
+  scroll = null;
+
+  view_thread = null;
+
+  constructor(p) {
+    this.pnl_parent = p;
+
+    local _pnl_list = this.pnl_parent.getListPanel();
+    this.view = SKView();
+    this.view.setRect(_pnl_list.bnd.x, _pnl_list.bnd.y, _pnl_list.bnd.w, _pnl_list.bnd.h);
+    this.view.pos.x = 0;
+    this.view.pos.y = 0;
+    _pnl_list.addChild(this.view);
+
+    this.card_list = [];
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dyscale = 0.0;
+    this.view.addChild(this.reclist);
+    this.view.setBuffer(true);
+    setup();
+  }
+
+  function setVisible(b) {
+    this.view.visible = b;
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function setup() {
+
+    if (!getCharaModel()) {
+      this.reclist.clearChildren();
+      this.card_list.clear();
+      return;
+    }
+
+    if (!isChange()) return;
+
+    this.reclist.clearChildren();
+    this.card_list.clear();
+
+    local _offset = 0;
+    local _cnt = 0;
+    local _size_x = 0;
+
+    local _list = getList();
+    foreach (v in _list) {
+      local _card = createCard(v, _cnt);
+      if (!_card) continue;
+
+      _size_x = _card.bnd.w;
+
+      _card.pos.x = _offset;
+      this.reclist.addChild(_card);
+      _card.matdirty = true;
+      _card.repaint();
+
+      this.card_list + _card;
+      _offset += _size_x + CARD_OFFSET;
+      _cnt++;
+      _addedCard(_card);
+    }
+    _offset += _size_x * 2;
+
+    this.reclist.setRect(0, 0, _offset, this.view.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+
+    updated();
+
+    if (this.view_thread) this.view_thread.interruptGoto("END");
+    this.view_thread = newthread();
+    this.view_thread.start(setupCardViews, this);
+  }
+
+  function replace() {
+    if (!this.card_list) return;
+
+    local _offset = 0;
+    local _cnt = 0;
+    local _size_x = 0;
+    foreach (c in this.card_list) {
+      if (!c) continue;
+      _size_x = c.bnd.w;
+
+      c.pos.x = _offset;
+      c.matdirty = true;
+      c.repaint();
+
+      _offset += _size_x + CARD_OFFSET;
+    }
+    _offset += _size_x * 2;
+
+    this.reclist.setRect(0, 0, _offset, this.view.bnd.h);
+    this.scroll.setScrollRect(this.reclist.bnd);
+  }
+
+  function updated() {
+    this.old_chara_model = getCharaModel();
+    this.pnl_parent.setListDescVisible(false);
+  }
+
+  function _addedCard(card) {}
+
+  function isChange() {
+    if (this.old_chara_model == getCharaModel()) return false;
+    return true;
+  }
+
+  function getList() {
+    return [];
+  }
+
+  function createCard(v, idx) {
+    return null;
+  }
+
+  function getCardList() {
+    return this.card_list;
+  }
+
+  function getCharaModel() {
+    return this.pnl_parent.getCharaModel();
+  }
+
+  function setupCardViews() {
+    sleep(150);
+    local t = skGetTime();
+    foreach (card in card_list) {
+      card.setupViews();
+
+      local t2 = skGetTime();
+      if (t + 16 < t2) {
+        t = t2;
+        suspend();
+      }
+    }
+    END:
+    view_thread = null;
+  }
+}
+
+class ARCharaMenuLayer.FavoriteList extends ARCharaMenuLayer.CardList {
+  prop_id = -1;
+  last_exec_motion_id = -1;
+  apply_check = false;
+
+  function getList() {
+    local _list = [];
+
+    local _motions = ::gamesession.getUserDataLocal().getFavoriteMotionsByARCharaModel(getCharaModel());
+    local _settings = ::gamesetting.costume_motion_settings;
+    foreach (mid in _motions) {
+      local _as = _settings[mid];
+      if (_as) _list + _as;
+    }
+    _list[0] <- null;
+    return _list;
+  }
+
+  function createCard(v, idx) {
+    return ::ARCharaMenuLayer.MotionCard(this.pnl_parent, v, idx, this);
+  }
+
+  function isChange() {
+    local _cm = getCharaModel();
+    if (this.old_chara_model == _cm && this.prop_id == _cm.getPropID()) return false;
+    return true;
+  }
+
+  function updated() {
+    local _cm = getCharaModel();
+    this.old_chara_model = _cm;
+    this.prop_id = _cm.getPropID();
+
+    if (this.card_list.len() > 0) {
+      this.pnl_parent.setListDescVisible(false);
+    }
+    else {
+      this.pnl_parent.setListDesc(::dict.get("ar_favorite_desc"));
+      this.pnl_parent.setListDescVisible(true);
+    }
+
+    this.apply_check = false;
+  }
+
+  function setFavoriteButtonVisible(b) {
+    foreach (card in this.card_list) {
+      card.setFavoriteButtonVisible(b);
+    }
+    this.view.repaint();
+  }
+
+  function removeCard(card) {
+    local _idx = this.card_list.indexOf(card);
+    if (_idx < 0) return false;
+    delete this.card_list[_idx];
+    this.reclist.removeChild(card);
+
+    local _motion_list = this.pnl_parent.getList(ARCharaMenuLayer.TAB_MOTION);
+    if (_motion_list) _motion_list.setFavoriteUpdate(true);
+
+    return true;
+  }
+
+  function applyEditIdList() {
+    if (!this.apply_check) return;
+
+    local _rep = false;
+
+    local _udl = ::gamesession.getUserDataLocal();
+    local _add_id_list = clone _udl.getFavoriteMotionsByARCharaModel(getCharaModel());
+    if (_add_id_list[0] == -1) delete _add_id_list[0];
+    local _remove_card_list = [];
+
+    foreach (card in this.card_list) {
+      local _setting = card.getSetting();
+      if (!_setting) continue;
+
+      local _idx = _add_id_list.indexOf(_setting.getID());
+      if (_idx < 0) _remove_card_list + card;
+      else delete _add_id_list[_idx];
+    }
+
+    foreach (card in _remove_card_list) {
+      local _idx = this.card_list.indexOf(card);
+      delete this.card_list[_idx];
+      this.reclist.removeChild(card);
+      _rep = true;
+    }
+
+    local _motion_settings = ::gamesetting.costume_motion_settings;
+    foreach (mid in _add_id_list) {
+      local _card = createCard(_motion_settings[mid], -1);
+      if (!_card) continue;
+      _card.setupViews();
+      this.card_list + _card;
+      this.reclist.addChild(_card);
+      _rep = true;
+    }
+
+    if (_rep) replace();
+
+    this.apply_check = false;
+  }
+
+  function setApplyCheck(b) {
+    this.apply_check = b;
+  }
+
+  function applyMotionCardList() {
+    _procMotionCardEnable(this.pnl_parent.getPlayingMotionID());
+  }
+
+  function disableMotionCardList() {
+    _procMotionCardEnable(-2);
+  }
+
+  function _procMotionCardEnable(mid) {
+    if (this.last_exec_motion_id == mid) return;
+    this.last_exec_motion_id = mid;
+
+    if (this.last_exec_motion_id == -2) {
+
+      foreach (card in this.card_list) {
+        card.setPlayingMarkVisible(false);
+        card.setButtonEnable(false, false);
+      }
+    }
+    else if (this.last_exec_motion_id == -1) {
+
+      foreach (card in this.card_list) {
+
+        card.setPlayingMarkVisible(false);
+        card.setButtonEnable(true, true);
+      }
+    }
+    else {
+
+      local _playing = ::gamesetting.costume_motion_settings[this.last_exec_motion_id];
+      if (!_playing) return;
+
+      local _can_interrupt = _playing.canInterrupt();
+      foreach (card in this.card_list) {
+        local _s = card.getSetting();
+        if (_s) {
+          if (_s.getID() == this.last_exec_motion_id) {
+
+            card.setPlayingMarkVisible(true);
+            card.setButtonEnable(false, true);
+          }
+          else {
+
+            card.setPlayingMarkVisible(false);
+            if (_can_interrupt) card.setButtonEnable(true, true);
+            else card.setButtonEnable(false, false);
+          }
+        }
+        else {
+
+          if (_can_interrupt) card.setButtonEnable(true, true);
+          else card.setButtonEnable(false, false);
+        }
+      }
+    }
+    this.view.repaint();
+  }
+}
+
+class ARCharaMenuLayer.MotionList extends ARCharaMenuLayer.CardList {
+  prop_id = -1;
+  last_exec_motion_id = -1;
+  favorite_update = false;
+
+  function getList() {
+    local _list = [];
+
+    local _chara = getCharaModel();
+    local _motions;
+    local _ps = ::gamesetting.prop_settings[_chara.getPropID()];
+    if (_ps) {
+      _motions = _ps.getMotionList();
+    }
+    else {
+      local _chara_data = ::gamesession.getUserData().getCharacterData(_chara.getCharaID());
+      _motions = _chara_data.getMotions();
+    }
+    local _settings = ::gamesetting.costume_motion_settings;
+    foreach (mid in _motions) {
+      local _as = _settings[mid];
+      if (_as) _list + _as;
+    }
+    return _list;
+  }
+
+  function createCard(v, idx) {
+    return ::ARCharaMenuLayer.MotionCard(this.pnl_parent, v, idx, this);
+  }
+
+  function isChange() {
+    local _cm = getCharaModel();
+    if (this.old_chara_model == _cm && this.prop_id == _cm.getPropID()) return false;
+    return true;
+  }
+
+  function updated() {
+    local _cm = getCharaModel();
+    this.old_chara_model = _cm;
+    this.prop_id = _cm.getPropID();
+
+    if (this.card_list.len() > 0) {
+      this.pnl_parent.setListDescVisible(false);
+    }
+    else {
+      this.pnl_parent.setListDesc(::dict.get("ar_motion_desc"));
+      this.pnl_parent.setListDescVisible(true);
+    }
+  }
+
+  function setFavoriteButtonVisible(b) {
+    foreach (card in this.card_list) {
+      card.setFavoriteButtonVisible(b);
+      if (this.favorite_update) card.setupFavoriteButton();
+    }
+    this.view.repaint();
+    this.favorite_update = false;
+  }
+
+  function setFavoriteUpdate(b) {
+    this.favorite_update = b;
+  }
+
+  function applyMotionCardList() {
+    _procMotionCardEnable(this.pnl_parent.getPlayingMotionID());
+  }
+
+  function disableMotionCardList() {
+    _procMotionCardEnable(-2);
+  }
+
+  function _procMotionCardEnable(mid) {
+    if (this.last_exec_motion_id == mid) return;
+    this.last_exec_motion_id = mid;
+
+    if (this.last_exec_motion_id == -2) {
+
+      foreach (card in this.card_list) {
+        card.setPlayingMarkVisible(false);
+        card.setButtonEnable(false, false);
+      }
+    }
+    else if (this.last_exec_motion_id == -1) {
+
+      foreach (card in this.card_list) {
+
+        card.setPlayingMarkVisible(false);
+        card.setButtonEnable(true, true);
+      }
+    }
+    else {
+
+      local _playing = ::gamesetting.costume_motion_settings[this.last_exec_motion_id];
+      if (!_playing) return;
+
+      local _can_interrupt = _playing.canInterrupt();
+      foreach (card in this.card_list) {
+        local _s = card.getSetting();
+        if (_s) {
+          if (_s.getID() == this.last_exec_motion_id) {
+
+            card.setPlayingMarkVisible(true);
+            card.setButtonEnable(false, true);
+          }
+          else {
+
+            card.setPlayingMarkVisible(false);
+            if (_can_interrupt) card.setButtonEnable(true, true);
+            else card.setButtonEnable(false, false);
+          }
+        }
+        else {
+
+          if (_can_interrupt) card.setButtonEnable(true, true);
+          else card.setButtonEnable(false, false);
+        }
+      }
+    }
+    this.view.repaint();
+  }
+}
+
+class ARCharaMenuLayer.CostumeList extends ARCharaMenuLayer.CardList {
+
+  function getList() {
+    local _list = [];
+
+    local _chara_id = getCharaModel().getCharaID();
+    local _costumes = ::gamesession.getUserData().getCostumeDataTable();
+    foreach (c in _costumes) {
+      if (_chara_id == c.getCharaID()) _list + c;
+    }
+    return _list;
+  }
+
+  function createCard(v, idx) {
+    return ::ARCharaMenuLayer.CostumeCard(this.pnl_parent, v, idx);
+  }
+}
+
+class ARCharaMenuLayer.PropList extends ARCharaMenuLayer.CardList {
+
+  function getList() {
+    local _list = ::getTableValues(::gamesetting.prop_settings);
+    _list[0] <- null;
+    return _list;
+  }
+
+  function createCard(v, idx) {
+    return ::ARCharaMenuLayer.PropCard(this.pnl_parent, v, idx);
+  }
+
+  function updated() {
+    this.old_chara_model = getCharaModel();
+
+    if (this.card_list.len() > 0) {
+      this.pnl_parent.setListDescVisible(false);
+    }
+    else {
+      this.pnl_parent.setListDesc(::dict.get("ar_prop_desc"));
+      this.pnl_parent.setListDescVisible(true);
+    }
+  }
+}
+
+class ARCharaMenuLayer.MotionCard extends SKView {
+  pnl_parent = null;
+  view = null;
+  pnl_icon = null;
+  btn_motion = null;
+  lbl_name = null;
+  btn_favorite = null;
+  pnl_favorite = null;
+  img_playing = null;
+
+  setting = null;
+
+  card_list = null;
+
+  constructor(p, as, idx, list) {
+    this.pnl_parent = p;
+    this.setting = as;
+    this.card_list = list;
+
+    this.view = ::loadSKView("/ui/common/ARMenuMotionCard.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    this.btn_motion = this.view.findChild("btn_motion");
+    this.pnl_icon = this.btn_motion.findChild("pnl_icon");
+    this.lbl_name = this.btn_motion.findChild("lbl_name");
+
+    this.img_playing = this.view.findChild("img_playing");
+    this.img_playing.visible = false;
+
+    ::TapButton(this.btn_motion, false).view.addEventListener(ACTION_EVENT, actionevent_select_motion);
+
+    this.btn_favorite = this.view.findChild("btn_favorite");
+    ::TapButton(this.btn_favorite, false).view.addEventListener(ACTION_EVENT, actionevent_edit_favorite);
+    this.pnl_favorite = this.btn_favorite.findChild("pnl_favorite");
+    setupFavoriteButton();
+
+    if (this.setting) {
+      this.lbl_name.setText(this.setting.getDesc());
+      this.lbl_name.visible = true;
+    }
+    else {
+      this.lbl_name.visible = false;
+    }
+  }
+
+  function setupFavoriteButton() {
+    if (!this.setting) {
+      this.btn_favorite.visible = false;
+      return;
+    }
+
+    local _sp;
+    if (this.card_list instanceof ARCharaMenuLayer.FavoriteList) {
+
+      _sp = ::getSprite("/ui/image/ar/ar/btn_AR_cross.png");
+    }
+    else if (this.card_list instanceof ARCharaMenuLayer.MotionList) {
+
+      local _acm = this.card_list.getCharaModel();
+      local _udl = ::gamesession.getUserDataLocal();
+
+      if (_udl.isFavoriteMotionByARCharaModel(_acm, this.setting.getID())) {
+        _sp = ::getSprite("/ui/image/ar/ar/btn_AR_choice_on.png");
+      }
+      else {
+        _sp = ::getSprite("/ui/image/ar/ar/btn_AR_choice_off.png");
+      }
+    }
+
+    if (_sp) {
+      this.pnl_favorite.clearChildren();
+      this.btn_favorite.visible = this.pnl_parent.getExtraState();
+      _sp.blend = SK_MIX;
+      local _imageview = SKImageView(_sp);
+      _imageview.setRect(0, 0, this.pnl_favorite.bnd.w, this.pnl_favorite.bnd.h);
+      this.pnl_favorite.addChild(_imageview);
+    }
+    else {
+      this.btn_favorite.visible = false;
+    }
+  }
+
+  function setupViews() {
+
+    this.pnl_icon.clearChildren();
+
+    local _sp;
+    if (this.setting) {
+      _sp = this.setting.getIconSprite();
+    }
+    else {
+      _sp = ::getSprite("/image/icon/motion/motion1/random.png");
+      _sp.blend = SK_MIX;
+    }
+
+    if (_sp) {
+      _sp.bnd.set(0, 0, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+      local _img_motion = ::SKImageView(_sp);
+      this.pnl_icon.addChild(_img_motion);
+    }
+  }
+
+  function getSetting() {
+    return this.setting;
+  }
+
+  function setFavoriteButtonVisible(b) {
+    if (!this.setting) return;
+    this.btn_favorite.visible = b;
+  }
+
+  function actionevent_select_motion(e) {
+    e.consume();
+    this.pnl_parent.tappedMotionCard(this.setting);
+  }
+
+  function actionevent_edit_favorite(e) {
+    e.consume();
+
+    if (!this.setting) return;
+    local _acm = this.pnl_parent.getCharaModel();
+    if (!_acm) return;
+    local _udl = ::gamesession.getUserDataLocal();
+    if (this.card_list instanceof ARCharaMenuLayer.FavoriteList) {
+
+      if (this.card_list.removeCard(this)) {
+
+        _udl.removeFavoriteMotionByARCharaModel(_acm, this.setting.getID());
+        _udl.save();
+
+        this.card_list.replace();
+      }
+    }
+    else if (this.card_list instanceof ARCharaMenuLayer.MotionList) {
+
+      local _mid = this.setting.getID();
+      if (_udl.isFavoriteMotionByARCharaModel(_acm, _mid)) {
+        _udl.removeFavoriteMotionByARCharaModel(_acm, this.setting.getID());
+      }
+      else {
+        _udl.addFavoriteMotionByARCharaModel(_acm, this.setting.getID());
+      }
+      local _favorite_list = this.pnl_parent.getList(ARCharaMenuLayer.TAB_FAVORITE);
+      if (_favorite_list) _favorite_list.setApplyCheck(true);
+      _udl.save();
+      setupFavoriteButton();
+    }
+    this.pnl_parent.resetParentPanelMotion();
+  }
+
+  function setButtonEnable(btn, icon) {
+    this.btn_motion.setEnabled(btn);
+    this.pnl_icon.setEnabled(icon);
+  }
+
+  function setPlayingMarkVisible(b) {
+    this.img_playing.visible = b;
+  }
+}
+
+class ARCharaMenuLayer.CostumeCard extends SKView {
+  pnl_parent = null;
+  view = null;
+  pnl_icon = null;
+
+  data = null;
+
+  constructor(p, cd, idx) {
+    this.pnl_parent = p;
+    this.data = cd;
+
+    this.view = ::loadSKView("/ui/common/ARMenuCostumeCard.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    local _btn_costume = this.view.findChild("btn_costume");
+    this.pnl_icon = _btn_costume.findChild("pnl_icon");
+
+    ::TapButton(_btn_costume, false).view.addEventListener(ACTION_EVENT, actionevent_select_costume);
+  }
+
+  function setupViews() {
+
+    this.pnl_icon.clearChildren();
+
+    local _img_chara = ::SKImageView();
+    CostumeIcon(this.data.getID(), _img_chara, false, false);
+    _img_chara.setRect(0, 0, this.pnl_icon.bnd.w, this.pnl_icon.bnd.h);
+    this.pnl_icon.addChild(_img_chara);
+  }
+
+  function actionevent_select_costume(e) {
+    e.consume();
+    this.pnl_parent.tappedCostumeCard(this.data.getID());
+  }
+}
+
+class ARCharaMenuLayer.PropCard extends SKView {
+  pnl_parent = null;
+  view = null;
+  lbl_name = null;
+
+  setting = null;
+
+  constructor(p, cs, idx) {
+    this.pnl_parent = p;
+    this.setting = cs;
+
+    this.view = ::loadSKView("/ui/common/ARMenuPropCard.ui");
+    addChild(this.view);
+    setRect(this.view.bnd.x, this.view.bnd.y, this.view.bnd.w, this.view.bnd.h);
+
+    local _btn_prop = this.view.findChild("btn_prop");
+    this.lbl_name = _btn_prop.findChild("lbl_name");
+    if (this.setting) this.lbl_name.setText(this.setting.getName());
+    else this.lbl_name.setText(::dict.get("arpanel_remove_prop"));
+
+    ::TapButton(_btn_prop, false).view.addEventListener(ACTION_EVENT, actionevent_select_prop);
+  }
+
+  function setupViews() {
+  }
+
+  function actionevent_select_prop(e) {
+    e.consume();
+    this.pnl_parent.tappedPropCard(this.setting);
+  }
+}

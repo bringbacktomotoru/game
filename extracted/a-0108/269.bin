@@ -1,0 +1,7 @@
+// UIScript created by RoomDetailDialog.ui 
+
+function showSellErrorText() {
+	$lbl_sell_caution.anime(10,10,20);
+	pass(500);
+	$lbl_sell_caution.anime(10,15,10);
+}

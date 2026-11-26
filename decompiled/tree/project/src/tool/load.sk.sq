@@ -1,0 +1,11 @@
+foreach (f_name in [
+"UIEditor_extend.sk"
+"PreviewCanvas_extend.sk",
+"PMEditor_extend.sk",
+"SKBuilder_extend.sk",
+"KSEditor_extension.sk",
+"KSRightPanel_extension.sk",
+"PMRectEditor.sk",
+"PMRightPanel_extend.sk"
+"PMShapeEditor_extend.sk"
+]) runsk("/src/tool/" + f_name);

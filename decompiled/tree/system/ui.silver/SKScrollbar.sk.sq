@@ -1,0 +1,93 @@
+class SKScrollbar extends SKScrollbarBase
+{
+  barw = 14;
+  btnlen = 12;
+  minknob = 12;
+
+  function createKnob(ori) {
+    local btn;
+    if (ori == 0) {
+      btn = SKImageListButton([
+      ::getSprite("/system/ui.silver/ui.clp#vbar_knob1"),
+      ::getSprite("/system/ui.silver/ui.clp#vbar_knob2"),
+      ::getSprite("/system/ui.silver/ui.clp#vbar_knob3"),
+      null
+      ]);
+    } else {
+      btn = SKImageListButton([
+      ::getSprite("/system/ui.silver/ui.clp#hbar_knob1"),
+      ::getSprite("/system/ui.silver/ui.clp#hbar_knob2"),
+      ::getSprite("/system/ui.silver/ui.clp#hbar_knob3"),
+      null
+      ]);
+    }
+    return btn;
+  }
+
+  function createBar(ori) {
+    local btn;
+    if (ori == 0) {
+      btn = SKImageListButton([
+      ::getSprite("/system/ui.silver/ui.clp#vbar_bar1"),
+      ::getSprite("/system/ui.silver/ui.clp#vbar_bar1"),
+      ::getSprite("/system/ui.silver/ui.clp#vbar_bar1"),
+      ::getSprite("/system/ui.silver/ui.clp#vbar_bar2"),
+      ]);
+    } else {
+      btn = SKImageListButton([
+      ::getSprite("/system/ui.silver/ui.clp#hbar_bar1"),
+      ::getSprite("/system/ui.silver/ui.clp#hbar_bar1"),
+      ::getSprite("/system/ui.silver/ui.clp#hbar_bar1"),
+      ::getSprite("/system/ui.silver/ui.clp#hbar_bar2"),
+      ]);
+    }
+    btn.repeatmode = 1;
+    return btn;
+  }
+
+  function createInc(ori) {
+    local btn;
+    if (ori == 0) {
+      btn = SKImageListButton([
+      ::getSprite("/system/ui.silver/ui.clp#vbar_inc1"),
+      ::getSprite("/system/ui.silver/ui.clp#vbar_inc2"),
+      ::getSprite("/system/ui.silver/ui.clp#vbar_inc3"),
+      null
+      ]);
+      btn.setRect(0, 0, barw, btnlen);
+    } else {
+      btn = SKImageListButton([
+      ::getSprite("/system/ui.silver/ui.clp#hbar_inc1"),
+      ::getSprite("/system/ui.silver/ui.clp#hbar_inc2"),
+      ::getSprite("/system/ui.silver/ui.clp#hbar_inc3"),
+      null
+      ]);
+      btn.setRect(0, 0, btnlen, barw);
+    }
+    btn.repeatmode = 1;
+    return btn;
+  }
+
+  function createDec(ori) {
+    local btn;
+    if (ori == 0) {
+      btn = SKImageListButton([
+      ::getSprite("/system/ui.silver/ui.clp#vbar_dec1"),
+      ::getSprite("/system/ui.silver/ui.clp#vbar_dec2"),
+      ::getSprite("/system/ui.silver/ui.clp#vbar_dec3"),
+      null
+      ]);
+      btn.setRect(0, 0, barw, btnlen);
+    } else {
+      btn = SKImageListButton([
+      ::getSprite("/system/ui.silver/ui.clp#hbar_dec1"),
+      ::getSprite("/system/ui.silver/ui.clp#hbar_dec2"),
+      ::getSprite("/system/ui.silver/ui.clp#hbar_dec3"),
+      null
+      ]);
+      btn.setRect(0, 0, btnlen, barw);
+    }
+    btn.repeatmode = 1;
+    return btn;
+  }
+}

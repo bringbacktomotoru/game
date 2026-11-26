@@ -1,0 +1,71 @@
+with SK3DScene.DropShadow {
+  cullfilterfunc <- null;
+
+  function update(dt) {
+    local w = scn.b3world;
+    if (!w) return;
+    local vy = #Vector3D(0, -10, 0);
+    local scale = #Vector3D(1, 1, 1);
+    local rot = #Quaternion(0, 0, 0, 1);
+    local c = 0;
+    foreach (o in dropobjs) {
+      if (!o.isVisible()) continue;
+      if (cullfilterfunc && !cullfilterfunc(o)) continue
+      local _p = #Vector3D();
+      _p(0).transform(o.gmat);
+      local r = w.rayTest(1, _p, _p + vy, 128, -1);
+      if (!r.len()) continue;
+
+      local e;
+      if (c >= length(elems)) {
+        e = pg.emit1();
+        elems + e;
+      } else {
+        e = elems[c];
+      }
+      ++c;
+      local dpos = r.pointa;
+      dpos.y = 0.52;
+
+      e.setSRT(dpos, scale, rot);
+    }
+    for (local l = length(elems) - 1; l >= c; l--) {
+      elems[l].kill();
+      elems.pop();
+    }
+    ptc.update(dt);
+    ptc.alive = 1;
+  }
+}
+
+with SK3DEnvironment {
+  function createLight(data) {
+    local li = Light();
+    li.hpb = array(3);
+    li.type = data.type;
+
+    if (("head" in data) && ("pitch" in data)) {
+
+      local v = Quaternion.fromHPB(data.head * Math.DTOR, data.pitch * Math.DTOR, (data["bank"] || 0.0) * Math.DTOR) * Vector3D(0, 0, -1);
+      li.vx = v.x;
+      li.vy = v.y;
+      li.vz = v.z;
+
+      li.hpb[0] = data.head;
+      li.hpb[1] = data.pitch;
+      li.hpb[2] = data["bank"] || 0.0;
+    }
+    if (data["pos"]) {
+      li.px = data.pos[0];
+      li.py = data.pos[1];
+      li.pz = data.pos[2];
+    }
+    li.color = data["color"] || 0xffffffff;
+    li.scolor = data["scolor"] || 0xffffffff;
+    li.power = (data["power"] || 0.8) / 255.0;
+    li.pixellight = data["pixellight"] || 0;
+    li.k1 = data["k1"] || 0.0;
+    li.k2 = data["k2"] || 0.0;
+    return li;
+  }
+}

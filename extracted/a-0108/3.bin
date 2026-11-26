@@ -1,0 +1,9 @@
+// UIScript created by Balloon.ui 
+function show() {
+	$pnl.anime(5, 10, 20);
+}
+
+function hide() {
+	$pnl.anime(10, 5, 20);
+	pass(500);
+}

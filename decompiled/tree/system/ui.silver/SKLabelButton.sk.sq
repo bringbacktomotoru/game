@@ -1,0 +1,61 @@
+class SKLabelButton extends SKImageListButton
+{
+  static deffontattr = FontAttribute(Fonts.ui, 12, 0xffffffff, SK_FONT_BOLD);
+
+  textbox = null;
+  iconsp = null;
+  offsy = 0;
+
+  constructor(txt = "", ic = null) {
+    super([
+    ::getSprite("/system/ui.silver/ui.clp#labelbtn1"),
+    ::getSprite("/system/ui.silver/ui.clp#labelbtn2"),
+    ::getSprite("/system/ui.silver/ui.clp#labelbtn3"),
+    ::getSprite("/system/ui.silver/ui.clp#labelbtn4"),
+    ]);
+    iconsp = ic;
+
+    textbox = TextBox(deffontattr, txt);
+    textbox.align = ic ? 1 : 4;
+    textbox.colormask = 255;
+    updateButtonState(4);
+  }
+
+  function updateLayout() {
+    super.updateLayout();
+    if (iconsp) {
+      textbox.setSize(bnd.w, bnd.h);
+    } else {
+      textbox.setSize(bnd.w, bnd.h);
+    }
+  }
+
+  function updateButtonState(st) {
+    super.updateButtonState(st);
+    switch (st) {
+    case 4:
+      offsy = 0; textbox.y = 0;
+      if (iconsp) iconsp.color = (iconsp.color & 0xffffff00) | 204;
+      break;
+    case 5:
+    case 6:
+      offsy = 0; textbox.y = 0;
+      if (iconsp) iconsp.color = (iconsp.color & 0xffffff00) | 255;
+      break;
+    case 7:
+      offsy = 1; textbox.y = 1;
+      if (iconsp) iconsp.color = (iconsp.color & 0xffffff00) | 255;
+      break;
+    default:
+      offsy = 0; textbox.y = 0;
+      if (iconsp) iconsp.color = (iconsp.color & 0xffffff00) | 102;
+      break;
+    }
+  }
+
+  function render() {
+    super.render();
+    skDrawSprite(iconsp, 0, offsy);
+    skDrawTextBox(textbox);
+  }
+}

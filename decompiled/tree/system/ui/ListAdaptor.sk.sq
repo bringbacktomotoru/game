@@ -1,0 +1,37 @@
+class ListAdaptor
+{
+  list = null;
+  cellheight = 20;
+
+  constructor(a = null) {
+    list = a;
+  }
+
+  function getCount() {
+    return length(list);
+  }
+
+  function getItem(idx) {
+    return list[idx];
+  }
+
+  function getItemFlags(idx) {
+    return 3;
+  }
+
+  function itemIndexOf(o) {
+    return list.indexOf(o);
+  }
+
+  function getItemView(idx, convertv, parentv, stateonly) {
+    return null;
+  }
+
+  function getCellHeight() {
+    return cellheight;
+  }
+
+  function isSelectable(idx) {
+    return true;
+  }
+}

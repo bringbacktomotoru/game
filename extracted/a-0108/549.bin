@@ -1,0 +1,547 @@
+{
+  "ID": "64f089e5-3408-4d71-8b0a-8bf97115cf5a",
+  "Version": "2.3.3.0",
+  "Name": "HomeTopPanel",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 47,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "HomeUI.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0008,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 0.0008,
+            "RightMargin": -0.0008,
+            "Tag": 1191,
+            "ActionTag": 1161962327,
+            "Size": {
+              "X": 960.0,
+              "Y": 1280.0
+            },
+            "Alpha": 102,
+            "Name": "dummy_stagelayout",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 480.0008,
+              "Y": 640.0015
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 0.0008,
+            "RightMargin": -0.0008,
+            "TopMargin": -0.0015,
+            "BottomMargin": 0.0015,
+            "Tag": 178,
+            "ActionTag": -1292998892,
+            "Size": {
+              "X": 960.0,
+              "Y": 1280.0
+            },
+            "Name": "pnl_mouseevent_layer",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 480.0006,
+              "Y": 640.0009
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.75,
+              "Y": 1.0
+            },
+            "LeftMargin": 120.0006,
+            "RightMargin": 119.9994,
+            "TopMargin": -0.001,
+            "BottomMargin": 0.0009,
+            "Tag": 125,
+            "ActionTag": -1765786093,
+            "Size": {
+              "X": 720.0,
+              "Y": 1280.0
+            },
+            "Name": "pnl_talkwindow_layer",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 490.0008,
+              "Y": 630.0015
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5104,
+              "Y": 0.4922
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 10.0008,
+            "RightMargin": -10.0008,
+            "TopMargin": 9.9985,
+            "BottomMargin": -9.9985,
+            "Tag": 83,
+            "ActionTag": 1973442356,
+            "Size": {
+              "X": 960.0,
+              "Y": 1280.0
+            },
+            "Name": "pnl_mouseevent_layer_talk",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 490.0007,
+              "Y": 630.0015
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5104,
+              "Y": 0.4922
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 10.0007,
+            "RightMargin": -10.0007,
+            "TopMargin": 9.9985,
+            "BottomMargin": -9.9985,
+            "Tag": 636,
+            "ActionTag": -1419770983,
+            "Size": {
+              "X": 960.0,
+              "Y": 1280.0
+            },
+            "Name": "pnl_uimodel_layer",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/home/side_bg.png",
+              "Plist": ""
+            },
+            "Scale9Width": 261,
+            "Scale9Height": 64,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 654.9991,
+              "Y": 1097.0027
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.6823,
+              "Y": 0.857
+            },
+            "PreSize": {
+              "X": 0.2719,
+              "Y": 0.05
+            },
+            "LeftMargin": 524.4991,
+            "RightMargin": 174.5009,
+            "TopMargin": 150.9973,
+            "BottomMargin": 1065.0027,
+            "Tag": 77,
+            "ActionTag": 2069559707,
+            "Size": {
+              "X": 261.0,
+              "Y": 64.0
+            },
+            "Name": "img_stick",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/home/side_furniturestore.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 1.0
+            },
+            "Position": {
+              "X": 611.9705,
+              "Y": 1121.7549
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.6375,
+              "Y": 0.8764
+            },
+            "PreSize": {
+              "X": 0.1167,
+              "Y": 0.1109
+            },
+            "LeftMargin": 555.9705,
+            "RightMargin": 292.0295,
+            "TopMargin": 158.2451,
+            "BottomMargin": 979.7549,
+            "Tag": 725,
+            "ActionTag": 471440564,
+            "Size": {
+              "X": 112.0,
+              "Y": 142.0
+            },
+            "Name": "btn_buyfurniture",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/home/side_remodel.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 1.0
+            },
+            "Position": {
+              "X": 712.9998,
+              "Y": 1121.4998
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7427,
+              "Y": 0.8762
+            },
+            "PreSize": {
+              "X": 0.1083,
+              "Y": 0.0945
+            },
+            "LeftMargin": 660.9998,
+            "RightMargin": 195.0002,
+            "TopMargin": 158.5002,
+            "BottomMargin": 1000.4998,
+            "Tag": 727,
+            "ActionTag": -579441034,
+            "Size": {
+              "X": 104.0,
+              "Y": 121.0
+            },
+            "Name": "btn_editroom",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/home/button_furniture.png",
+              "Plist": ""
+            },
+            "Scale9Width": 92,
+            "Scale9Height": 95,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 795.0003,
+              "Y": 1090.0007
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.8281,
+              "Y": 0.8516
+            },
+            "PreSize": {
+              "X": 0.0958,
+              "Y": 0.0742
+            },
+            "LeftMargin": 749.0003,
+            "RightMargin": 118.9997,
+            "TopMargin": 142.4993,
+            "BottomMargin": 1042.5007,
+            "Tag": 425,
+            "ActionTag": -1738265945,
+            "Size": {
+              "X": 92.0,
+              "Y": 95.0
+            },
+            "Name": "btn_custom",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "dummyDisplayFrame.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0008,
+              "Y": -0.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 0.0008,
+            "RightMargin": -0.0008,
+            "TopMargin": 0.0002,
+            "BottomMargin": -0.0002,
+            "Tag": 94,
+            "ActionTag": -246411591,
+            "Size": {
+              "X": 960.0,
+              "Y": 1280.0
+            },
+            "Name": "dummy_Frame",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/button/button_reset.png",
+              "Plist": ""
+            },
+            "Scale9Width": 112,
+            "Scale9Height": 54,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 198.2482,
+              "Y": 1100.6497
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2065,
+              "Y": 0.8599
+            },
+            "PreSize": {
+              "X": 0.1167,
+              "Y": 0.0422
+            },
+            "LeftMargin": 142.2482,
+            "RightMargin": 705.7518,
+            "TopMargin": 152.3503,
+            "BottomMargin": 1073.6497,
+            "Tag": 347,
+            "ActionTag": -337698387,
+            "Size": {
+              "X": 112.0,
+              "Y": 54.0
+            },
+            "Name": "btn_reset_camera",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 960.0,
+          "Y": 1280.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "dummyDisplayFrame.json",
+        "HomeUI.json",
+        "image/button/button_reset.png",
+        "image/home/button_furniture.png",
+        "image/home/side_bg.png",
+        "image/home/side_furniturestore.png",
+        "image/home/side_remodel.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

@@ -1,0 +1,89 @@
+parentcoord <- false
+currentgroup <- 2
+groups <- [
+with ParticleGroupData() {
+  name = "0"
+  enabled = true
+  aimtype = 1
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 8
+    start = 0, start_spr = 0
+    life = 400, life_spr = 0
+    posx = 0.0, posy = 0.9, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.401426
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 2.740167
+    linearbits = 128
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.42, "h": 0.42 }
+  texture = "tap_effect_big_green.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = false
+  mod = [
+  { "xyz": 7, "scale": [2.0, 0.0, 1.923077, 0.576923, 1.846154, 0.115385, 1.692308, 0.0], "classid": "ptcmod_scale" },
+  { "vel_spr": 0.0, "classid": "ptcmod_vel", "vel": 1.0 },
+  { "axisid": 2, "classid": "ptcmod_rot", "rot": [-1.0, -1.0], "scale": 0.785398 },
+  { "color": [-1, -1], "classid": "ptcmod_color" },
+  { "axisid": 1, "classid": "ptcmod_acc", "acc_spr": 0.0, "coord": 0, "acc": -0.15 },
+  ] },
+with ParticleGroupData() {
+  name = "2"
+  enabled = true
+  aimtype = 1
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 8
+    start = 350, start_spr = 0
+    life = 400, life_spr = 0
+    posx = 0.0, posy = 1.2, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.401426
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 2.740167
+    linearbits = 128
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.42, "h": 0.42 }
+  texture = "tap_effect_big_green.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = false
+  mod = [
+  { "xyz": 7, "scale": [2.0, 0.0, 1.923077, 0.576923, 1.5, 0.115385, 1.384615, 0.0], "classid": "ptcmod_scale" },
+  { "axisid": 2, "classid": "ptcmod_rot", "rot": [-1.0, -1.0], "scale": 0.785398 },
+  { "color": [-1, -1], "classid": "ptcmod_color" },
+  { "vel": 0.2, "classid": "ptcmod_vel", "vel_spr": 0.0 },
+  ] },
+with ParticleGroupData() {
+  name = "3"
+  enabled = true
+  aimtype = 1
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 8
+    start = 700, start_spr = 0
+    life = 400, life_spr = 0
+    posx = 0.0, posy = 1.27, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.401426
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 2.740167
+    linearbits = 128
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.42, "h": 0.42 }
+  texture = "tap_effect_big_green.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = false
+  mod = [
+  { "xyz": 7, "scale": [1.615385, 0.0, 1.269231, 0.230769, 1.076923, 0.115385, 0.884615, 0.0], "classid": "ptcmod_scale" },
+  { "axisid": 2, "classid": "ptcmod_rot", "rot": [-1.0, -1.0], "scale": 0.785398 },
+  { "color": [-1, -1], "classid": "ptcmod_color" },
+  { "vel": 0.1, "classid": "ptcmod_vel", "vel_spr": 0.0 },
+  ] },
+]

@@ -1,0 +1,754 @@
+import SKViewPropertyID;
+
+class AssumptionDialog extends ::Dialog
+{
+  static OFFSET_SPACE = 10;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/AssumptionInfoDialog.ui"));
+    this.view.findChild("lbl_title").setText(::dict.get("assumption_info_title"));
+    this.view.findChild("btn_ok").findChild("lbl_proceed").setText(::dict.get("proceed"));
+    this.view.findChild("btn_cancel").findChild("lbl_cancel").setText(::dict.get("cancel"));
+
+    local _pnl_list = this.view.findChild("pnl_desc");
+    local _reclist = SKMaskView();
+    local _scroll = ::ScrollPanel(_reclist);
+    _scroll.dxscale = 0.0;
+    _pnl_list.addChild(_reclist);
+    _pnl_list.setBuffer(true);
+
+    local _scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+    local _lbl_desc = this.view.findChild("lbl_desc");
+    local _lbl_w = _lbl_desc.bnd.w;
+    local _lbl_h = _lbl_desc.bnd.h;
+    local _lbl_font = _lbl_desc.fontattr;
+    local _desc_lavel = SKLabelView("", _lbl_font);
+    _desc_lavel.setParam(WRAPTEXT, 2);
+    _desc_lavel.setRect(0, 0, _lbl_w, _lbl_h);
+    _desc_lavel.setText(::dict.get("assumption_info"));
+    _reclist.addChild(_desc_lavel);
+    local _pos = [];
+    _desc_lavel.textbox.getCharPos(_desc_lavel.text.len(), _pos);
+
+    local _warning_lavel = SKLabelView("", _lbl_font);
+    local _h = _pos[1] + OFFSET_SPACE;
+    _warning_lavel.setRect(0, _h, _lbl_w, _lbl_h);
+    _warning_lavel.setParam(WRAPTEXT, 2);
+    _warning_lavel.setText(::dict.get("assumption_info_warning"));
+    _warning_lavel.setColor(0xff0000ff);
+    _warning_lavel.textbox.getCharPos(_warning_lavel.text.len(), _pos);
+    local _warning_h = _pos[1] + OFFSET_SPACE;
+    _warning_lavel.setRect(0, _h, _lbl_desc.bnd.w, _warning_h);
+    _reclist.addChild(_warning_lavel);
+    _reclist.setRect(0, 0, _pnl_list.bnd.w, _h + _warning_h);
+    _scroll.setScrollRect(_reclist.bnd);
+    _scroll_bar.setup(_scroll, _pnl_list.bnd, true);
+  }
+  function actionevent(e) {
+    switch (e.src) {
+    case btn_ok: ret = 1;
+      close();
+      local _dlg = ::AssumptionMenuDialog();
+      _dlg.show();
+      break;
+    case btn_cancel:
+    case btn_close: ret = 0; close(); break;
+    }
+  }
+}
+
+class AssumptionMenuDialog extends ::Dialog {
+  static OFFSET_SPACE = 10;
+  userdata_local = null;
+  takeoverCode = null;
+  userFlag = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/AssumptionMenuDialog.ui"));
+    this.view.findChild("lbl_title").setText(::dict.get("assumption_info_title"));
+    local _btn_issue = this.view.findChild("btn_issue");
+    local _img_ng = this.view.findChild("img_ng");
+    local _lbl_issue = _btn_issue.findChild("lbl_issue");
+    local _pnl_list = this.view.findChild("pnl_desc");
+    local _reclist = ::SKMaskView();
+    local _scroll = ::ScrollPanel(_reclist);
+    _scroll.dxscale = 0.0;
+    _pnl_list.addChild(_reclist);
+    _pnl_list.setBuffer(true);
+    local _scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+    local _lbl_desc = this.view.findChild("lbl_desc");
+    local _desc = SKLabelView("", _lbl_desc.fontattr);
+    _desc.setParam(WRAPTEXT, 2);
+    _desc.setRect(0, 0, _lbl_desc.bnd.w, _lbl_desc.bnd.h);
+    _desc.setText(::dict.get("assumption_menu_desc"));
+    _reclist.addChild(_desc);
+    local _pos = [];
+    _desc.textbox.getCharPos(_desc.text.len(), _pos)
+    local _h = _pos[1] + OFFSET_SPACE;
+    if (_pnl_list.bnd.h > _h) {
+      local _scroll = this.view.findChild("pnl_scroll_bar");
+      _scroll.visible = false;
+    }
+    else {
+      _desc.setRect(0, 0, _desc.bnd.w, _h);
+      _reclist.setRect(0, 0, _pnl_list.bnd.w, _h);
+      _scroll.setScrollRect(_reclist.bnd);
+      _scroll_bar.setup(_scroll, _pnl_list.bnd, true);
+    }
+
+    userdata_local = ::gamesession.getUserDataLocal();
+    userFlag = userdata_local.getFlFlag();
+    takeoverCode = userdata_local.getTakeoverCode();
+
+    if (userFlag) { _img_ng.visible = false; }
+    else { _img_ng.visible = true; }
+    _lbl_issue.setText(::dict.get("assumption_ID_issue"));
+    TapButton(_btn_issue).region.addEventListener(ACTION_EVENT, _assumption_issue);
+    this.view.findChild("btn_ok").findChild("lbl_input").setText(::dict.get("assumption_ID_input"));
+    this.view.findChild("btn_cancel").findChild("lbl_cancel").setText(::dict.get("cancel"));
+
+  }
+
+  function _assumption_issue(e) {
+    local _dlg;
+
+    if (!userFlag)
+    _dlg = ::AssumptionMessageDialog("nodata");
+    else
+    {
+      if (takeoverCode == null) { _dlg = ::AssumptionSetPasswordDialog(); }
+
+      else { _dlg = ::AssumptionIssuedDialog(); }
+    }
+    super.close();
+    _dlg.show();
+  }
+
+  function actionevent(e) {
+    switch (e.src) {
+    case btn_ok: ret = 1;
+      close();
+      local _dlg = ::AssumptionProcessDialog();
+      _dlg.show();
+      break;
+    case btn_cancel:
+    case btn_close: ret = 0; close(); break;
+    }
+  }
+}
+
+class AssumptionSetPasswordDialog extends ::Dialog {
+  static OFFSET_SPACE = 10;
+
+  img_ok = null;
+  img_ng = null;
+  btn_password = null;
+  lbl_password = null;
+  btn_againpass = null;
+  lbl_againpass = null;
+  input = null;
+  again_flag = false;
+  lbl_message = null;
+  takeovercode = null;
+  userdata_local = null;
+  btn_cancel = null;
+  lbl_cancel = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/AssumptionSetPasswordDialog.ui"));
+    this.view.findChild("lbl_title").setText(::dict.get("assumption_issue_title"));
+    local _pnl_list = this.view.findChild("pnl_desc");
+    local _reclist = ::SKMaskView();
+    local _scroll = ::ScrollPanel(_reclist);
+    _scroll.dxscale = 0.0;
+    _pnl_list.addChild(_reclist);
+    _pnl_list.setBuffer(true);
+    local _scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+    local _lbl_desc = this.view.findChild("lbl_desc");
+    local _desc = SKLabelView("", _lbl_desc.fontattr);
+    _desc.setParam(WRAPTEXT, 2);
+    _desc.setRect(0, 0, _lbl_desc.bnd.w, _lbl_desc.bnd.h);
+    _desc.setText(::dict.get("assumption_issue_desc"));
+    _reclist.addChild(_desc);
+    local _pos = [];
+    _desc.textbox.getCharPos(_desc.text.len(), _pos)
+    local _h = _pos[1] + OFFSET_SPACE;
+    if (_pnl_list.bnd.h > _h) {
+      local _scroll = this.view.findChild("pnl_scroll_bar");
+      _scroll.visible = false;
+    }
+    else {
+      _desc.setRect(0, 0, _desc.bnd.w, _h);
+      _reclist.setRect(0, 0, _pnl_list.bnd.w, _h);
+      _scroll.setScrollRect(_reclist.bnd);
+      _scroll_bar.setup(_scroll, _pnl_list.bnd, true);
+    }
+
+    this.view.findChild("lbl_input_password").setText(::dict.get("assumption_password"));
+    this.view.findChild("lbl_confirmation").setText(::dict.get("assumption_confirmation_password"));
+    local _btn_ok = this.view.findChild("btn_ok");
+    _btn_ok.findChild("lbl_ok").setText(::dict.get("ok"));
+    this.img_ok = _btn_ok.findChild("img_ok");
+    this.img_ok.visible = false;
+    this.img_ng = _btn_ok.findChild("img_ng");
+    this.img_ng.visible = true;
+    _btn_ok.findChild("lbl_ok").setText(::dict.get("ok"));
+    this.btn_password = this.view.findChild("img_input_password");
+    this.lbl_password = this.view.findChild("lbl_userinput_password");
+    TapButton(this.btn_password).region.addEventListener(ACTION_EVENT, _input);
+    this.btn_againpass = this.view.findChild("img_input_againpass");
+    this.lbl_againpass = this.view.findChild("lbl_userinput_againpass");
+    TapButton(this.btn_againpass).region.addEventListener(ACTION_EVENT, _input);
+    this.view.addEventListener(TEXTINPUT_EVENT, _textinputevent);
+    this.lbl_message = this.view.findChild("lbl_message");
+    this.lbl_message.setText(" ");
+    again_flag = false;
+    this.view.findChild("btn_cancel").findChild("lbl_cancel").setText(::dict.get("cancel"));
+  }
+
+  function actionevent(e) {
+    switch (e.src) {
+    case btn_ok: ret = 1;
+      if (again_flag) {
+        local _res = ::gamesession.issueTakeoverCode(lbl_againpass.getText());
+        if (_res[0]["ret"] == ServletConstants.RESPONSE_TAKEOVER_MISS) {
+          this.lbl_message.setText(::dict.get("assumption_invalid"));
+        } else {
+          takeovercode = _res[0]["takeover_code"];
+          userdata_local = ::gamesession.getUserDataLocal();
+          userdata_local.setTakeoverCode(takeovercode);
+          _saveUserDataLocal();
+          super.close();
+          local _dlg = ::AssumptionIssuedDialog();
+          _dlg.show();
+        }
+        close();
+      }
+      break;
+    case btn_cancel:
+      close();
+      local _dlg = ::AssumptionMenuDialog();
+      _dlg.show();
+      break;
+    case btn_close: ret = 0; close(); break;
+    }
+  }
+
+  function _input(e) {
+    switch (e.src) {
+    case btn_password:
+      btn_password.requestFocus();
+      input = btn_password;
+      skStartTextEdit({ text = lbl_password.getText(), maxlen = 12 });
+      break;
+    case btn_againpass:
+      btn_againpass.requestFocus();
+      input = btn_againpass;
+      skStartTextEdit({ text = lbl_againpass.getText(), maxlen = 12 });
+      break;
+    }
+  }
+
+  function _textinputevent(e) {
+    if (e.id != TEXTINPUT_DONE) return;
+    local s = string(e.actioncmd);
+    switch (input) {
+    case btn_password:
+      {
+        if (length(s) > 12) {
+          s = s.substring(0, 12);
+        }
+        lbl_password.setText(s);
+        if (lbl_password.getText() != lbl_againpass.getText()) {
+          this.lbl_message.setText(::dict.get("assumption_unmatched"));
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        else if (length(lbl_password.getText()) < 4 || length(lbl_againpass.getText()) < 4) {
+          this.lbl_message.setText(::dict.get("assumption_not_enough"));
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        else {
+          this.lbl_message.setText(" ");
+          this.img_ng.visible = false;
+          this.img_ok.visible = true;
+          this.again_flag = true;
+        }
+        this.view.repaint();
+      }
+      break;
+    case btn_againpass:
+      {
+        if (length(s) > 12) {
+          s = s.substring(0, 12);
+        }
+        lbl_againpass.setText(s);
+
+        if (lbl_password.getText() != lbl_againpass.getText()) {
+          this.lbl_message.setText(::dict.get("assumption_unmatched"));
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        else if (length(lbl_password.getText()) < 4 || length(lbl_againpass.getText()) < 4) {
+          this.lbl_message.setText(::dict.get("assumption_not_enough"));
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        else {
+          this.lbl_message.setText(" ");
+          this.img_ng.visible = false;
+          this.img_ok.visible = true;
+          this.again_flag = true;
+        }
+
+        this.view.repaint();
+      }
+      break;
+    }
+  }
+
+  function _saveUserDataLocal() {
+    this.userdata_local.save();
+  }
+
+}
+
+class AssumptionIssuedDialog extends ::Dialog
+{
+  static OFFSET_SPACE = 10;
+  userdata_local = null;
+  takeovercode = null;
+  constructor() {
+    super(::loadSKView("/ui/dialog/AssumptionIssuedDialog.ui"));
+    this.view.findChild("lbl_title").setText(::dict.get("assumption_issued_title"));
+    local _pnl_list = this.view.findChild("pnl_desc");
+    local _reclist = ::SKMaskView();
+    local _scroll = ::ScrollPanel(_reclist);
+    _scroll.dxscale = 0.0;
+    _pnl_list.addChild(_reclist);
+    _pnl_list.setBuffer(true);
+    local _scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+    local _lbl_desc = this.view.findChild("lbl_desc");
+    local _desc = SKLabelView("", _lbl_desc.fontattr);
+    _desc.setParam(WRAPTEXT, 2);
+    _desc.setRect(0, 0, _lbl_desc.bnd.w, _lbl_desc.bnd.h);
+    _desc.setText(::dict.get("assumption_issued_desc"));
+    _reclist.addChild(_desc);
+    local _pos = [];
+    _desc.textbox.getCharPos(_desc.text.len(), _pos)
+    local _h = _pos[1] + OFFSET_SPACE;
+    if (_pnl_list.bnd.h > _h) {
+      local _scroll = this.view.findChild("pnl_scroll_bar");
+      _scroll.visible = false;
+    }
+    else {
+      _desc.setRect(0, 0, _desc.bnd.w, _h);
+      _reclist.setRect(0, 0, _pnl_list.bnd.w, _h);
+      _scroll.setScrollRect(_reclist.bnd);
+      _scroll_bar.setup(_scroll, _pnl_list.bnd, true);
+    }
+    userdata_local = ::gamesession.getUserDataLocal();
+    takeovercode = userdata_local.getTakeoverCode();
+    this.view.findChild("lbl_id").setText(::dict.get("assumption_issued_id", [takeovercode]));
+    this.view.findChild("btn_ok").findChild("lbl_reset").setText(::dict.get("assumption_issued_reset"));
+    this.view.findChild("btn_cancel").findChild("lbl_cancel").setText(::dict.get("cancel"));
+  }
+
+  function actionevent(e) {
+    local _dlg = null;
+    switch (e.src) {
+    case btn_ok:
+      ret = 1;
+      close();
+      _dlg = ::AssumptionResetPasswordDialog(this.takeovercode);
+      _dlg.show();
+      break;
+    case btn_cancel:
+      super.close();
+      _dlg = ::AssumptionMenuDialog();
+      _dlg.show();
+      break;
+    case btn_close: ret = 0; close(); break;
+    }
+  }
+}
+
+class AssumptionResetPasswordDialog extends ::Dialog
+{
+  static OFFSET_SPACE = 10;
+  img_ok = null;
+  img_ng = null;
+  btn_password = null;
+  lbl_password = null;
+  btn_againpass = null;
+  lbl_againpass = null;
+  input = null;
+  again_flag = false;
+  lbl_message = null;
+  takeovercode = null;
+
+  constructor(code) {
+    super(::loadSKView("/ui/dialog/AssumptionSetPasswordDialog.ui"));
+    this.view.findChild("lbl_title").setText(::dict.get("assumption_issued_reset"));
+    local _pnl_list = this.view.findChild("pnl_desc");
+    local _reclist = ::SKMaskView();
+    local _scroll = ::ScrollPanel(_reclist);
+    _scroll.dxscale = 0.0;
+    _pnl_list.addChild(_reclist);
+    _pnl_list.setBuffer(true);
+    local _scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+    local _lbl_desc = this.view.findChild("lbl_desc");
+    local _desc = SKLabelView("", _lbl_desc.fontattr);
+    _desc.setParam(WRAPTEXT, 2);
+    _desc.setRect(0, 0, _lbl_desc.bnd.w, _lbl_desc.bnd.h);
+    _desc.setText(::dict.get("assumption_issue_desc"));
+    _reclist.addChild(_desc);
+    local _pos = [];
+    _desc.textbox.getCharPos(_desc.text.len(), _pos)
+    local _h = _pos[1] + OFFSET_SPACE;
+    if (_pnl_list.bnd.h > _h) {
+      local _scroll = this.view.findChild("pnl_scroll_bar");
+      _scroll.visible = false;
+    }
+    else {
+      _desc.setRect(0, 0, _desc.bnd.w, _h);
+      _reclist.setRect(0, 0, _pnl_list.bnd.w, _h);
+      _scroll.setScrollRect(_reclist.bnd);
+      _scroll_bar.setup(_scroll, _pnl_list.bnd, true);
+    }
+    this.view.findChild("lbl_input_password").setText(::dict.get("assumption_password"));
+    this.view.findChild("lbl_confirmation").setText(::dict.get("assumption_confirmation_password"));
+    local _btn_ok = this.view.findChild("btn_ok");
+    this.img_ok = _btn_ok.findChild("img_ok");
+    this.img_ok.visible = false;
+    this.img_ng = _btn_ok.findChild("img_ng");
+    this.img_ng.visible = true;
+    _btn_ok.findChild("lbl_ok").setText(::dict.get("ok"));
+    this.btn_password = this.view.findChild("img_input_password");
+    this.lbl_password = this.view.findChild("lbl_userinput_password");
+    TapButton(this.btn_password).region.addEventListener(ACTION_EVENT, _input);
+    this.btn_againpass = this.view.findChild("img_input_againpass");
+    this.lbl_againpass = this.view.findChild("lbl_userinput_againpass");
+    TapButton(this.btn_againpass).region.addEventListener(ACTION_EVENT, _input);
+    this.view.addEventListener(TEXTINPUT_EVENT, _textinputevent);
+
+    this.view.findChild("btn_cancel").findChild("lbl_cancel").setText(::dict.get("cancel"));
+
+    this.lbl_message = this.view.findChild("lbl_message");
+    this.lbl_message.setText(" ");
+    again_flag = false;
+    takeovercode = code;
+  }
+
+  function actionevent(e) {
+    switch (e.src) {
+    case btn_ok:
+      ret = 1;
+      if (again_flag) {
+        local _res = ::gamesession.issueTakeoverCode(lbl_againpass.getText());
+        if (_res[0]["ret"] == ServletConstants.RESPONSE_TAKEOVER_MISS) {
+          this.lbl_message.setText(::dict.get("assumption_invalid_value"));
+        } else {
+          this.takeovercode;
+          local _dlg = ::AssumptionMessageDialog("reset");
+          _dlg.show();
+        }
+      }
+      break;
+    case btn_cancel:
+    case btn_close: ret = 0; close(); break;
+    }
+  }
+
+  function _input(e) {
+    switch (e.src) {
+    case btn_password:
+      btn_password.requestFocus();
+      input = btn_password;
+      skStartTextEdit({ text = lbl_password.getText(), maxlen = 12 });
+      break;
+    case btn_againpass:
+      btn_againpass.requestFocus();
+      input = btn_againpass;
+      skStartTextEdit({ text = lbl_againpass.getText(), maxlen = 12 });
+      break;
+    }
+  }
+
+  function _textinputevent(e) {
+    if (e.id != TEXTINPUT_DONE) return;
+    local s = string(e.actioncmd);
+    switch (input) {
+    case btn_password:
+      {
+        if (length(s) > 12) {
+          s = s.substring(0, 12);
+        }
+        lbl_password.setText(s);
+        if (lbl_password.getText() != lbl_againpass.getText()) {
+          this.lbl_message.setText(::dict.get("assumption_unmatched"));
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        else if (length(lbl_password.getText()) < 4 || length(lbl_againpass.getText()) < 4) {
+          this.lbl_message.setText(::dict.get("assumption_not_enough"));
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        else {
+          this.lbl_message.setText(" ");
+          this.img_ng.visible = false;
+          this.img_ok.visible = true;
+          this.again_flag = true;
+        }
+        this.view.repaint();
+      }
+      break;
+    case btn_againpass:
+      {
+        if (length(s) > 12) {
+          s = s.substring(0, 12);
+        }
+        lbl_againpass.setText(s);
+        if (lbl_password.getText() != lbl_againpass.getText()) {
+          this.lbl_message.setText(::dict.get("assumption_unmatched"));
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        else if (length(lbl_password.getText()) < 4 || length(lbl_againpass.getText()) < 4) {
+          this.lbl_message.setText(::dict.get("assumption_not_enough"));
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        else {
+          this.lbl_message.setText(" ");
+          this.img_ng.visible = false;
+          this.img_ok.visible = true;
+          this.again_flag = true;
+        }
+        this.view.repaint();
+      }
+      break;
+    }
+  }
+}
+
+class AssumptionProcessDialog extends ::Dialog
+{
+  static OFFSET_SPACE = 10;
+  img_ok = null;
+  img_ng = null;
+  lbl_desc = null;
+  btn_id = null;
+  lbl_id = null;
+  btn_password = null;
+  lbl_password = null;
+  input = null;
+  lbl_message = null;
+  again_flag = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/AssumptionDialog.ui"));
+    this.view.findChild("lbl_title").setText(::dict.get("assumption_title"));
+    local _pnl_list = this.view.findChild("pnl_desc");
+    local _reclist = ::SKMaskView();
+    local _scroll = ::ScrollPanel(_reclist);
+    _scroll.dxscale = 0.0;
+    _pnl_list.addChild(_reclist);
+    _pnl_list.setBuffer(true);
+    local _scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+
+    local _lbl_desc = this.view.findChild("lbl_desc");
+    local _desc = SKLabelView("", _lbl_desc.fontattr);
+    _desc.setParam(WRAPTEXT, 2);
+    _desc.setRect(0, 0, _lbl_desc.bnd.w, _lbl_desc.bnd.h);
+    _desc.setText(::dict.get("assumption_warning"));
+    _reclist.addChild(_desc);
+    local _pos = [];
+    _desc.textbox.getCharPos(_desc.text.len(), _pos)
+    local _h = _pos[1] + OFFSET_SPACE;
+    if (_pnl_list.bnd.h > _h) {
+      local _scroll = this.view.findChild("pnl_scroll_bar");
+      _scroll.visible = false;
+    }
+    else {
+      _desc.setRect(0, 0, _desc.bnd.w, _h);
+      _reclist.setRect(0, 0, _pnl_list.bnd.w, _h);
+      _scroll.setScrollRect(_reclist.bnd);
+      _scroll_bar.setup(_scroll, _pnl_list.bnd, true);
+    }
+    local _btn_ok = this.view.findChild("btn_ok");
+    this.img_ok = _btn_ok.findChild("img_ok");
+    this.img_ok.visible = false;
+    this.img_ng = _btn_ok.findChild("img_ng");
+    this.img_ng.visible = true;
+    _btn_ok.findChild("lbl_ok").setText(::dict.get("ok"));
+    this.view.findChild("btn_cancel").findChild("lbl_cancel").setText(::dict.get("cancel"));
+    this.view.findChild("lbl_input_password").setText(::dict.get("assumption_password"));
+    this.view.findChild("lbl_input_id").setText(::dict.get("assumption_id"));
+    this.btn_id = this.view.findChild("img_input_id");
+    this.lbl_id = this.view.findChild("lbl_userinput_id");
+    TapButton(this.btn_id).region.addEventListener(ACTION_EVENT, _input);
+    this.btn_password = this.view.findChild("img_input_password");
+    this.lbl_password = this.view.findChild("lbl_userinput_password");
+    TapButton(this.btn_password).region.addEventListener(ACTION_EVENT, _input);
+    this.view.addEventListener(TEXTINPUT_EVENT, _textinputevent);
+    this.lbl_message = this.view.findChild("lbl_mssage");
+    this.lbl_message.setText("  ");
+    again_flag = false;
+
+  }
+
+  function actionevent(e) {
+    switch (e.src) {
+    case btn_ok:
+      ret = 1;
+
+      if (again_flag) {
+        btn_ok.setEnabled(false);
+        local _warning_dlg = ::AssumptionWarningDialog();
+        _warning_dlg.show();
+        if (_warning_dlg.ret > 0) {
+          local _res = ::gamesession.useTakeoverCode(lbl_id.getText(), lbl_password.getText());
+          if (_res == null) { this.lbl_message.setText(::dict.get("error_connect_fail")); }
+          else {
+            switch (_res[0]["ret"]) {
+            case ServletConstants.RESPONSE_SUCCEED:
+              super.close();
+
+              local _dlg = ::AssumptionMessageDialog("completed");
+              ::gamesession.userdata_local = ::UserDataLocal();
+              ::gamesession.userdata_local.save();
+              _dlg.show();
+              break;
+            case ServletConstants.RESPONSE_TAKEOVER_MISS:
+              this.lbl_message.setText(::dict.get("assumption_mistake"));
+              break;
+            }
+          }
+
+        }
+        else if (_warning_dlg.ret == 0) { this.lbl_message.setText("  "); }
+        btn_ok.setEnabled(true);
+      }
+      break;
+    case btn_cancel:
+    case btn_close:
+      ret = 0;
+      close();
+      local _dlg = ::AssumptionMenuDialog();
+      _dlg.show();
+      break;
+    }
+
+    if (func) func(ret);
+  }
+
+  function _input(e) {
+    switch (e.src) {
+    case btn_id:
+      btn_id.requestFocus();
+      input = btn_id;
+      skStartTextEdit({ text = lbl_id.getText(), maxlen = 12 });
+      break;
+    case btn_password:
+      btn_password.requestFocus();
+      input = btn_password;
+      skStartTextEdit({ text = lbl_password.getText(), maxlen = 12 });
+      break;
+    }
+  }
+
+  function _textinputevent(e) {
+    if (e.id != TEXTINPUT_DONE) return;
+    local s = string(e.actioncmd);
+    switch (input) {
+    case btn_id:
+      {
+        if (length(s) > 9) {
+          s = s.substring(0, 9);
+        }
+        lbl_id.setText(s);
+        if (length(lbl_id.getText()) == 9 && length(lbl_password.getText()) > 3) {
+          this.lbl_message.setText(" ");
+          this.img_ng.visible = false;
+          this.img_ok.visible = true;
+          this.again_flag = true;
+        }
+        else {
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        this.view.repaint();
+      }
+      break;
+    case btn_password:
+      {
+        if (length(s) > 12) {
+          s = s.substring(0, 12);
+        }
+        lbl_password.setText(s);
+        if (length(lbl_id.getText()) == 9 && length(lbl_password.getText()) > 3) {
+          this.lbl_message.setText(" ");
+          this.img_ng.visible = false;
+          this.img_ok.visible = true;
+          this.again_flag = true;
+        }
+        else {
+          this.img_ng.visible = true;
+          this.img_ok.visible = false;
+          this.again_flag = false;
+        }
+        this.view.repaint();
+      }
+      break;
+    }
+  }
+}
+
+class AssumptionMessageDialog extends ::Dialog
+{
+  constructor(lbl_string) {
+    super(::loadSKView("/ui/dialog/Dialog_s.ui"));
+    this.view.findChild("btn_ok").findChild("lbl_ok").setText(::dict.get("ok"));
+    local _desc = this.view.findChild("lbl_text");
+    _desc.setText(::dict.get("  "));
+    switch (lbl_string) {
+    case "completed":
+      _desc.setText(::dict.get("assumption_completed_message"));
+      break;
+    case "reset":
+      _desc.setText(::dict.get("assumption_reset_message"));
+      break;
+    case "nodata":
+      _desc.setText(::dict.get("assumption_nodata"));
+      break;
+    default:
+      v.setText("dict error:" + lbl_string);
+      break;
+
+    }
+  }
+}
+
+class AssumptionWarningDialog extends ::Dialog
+{
+  constructor() {
+    super(::loadSKView("/ui/dialog/AssumptionWarningDialog.ui"));
+    local _lbl_desc = this.view.findChild("lbl_desc");
+    _lbl_desc.setText(::dict.get("assumption_last_warning"));
+    _lbl_desc.setColor(0xff0000ff);
+    this.view.findChild("btn_ok").findChild("lbl_ok").setText(::dict.get("ok"));
+    this.view.findChild("btn_cancel").findChild("lbl_cancel").setText(::dict.get("cancel"));
+  }
+}

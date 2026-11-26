@@ -1,0 +1,107 @@
+class SKViewEx extends SKView
+{
+
+  function centerView(baseview) {
+    if (::screenWidth > ::viewWidth) {
+      baseview.bnd.x += (::screenWidth - ::viewWidth) * 0.5;
+    }
+  }
+
+  function _menu(id, view = null) {
+    if (view) {
+      this[id] = view.findChild(id);
+    }
+    else {
+
+      this[id] = findChild(id);
+    }
+    local t = TapButton(this[id]);
+    return this[id];
+  }
+
+  function getScreenPos(end_clazz) {
+    local gx = 0;
+    local gy = 0;
+
+    local has_parent_sk = false;
+    local sk = this;
+    do {
+      local bnd = sk.bnd;
+      local pos = sk.pos;
+      gx += (bnd.x + pos.x);
+      gy += (bnd.y + pos.y);
+
+      local sk_name = getclassname(getclass(sk));
+      if (sk_name == end_clazz) break;
+
+      sk = sk.parent;
+      has_parent_sk = (sk && sk instanceof SKView) ? true : false;
+    } while (has_parent_sk);
+
+    return { x = gx, y = gy };
+  }
+
+  function _renderToBuffer(buf, bufflags, fxlist, target_scale = 1.0) {
+    local tex = buf.tex0;
+    local swaptex = null;
+
+    local numpass = 0;
+
+    local mbnd = #Rect2D(); mbnd.set(0, 0, bnd.w, bnd.h);
+    foreach (fx in fxlist) {
+      if (fx.isEnabled()) {
+        numpass += length(fx.pass);
+        fx.growBound(mbnd);
+      }
+    }
+
+    local bx, by, bndw, bndh;
+    bx = mbnd.x, by = mbnd.y, bndw = mbnd.w, bndh = mbnd.h;
+
+    if (bndw <= 0 || bndh <= 0) return;
+
+    if (tex.width < bndw || tex.height < bndh) {
+      tex.create(bndw * target_scale, bndh * target_scale, tex.format, bufflags, 0);
+    }
+    buf.bnd.set(0, 0, bndw * target_scale, bndh * target_scale);
+    buf.setSubBounds(buf.bnd);
+    buf.bnd.x = bx;
+    buf.bnd.y = by;
+
+    if (numpass & 1) { swaptex = tex; tex = gettempbuf(tex); }
+    else { swaptex = gettempbuf(tex); }
+
+    {
+      skSetRenderTarget(tex);
+      skClearScreen(#ClearParam(0, 0, 0, 0, 1));
+      skSetViewport(0, 0, bndw * target_scale, bndh * target_scale);
+      skPushMatrix(0, 1, 2);
+      skSetMatrix(SK_WORLD, mat);
+      skSetMatrix(SK_VIEW, getInvMatrix());
+      skSetMatrix(SK_PROJECTION, Matrix.fromOrtho(bx, bndw + bx, bndh + by, by, -2000, 2000));
+
+      if (buf.blend == SK_PMAMIX) skSetPMAMode(SK_MIX);
+      render();
+      foreach (c in children) { c.renderView(); };
+      if (buf.blend == SK_PMAMIX) skSetPMAMode(0);
+
+      if (numpass) {
+        skInitMatrix(SK_WORLD);
+        skInitMatrix(SK_VIEW);
+        skSetMatrix(SK_PROJECTION, Matrix.fromOrtho(0, bndw, bndh, 0, -2000, 2000));
+        foreach (fx in fxlist) {
+          if (fx.isEnabled()) {
+            fx.prepare(swaptex, tex);
+            foreach (fxpass in fx.pass) {
+              local tmp = tex; tex = swaptex; swaptex = tmp;
+              skSetRenderTarget(tex);
+              skSetViewport(0, 0, bndw, bndh);
+              fx.renderfx(fxpass, swaptex, buf.bnd);
+            }
+          }
+        }
+      }
+      skPopMatrix(2, 1, 0);
+    }
+  }
+}

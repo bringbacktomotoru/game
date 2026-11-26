@@ -1,0 +1,74 @@
+parentcoord <- false
+currentgroup <- 1
+groups <- [
+with ParticleGroupData() {
+  name = "sw"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 0, start_spr = 0
+    life = 500, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 1.8, "h": 1.8, "axis": 0 }
+  texture = "shockwave01.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_scale", "scale": [0.0, 1.461538, 1.884615, 2.0], "xyz": 7 },
+  { "classid": "ptcmod_color", "color": [-721420289, -603979904, 128] },
+  ] },
+with ParticleGroupData() {
+  name = "star"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 18
+    start = 0, start_spr = 290
+    life = 570, life_spr = 100
+    posx = 0.0, posy = 0.5, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 1.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 3.141593
+  },
+  shapetype = 0
+  shapedata = { "w": 0.25, "h": 0.25, "axis": 0 }
+  texture = "star03.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel_spr": 0.0, "vel": 4.9 },
+  { "classid": "ptcmod_scale", "scale": [0.846154, 0.384615, 1.461538, 0.615385, 1.923077, 0.461538, 1.461538, 0.0], "xyz": 7 },
+  { "classid": "ptcmod_color", "color": [-721420289, 4128767, -721420289, 4128767, -754974721, 4128767, -721420289, 4128767] },
+  ] },
+with ParticleGroupData() {
+  name = "glow"
+  enabled = true
+  aimtype = 1
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 0, start_spr = 0
+    life = 500, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 3.124139, dir_spry = 3.124139, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 2.0, "h": 2.0, "axis": 0 }
+  texture = "glow01.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_scale", "scale": [0.769231, 1.423077], "xyz": 7 },
+  { "classid": "ptcmod_color", "color": [-201326593, -721420289, 255] },
+  ] },
+]

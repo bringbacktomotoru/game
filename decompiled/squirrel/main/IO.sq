@@ -1,0 +1,165 @@
+local ipmap = {};
+
+function resolveIP(hostname, port = null) {
+  local ipaddr = clone ipmap[hostname];
+  if (!ipaddr) {
+    local resolver = HostNameResolver(hostname, port);
+    while (!(ipaddr = resolver.get())) {
+      suspend();
+    }
+    if (!ipaddr.isValid()) {
+      return null;
+    }
+    ipmap[hostname] <- ipaddr;
+    resolver = null;
+  }
+  if (port != null) ipaddr.port = port;
+  return ipaddr;
+}
+
+function clearIPMap() {
+  Table.clear(ipmap);
+}
+
+function inet_addr(s) {
+  try {
+    local i, j;
+    return [
+    int(s.substring(0, i = s.indexOf("."))),
+    int(s.substring(i + 1, j = s.indexOf(".", i + 1))),
+    int(s.substring(j + 1, i = s.indexOf(".", j + 1))),
+    int(s.substring(i + 1)),
+    ];
+  } catch (ex) {
+    return [0, 0, 0, 0];
+  }
+}
+
+function parseURL(url) {
+  local t = {};
+  local si = url.indexOf("://");
+  if (si < 0) {
+
+    si = -3;
+    t.scheme <- "http";
+  } else {
+    t.scheme <- url.substring(0, si);
+  }
+  local urllen = length(url);
+  local hi = url.indexOf("/", si + 3);
+  if (hi < 0) {
+    hi = urllen;
+  }
+  local host_port = url.substring(si + 3, hi);
+  local pi = host_port.indexOf(":");
+  if (pi >= 0) {
+    t.host <- host_port.substring(0, pi);
+    t.port <- int(host_port.substring(pi + 1));
+  } else {
+    t.host <- host_port;
+    if (t.scheme == "https") {
+      t.port <- 443;
+    } else {
+      t.port <- 80;
+    }
+  }
+  t.path <- hi == urllen ? "/" : "/" + url.substring(hi + 1);
+  return t;
+}
+
+class PlistReader
+{
+  function _readvalue(v) {
+    switch (v.value) {
+    case "string":
+      return v.text;
+    case "true":
+      return true;
+    case "false":
+      return false;
+    case "real":
+      return float(v.text);
+    case "integer":
+      return int(v.text);
+    case "array":
+      {
+        local ret = [];
+        local a = v.getChildren();
+        local alen = length(a);
+        for (local l = 0; l < alan; l++) {
+          a + _readvalue(a[l]);
+        }
+        return ret;
+      }
+    case "dict":
+      {
+        local ret = {};
+        local a = v.getChildren();
+        local alen = length(a);
+        for (local l = 0; l < alen; l += 2) {
+          local k = a[l];
+          if (k.value != "key") throw Exception("plist not 'key'" + k.value);
+          ret[k.text] <- _readvalue(a[l + 1]);
+        }
+        return ret;
+      }
+    }
+    throw Exception("invalid value type : " + v.value);
+  }
+
+  function _readdict(v) {
+    local ret = {};
+    local a = v.getChildren();
+    local alen = length(a);
+    for (local l = 0; l < alen; l += 2) {
+      local k = a[l];
+      if (k.value != "key") throw Exception("plist not 'key'" + k.value);
+      ret[k.text] <- _readvalue(a[l + 1]);
+    }
+    return ret;
+  }
+
+}
+
+local _plistreader = PlistReader();
+
+function readPlist(xml) {
+  return _plistreader._readdict(xml.findChild("plist").getChildren()[0]);
+}
+
+function Pinger ::ping(ipaddr, timeout = 5000, id = 0, seq = 0, len = 64) {
+  if (typeof(ipaddr) == SS_STRING) {
+    local url = parseURL(ipaddr);
+    ipaddr = resolveIP(url.host, url.port);
+  }
+  local p = Pinger();
+  p.sendping(ipaddr, id, seq, len);
+  while (p.getState() == 1) {
+    if (skGetTime(p.senttime) > timeout) {
+      p.close();
+      return timeout;
+    }
+    suspend();
+  }
+  p.close();
+  return p.recvtime - p.senttime;
+}
+
+function TCPConnection ::flush(stimeout = 3000) {
+  local rem = getWriteBufferRemaining();
+  local senttime = skGetTime();
+  while (rem > 0) {
+    suspend();
+    local r = getWriteBufferRemaining();
+    if (r == rem) {
+      if (skGetTime(senttime) >= stimeout) {
+        printf("WARNING! %S flush timeout. sending stuck over %d msec.", this, stimeout);
+        currentthread().printStackTrace();
+        break;
+      }
+    } else {
+      senttime = skGetTime();
+      rem = r;
+    }
+  }
+}

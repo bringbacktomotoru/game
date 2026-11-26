@@ -1,0 +1,503 @@
+{
+  "ID": "3b7c65ac-afc2-442f-ba79-dfed49e32da8",
+  "Version": "2.3.3.0",
+  "Name": "PresentListItem",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 549,
+        "Children": [
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 284.0,
+              "Y": 80.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 32,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/dialog/banner.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 5,
+                "Scale9OriginY": 5,
+                "Scale9Width": 558,
+                "Scale9Height": 145,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 284.0,
+                  "Y": 80.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 0.9688
+                },
+                "TopMargin": 2.5,
+                "BottomMargin": 2.5,
+                "Tag": 392,
+                "ActionTag": 1459331475,
+                "Size": {
+                  "X": 568.0,
+                  "Y": 155.0
+                },
+                "Name": "bg",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FontSize": 18,
+                "LabelText": "2016/03/31  00:00",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 65.0,
+                  "Y": 115.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1144,
+                  "Y": 0.7188
+                },
+                "PreSize": {
+                  "X": 0.3257,
+                  "Y": 0.1125
+                },
+                "LeftMargin": 65.0,
+                "RightMargin": 318.0,
+                "TopMargin": 36.0,
+                "BottomMargin": 106.0,
+                "Tag": 905,
+                "ActionTag": 1083020416,
+                "Size": {
+                  "X": 185.0,
+                  "Y": 18.0
+                },
+                "Name": "lbl_time",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 24,
+                "LabelText": "げーむまねー × 50000  等プレゼントの名前",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineSize": 3,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 65.0,
+                  "Y": 84.9999
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1144,
+                  "Y": 0.5312
+                },
+                "PreSize": {
+                  "X": 0.7218,
+                  "Y": 0.1875
+                },
+                "LeftMargin": 65.0,
+                "RightMargin": 93.0,
+                "TopMargin": 60.0001,
+                "BottomMargin": 69.9999,
+                "Tag": 906,
+                "ActionTag": -1217124797,
+                "Size": {
+                  "X": 410.0,
+                  "Y": 30.0
+                },
+                "Name": "lbl_message",
+                "ctype": "TextObjectData"
+              },
+              {
+                "BackColorAlpha": 102,
+                "ComboBoxIndex": 1,
+                "SingleColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 65.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1144,
+                  "Y": 0.3125
+                },
+                "PreSize": {
+                  "X": 0.5282,
+                  "Y": 0.1937
+                },
+                "LeftMargin": 65.0,
+                "RightMargin": 203.0,
+                "TopMargin": 94.5,
+                "BottomMargin": 34.5,
+                "Tag": 908,
+                "ActionTag": -1095443339,
+                "Size": {
+                  "X": 300.0,
+                  "Y": 31.0
+                },
+                "Name": "pnl_icons",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/decoration/inline.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 50,
+                "Scale9OriginY": 7,
+                "Scale9Width": 53,
+                "Scale9Height": 9,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 429.9998,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.757,
+                  "Y": 0.3125
+                },
+                "PreSize": {
+                  "X": 0.1937,
+                  "Y": 0.1437
+                },
+                "LeftMargin": 374.9998,
+                "RightMargin": 83.0002,
+                "TopMargin": 98.5,
+                "BottomMargin": 38.5,
+                "Tag": 909,
+                "Children": [
+                  {
+                    "FontSize": 20,
+                    "LabelText": "あと　　日",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "OutlineColor": {
+                      "G": 0,
+                      "B": 0
+                    },
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 54.9999,
+                      "Y": 12.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.5217
+                    },
+                    "PreSize": {
+                      "X": 0.8364,
+                      "Y": 0.8696
+                    },
+                    "LeftMargin": 8.9999,
+                    "RightMargin": 9.0001,
+                    "TopMargin": 1.0,
+                    "BottomMargin": 2.0,
+                    "Tag": 907,
+                    "ActionTag": -392301435,
+                    "Size": {
+                      "X": 92.0,
+                      "Y": 20.0
+                    },
+                    "Name": "lbl",
+                    "ctype": "TextObjectData"
+                  },
+                  {
+                    "IsCustomSize": true,
+                    "FontSize": 20,
+                    "LabelText": "30",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Right",
+                    "OutlineColor": {
+                      "G": 0,
+                      "B": 0
+                    },
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 60.9999,
+                      "Y": 12.0001
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "G": 0,
+                      "B": 0
+                    },
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5545,
+                      "Y": 0.5217
+                    },
+                    "PreSize": {
+                      "X": 0.3636,
+                      "Y": 0.8696
+                    },
+                    "LeftMargin": 40.9999,
+                    "RightMargin": 29.0001,
+                    "TopMargin": 0.9999,
+                    "BottomMargin": 2.0001,
+                    "Tag": 910,
+                    "ActionTag": -952908910,
+                    "Size": {
+                      "X": 40.0,
+                      "Y": 20.0
+                    },
+                    "Name": "lbl_limit",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 769379672,
+                "Size": {
+                  "X": 110.0,
+                  "Y": 23.0
+                },
+                "Name": "img_limit",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/icon/icon_new.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 75,
+                "Scale9Height": 49,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 68.0,
+                  "Y": 139.9999
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.1197,
+                  "Y": 0.875
+                },
+                "PreSize": {
+                  "X": 0.132,
+                  "Y": 0.3063
+                },
+                "LeftMargin": 30.5,
+                "RightMargin": 462.5,
+                "TopMargin": -4.4999,
+                "BottomMargin": 115.4999,
+                "Tag": 904,
+                "ActionTag": 1406908210,
+                "Size": {
+                  "X": 75.0,
+                  "Y": 49.0
+                },
+                "Name": "img_new",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 45214966,
+            "Size": {
+              "X": 568.0,
+              "Y": 160.0
+            },
+            "Name": "btn",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 568.0,
+          "Y": 160.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/decoration/inline.png",
+        "../image/dialog/banner.png",
+        "../image/icon/icon_new.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

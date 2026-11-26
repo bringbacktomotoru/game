@@ -1,0 +1,221 @@
+class FirstCostumeSelectPanel extends ::HomeUI.Panel {
+  static need_camera_default = false;
+  static need_money_layer = false;
+  static need_rank_layer = false;
+  static need_menu_layer = false;
+  static need_panel_name = false;
+
+  current_index = 0;
+  current_info = null;
+  first_costumes = null;
+
+  chara_3dview = null;
+
+  btn_r = null;
+  btn_l = null;
+  btn_ok = null;
+  pnl_costume = null;
+  pnl_bg = null;
+  lbl_title = null;
+  lbl_text = null;
+
+  constructor() {
+    this.current_index = 0;
+    this.current_info = null;
+
+    this.first_costumes = ::gamesetting.game_rule.getFirstCostumeIDs();
+  }
+
+  function create() {
+    return ::loadSKView("/ui/FirstCostumeSelectPanel.ui", ::FirstCostumeSelectPanel);
+  }
+
+  function added() {
+    super.added();
+
+    this.pnl_costume = findChild("pnl_costume");
+
+    this.btn_r = findChild("btn_r");
+    ::TapButton(this.btn_r).view.addEventListener(ACTION_EVENT, actionevent);
+    this.btn_l = findChild("btn_l");
+    ::TapButton(this.btn_l).view.addEventListener(ACTION_EVENT, actionevent);
+
+    this.btn_ok = findChild("btn_ok");
+    ::TapButton(this.btn_ok).view.addEventListener(ACTION_EVENT, actionevent_select);
+    this.btn_ok.findChild("lbl_ok").setText(::dict.get("decide"));
+
+    this.lbl_title = this.findChild("lbl_title");
+    this.lbl_title.setText(::dict.get("first_costume_title"));
+    this.lbl_text = this.findChild("lbl_text");
+    this.lbl_text.setText(::dict.get("first_costume_text"));
+
+    this.pnl_bg = this.findChild("pnl_bg");
+
+    _init();
+  }
+
+  function _init() {
+    this.current_index = 0;
+    local _cid = this.first_costumes[this.current_index];
+    this.current_info = CharaInfo(_cid);
+    this.current_info.view.startMethod("init");
+    updateCharaBackground(_cid);
+
+    this.pnl_costume.addChild(this.current_info);
+  }
+
+  function updateCharaBackground(cid) {
+    this.pnl_bg.clearChildren();
+    local _chara_id = ::gamesetting.costume_settings[cid].getCharaID();
+    local _setting = ::gamesetting.sanrio_chara_settings[_chara_id];
+    local _sp = _setting.getCharaBGSprite();
+    local _img_bg = ::SKImageView(_sp);
+    _img_bg.setRect(0, 0, this.pnl_bg.bnd.w, this.pnl_bg.bnd.h);
+    this.pnl_bg.addChild(_img_bg);
+  }
+
+  function changeCostumeView(add_index) {
+    this.current_index += add_index;
+    if (this.current_index >= this.first_costumes.len()) {
+      this.current_index = 0;
+    } else if (this.current_index < 0) {
+      this.current_index = this.first_costumes.len() - 1;
+    }
+
+    local prev = this.current_info;
+    this.current_info = CharaInfo(this.first_costumes[this.current_index]);
+
+    this.pnl_costume.addChild(this.current_info);
+    if (add_index > 0) {
+      newthread().start(function() {
+        this.current_info.view.startMethod("showLtoR");
+        prev.view.startMethod("hideLtoR");
+        while (prev.view.isMethodRunning()) {
+          suspend();
+        }
+        this.pnl_costume.removeChild(prev);
+        this.updateCharaBackground(this.first_costumes[this.current_index]);
+      }, this);
+    } else {
+      newthread().start(function() {
+        this.current_info.view.startMethod("showRtoL");
+        prev.view.startMethod("hideRtoL");
+        while (prev.view.isMethodRunning()) {
+          suspend();
+        }
+        this.pnl_costume.removeChild(prev);
+        this.updateCharaBackground(this.first_costumes[this.current_index]);
+      }, this);
+    }
+  }
+
+  function _selectedFirstChara() {
+    local id = ::gamesession.selectFirstCostume(this.current_index);
+    if (id < 0) return;
+
+    local ud = ::gamesession.getUserData();
+
+    local costume_data = ::CostumeData.createCostumeData(id, true);
+    ud.addCostumeData(costume_data, true);
+
+    local costume_setting = ::gamesetting.costume_settings[id];
+    local chara_setting = ::gamesetting.sanrio_chara_settings[costume_setting.chara_id];
+    ud.addFirstResideChara(id);
+    ud.setSelectedFirstCharaID(chara_setting.getID());
+    ::gamesession.currentscene.addSanrioChara(id);
+
+    if (!chara_setting.getFirstEventID()) {
+      getHomeUI().movePanel(::HomeTopPanel);
+      return;
+    }
+    ::event_manager.startEventSceneTalk(chara_setting.getFirstEventID(), this, null, costume_setting.getID());
+  }
+
+  function actionevent(e) {
+    e.consume();
+
+    switch (e.src) {
+    case this.btn_r:
+      changeCostumeView(-1);
+      break;
+    case this.btn_l:
+      changeCostumeView(1);
+      break;
+    }
+  }
+
+  function actionevent_select(e) {
+    e.consume();
+
+    _selectedFirstChara();
+  }
+}
+
+class FirstCostumeSelectPanel.CharaInfo extends SKView {
+  cos_setting = null;
+  chara_setting = null;
+  chara_3dview = null;
+
+  view = null;
+  pnl_scene = null;
+  lbl_name = null;
+  lbl_desc = null;
+
+  last_x = null;
+  angle = 0;
+
+  constructor(cos_id) {
+    this.view = ::loadSKView("/ui/common/FirstCostumeSelectItem.ui");
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+    addChild(this.view);
+
+    this.lbl_name = this.view.findChild("lbl_name");
+    this.lbl_desc = this.view.findChild("lbl_desc");
+
+    this.pnl_scene = this.view.findChild("pnl_scene");
+
+    this.view.findChild("pnl_slide").findChild("lbl_slide").setText(::dict.get("rewarddialog_slide_desc"));
+
+    this.cos_setting = ::gamesetting.costume_settings[cos_id];
+    this.chara_setting = ::gamesetting.sanrio_chara_settings[this.cos_setting.getCharaID()];
+
+    this.chara_3dview = null;
+
+    this.angle = 0;
+    _initText();
+    _init3DView();
+  }
+
+  function _initText() {
+    this.lbl_name.setText(this.chara_setting.getName());
+    this.lbl_desc.setText(this.chara_setting.getDesc());
+  }
+
+  function _init3DView() {
+    this.chara_3dview = ::Chara3DView();
+    this.chara_3dview.setRect(0, 0, this.pnl_scene.bnd.w, this.pnl_scene.bnd.h);
+    this.chara_3dview.updateLayout();
+    this.pnl_scene.addChild(this.chara_3dview);
+    this.pnl_scene.addEventListener(MOUSE_EVENT, mouseevent);
+
+    this.chara_3dview.setCostumeId(this.cos_setting.getID());
+    this.chara_3dview.build(true);
+    this.chara_3dview.charaScript("first_chara_select");
+  }
+
+  function mouseevent(e) {
+    e.consume();
+
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.last_x = e.x;
+      break;
+    case MOUSE_DRAGGED:
+      local diff = e.x - this.last_x;
+      this.angle -= diff;
+      this.chara_3dview.obj.setAngle(this.angle);
+      this.last_x = e.x;
+      break;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+class UIModel extends Model {
+  target = null;
+
+  obj = null;
+
+  constructor(scene) {
+    super(scene);
+
+    this.obj = ::StageObject(scene);
+  }
+
+  function buildByFurnitureID(id) {
+    super.build();
+
+    ::viewfactory.buildFurnitureModelByID(this.obj, id);
+    this.obj.addToStage();
+
+    startUpdate();
+  }
+
+  function release() {
+    super.release();
+    if (this.obj) {
+      this.obj.removeFromStage();
+      this.obj = null;
+    }
+  }
+
+  function setTargetUI(target) {
+    this.target = target;
+  }
+
+  function startUI() {
+    switch (target) {
+    case "Post":
+
+      local dlg = ::PostDialog();
+      dlg.show();
+      break;
+    }
+  }
+
+  function inBounds(pos) {
+
+    return this.obj.inBounds(pos);
+  }
+  function applyPos() {
+
+    this.obj.setPos(this.pos);
+  }
+}

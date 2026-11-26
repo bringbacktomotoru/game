@@ -1,0 +1,80 @@
+class PlayAdVideoButton {
+  initial_pos = null;
+
+  speed = 0.0;
+  length = 0;
+
+  scroll_func = null;
+  interval_id = -1;
+
+  view = null;
+  parent = null;
+  lbl_count = null;
+
+  constructor(parent) {
+    this.parent = parent;
+    this.view = ::loadSKView("/ui/common/PlayAdVideoButton.ui");
+    this.view.setRect(0, 0, this.parent.bnd.w, this.parent.bnd.h);
+    this.parent.addChild(this.view);
+
+    local _btn = this.view.findChild("btn_play");
+    ::TapButton(_btn).view.addEventListener(ACTION_EVENT, _actionevent_play);
+
+    this.view.findChild("lbl_remain").setText(::dict.get("ad_video_remain"));
+
+    this.lbl_count = this.view.findChild("lbl_amount");
+
+    updateCanPlayAmount();
+
+  }
+
+  function setVisible(b) {
+    this.view.setVisible(false);
+    this.parent.pickable = false;
+    if (b) {
+      updateCanPlayAmount();
+    }
+  }
+
+  function updateCanPlayAmount(check_reset = true) {
+    local _ud = ::gamesession.getUserData();
+    if (check_reset) _ud.checkAndResetAdVideoWatch();
+    local _current_cnt = _ud.getAdVideoWatchCount();
+    local _max = ::gamesetting.game_rule.getMaxAdVideoRewardCount();
+    if (_current_cnt < _max) {
+
+      this.view.setVisible(true);
+      this.parent.pickable = true;
+      this.lbl_count.setText(::dict.get("nums_count", [_max - _current_cnt]));
+    }
+  }
+
+  function _actionevent_play(e) {
+    e.consume();
+
+    ::callPlacement("Test", function(reward_string) {
+
+      local _ud = ::gamesession.getUserData();
+      local _current_cnt = _ud.getAdVideoWatchCount();
+
+      local _ret = ::gamesession.recieveAdVideoWatchReward();
+      if (_ret < 0) return;
+
+      local _rule = ::gamesetting.game_rule;
+
+      local _reward = _rule.getWatchAdVideoReward(_current_cnt);
+
+      local _dlg = ::RewardDialog();
+      _dlg.setReward(ITEM_TYPE_FREERM, 0, _reward);
+      _dlg.show();
+
+      _ud.addFreeRealMoney(_reward);
+
+      _ud.setLastAdVideoWatchTime(_ret);
+      _ud.addAdVideoWatchCount(1);
+
+      updateCanPlayAmount(false);
+
+    }.bindenv(this));
+  }
+}

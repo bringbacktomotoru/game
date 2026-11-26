@@ -1,0 +1,225 @@
+class CostumeSetting extends ::SanrioSetting {
+  id = 0;
+  name = "";
+  chara_id = 0;
+  desc = "";
+  grade = 0;
+  category = 0;
+  color = 0;
+
+  res = "";
+  hand_tex = "";
+  icon = "";
+
+  actions = null;
+
+  health_table_id = -1;
+  exp_table_id = -1;
+  motion_table_id = -1;
+  recover_health_time = 0;
+  recover_health_value = 0;
+
+  tap_script = null;
+  pat_script = null;
+  gacha_script = null;
+  gacha_talk = null;
+
+  get_event_id = null;
+
+  priority = null;
+
+  function loadConfAtServer(t) {
+    local _setting = CostumeSetting();
+    foreach (k, v in t) {
+      switch (k) {
+      case "actions":
+        _setting[k] = decodeJSON(v);
+        break;
+      default:
+        _setting[k] = v;
+      }
+    }
+    return _setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (name) trans + "name";
+    if (desc) trans + "desc";
+
+    return trans;
+  }
+
+  function getID() {
+    return id;
+  }
+
+  function getName() {
+    return this.name;
+  }
+
+  function getDesc() {
+    return this.desc;
+  }
+
+  function getCharaID() {
+    return this.chara_id;
+  }
+
+  function getCharaSetting() {
+    return ::gamesetting.sanrio_chara_settings[this.chara_id];
+  }
+
+  function getCategoryID() {
+    return this.category;
+  }
+  function getColorID() {
+    return this.color;
+  }
+  function getGrade() {
+    return this.grade;
+  }
+
+  function getMaxExp(level) {
+    local _exp_setting = ::gamesetting.costume_exp_table[exp_table_id];
+
+    level--;
+    if (level < 0 || level >= _exp_setting.len()) return -1;
+    return _exp_setting[level];
+  }
+
+  function getMaxLevel() {
+    return ::gamesetting.costume_exp_table[exp_table_id].len();
+  }
+
+  function isDefaultCostume() {
+    return getCharaSetting().getDefaultCostumeID() == this.id ? true : false;
+  }
+
+  function getCategoryIconPath() {
+    return "/ui/image/ss_icon/icon_category_party.png";
+  }
+  function getCostumeIconPath() {
+    return "/image/icon/costume/" + this.id + ".png";
+  }
+  function getSpriteCostumeIcon() {
+    local sp = ::getSprite(getCostumeIconPath());
+    if (!sp) {
+      println("[ERROR] CostumeIconRes is not found!!!!!!!!!!!  id = " + this.id)
+      return null;
+    }
+    sp.blend = SK_MIX;
+    return sp;
+  }
+
+  function getCostumeActions() {
+    return this.actions;
+  }
+
+  function getCostumeAction(idx) {
+    if (idx < 0 || idx >= this.actions.len()) return -1;
+    return this.actions[idx];
+  }
+
+  function getCostumeActionIndex(wid) {
+    if (!actions) return -1;
+    for (local i = 0; i < actions.len(); i++) {
+      if (actions[i] == wid) return i;
+    }
+  }
+
+  function getMaxHealth(lv) {
+    lv--;
+    local _table = ::gamesetting.costume_health_table;
+    if (health_table_id < 0 || health_table_id >= _table.len() || lv < 0 || lv >= _table[health_table_id].len()) return 0;
+    return _table[health_table_id][lv];
+  }
+
+  function calcRecoverHealth(ct) {
+    if (ct < 0) return 0;
+    if (recover_health_time <= 0) return 0;
+    if (recover_health_value <= 0) return 0;
+
+    return ct / recover_health_time * recover_health_value;
+  }
+
+  function getReleaseMotionTable() {
+    local _motions = ::gamesetting.release_motion_settings;
+    if (!this.motion_table_id in _motions) return null;
+
+    return _motions[this.motion_table_id];
+  }
+
+  function getReleaseMotionsID(lv) {
+    local _motions = ::gamesetting.release_motion_settings;
+    if (!this.motion_table_id in _motions) return null;
+
+    return _motions[this.motion_table_id].getReleaseMotionsID(lv);
+  }
+
+  function getReleaseAllMotionsID(lv) {
+    local _motions = ::gamesetting.release_motion_settings;
+    if (!this.motion_table_id in _motions) return null;
+
+    return _motions[this.motion_table_id].getLevelUpReleaseMotionsID(1, lv);
+  }
+
+  function getLevelUpReleaseMotionsID(start_lv, end_lv) {
+    local _motions = ::gamesetting.release_motion_settings;
+    if (!this.motion_table_id in _motions) return null;
+
+    return _motions[this.motion_table_id].getLevelUpReleaseMotionsID(start_lv, end_lv);
+  }
+
+  function getWorkRewardNum() {
+    if (!this.actions) return 0;
+
+    local _sum_reward = 0;
+    for (local i = 0; i < this.actions.len(); i++) {
+      local _cas = ::gamesetting.costume_action_settings[this.actions[i]];
+      local _n = 0;
+      if (_cas) _n = _cas.getRewardTableLength();
+      _sum_reward += _n;
+    }
+    return _sum_reward;
+  }
+
+  function getTapScript() {
+    if (!this.tap_script) return "levelupfinish";
+    return this.tap_script;
+  }
+  function getPatScript() {
+    if (!this.pat_script) return "levelupfinish";
+    return this.pat_script;
+  }
+
+  function getGachaScript() {
+    return this.gacha_script;
+  }
+
+  function getGachaTalk() {
+    return this.gacha_talk;
+  }
+
+  function getNewWork(old, now) {
+    if (!actions) return null;
+
+    local _new_actions = [];
+    foreach (action in actions) {
+      local _as = ::gamesetting.costume_action_settings[action];
+      local _al = _as.getLevel();
+      if (_al <= now && _al > old) _new_actions + action;
+    }
+    return _new_actions;
+  }
+
+  function getNewCostumeEventID() {
+    return this.get_event_id;
+  }
+
+  function getPriority() {
+    return this.priority;
+  }
+
+}

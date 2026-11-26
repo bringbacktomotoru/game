@@ -1,0 +1,26 @@
+return {
+  modeldata = "tambourine.mdl"
+  motiondata = "tambourine_phy.mot"
+  bnd = [-0.155244, -0.012883, 0.293409, 0.491266, 0.075787, 0.331319]
+
+  rbdataset = [
+  { "mass": 0.01, "name": "tambourine_phy", "angulardamp": 0.5, "lineardamp": 0.1, "constraints": null, "collisionmask": 63, "collisiongroup": 1, "dynamic": false, "shapes": [{ "pos": [0.0, 0.0, 0.0], "size": [0.1, 0.1, 0.1], "shapetype": 2, "rot": [0.0, 0.0, 0.0] }] },
+  { "mass": 0.01, "name": "ribon_2_phy", "angulardamp": 0.5, "lineardamp": 0.1, "constraints": [{ "pairbonename": "ribon_1_phy", "damp": null, "limit": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.017453, -0.174533, -0.174533, 0.017453, 0.174533, 0.174533], "bounce": null, "spring": [false, 0.0, 0.0, false, 0.0, 0.0, false, 0.0, 0.0, true, 4.0, 1.0, true, 4.0, 1.0, true, 4.0, 1.0] }], "collisionmask": 63, "collisiongroup": 1, "dynamic": true, "shapes": [{ "pos": [0.096, 0.0, 0.0], "size": [0.07, 0.07, 0.07], "shapetype": 5, "rot": [0.0, 0.0, 0.0] }] },
+  { "mass": 0.01, "name": "ribon_1_phy", "angulardamp": 0.5, "lineardamp": 0.1, "constraints": [{ "pairbonename": "tambourine_phy", "damp": null, "limit": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.087266, -0.087266, -0.349066, 0.087266, 0.087266, 0.349066], "bounce": null, "spring": [false, 0.0, 0.0, false, 0.0, 0.0, false, 0.0, 0.0, true, 4.0, 1.0, true, 4.0, 1.0, true, 4.0, 1.0] }], "collisionmask": 63, "collisiongroup": 1, "dynamic": true, "shapes": [{ "pos": [0.025, 0.0, 0.0], "size": [0.05, 0.05, 0.05], "shapetype": 5, "rot": [0.0, 0.0, 0.0] }] },
+  { "mass": 0.01, "name": "ribon_3_phy", "angulardamp": 0.5, "lineardamp": 0.1, "constraints": [{ "pairbonename": "ribon_2_phy", "damp": null, "limit": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "bounce": null, "spring": null }], "collisionmask": 63, "collisiongroup": 1, "dynamic": true, "shapes": [{ "pos": [-0.06, 0.0, 0.0], "size": [0.05, 0.05, 0.05], "shapetype": 5, "rot": [0.0, 0.0, 0.0] }] },
+
+  ]
+
+  material = [
+  {
+    name = "tambourine_mt"
+    tec = "shading.basic"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 2139062271
+    Ke = 151587327
+    shiness = 20.0
+    texture0 = "tex/tambourine.png"
+  }
+  ]
+}

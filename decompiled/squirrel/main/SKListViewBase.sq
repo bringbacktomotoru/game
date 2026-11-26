@@ -1,0 +1,504 @@
+local r_1 = Rect2D();
+
+class SKListViewBase extends SKView
+{
+
+  adapt = null;
+  cellh = 20;
+  scrolladapt = null;
+
+  selectmode = 0;
+  selectedidx = -1;
+  mouseonidx = -1;
+  viewtable = null;
+  visiblerange = null;
+
+  dragmode = false;
+  sortmode = 0;
+
+  dragitemsp = null;
+
+  dropview = null;
+  dropidx = -1;
+  dropway = 0;
+  dropy = 0;
+
+  dropscrolldy = 0;
+  dropscrollid = 0;
+
+  static a_1 = [0, 0];
+
+  constructor() {
+    visiblerange = [1000, -1000];
+    scrolladapt = ScrollAdaptor();
+    viewtable = {};
+    adapt = ListAdaptor();
+    local sp = Sprite();
+    sp.color = 862388223;
+    sp.bnd.set(0, 0, 16, 4);
+    dropview = SKImageView(sp);
+  }
+
+  function getScrollAdaptor() {
+    return scrolladapt;
+  }
+
+  function setListAdaptor(a) {
+    adapt = a;
+    revalidate();
+  }
+
+  function updateLayout() {
+    updateMatrix();
+    refleshVisibleItems();
+    matdirty = true;
+  }
+
+  function drawDropPoint(y) {
+    local b = dropsp.bnd;
+    b.set(0, y - b.h / 2, bnd.w, b.h);
+    skDrawSprite(dropsp);
+  }
+
+  function getPreferredSize(v) {
+    return v(bnd.w, adapt.getCount() * cellh, 0);
+  }
+
+  function setSelectedIndex(idx) {
+    if (idx < 0 || idx >= adapt.getCount()) {
+      idx = -1;
+    }
+    if (selectedidx == idx) {
+      return false;
+    }
+    local oldidx = selectedidx;
+    selectedidx = idx;
+
+    if (oldidx >= 0) {
+      updateItemStateAt(oldidx);
+    }
+    if (idx >= 0) {
+      updateItemStateAt(idx);
+      scrollIndexToVisible(idx);
+    }
+    return true;
+  }
+
+  function setSelectedItem(item) {
+    local cnt = adapt.getCount();
+    for (local l = 0; l < cnt; l++) {
+      if (adapt.getItem(l) == item) {
+        setSelectedIndex(l);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function getSelectedIndex() {
+    return selectedidx;
+  }
+
+  function getSelectedItem() {
+    return selectedidx >= 0 ? adapt.getItem(selectedidx) : null;
+  }
+
+  function getItem(i) {
+    return i >= 0 ? adapt.getItem(i) : null;
+  }
+
+  function setMouseonIndex(idx) {
+    if (mouseonidx == idx) {
+      return false;
+    }
+    local oldidx = mouseonidx;
+    mouseonidx = idx;
+
+    updateItemStateAt(oldidx);
+    updateItemStateAt(idx);
+    return true;
+  }
+
+  function setMouseonItem() {
+    return mouseonidx >= 0 ? adapt.getItem(mouseonidx) : null;
+  }
+
+  function isSelected(idx) {
+    return selectedidx == idx;
+  }
+
+  function isMouseon(idx) {
+    return mouseonidx == idx;
+  }
+
+  function getItemIndexAt(y) {
+    local i = (y | 0) / cellh;
+    return (i < 0) ? 0 : (i >= adapt.getCount()) ? adapt.getCount() - 1 : i;
+  }
+
+  function revalidate() {
+    cellh = adapt.getCellHeight();
+    bnd.h = cellh * adapt.getCount();
+    scrolladapt.setUnitInc(0, cellh * 3);
+    scrolladapt.setFixSize(0, cellh);
+    refleshVisibleItems();
+    super.revalidate();
+  }
+
+  function refleshWindow() {
+    updateMatrix();
+    updateVisibleItems();
+    matdirty = true;
+  }
+
+  function makeItemView(idx) {
+    local v0 = (idx in viewtable) ? viewtable[idx] : null;
+    local v1 = adapt.getItemView(idx, v0, this, false);
+    v1.pos.y = idx * cellh;
+    if (v0 != v1) viewtable[idx] <- v1;
+    return v1;
+  }
+
+  function getItemView(idx) {
+    if (!(idx in viewtable) || !viewtable[idx].parent) {
+      return null;
+    } else {
+      return viewtable[idx];
+    }
+  }
+
+  function updateItemStateAt(idx) {
+
+    if (!(idx in viewtable) || !viewtable[idx].parent) {
+      return;
+    }
+    local v0 = viewtable[idx];
+    local v1 = adapt.getItemView(idx, v0, this, true);
+    v1.pos.y = idx * cellh;
+    if (v0 != v1) {
+      replace(v0, v1);
+    }
+    repaint();
+  }
+
+  function refleshVisibleItems() {
+    local v = visiblerange;
+    local n = getVisibleItemRange();
+
+    clearChildren();
+
+    for (local l = n[0]; l <= n[1]; l++) {
+      local newitem = makeItemView(l);
+      addChild(newitem);
+      newitem.matdirty = true;
+    }
+    v[0] = n[0]; v[1] = n[1];
+    repaint();
+  }
+
+  function updateVisibleItems() {
+    local v = visiblerange;
+    local n = getVisibleItemRange();
+    if (v[0] == n[0] && v[1] == n[1]) return;
+    local v1 = v[1], n1 = n[1];
+
+    for (local l = v[0]; l <= v1; l++) {
+
+      if (l < n[0] || l > n[1]) {
+        if (l in viewtable) {
+          removeChild(viewtable[l]);
+        }
+      }
+    }
+
+    for (local l = n[0]; l <= n1; l++) {
+
+      if (!(l in viewtable) || !viewtable[l].parent) {
+        local newitem = makeItemView(l);
+        addChild(newitem);
+      }
+    }
+
+    v[0] = n[0]; v[1] = n[1];
+    repaint();
+  }
+
+  function getVisibleItemRange() {
+    local r = getWindowRect();
+    if (!r) r = Rect2D(0, 0, bnd.w, bnd.h);
+
+    local a = a_1;
+    if (r.w <= 0.0 || r.h <= 0.0) {
+      a[0] = -1;
+      a[1] = -2;
+    } else {
+      a[0] = getItemIndexAt(r.y);
+      a[1] = getItemIndexAt(r.y + r.h);
+      if (a[1] < 0) a[1] = -100;
+    }
+    return a;
+  }
+
+  function scrollIndexToVisible(idx) {
+    r_1.set(0.0, idx * cellh, bnd.w, cellh);
+    scrollRectToVisible(this, r_1);
+  }
+
+  function fucusStateChanged(b) {
+    if (selectedidx >= 0) {
+      updateItemStateAt(selectedidx);
+    }
+  }
+
+  function getScrollTrack(bar, pos) {
+    return scrollable.getScrollTrack(bar, pos);
+  }
+
+  function getScrollUnitInc(bar, dir) {
+    return scrollable.getScrollUnitInc(bar, dir);
+  }
+
+  function getScrollBlockInc(bar, dir) {
+    return scrollable.getScrollBlockInc(bar, dir);
+  }
+
+  function enableDrag(b) {
+    if (b) {
+      dragsource = this;
+    } else {
+      dragsource = null;
+    }
+  }
+
+  function setSortMode(m) {
+    sortmode = m;
+  }
+
+  function processEvent(e) {
+    switch (e.id) {
+    case MOUSE_ENTERED:
+    case MOUSE_MOVED:
+      e.computeLocal(getInvMatrix());
+      if (e.lx >= 0 && e.lx < bnd.w) {
+        local idx = getItemIndexAt(e.ly);
+        setMouseonIndex(idx);
+      } else {
+        setMouseonIndex(-1);
+      }
+      break;
+    case MOUSE_EXITED:
+      setMouseonIndex(-1);
+      break;
+    case MOUSE_PRESSED:
+      if (!focused) requestFocus();
+    case MOUSE_DRAGGED:
+      e.computeLocal(getInvMatrix());
+      setMouseonIndex(-1);
+      if (e.lx >= 0 && e.lx < bnd.w) {
+        local idx = getItemIndexAt(e.ly);
+        if (idx >= 0) {
+          if (setSelectedIndex(idx) && selectmode == 1) {
+            postItemEvent(ITEM_SELECTED, adapt.getItem(idx));
+          }
+        }
+      }
+      break;
+    case MOUSE_RELEASED:
+      if (e.src == this && selectedidx >= 0) {
+        if ((e.count & 1) == 0) {
+          postActionEvent(adapt.getItem(selectedidx));
+          break;
+        } else
+        if (selectmode == 0) {
+          postItemEvent(ITEM_SELECTED, adapt.getItem(selectedidx));
+        }
+      }
+      break;
+
+    case KEY_PRESSED:
+    case KEY_REPEATED:
+      keypressed(e);
+      break;
+
+    case TARGET_DRAG_ENTER:
+    case TARGET_DRAG_OVER:
+      e.computeLocal(getInvMatrix());
+      local r = getWindowRect();
+      if (e.ly < r.y + cellh / 2) {
+        setDragScroll(-1);
+      } else
+      if (e.ly > r.y + r.h - cellh / 2) {
+        setDragScroll(1);
+      } else {
+        setDragScroll(0);
+      }
+      setInsertPosition(e.ly);
+      dropy = e.ly;
+      if (!dropway && e.lx >= 0 && e.lx < bnd.w) {
+        local idx = getItemIndexAt(e.ly);
+        setMouseonIndex(idx);
+      } else {
+        setMouseonIndex(-1);
+      }
+      break;
+    case TARGET_DRAG_EXIT:
+      e.computeLocal(getInvMatrix());
+      setDragScroll(0);
+      dropidx = -1;
+      removeChild(dropview);
+      repaint();
+      break;
+    case TARGET_DROP:
+      if (selectedidx != dropidx) {
+        postItemEvent(ITEM_SORT, { from = selectedidx, to = dropidx, way = dropway });
+      }
+      setDragScroll(0);
+      dropidx = -1;
+      removeChild(dropview);
+      repaint();
+      break;
+    }
+    return super.processEvent(e);
+  }
+
+  function postItemEvent(id, i) {
+    local e = Event();
+    e.id = id;
+    e.src = this;
+    e.actioncmd = i;
+    ::rootview.postEvent(e);
+  }
+
+  function postItemActionEvent(i, cmd) {
+    local e = Event();
+    e.id = ITEM_ACTION_PERFORMED;
+    e.src = this;
+    e.code = i;
+    e.actioncmd = cmd;
+    ::rootview.postEvent(e);
+  }
+
+  function keypressed(e) {
+    switch (e.keycode) {
+    case VK_UP:
+      if (selectedidx > 0) {
+        setSelectedIndex(selectedidx - 1);
+        postItemEvent(ITEM_SELECTED, adapt.getItem(selectedidx));
+      }
+      break;
+    case VK_DOWN:
+      if (selectedidx < adapt.getCount() - 1) {
+        setSelectedIndex(selectedidx + 1);
+        postItemEvent(ITEM_SELECTED, adapt.getItem(selectedidx));
+      }
+      break;
+    case VK_ENTER:
+      if (selectedidx >= 0) {
+        postActionEvent(adapt.getItem(selectedidx));
+      }
+      break;
+    }
+  }
+
+  function setInsertPosition(y) {
+
+    local i = ((y | 0)) / cellh;
+    local w;
+    if (sortmode == 1) {
+      w = 0;
+      if (i < 0) {
+        i = 0;
+      } else
+      if (i >= adapt.getCount()) {
+        i = adapt.getCount() - 1;
+      }
+      local f = adapt.getItemFlags(i);
+      if (!(f & 4) || (f & 2)) {
+        i = -1;
+      }
+    } else {
+      if (i < 0) {
+        i = 0; w = -1;
+      } else
+      if (i >= adapt.getCount()) {
+        i = adapt.getCount() - 1; w = 1;
+      } else {
+        local f = adapt.getItemFlags(i);
+        if ((f & 4) && !(f & 2)) {
+          w = ((y | 0)) % cellh;
+          if (w <= (cellh >> 2)) {
+            w = -1;
+          } else
+          if (w >= cellh - (cellh >> 2)) {
+            w = 1;
+          } else {
+            w = 0;
+          }
+        } else {
+          w = (((y | 0)) % cellh) < (cellh >> 1) ? -1 : 1;
+        }
+      }
+    }
+    if (i != dropidx || w != dropway) {
+      dropidx = i;
+      dropway = w;
+      if (i >= 0 && w != 0) {
+        if (!dropview.parent) addChild(dropview);
+        dropview.setRect(0, i * cellh + (cellh >> 1) * (1 + w) - 1, bnd.w, 2);
+      } else {
+        if (dropview.parent) removeChild(dropview);
+      }
+    }
+  }
+
+  function setDragScroll(s) {
+    if (dropscrolldy == s) return;
+    dropscrolldy = s;
+    if (s) {
+      if (!dropscrollid) {
+
+        dropscrollid = setInterval(function() {
+          local r = getWindowRect();
+          local ry = r.y;
+          r.y = Math.clamp(r.y + cellh * dropscrolldy / 2, 0, bnd.h - r.h);
+          scrollRectToVisible(this, r);
+          setInsertPosition(dropy += r.y - ry);
+        }.bindenv(this), 50);
+      }
+    } else {
+      if (dropscrollid) {
+        clearInterval(dropscrollid);
+        dropscrollid = 0;
+      }
+    }
+  }
+
+  function dndrender(m) {
+    skDrawSprite(dragitemsp, m.mousex, m.mousey);
+  }
+
+  function acceptDrag(e) {
+    if (selectedidx < 0) return false;
+
+    e.computeLocal(getInvMatrix());
+    local v1 = adapt.getItemView(selectedidx, null, this, false);
+    v1.setBuffer(true);
+    v1.renderToBuffer();
+    skSetRenderTarget(null);
+    dragitemsp = v1.buf;
+    dragitemsp.color = 0xffffffff;
+    dragitemsp.blend = SK_MIX;
+    dragitemsp.bnd.x = -(e.lx | 0);
+    dragitemsp.bnd.y = -((e.ly | 0) % cellh);
+    local m = ::rootview.mouses[e.mouseid];
+    return true;
+  }
+
+  function acceptDrop(ds, x, y) {
+    if (sortmode && ds == this) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}

@@ -1,0 +1,851 @@
+class HouseManager {
+  stage = null;
+
+  displayed_room_idx = -1;
+  rooms = null;
+
+  current_camera_dir = null;
+
+  furniture_layout_manager = null;
+
+  grid_obj = null;
+
+  v_1 = Vector3D();
+
+  constructor(stage) {
+    this.stage = stage;
+    this.furniture_layout_manager = ::FurnitureLayoutManager();
+    this.furniture_layout_manager.changeStage(this.stage);
+
+    this.rooms = [];
+  }
+
+  function extendRooms() {
+    local ud = ::gamesession.getUserData();
+    local extend_num = ud.getRoomNum() - length(this.rooms);
+    if (extend_num == 0) return;
+    if (extend_num < 0) {
+
+      ::warnln("room slot num has decreased");
+      this.rooms.clear();
+      extend_num = ud.getRoomNum();
+    }
+
+    local new_rooms = array(extend_num);
+    foreach (idx, _ in new_rooms) {
+      new_rooms[idx] = Room(this.stage.scene);
+    }
+
+    this.rooms.extend(new_rooms);
+  }
+
+  function _getRoom(idx) {
+    local room = this.rooms[idx];
+    if (!room) {
+      ::errorln("invalid room idx : " + idx);
+      return null;
+    }
+
+    return room;
+  }
+
+  function initRooms(room_uids) {
+    foreach (idx, uid in room_uids) {
+      initRoom(idx, uid, true);
+    }
+  }
+
+  function initRoom(idx, room_uid, force = false) {
+    if (idx != this.displayed_room_idx) {
+      local prev_room = _getRoom(this.displayed_room_idx);
+      if (prev_room) {
+        prev_room.clear();
+      }
+    }
+
+    local room = _getRoom(idx);
+    if (!room) return;
+    if (room.isSameUID(room_uid) && !force) return;
+
+    this.current_camera_dir = null;
+    this.furniture_layout_manager.removeAllFurnitures();
+    room.init(room_uid);
+  }
+
+  function _setupRoom(idx, rid = -1) {
+    local room = _getRoom(idx);
+    if (!room) return;
+    if (rid < 0) {
+      room.boot();
+    }
+    else {
+      room.bootTempRoom(rid);
+    }
+
+    this.furniture_layout_manager.putFurnituresByRoomSlotIndex(idx);
+
+    this.displayed_room_idx = idx;
+  }
+
+  function changeRoom(room_idx, force = false, rid = -1) {
+    if (this.displayed_room_idx == room_idx && !force) return;
+
+    if (rid < 0) {
+      this.displayed_room_idx = room_idx;
+      _setupRoom(this.displayed_room_idx, rid);
+      _createGridWireObject();
+    }
+    else {
+
+      _setupRoom(this.displayed_room_idx, rid);
+    }
+  }
+
+  function getCurrentRoom() {
+    return _getRoom(this.displayed_room_idx);
+  }
+
+  function getCurrentRoomModel() {
+    return getCurrentRoom().getHouseModel();
+  }
+
+  function getCurrentRoomDoorPosition() {
+    local _room = _getRoom(this.displayed_room_idx);
+    if (!_room) return null;
+    return _room.getDoorPosition();
+  }
+
+  function update(dt) {
+    this.furniture_layout_manager.update(dt);
+  }
+
+  function cameraUpdated(pos, h, p, b, force = false) {
+    if (this.current_camera_dir == h && !force) return;
+    this.current_camera_dir = h;
+
+    local room = getCurrentRoom();
+    if (room) {
+      room.updateVisibleWall(this.current_camera_dir);
+    }
+  }
+
+  function _createGridWireObject() {
+    if (grid_obj) this.stage.scene.removeObject(grid_obj);
+    local room_info = getCurrentRoom().getRoomInfo();
+
+    this.grid_obj = SK3DObject();
+    this.grid_obj.setPolygonMesh(room_info.getPolygonMeshGridWire());
+    this.grid_obj.pos.set(0, 0.515, 0);
+    this.stage.scene.addObject(this.grid_obj);
+
+    setVisibleGridWire(false);
+  }
+
+  function setVisibleGridWire(b) {
+    if (!this.grid_obj) return;
+    this.grid_obj.setVisible(b);
+  }
+
+  function _getRoute(room, from, to) {
+    local route = room.getRoomInfo().getRoute(from, to);
+    return route;
+  }
+  function getMovingRoute(from, to) {
+    local room = _getRoom(this.displayed_room_idx);
+    if (!room) return null;
+
+    return _getRoute(room, from, to);
+  }
+  function getRandomMovingRoute(from) {
+    local room = _getRoom(this.displayed_room_idx);
+    if (!room) return null;
+
+    local room_info = room.getRoomInfo();
+    local random_target = getRandomNodePos();
+    return _getRoute(room, from, random_target);
+  }
+
+  function getRandomTurnMovingRoute(from, angle) {
+    local room = _getRoom(this.displayed_room_idx);
+    if (!room) return null;
+
+    local _loop = 0;
+    local room_info = room.getRoomInfo();
+    local random_target = getRandomNodePos();
+
+    angle += 360;
+    angle = int(angle % 360);
+    local _right = -1;
+    local _top = -1;
+
+    if (angle > 40 && angle < 140) _right = 1;
+    else if (angle > 220 && angle < 320) _right = 0;
+
+    if (angle > 310 || angle < 50) _top = 1;
+    else if (angle > 130 && angle < 230) _top = 0;
+
+    while (true) {
+      if (!random_target) continue;
+      if (_loop < 10) {
+        local _b = false;
+        if (_right == 1) {
+          if (from.x < random_target.x) _b = true
+        }
+        else if (_right == 0) {
+          if (from.x > random_target.x) _b = true
+        }
+        else {
+          _b = true;
+        }
+        if (_b) {
+          if (_top == 1) {
+            if (from.z < random_target.z) break;
+          }
+          else if (_top == 0) {
+            if (from.z > random_target.z) break;
+          }
+          else {
+            break;
+          }
+        }
+      }
+      else {
+        break;
+      }
+      _loop++;
+      random_target = getRandomNodePos();
+    }
+
+    return _getRoute(room, from, random_target);
+  }
+
+  function getRandomTurnSideMovingRoute(from, angle) {
+    local room = _getRoom(this.displayed_room_idx);
+    if (!room) return null;
+
+    local room_info = room.getRoomInfo();
+    local pos_list = room_info.getNodePosListNearXZ(from.x, from.z);
+    if (!pos_list) return;
+
+    angle += 360;
+    angle = int(angle % 360);
+
+    local _b = false;
+    local _pos = null;
+    local _tmp_pos = null;
+
+    while (pos_list.len() > 0) {
+      _pos = Math.rndPick(pos_list);
+
+      v_1.set(from.x, 0, from.z).sub(_pos);
+      if (v_1.length() < 2) continue;
+
+      local _dir = Math.atan2(v_1.x, v_1.z) * Math.RTOD;
+      if (_dir < 0) _dir += 360;
+
+      local _diff = Math.abs(angle - _dir);
+      if ((80 <= _diff && _diff >= 130) || (230 <= _diff && _diff <= 280)) {
+        _b = true;
+        break;
+      } else if (!_tmp_pos && 150 <= _diff && _diff <= 210) {
+        _tmp_pos = _pos;
+      }
+    }
+
+    if (_b) {
+      return _getRoute(room, from, _pos);
+    } else if (!_b && _tmp_pos) {
+      return _getRoute(room, from, _tmp_pos);
+    } else {
+      return [];
+    }
+  }
+
+  function _getCurrentRoom() {
+    return this.rooms[this.displayed_room_idx];
+  }
+
+  function getFurnitureLayoutManager() {
+    return furniture_layout_manager;
+  }
+
+  function getHouseBasePos() {
+    return Vector3D(0.0, ::HouseModel.FLOOR_DEPTH, 0.0);
+  }
+
+  function isNode(x, z) {
+    return _getCurrentRoom().getRoomInfo().isNode(x, z);
+  }
+
+  function getRandomNodePos() {
+    return _getCurrentRoom().getRoomInfo().getRandomNodePos();
+  }
+
+  function getValidNodePos(check_func = null) {
+    return _getCurrentRoom().getRoomInfo().getValidNodePos(check_func);
+  }
+
+  function isValidNodesAtPos(x, z) {
+    return _getCurrentRoom().getRoomInfo().isValidNodesAtPos(x, z);
+  }
+
+  function getCurrentRoomFloorRect() {
+    local _room = _getCurrentRoom();
+    return _room.getFloorRect();
+  }
+
+  function getNearestValidNodePos(x, z) {
+    return _getCurrentRoom().getRoomInfo().getNearestValidNodePos(x, z)
+  }
+
+  function editRoom(floor, room, room_id) {
+    local ud = ::gamesession.getUserData();
+    local room_layout = ud.getRoomLayout();
+
+    local current_room_id = Getter.getRoomID(room_layout, floor, room);
+    local use_room_address = Getter.getRoomAddress(room_layout, room_id);
+    if (use_room_address && Checker.isRoomID(current_room_id)) {
+
+      _swapRoomProcess(ud, room_id, current_room_id);
+    }
+    else {
+      if (Checker.isRoomID(current_room_id)) {
+        if (Checker.isRoomID(room_id)) {
+          changeRoom(floor, room, room_id);
+        }
+        else {
+          removeRoom(floor, room);
+        }
+      }
+      else {
+        addRoom(floor, room, room_id);
+      }
+    }
+  }
+
+  function removeRoom(floor, room) {
+    local ud = ::gamesession.getUserData();
+    local room_layout = ud.getRoomLayout();
+    if (!Checker.isRoom(room_layout, floor, room)) return;
+
+    _removeRoomProcess(ud, floor, room);
+  }
+
+  function updateRoom(floor, room) {
+    local ud = ::gamesession.getUserData();
+    local room_layout = ud.getRoomLayout();
+    if (!Checker.isRoom(room_layout, floor, room)) return;
+
+    local room_id = Getter.getRoomID(room_layout, floor, room);
+    _updateRoomProcess(ud, floor, room, room_id);
+  }
+
+  function updateRoom_byRoomID(room_id, floor = -1, room = -1) {
+    local _ud = ::gamesession.getUserData();
+    local room_model = this.room_models[room_id];
+    if (!room_model) return;
+    local room_data = _ud.room_edits[room_id];
+    if (!room_data) return;
+
+    local stage_id = this.stage.getStageID();
+    local updated = Factory.update(room_model, room_data, stage_id);
+    if (!updated) return;
+
+    if (floor > 0 && room > 0) this.furniture_layout_manager.updateFurnitures(floor, room);
+  }
+
+  function joinRoom(room1, room2) {
+
+  }
+
+  function addSelectableAreaObjects() {
+    if (length(this.selectable_area_objects) > 0) {
+
+      removeSelectableAreaObjects();
+    }
+
+    local ud = ::gamesession.getUserData();
+    local room_layout = ud.getRoomLayout();
+
+    foreach (floor, layout in room_layout) {
+      foreach (room, uid in layout) {
+        if (!Checker.isPuttableSpace(room_layout, floor, room)) continue;
+
+        local sel_obj = ::StageObject(this.stage.scene);
+        sel_obj.build("/efx/room_select/room_selectable.sk3");
+        sel_obj.sk3d.startScript("start");
+
+        local x = Factory.ROOM_POS_X + room * ::RoomModel.ROOM_WIDTH + ::RoomModel.ROOM_WIDTH / 2.0;
+        local y = Factory.ROOM_POS_Y + floor * ::RoomModel.ROOM_HEIGHT;
+        local z = SELECTABLE_OBJ_POS_Z;
+        sel_obj.setPosXYZ(x, y, z);
+        sel_obj.addToStage();
+
+        this.selectable_area_objects[[floor, room]] <- sel_obj;
+      }
+    }
+  }
+
+  function removeSelectableAreaObjects() {
+    foreach (obj in this.selectable_area_objects) {
+      obj.removeFromStage();
+    }
+
+    this.selectable_area_objects = {};
+    this.selected_area_object = null;
+  }
+
+  function _swapRoomProcess(ud, room_id_1, room_id_2) {
+    local room_layout = ud.getRoomLayout();
+
+    local room_model_1 = this.room_models[room_id_1];
+    local room_model_2 = this.room_models[room_id_2];
+    this.room_models[room_id_1] = room_model_2;
+    this.room_models[room_id_2] = room_model_1;
+
+    local room_address_1 = Getter.getRoomAddress(room_layout, room_id_1);
+    local floor_1 = room_address_1[0];
+    local room_1 = room_address_1[1];
+    local room_address_2 = Getter.getRoomAddress(room_layout, room_id_2);
+    local floor_2 = room_address_2[0];
+    local room_2 = room_address_2[1];
+    room_layout[floor_1][room_1] = room_id_2;
+    room_layout[floor_2][room_2] = room_id_1;
+
+    _updateRoomProcess(ud, floor_1, room_1, room_layout[floor_1][room_1]);
+    _updateRoomProcess(ud, floor_2, room_2, room_layout[floor_2][room_2]);
+  }
+
+  function _addRoomProcess(ud, floor, room, room_id) {
+    local room_layout = ud.getRoomLayout();
+    local room_data = ud.room_edits[room_id];
+    room_layout[floor][room] = room_id;
+
+    local room_model = Factory.build(this.stage, floor, room, room_data);
+    if (room_model) {
+      addRoomModel(room_model);
+      this.furniture_layout_manager.putFurnitures(floor, room);
+    }
+
+    updateRoom(floor, room - 1);
+    updateRoom(floor - 1, room);
+    updateRoom(floor, room + 1);
+
+    this.stage.houseUpdated();
+  }
+
+  function _removeRoomProcess(ud, floor, room) {
+    local room_layout = ud.getRoomLayout();
+    local room_model = this.room_models[room_layout[floor][room]];
+    local removed = Factory.remove(room_model);
+    if (removed) {
+      removeRoomModel(room_model);
+      this.furniture_layout_manager.removeFurnituresIn(room_model);
+    }
+
+    ud.removeRoomEditData(room_layout[floor][room]);
+    room_layout[floor][room] = 0;
+
+    updateRoom(floor, room - 1);
+    updateRoom(floor - 1, room);
+    updateRoom(floor, room + 1);
+
+    this.stage.houseUpdated();
+  }
+
+  function _changeRoomProcess(ud, floor, room, room_id) {
+    local room_layout = ud.getRoomLayout();
+    local current_room_id = Getter.getRoomID(room_layout, floor, room);
+    this.room_models[room_id] <- delete this.room_models[current_room_id];
+    room_layout[floor][room] = room_id;
+
+    this.furniture_layout_manager.removeFurnituresIn(this.room_models[room_id]);
+    this.furniture_layout_manager.putFurnitures(floor, room);
+    _updateRoomProcess(ud, floor, room, room_id);
+  }
+
+  function _updateRoomProcess(ud, floor, room, room_id) {
+    local room_layout = ud.getRoomLayout();
+    local room_data = ud.room_edits[room_id];
+    if (!room_data) return;
+
+    local room_model = getCurrentRoom().model;
+    local stage_id = this.stage.getStageID();
+    local updated = Factory.update(room_model, room_data, stage_id);
+    if (!updated) return;
+
+    this.furniture_layout_manager.updateFurnitures(floor, room);
+  }
+
+  function startFurnitureEdit(stage) {
+    return this.furniture_layout_manager.startEdit(stage);
+  }
+
+  function applyFurnitureEdit() {
+    this.furniture_layout_manager.applyEdit();
+  }
+
+  function revertFurnitureEdit() {
+    this.furniture_layout_manager.revertEdit();
+  }
+
+  function finishFurnitureEdit() {
+    this.furniture_layout_manager.finishEdit();
+
+    local room = getCurrentRoom();
+    room.setupGrid(::RoomInfo.SETUP_FURNITURES + ::RoomInfo.SETUP_INVALIDATE + ::RoomInfo.SETUP_CONNECT);
+  }
+
+  function cancelFurnitureEdit() {
+    this.furniture_layout_manager.cancelEdit();
+  }
+
+  function _processGetRoomModelKey_atScreenPos(screen_x, screen_y, models, world_z = null) {
+    local v = Vector3D(screen_x / ::displayWidth, screen_y / ::displayHeight, 0.0);
+    local pos_near = this.stage.renderer.camera.unproject(v);
+
+    v.z = 1.0;
+    local pos_far = this.stage.renderer.camera.unproject(v);
+
+    local r, world_x, world_y;
+    if (world_z != null) {
+      r = (world_z - pos_near.z) / (pos_far.z - pos_near.z)
+      world_x = pos_near.x + (pos_far.x - pos_near.x) * r;
+      world_y = pos_near.y + (pos_far.y - pos_near.y) * r;
+    }
+
+    local w = ::RoomModel.ROOM_WIDTH * ::TEST_ROOM_SCALE_Z;
+    local h = ::RoomModel.ROOM_HEIGHT;
+    foreach (key, model in models) {
+      local pos = model.getPos();
+      if (!world_z) {
+        r = (pos.z - pos_near.z) / (pos_far.z - pos_near.z)
+        world_x = pos_near.x + (pos_far.x - pos_near.x) * r;
+        world_y = pos_near.y + (pos_far.y - pos_near.y) * r;
+      }
+
+      local left = pos.x - w / 2.0;
+      local right = left + w;
+      if (world_x < left || world_x > right) continue;
+
+      return key;
+    }
+
+    return null;
+  }
+
+  function tappedAnySelectedArea(screen_x, screen_y) {
+    if (this.selected_area_object) {
+      this.selected_area_object.sk3d.startScript("deselect");
+    }
+
+    local address = _processGetRoomModelKey_atScreenPos(screen_x, screen_y, this.selectable_area_objects, SELECTABLE_OBJ_POS_Z);
+    this.selected_area_object = this.selectable_area_objects[address] || null;
+    if (this.selected_area_object) {
+      this.selected_area_object.sk3d.startScript("select");
+    }
+
+    return address;
+  }
+
+  function getRoomAddress_atScreenPos(screen_x, screen_y) {
+    local room_id = _processGetRoomModelKey_atScreenPos(screen_x, screen_y, this.room_models, ::HouseManager.Factory.ROOM_POS_Z);
+    if (!room_id) return null;
+
+    local room_layout = ::gamesession.getUserData().getRoomLayout();
+    return ::HouseManager.Getter.getRoomAddress(room_layout, room_id);
+  }
+
+  function addRoomModel(room_model) {
+    if (!room_model) return;
+
+    local room_id = room_model.room_data.room_id;
+    this.room_models[room_id] <- room_model;
+  }
+
+  function removeRoomModel(room_model) {
+    local room_id = room_model.room_data.room_id;
+    delete this.room_models[room_id];
+  }
+
+  function getEnabledNodeByVortex(x, z) {
+    return getCurrentRoom().getEnabledNodeByVortex(x, z);
+  }
+};
+
+class HouseManager.Getter {
+  constructor() {}
+
+  static function getRoomID(room_layout, floor, room) {
+    local room = room_layout[floor][room];
+    return room ? room : 0;
+  }
+
+  static function getRoomAddress(room_layout, room_id) {
+    if (!::HouseManager.Checker.isRoomID(room_id)) return null;
+
+    foreach (floor, layout in room_layout) {
+      foreach (room, uid in layout) {
+        if (uid != room_id) continue;
+
+        return [floor, room];
+      }
+    }
+
+    return null;
+  }
+
+  static function getRoomAddress_byPos(room_layout, posx, posy) {
+    local origin = ::HouseManager.Factory.getRoomPos(0, 0);
+    local floor = int((posy - origin.y) / ::RoomModel.ROOM_HEIGHT);
+    local room = int((posx - origin.x) / ::RoomModel.ROOM_WIDTH);
+
+    return [floor, room];
+  }
+
+  static function getMaxFloorIdx(room_layout) {
+    foreach (floor, layout in room_layout) {
+      local find = false;
+      foreach (uid in layout) {
+        if (uid == 0) continue;
+
+        find = true;
+        break;
+      }
+
+      if (!find) {
+        return floor - 1;
+      }
+    }
+
+    return length(room_layout) - 1;
+  }
+
+  static function getMaxRoomIdx(room_layout) {
+    foreach (room, uid in room_layout[0]) {
+      if (uid == 0) return room - 1;
+    }
+
+    return length(room_layout[0]) - 1;
+  }
+}
+
+class HouseManager.Checker {
+  constructor() {}
+
+  static function isRoom(room_layout, floor, room) {
+    local room_id = room_layout[floor][room];
+    return ::HouseManager.Checker.isRoomID(room_id);
+  }
+
+  static function isRoomID(room_id) {
+    return room_id && room_id != 0;
+  }
+
+  static function isPuttableSpace(room_layout, floor, room) {
+    if (floor > ::HouseManager.FLOOR_LIMIT) return false;
+    if (room > ::HouseManager.ROOM_LIMIT) return false;
+
+    if (floor == 0 && room == 0) {
+      return true;
+    }
+    else if (floor == 0) {
+      return ::HouseManager.Checker.isRoom(room_layout, floor, room - 1);
+    }
+    else {
+      return ::HouseManager.Checker.isRoom(room_layout, floor - 1, room);
+    }
+  }
+}
+
+class HouseManager.Factory {
+  static ROOM_POS_X = 9.5;
+  static ROOM_POS_Y = 0.0;
+  static ROOM_POS_Z = 0.0;
+
+  constructor() {}
+
+  static function generateRoomModel(stage, floor, room, room_data) {
+    if (!room_data) return null;
+
+    local room_model = ::RoomModel(stage.scene);
+    room_model.setPos(::HouseManager.Factory.getRoomPartOrigin(floor, room));
+    room_model.setRoomData(room_data, false);
+    room_model.setStageID(stage.stage_id, false);
+
+    return room_model;
+  }
+
+  static function build(stage, floor, room, room_data) {
+    local room_model = ::HouseManager.Factory.generateRoomModel(stage, floor, room, room_data);
+    if (!room_model) return null;
+
+    room_model.buildInner();
+    room_model.buildOuter();
+
+    return room_model;
+  }
+
+  static function buildInner(stage, floor, room, room_data) {
+    local room_model = ::HouseManager.Factory.generateRoomModel(stage, floor, room, room_data);
+    if (!room_model) return null;
+
+    room_model.buildInner();
+
+    return room_model;
+  }
+
+  static function remove(room_model) {
+    if (!room_model) return false;
+
+    room_model.release();
+    return true;
+  }
+
+  static function update(room_model, room_data, stage_id) {
+    if (!room_model) return false;
+
+  }
+
+  static function changeEnvironment(stage_id) {
+
+  }
+
+  static function getRoomPartOrigin(floor, room) {
+    return ::HouseManager.Factory.getRoomPos(floor, room).add(::RoomModel.ROOM_WIDTH / 2.0, 0.0, ::RoomModel.ROOM_DEPTH / 2.0);
+  }
+
+  static function getFurnitureOrigin(floor, room) {
+    return ::HouseManager.Factory.getRoomPos(floor, room).add(0.0, ::RoomModel.FLOOR_DEPTH, 0.0);
+  }
+
+  function getCharaOrigin(floor, room) {
+    return ::HouseManager.Factory.getRoomPos(floor, room).add(::RoomModel.ROOM_WIDTH / 2.0, ::RoomModel.FLOOR_DEPTH, 0.0);
+  }
+
+  static function getRoomPos(floor, room) {
+    local posx = ::HouseManager.Factory.ROOM_POS_X + room * ::RoomModel.ROOM_WIDTH;
+    local posy = ::HouseManager.Factory.ROOM_POS_Y + floor * ::RoomModel.ROOM_HEIGHT;
+    local posz = ::HouseManager.Factory.ROOM_POS_Z;
+    return Vector3D(posx, posy, posz);
+  }
+}
+
+class Room {
+  room_uid = -1;
+  info = null;
+  model = null;
+
+  constructor(scene) {
+    this.info = ::RoomInfo();
+    this.model = ::HouseModel(scene);
+  }
+
+  function clear() {
+    this.room_uid = -1;
+    this.info.reset();
+    this.model.release();
+  }
+
+  function isSameUID(uid) {
+    return room_uid == uid;
+  }
+
+  function init(uid) {
+    clear();
+    this.room_uid = uid;
+  }
+
+  function boot() {
+    if (this.room_uid == -1) {
+      ::errorln("room is not initialized, room uid : " + this.room_uid);
+      return;
+    }
+
+    local ud = ::gamesession.getUserData();
+    local room_edit_data = ud.getRoomEditData(this.room_uid);
+    if (!room_edit_data) {
+      ::errorln("room uid not found : " + this.room_uid);
+      return;
+    }
+
+    this.model.build(room_edit_data.getRoomID());
+    this.info.setup(this.room_uid, ::RoomInfo.SETUP_ALL);
+    _registerWalls(this.info, this.model);
+    ::traceln("boot room, uid : " + this.room_uid);
+  }
+
+  function bootTempRoom(rid) {
+    this.model.build(rid);
+  }
+
+  function getHouseModel() {
+    return this.model;
+  }
+
+  function getRoomInfo() {
+    return this.info;
+  }
+
+  function getDoorPosition() {
+    return this.model.getDoorPosition();
+  }
+
+  function getFloorRect() {
+    local room_id = ::gamesession.getUserData().getRoomEditData(this.room_uid).getRoomID();
+    local room_setting = ::gamesetting.room_settings[room_id];
+    return room_setting.getRoomTotalRect();
+  }
+
+  function updateVisibleWall(dir) {
+
+    local wall_infos = this.info.wall_infos;
+    local wall_objs = this.model.walls;
+    local pillar_objs = this.model.pillars;
+
+    foreach (pillar in pillar_objs) {
+      if (pillar) pillar.setVisible(false);
+    }
+
+    local pillar_num = length(pillar_objs);
+    foreach (info in wall_infos) {
+      local uid = info.getWallModelUID();
+      foreach (idx, obj in wall_objs) {
+        if (obj.getUID() != uid) continue;
+
+        local prev_visible = obj.isVisible();
+        obj.updateVisible(dir);
+        local current_visible = obj.isVisible();
+        if (current_visible == true) {
+
+          if (pillar_objs[idx]) pillar_objs[idx].setVisible(true);
+          local _tmp_idx = (idx + 1) % pillar_num;
+          if (pillar_objs[_tmp_idx]) pillar_objs[_tmp_idx].setVisible(true);
+        }
+        if (prev_visible != current_visible) {
+          local wall_obj_uids = info.getWallObjectUIDs();
+          foreach (uid in wall_obj_uids) {
+
+          }
+        }
+      }
+    }
+
+  }
+
+  function setupGrid(flags = 1) {
+    this.info.setup(this.room_uid, flags);
+  }
+
+  function getEnabledNodeByVortex(x, z) {
+    return this.info.getEnabledNodeByVortex(x, z);
+  }
+
+  function _registerWalls(room_info, house_model) {
+    local wall_infos = room_info.wall_infos;
+    local wall_objs = house_model.walls;
+    foreach (idx, info in wall_infos) {
+      info.setWallModelUID(wall_objs[idx].getUID());
+    }
+  }
+}

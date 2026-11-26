@@ -1,0 +1,523 @@
+{
+  "ID": "8b871f71-c8e0-414c-a52a-f993f474f382",
+  "Version": "2.3.3.0",
+  "Name": "FriendSearchResultDialog",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 91,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_m.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 10,
+            "Scale9OriginY": 10,
+            "Scale9Width": 688,
+            "Scale9Height": 614,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 93,
+            "ActionTag": 814809629,
+            "Size": {
+              "X": 708.0,
+              "Y": 634.0
+            },
+            "Name": "mul",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/button/button_dialog.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 66,
+            "Scale9OriginY": 33,
+            "Scale9Width": 106,
+            "Scale9Height": 35,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 211.9997,
+              "Y": 130.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2994,
+              "Y": 0.205
+            },
+            "PreSize": {
+              "X": 0.3362,
+              "Y": 0.1593
+            },
+            "LeftMargin": 92.9997,
+            "RightMargin": 377.0003,
+            "TopMargin": 453.4999,
+            "BottomMargin": 79.5001,
+            "Tag": 238,
+            "Children": [
+              {
+                "FontSize": 36,
+                "LabelText": "はい",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 4,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 119.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.495
+                },
+                "PreSize": {
+                  "X": 0.2563,
+                  "Y": 0.4356
+                },
+                "LeftMargin": 88.5,
+                "RightMargin": 88.5,
+                "TopMargin": 29.0,
+                "BottomMargin": 28.0,
+                "Tag": 239,
+                "ActionTag": 1496884657,
+                "Size": {
+                  "X": 61.0,
+                  "Y": 44.0
+                },
+                "Name": "lbl_ok",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": -1465846410,
+            "Size": {
+              "X": 238.0,
+              "Y": 101.0
+            },
+            "Name": "btn_ok",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/button/button_dialog.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 66,
+            "Scale9OriginY": 33,
+            "Scale9Width": 106,
+            "Scale9Height": 35,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 472.0001,
+              "Y": 130.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.6667,
+              "Y": 0.205
+            },
+            "PreSize": {
+              "X": 0.3362,
+              "Y": 0.1593
+            },
+            "LeftMargin": 353.0001,
+            "RightMargin": 116.9999,
+            "TopMargin": 453.4999,
+            "BottomMargin": 79.5001,
+            "Tag": 284,
+            "Children": [
+              {
+                "FontSize": 36,
+                "LabelText": "いいえ",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "HorizontalAlignmentType": "HT_Center",
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineSize": 4,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 119.0,
+                  "Y": 50.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.495
+                },
+                "PreSize": {
+                  "X": 0.3824,
+                  "Y": 0.4356
+                },
+                "LeftMargin": 73.5,
+                "RightMargin": 73.5,
+                "TopMargin": 29.0,
+                "BottomMargin": 28.0,
+                "Tag": 285,
+                "ActionTag": -1219325137,
+                "Size": {
+                  "X": 91.0,
+                  "Y": 44.0
+                },
+                "Name": "lbl_cancel",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 411667393,
+            "Size": {
+              "X": 238.0,
+              "Y": 101.0
+            },
+            "Name": "btn_cancel",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 24,
+            "LabelText": "フレンド申請を送りますか？",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 342.0,
+              "Y": 289.9999
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4831,
+              "Y": 0.4574
+            },
+            "PreSize": {
+              "X": 0.565,
+              "Y": 0.1577
+            },
+            "LeftMargin": 142.0,
+            "RightMargin": 166.0,
+            "TopMargin": 294.0001,
+            "BottomMargin": 239.9999,
+            "Tag": 524,
+            "ActionTag": 2117896496,
+            "Size": {
+              "X": 400.0,
+              "Y": 100.0
+            },
+            "Name": "lbl_message",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_deco_down.png",
+              "Plist": ""
+            },
+            "Scale9Width": 476,
+            "Scale9Height": 29,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 342.0,
+              "Y": 240.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4831,
+              "Y": 0.3785
+            },
+            "PreSize": {
+              "X": 0.6723,
+              "Y": 0.0457
+            },
+            "LeftMargin": 104.0,
+            "RightMargin": 128.0,
+            "TopMargin": 379.5001,
+            "BottomMargin": 225.5,
+            "Tag": 89,
+            "ActionTag": 394373511,
+            "Size": {
+              "X": 476.0,
+              "Y": 29.0
+            },
+            "Name": "Image_1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_deco_up.png",
+              "Plist": ""
+            },
+            "Scale9Width": 476,
+            "Scale9Height": 29,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 342.0001,
+              "Y": 339.9998
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4831,
+              "Y": 0.5363
+            },
+            "PreSize": {
+              "X": 0.6723,
+              "Y": 0.0457
+            },
+            "LeftMargin": 104.0001,
+            "RightMargin": 127.9999,
+            "TopMargin": 279.5002,
+            "BottomMargin": 325.4998,
+            "Tag": 90,
+            "ActionTag": 1184474996,
+            "Size": {
+              "X": 476.0,
+              "Y": 29.0
+            },
+            "Name": "Image_2",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 75.0,
+              "Y": 380.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.1059,
+              "Y": 0.5994
+            },
+            "PreSize": {
+              "X": 0.8051,
+              "Y": 0.2524
+            },
+            "LeftMargin": 75.0,
+            "RightMargin": 63.0,
+            "TopMargin": 94.0,
+            "BottomMargin": 380.0,
+            "Tag": 187,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "common/FriendRequestListItem.json",
+                  "Plist": ""
+                },
+                "StretchWidthEnable": false,
+                "StretchHeightEnable": false,
+                "InnerActionSpeed": 1.0,
+                "AnchorPoint": {},
+                "Position": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": true,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 1.0
+                },
+                "Tag": 153,
+                "ActionTag": 577701123,
+                "Size": {
+                  "X": 570.0,
+                  "Y": 160.0
+                },
+                "Name": "dummy",
+                "ctype": "ProjectNodeObjectData"
+              }
+            ],
+            "ActionTag": 1877386157,
+            "Size": {
+              "X": 570.0,
+              "Y": 160.0
+            },
+            "Name": "pnl_shortdata",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 708.0,
+          "Y": 634.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../common/FriendRequestListItem.json",
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/button/button_dialog.png",
+        "../image/dialog/dialog_deco_down.png",
+        "../image/dialog/dialog_deco_up.png",
+        "../image/dialog/dialog_m.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

@@ -1,0 +1,340 @@
+class ShopSetting extends Setting {
+
+  static BUY_STATE_OK = 1;
+  static BUY_STATE_NO_MONEY = 2;
+  static BUY_STATE_VISIBLE_CONDITION = 3;
+  static BUY_STATE_CHECK_CONDITION = 4;
+  static BUY_STATE_LIMIT = 5;
+
+  static MARK_NONE = 0;
+  static MARK_MISSION = 1;
+
+  id = 0;
+  type = 0;
+  item_id = 0;
+  target_id = -1;
+  platform_type = 1;
+
+  amount = 1;
+  price = 0;
+  price_type = PRICE_GM;
+
+  deliver_time = 0;
+
+  limit = -1;
+
+  priority = 0;
+
+  condition_desc = null;
+  purchase_conditions = null;
+  visible_conditions = null;
+  sort_conditions = null;
+
+  from = null;
+  to = null;
+
+  name = null;
+
+  room_id = -1;
+
+  mark = 0;
+  mark_conditions = null;
+
+  sale_info_id = -1;
+
+  function loadConfAtServer(t) {
+    local _setting = ShopSetting();
+
+    foreach (k, v in t) {
+      switch (k) {
+      case "purchase_conditions":
+      case "sort_conditions":
+      case "visible_conditions":
+      case "mark_conditions":
+        _setting[k] = decodeJSON(v);
+        break;
+      default:
+        _setting[k] = v;
+      }
+
+    }
+    return _setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (name) trans + "name";
+    if (condition_desc) trans + "condition_desc";
+
+    return trans;
+  }
+
+  function getItemName() {
+    if (name && name.len() > 0) return name;
+
+    local setting = null;
+
+    switch (type) {
+    case SHOP_ITEM_TYPE_FURNITURE:
+      setting = ::gamesetting.furniture_settings[item_id];
+      if (!setting) return "";
+      return setting.getName();
+    case SHOP_ITEM_TYPE_COSTUME:
+      setting = ::gamesetting.costume_settings[item_id];
+      if (!setting) return "";
+      return setting.name;
+    case SHOP_ITEM_TYPE_WALLPAPER:
+      setting = ::gamesetting.wall_paper_settings[item_id];
+      if (!setting) return "";
+      return setting.name;
+    case SHOP_ITEM_TYPE_ROOM:
+      setting = ::gamesetting.room_settings[getSellRoomId()];
+      if (!setting) return "";
+      return setting.name;
+    case SHOP_ITEM_TYPE_MOTION:
+      setting = ::gamesetting.costume_motion_settings[item_id];
+      if (!setting) return "";
+      return setting.getDesc();
+    case SHOP_ITEM_TYPE_RM:
+      setting = ::gamesetting.iap_settings[this.item_id];
+      if (!setting) return "";
+      return setting.name;
+    }
+
+    return "";
+  }
+
+  function getID() {
+    return this.id;
+  }
+
+  function getItemID() {
+    return this.item_id;
+  }
+
+  function getTargetID() {
+    return this.target_id;
+  }
+
+  function getType() {
+    return this.type;
+  }
+
+  function getItemType() {
+    switch (this.type) {
+    case SHOP_ITEM_TYPE_FURNITURE: return ITEM_TYPE_FURNITURE;
+    case SHOP_ITEM_TYPE_COSTUME: return ITEM_TYPE_COSTUME;
+    case SHOP_ITEM_TYPE_ROOM: return ITEM_TYPE_ROOM;
+    case SHOP_ITEM_TYPE_WALLPAPER: return ITEM_TYPE_WALLPAPER;
+    case SHOP_ITEM_TYPE_ITEM: return ITEM_TYPE_ITEM;
+    case SHOP_ITEM_TYPE_MOTION: return ITEM_TYPE_MOTION;
+    case SHOP_ITEM_TYPE_RM: return ITEM_TYPE_ONEROUSRM;
+    }
+    return -1;
+  }
+
+  function getPriority() {
+    return this.priority;
+  }
+
+  function getAmount() {
+    return this.amount;
+  }
+
+  function getLimit() {
+    return this.limit;
+  }
+
+  function hasLimit() {
+    return this.limit >= 0 ? true : false;
+  }
+
+  function isAvailable() {
+
+    return true;
+  }
+
+  function isPriceTypeGM() {
+    return this.price_type == PRICE_GM;
+  }
+
+  function getPriceType() {
+    return this.price_type;
+  }
+
+  function getPrice(org = false) {
+    local _item_id = this.item_id;
+    local _price = this.price;
+    local _type = this.price_type;
+    if (!org) {
+      local _sss = getSaleSetting();
+      if (_sss) {
+        _item_id = _sss.getIapID();
+        _price = _sss.getSettingPrice();
+        _type = _sss.getPriceType();
+      }
+    }
+
+    if (_type == PRICE_CASH) {
+      local iap_item = ::gamesetting.getIAPItem(_item_id);
+      if (iap_item) {
+
+        return ::replaceJPY(iap_item.pricetxt);
+      }
+    }
+
+    return _price;
+  }
+
+  function getSaleSetting() {
+    return ::gamesetting.shop_sale_settings[this.sale_info_id];
+  }
+
+  function getDeliverTime() {
+    return this.deliver_time;
+  }
+
+  function getPurchaseConditions() {
+    return this.purchase_conditions;
+  }
+
+  function getConditionDesc() {
+    return this.condition_desc;
+  }
+
+  function hasPurchaseConditions() {
+    return this.purchase_conditions && this.purchase_conditions.len() > 0 ? true : false;
+  }
+
+  function hasSortConditions() {
+    return this.sort_conditions && this.sort_conditions.len() > 0 ? true : false;
+  }
+
+  function checkConditions() {
+    if (!hasPurchaseConditions()) return true;
+    return ::checkCondition(this.purchase_conditions, ::gamesetting.condition_settings);
+  }
+
+  function hasVisibleConditions() {
+    return this.visible_conditions || this.room_id > 0 ? true : false;
+  }
+
+  function checkVisibleConditions() {
+    if (!hasVisibleConditions()) return true;
+
+    local _ud = ::gamesession.getUserData();
+    if (this.room_id > 0 && _ud.getCurrentRoomUID() != this.room_id) return false;
+    return ::checkCondition(this.visible_conditions, ::gamesetting.condition_settings);
+  }
+
+  function checkSortCondition() {
+    if (!hasSortConditions()) return true;
+    return ::checkCondition(this.sort_conditions, ::gamesetting.condition_settings);
+  }
+
+  function hasRoomID() {
+    return this.room_id > 0 ? true : false;
+  }
+  function getRoomID() {
+    return this.room_id;
+  }
+
+  function getBuyState() {
+    local _ud = ::gamesession.getUserData();
+    if (!_ud.hasMoney(this.price_type, this.price)) return BUY_STATE_NO_MONEY;
+    if (!checkVisibleConditions()) return BUY_STATE_VISIBLE_CONDITION;
+    if (!checkConditions()) return BUY_STATE_CHECK_CONDITION;
+    if (_checkPurchaseLimit()) return BUY_STATE_LIMIT;
+    return BUY_STATE_OK;
+  }
+
+  function canBuy() {
+    return getBuyState() == BUY_STATE_OK ? true : false;
+  }
+
+  function _checkPurchaseLimit() {
+    local _ud = ::gamesession.getUserData();
+
+    switch (this.type) {
+    case SHOP_ITEM_TYPE_FURNITURE:
+      if (this.limit < 0) return false;
+      local _prnum = _ud.getPurchaseRecordNums(this.id);
+      return this.limit - _prnum <= 0;
+    case SHOP_ITEM_TYPE_COSTUME:
+      return _ud.hasCostume(this.item_id);
+    case SHOP_ITEM_TYPE_MOTION:
+      local _chara_data = _ud.getCharacterData(this.target_id);
+      return _chara_data && _chara_data.hasMotion(this.item_id);
+    }
+    return false;
+  }
+
+  function checkPlatform() {
+    if (this.platform_type == SHOP_ITEM_PLATFORM_ALL) return true;
+    switch (skGetOSName()) {
+    case "iOS": return this.platform_type == SHOP_ITEM_PLATFORM_IOS ? true : false;
+    case "Android": return this.platform_type == SHOP_ITEM_PLATFORM_ANDROID ? true : false;
+    case "Windows": return this.platform_type == SHOP_ITEM_PLATFORM_WINDOWS ? true : false;
+    }
+    return false;
+  }
+
+  function getSellRoomId() {
+    if (this.type != SHOP_ITEM_TYPE_ROOM) return -1;
+    if (this.price_type != PRICE_CASH) return this.item_id;
+    local _iap = ::gamesetting.iap_settings[this.item_id];
+    if (!_iap) return -1;
+    return _iap.getRoomId();
+  }
+
+  function getIapItemID() {
+    local _iap = ::gamesetting.iap_settings[this.item_id];
+    if (!_iap) return -1;
+    return _iap.getItemId();
+  }
+
+  function getIapPriceValue() {
+    local _iap = ::gamesetting.iap_settings[this.item_id];
+    if (!_iap) return 0;
+    return _iap.getPrice();
+  }
+
+  function isVisibleMark() {
+    if (this.mark <= 0) return false;
+    if (!checkMarkConditions()) return false;
+
+    return true;
+  }
+  function checkMarkConditions() {
+    if (!this.mark_conditions) return true;
+    return ::checkCondition(this.mark_conditions, ::gamesetting.condition_settings);
+  }
+
+  function getMarkSprite() {
+    local _sp = null;
+    switch (this.mark) {
+    case MARK_MISSION:
+      _sp = ::getSprite("/ui/image/JP/JP/shopmark_event.png");
+      break;
+    }
+
+    _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  function getSpriteRM() {
+    local _path = "/image/icon/shop/" + this.id + ".png";
+    local _sp = ::getSprite(_path);
+    if (!_sp) {
+      _sp = ::getSprite("/image/icon/shop/rm_default.png");
+    }
+    _sp.blend = SK_MIX;
+
+    return _sp;
+  }
+
+  function getSaleInfoID() {
+    return this.sale_info_id;
+  }
+}

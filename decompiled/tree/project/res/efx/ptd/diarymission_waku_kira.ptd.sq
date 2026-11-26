@@ -1,0 +1,32 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "kira1"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 4
+    start = 200, start_spr = 300
+    life = 350, life_spr = 0
+    posx = 0.0, posy = 0.5, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = -0.785398
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.471239
+    linearbits = 128
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.1, "h": 0.1 }
+  texture = "star03.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  overlay = false
+  mod = [
+  { "xyz": 7, "scale": [0.0, 1.5, 0.0], "classid": "ptcmod_scale" },
+  { "vel": 1.0, "classid": "ptcmod_vel", "vel_spr": 0.0 },
+  { "axisid": 1, "classid": "ptcmod_acc", "acc_spr": 0.0, "coord": 0, "acc": 0.5 },
+  { "color": [-106, 50], "classid": "ptcmod_color" },
+  ] },
+]

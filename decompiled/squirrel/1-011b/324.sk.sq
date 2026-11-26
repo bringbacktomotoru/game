@@ -1,0 +1,112 @@
+class ConfirmShopCostumeConditionDialog extends ::Dialog {
+  pnl_list = null;
+  reclist = null;
+  scroll = null;
+  scroll_bar = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/ConfirmShopCostumeConditionDialog.ui"));
+
+    this.pnl_list = this.view.findChild("pnl_list");
+    this.reclist = ::SKMaskView();
+    this.scroll = ::ScrollPanel(this.reclist);
+    this.scroll.dxscale = 0.0;
+    this.pnl_list.addChild(this.reclist);
+    this.pnl_list.setBuffer(true);
+    this.scroll_bar = ::ScrollBarV(this.view.findChild("pnl_scroll_bar"));
+
+    this.view.findChild("lbl_title").setText(::dict.get("shop_costume_cant_buy"));
+    this.view.findChild("lbl_condition").setText(::dict.get("shop_costume_condition"));
+    this.btn_close.findChild("lbl_close").setText(::dict.get("close"));
+  }
+
+  function setup(ss) {
+    this.reclist.clearChildren();
+    if (!ss || ss.getType() != SHOP_ITEM_TYPE_COSTUME || !ss.hasPurchaseConditions()) return;
+
+    local _offset = 0;
+    local _cnt = 0;
+    local _size_y = 0;
+    local _condition_ids = ss.getPurchaseConditions();
+    local _settings = ::gamesetting.condition_settings;
+
+    foreach (id in _condition_ids) {
+      local _setting = _settings[id];
+      if (!_setting) continue;
+
+      local _conditions = _setting.getCondition();
+      if (!_conditions) continue;
+
+      foreach (k, v in _conditions) {
+        switch (k) {
+        case "has_furniture_amount":
+          for (local i = 0; i < v.len(); i += 2) {
+            if (v[i + 1]) {
+              local _li = ListItem(v[i], v[i + 1]);
+
+              _size_y = _li.bnd.h;
+              _li.pos.y = _offset;
+              _offset += _size_y;
+              this.reclist.addChild(_li);
+              _li.matdirty = true;
+              _li.repaint();
+              _cnt++;
+
+            }
+          }
+          break;
+        }
+      }
+    }
+    _offset += _size_y * 2;
+
+    this.reclist.setRect(0, 0, this.pnl_list.bnd.w, _offset);
+    this.scroll.setScrollRect(this.reclist.bnd);
+
+    this.scroll_bar.setup(this.scroll, this.pnl_list.bnd, true);
+  }
+}
+
+class ConfirmShopCostumeConditionDialog.ListItem extends SKView {
+  view = null;
+  furniture_id = -1;
+  amount = 0;
+
+  constructor(fid, a) {
+    this.view = ::loadSKView("/ui/common/ConfirmShopCostumeConditionListItem.ui");
+    this.furniture_id = fid;
+    this.amount = a;
+
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    local _btn = this.view.findChild("btn");
+    ::TapButton(_btn, false).view.addEventListener(ACTION_EVENT, actionevent_detail);
+
+    local _fs = ::gamesetting.furniture_settings[this.furniture_id];
+    local _img_furniture = _btn.findChild("img_furniture");
+    local _sp = _fs.getIconSpriteByIndex(0);
+    _img_furniture.setSprite(_sp);
+    _img_furniture.updateLayout();
+
+    local _lbl_name = _btn.findChild("lbl_name");
+    _lbl_name.setText(_fs.getName());
+
+    local _now = ::gamesession.getUserData().getFurnitureAmount(this.furniture_id);
+    local _lbl_progress = _btn.findChild("lbl_progress");
+    _lbl_progress.setText(::dict.get("nums_slash", [::formatNumberString(_now), this.amount]));
+
+    if (_now >= this.amount) {
+      _lbl_name.setColor(1295528021);
+      _lbl_progress.setColor(1295528021);
+      _img_furniture.setColor(0xffffff55);
+    }
+  }
+
+  function actionevent_detail(e) {
+
+    local _dlg = ::FurnitureDetailDialog();
+    _dlg.setFurniture(this.furniture_id);
+    _dlg.show();
+  }
+}

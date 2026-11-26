@@ -1,0 +1,21 @@
+model =
+{
+  root = {
+    ptc = "fire_dragon.ptd"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function start() {
+    setScale(2.0);
+    startParticle();
+    pass(600);
+    kill();
+  }
+
+  function end() {
+  }
+}

@@ -1,0 +1,953 @@
+import SKViewPropertyID;
+class FurnitureFocusPanel extends HomeUI.Panel {
+  static need_camera = true;
+  static need_camera_rotate = true;
+  static need_camera_default = false;
+  static need_menu_layer = false;
+  static need_money_layer = false;
+
+  static show_tapfloor_particle = true;
+  static need_show_production_layer = true;
+
+  static unique_move_sound = ::SoundConstants.SOUND_BUTTON;
+
+  static FOCUS_MIN_DIST = 6.0;
+
+  current_model = null;
+  select_view = null;
+  product_info = null;
+  is_showed_product = false;
+
+  is_long_tapped = null;
+
+  furniture_model_list = null;
+  current_model_index = null;
+
+  time_label = null;
+  gauge_time = null;
+
+  talkwindow_layer = null;
+
+  mouseevent_layer = null;
+  btn_focuschange = null;
+  pnl_next = null;
+  btn_back = null;
+
+  btn_product_remain = null;
+  lbl_finished = null;
+  pnl_remain_atbtn = null;
+
+  interval_id = null;
+
+  constructor() {
+    current_model = null;
+    is_long_tapped = false;
+
+    _initEnableProdcutFurnitureModelList();
+    this.current_model_index = 0;
+  }
+
+  function create() {
+    return ::loadSKView("/ui/FurnitureFocusPanel.ui", ::FurnitureFocusPanel);
+  }
+
+  function added() {
+    super.added();
+
+    local _camera = getHomeUI().getGameScene().getStage().getCameraWork();
+    _camera.setInputLock(false);
+    _camera.setMinZoomDist(FOCUS_MIN_DIST, true);
+
+    this.mouseevent_layer = findChild("pnl_mouseevent_layer");
+    this.mouseevent_layer.pickable = false;
+
+    registerMouseEventReceiver(this);
+
+    local pnl_talkwindow_layer = findChild("pnl_talkwindow_layer");
+    pnl_talkwindow_layer.pickable = false;
+    this.talkwindow_layer = TalkWindowLayer(pnl_talkwindow_layer);
+    this.talkwindow_layer.setScale(0.7);
+
+    getHomeUI().production_layer.setTapView(mouseevent_layer);
+
+    this.select_view = SelectView(findChild("FurnitureFocusCostumeList"));
+    this.product_info = ProductInfo(findChild("ProductInfo"));
+
+    this.btn_focuschange = findChild("btn_focuschange");
+    if (this.furniture_model_list.len() < 2) this.btn_focuschange.visible = false;
+    else ::TapButton(this.btn_focuschange).view.addEventListener(ACTION_EVENT, actionevent);
+    this.pnl_next = this.btn_focuschange.findChild("pnl_next");
+
+    this.btn_back = findChild("btn_back");
+    ::TapButton(this.btn_back).view.addEventListener(ACTION_EVENT, actionevent_back);
+
+    this.btn_product_remain = findChild("btn_product_remain");
+    ::TapButton(this.btn_product_remain).view.addEventListener(ACTION_EVENT, actionevent_product);
+
+    this.lbl_finished = this.btn_product_remain.findChild("lbl_finished");
+    this.lbl_finished.setText(::dict.get("product_finished"));
+
+    this.pnl_remain_atbtn = this.btn_product_remain.findChild("pnl_remain");
+    this.pnl_remain_atbtn.findChild("lbl_nokori").setText(::dict.get("remain"));
+    this.gauge_time = ::ValueGauge(this.pnl_remain_atbtn.findChild("gauge_time"));
+    this.time_label = ::TimeLabel(this.pnl_remain_atbtn.findChild("lbl_remain"), 0);
+    this.time_label.setEndFunc(_updateRemain.bindenv(this));
+
+    is_showed_product = -1;
+
+    _setNextIcon()
+
+    this.startMethod("init");
+  }
+
+  function show() {
+    _updatePanel();
+  }
+
+  function removed() {
+    super.removed();
+    removeMouseEventReceiver(this);
+
+    if (this.is_showed_product > 0) {
+      this.current_model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_END);
+      this.current_model.startEffect("removeFocusEffect");
+    }
+
+    local scene = ::gamesession.getCurrentScene();
+    if (scene instanceof ::SanrioGameScene) {
+      local stage = ::gamesession.getCurrentScene().getStage();
+      local camera = stage.camera_work;
+      camera.setTrackingPointer();
+    }
+
+    if (interval_id) {
+      clearInterval(interval_id);
+      interval_id = null;
+    }
+  }
+
+  function setPanelParam(param) {
+    if ("model" in param) {
+      this.current_model = param.model;
+      local _uid = this.current_model.getFurnitureData().getUID();
+      this.current_model_index = _getCurrentFurnitureIndex(_uid)
+    }
+    if ("longTapped" in param) this.is_long_tapped = param.longTapped;
+  }
+
+  function _updatePanel() {
+    local fd = this.current_model.getFurnitureData();
+    local pd = fd.getProductData();
+
+    local cw = ::gamesession.getCurrentScene().getStage().getCameraWork();
+    cw.input_lock = false;
+    if (pd) {
+      cw.setTrackingTarget(this.current_model, false);
+    } else {
+
+      cw.setTrackingTarget(this.current_model, false, Vector3D(0.0, -0.8, 0.0));
+    }
+
+    if (fd.hasProductID() && !pd) {
+      this.select_view.setCurrentModel(this.current_model);
+      this.product_info.setData(fd);
+      this.time_label.stopCountDown();
+
+      this.startMethod("hide_remain_button");
+      if (this.is_showed_product != 1) this.startMethod("show_product");
+
+      this.is_showed_product = 1;
+    } else if (pd) {
+      _updateRemain();
+
+      this.startMethod("show_remain_button");
+      if (this.is_showed_product > 0) this.startMethod("hide_product");
+      this.is_showed_product = 0;
+    } else {
+      this.startMethod("hide_remain_button");
+      if (this.is_showed_product > 0) this.startMethod("hide_product");
+      this.is_showed_product = 0;
+    }
+
+    _updatePanelNameText();
+    _updateCameraVisible();
+    _updateFocusEffect();
+  }
+
+  function _updatePanelNameText() {
+    local fd = this.current_model.getFurnitureData();
+    local home_ui = getHomeUI();
+    home_ui.setPanelNameText(fd.getCurrentName());
+
+    local _fss = fd.getSetting().getSeriesSetting();
+    home_ui.setPageIcon(_fss.getIconSprite());
+  }
+
+  function _updateRemain() {
+    local fd = this.current_model.getFurnitureData();
+    local pd = fd.getProductData();
+
+    if (pd) {
+      local remain = pd.getRemainTime(::getServerTime());
+
+      if (remain <= 0 || pd.isFinishedAtState()) {
+        this.lbl_finished.visible = true;
+        this.pnl_remain_atbtn.visible = false;
+        this.time_label.stopCountDown();
+        this.time_label.setRepeatFunc(null, 0);
+
+      } else {
+        this.lbl_finished.visible = false;
+        this.pnl_remain_atbtn.visible = true;
+
+        this.time_label.setRemainTime(remain);
+        this.time_label.startCountDown();
+        _updateGaugeTime();
+        this.time_label.setRepeatFunc(_updateGaugeTime.bindenv(this), 1000);
+
+      }
+    }
+  }
+
+  function _updateGaugeTime() {
+    local pd = this.current_model.getFurnitureData().getProductData();
+    local product_time = pd.getProductTime();
+
+    local remain = this.time_label.getRemainTime();
+    this.gauge_time.init(remain, product_time);
+  }
+
+  function _updateFocusEffect() {
+
+    local _obj = this.current_model.getObject();
+    _obj.startEffect("focusEffectFurniture");
+  }
+
+  function _updateCameraVisible() {
+    local fd = this.current_model.getFurnitureData();
+
+    local b = false;
+    if (fd.hasProductID() && !fd.hasProductData()) {
+      parent.setVisibleCameraRotateButton(false);
+    } else {
+      parent.setVisibleCameraRotateButton(true);
+    }
+  }
+
+  function _initEnableProdcutFurnitureModelList() {
+    this.furniture_model_list = [];
+
+    local stage = ::gamesession.getCurrentScene().getStage();
+    local models = stage.house_manager.getFurnitureLayoutManager().getFurnitureModels();
+    foreach (model in models) {
+      if (!(model.hasProductID() || model.hasProductData())) continue;
+      this.furniture_model_list + model;
+    }
+  }
+
+  function _getCurrentFurnitureIndex(uid) {
+    foreach (idx, model in this.furniture_model_list) {
+      if (uid != model.getFurnitureData().getUID()) continue;
+      return idx;
+    }
+  }
+
+  function changeCurrentFurniture(model) {
+    this.current_model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_END);
+    this.current_model.startEffect("removeFocusEffect");
+
+    local _uid = model.getFurnitureData().getUID();
+    this.current_model_index = _getCurrentFurnitureIndex(_uid);
+    this.current_model = furniture_model_list[this.current_model_index];
+    _updatePanel();
+  }
+
+  function _changeNextFurnitureModel(add_idx) {
+    if (this.furniture_model_list.len() == 1) return;
+
+    this.current_model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_END);
+    this.current_model.startEffect("removeFocusEffect");
+
+    local _next_idx = _getNextIndex(add_idx);
+    if (_next_idx == this.current_model_index) return;
+    this.current_model_index = _next_idx;
+    this.current_model = this.furniture_model_list[this.current_model_index];
+    _setNextIcon()
+    _updatePanel();
+
+    ::tutorial_manager.checkAndStartTutorialAtMovePanel(this);
+  }
+
+  function _getNextIndex(add_idx) {
+    local _idx = this.current_model_index + add_idx;
+    local _len = this.furniture_model_list.len();
+    if (_idx < 0) {
+      _idx += _len;
+    } else {
+      _idx = _idx % _len;
+    }
+    return _idx;
+  }
+
+  function _setNextIcon() {
+    if (this.furniture_model_list.len() == 1) return;
+
+    local _next_idx = _getNextIndex(1);
+    if (_next_idx == this.current_model_index) return;
+
+    local _fd = this.furniture_model_list[_next_idx].getFurnitureData();
+    if (!_fd) return;
+
+    this.pnl_next.clearChildren();
+    local _sp = _fd.getCurrentIconSprite();
+    local _icon = SKImageView(_sp);
+    _icon.setRect(0, 0, this.pnl_next.bnd.w, this.pnl_next.bnd.h);
+    this.pnl_next.addChild(_icon);
+  }
+
+  function getCurrentModel() {
+    return this.current_model;
+  }
+
+  function shortenProduct() {
+    local product_data = this.current_model.getProductData();
+
+    local dlg = ::SimpleDialog2();
+    local _complete_text = null;
+    switch (product_data.getType()) {
+    case ::ProductData.TYPE_PRODUCT:
+      dlg.lbl_msg.setText(::dict.get("confirm_shortentime_product"));
+      dlg.lbl_caution.setText(::dict.get("confirm_caution_product"));
+      _complete_text = ::dict.get("product_shorten");
+      break;
+    case ::ProductData.TYPE_LEVELUP:
+      dlg.lbl_msg.setText(::dict.get("confirm_shortentime_levelup"));
+      dlg.lbl_caution.setText(::dict.get("confirm_caution_levelup"));
+      _complete_text = ::dict.get("product_shorten_levelup");
+      break;
+    case ::ProductData.TYPE_DELIVER:
+      dlg.lbl_msg.setText(::dict.get("confirm_shortentime_deliver"));
+      dlg.lbl_caution.setText(::dict.get("confirm_caution_deliver"));
+      _complete_text = ::dict.get("product_shorten_deliver");
+      break;
+    }
+    local remaining = product_data.getRemainTime(::getServerTime());
+    dlg.setShorten(remaining, ::SimpleDialog2.TYPE_PRODUCT);
+    dlg.show();
+    if (!dlg.ret) return;
+
+    local pm = ::gamesession.getCurrentScene().getProductionManager();
+    pm.setAPIResponseFunc(_updatePanel.bindenv(this));
+    pm.shortenProductTime(product_data.getProducerID());
+
+    ::gamesession.messagelayer.closeAllMessage();
+    local _message = ::Message();
+    _message.setMsec(4 * 1000);
+    _message.setText(_complete_text);
+    _message.setFontSize(32);
+    _message.setPosition(::screenWidth / 2.0, ::screenHeight / 2.0);
+    _message.show();
+  }
+
+  function cancelProduct() {
+    local product_data = this.current_model.getProductData();
+
+    local dlg = SimpleDialog2();
+    if (product_data instanceof ::FurnitureProductData) {
+      dlg.lbl_msg.setText(::dict.get("product_cancel"));
+      dlg.lbl_caution.setText(::dict.get("product_cancel_caution"));
+    } else if (product_data instanceof ::FurnitureLevelupData) {
+      dlg.lbl_msg.setText(::dict.get("product_cancel_levelup"));
+      dlg.lbl_caution.setText(::dict.get("product_cancel_levelup_caution"));
+    } else {
+      dlg.lbl_msg.setText(::dict.get("product_cancel_deliver"));
+      dlg.lbl_caution.setText(::dict.get("product_cancel_deliver_caution"));
+    }
+    dlg.show();
+
+    while (!dlg.isClosing()) {
+      suspend();
+    }
+    if (dlg.ret == 0) return;
+
+    local pm = ::gamesession.getCurrentScene().getProductionManager();
+    pm.setAPIResponseFunc(_updatePanel.bindenv(this));
+    if (product_data instanceof ::FurnitureDeliverData) {
+      pm.cancelDeliverProduct(product_data.getProducerID());
+    } else {
+      pm.cancelProduct(product_data.getProducerID());
+      if (product_data instanceof ::FurnitureLevelupData) {
+        this.current_model.startEffect(::FurnitureModel.SCRIPT_INTERRUPTED_LEVELUP);
+      }
+    }
+
+    local _text = null;
+    if (product_data instanceof ::FurnitureProductData) {
+      _text = ::dict.get("product_interrupted");
+    } else if (product_data instanceof ::FurnitureLevelupData) {
+      _text = ::dict.get("product_interrupted_levelup");
+    }
+    if (!_text) return;
+
+    local _message = ::Message();
+    _message.setMsec(4 * 1000);
+    _message.setText(_text);
+    _message.setFontSize(32);
+    _message.setPosition(::screenWidth / 2.0, ::screenHeight / 2.0);
+    _message.show();
+  }
+
+  function startLevelupProduct() {
+    local fd = this.current_model.getFurnitureData();
+    local pm = ::gamesession.getCurrentScene().getProductionManager();
+    pm.setAPIResponseFunc(_updatePanel.bindenv(this));
+    pm.registerFurnitureLevelupProduct(fd);
+
+    local _product_data = this.current_model.getFurnitureData().getProductData();
+    if (_product_data.getType() != ::ProductData.TYPE_LEVELUP) return;
+
+    this.current_model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_END);
+    this.current_model.startEffect(::FurnitureModel.SCRIPT_START_LEVELUP);
+
+    ::gamesession.messagelayer.closeAllMessage();
+    local _message = ::Message();
+    _message.setMsec(3 * 1000);
+    _message.setText(::dict.get("furniture_level_up_start"));
+    _message.setFontSize(32);
+    _message.setPosition(::screenWidth / 2.0, ::screenHeight / 2.0);
+    _message.show();
+  }
+
+  function actionevent(e) {
+    e.consume();
+
+    switch (e.src) {
+
+    case this.btn_focuschange:
+      _changeNextFurnitureModel(1);
+      break;
+    }
+  }
+
+  function actionevent_product(e) {
+    e.consume();
+
+    if (this.lbl_finished.visible) {
+      local _balloon = ::gamesession.getCurrentScene().getUI().getProductionLayer().getBallon(this.current_model);
+      if (_balloon) _balloon.releaseFunc();
+    }
+    else {
+
+      local pd = this.current_model.getProductData();
+
+      local dlg = ::ConfirmProductShortenTimeDialog();
+      dlg.setData(this.current_model.getFurnitureData());
+      dlg.show();
+
+      while (!dlg.isClosing()) {
+        suspend();
+      }
+      if (dlg.ret == 1) {
+        shortenProduct();
+      } else if (dlg.ret == 2) {
+        cancelProduct();
+      }
+    }
+  }
+
+  function actionevent_back(e) {
+    e.consume();
+
+    local _scene = getHomeUI().getGameScene();
+    if (getclass(_scene) == ::SanrioGameScene) {
+      local _camera = _scene.getStage().getCameraWork();
+      _camera.setMinZoomDist(::StageScene.CameraWork.MIN_ZOOM_DIST);
+    }
+    getHomeUI().movePanel(::HomeTopPanel);
+  }
+
+  function mouseReleased(x, y) {
+    super.mouseReleased(x, y);
+
+    if (!_CanControllMouseEvent()) return;
+
+    local game_scene = ::gamesession.getCurrentScene();
+    if (getclass(game_scene) != ::SanrioGameScene) return;
+    game_scene.sceneTapped(x, y);
+  }
+  function mouseDragged(vec_x, vec_y) {
+    super.mouseDragged(vec_x, vec_y);
+
+    if (!_CanControllMouseEvent()) return;
+
+    local game_scene = ::gamesession.getCurrentScene();
+    game_scene.getStage().camera_work.setTrackingPointer();
+    game_scene.moveCamera_byScreenDist(vec_x, vec_y);
+  }
+  function mousePinched(rate) {
+    local game_scene = ::gamesession.getCurrentScene();
+    game_scene.zoomCamera(Math.clamp(rate, 0.0, 2.0), true);
+  }
+
+  function longTapped(x, y) {
+    super.longTapped(x, y);
+    if (!_CanControllMouseEvent()) return;
+
+    local game_scene = ::gamesession.getCurrentScene();
+    if (getclass(game_scene) != ::SanrioGameScene) return;
+    game_scene.getUI().clearPanelHistory();
+    game_scene.sceneTapped(x, y, true);
+  }
+  function doubleTapped() {
+    local stage = ::gamesession.getCurrentScene().getStage();
+    stage.zoomNextFixedRate();
+  }
+
+  function _CanControllMouseEvent() {
+    if (!current_model.hasProductData()) return false;
+    if (current_model.getProductState() == ::ProductData.STATE_NONE) return false;
+    return true;
+  }
+
+  function addTalkWindow(sk3d, talk_key, chara_key, big = false, small = false) {
+    talkwindow_layer.addTalk(sk3d, talk_key, chara_key);
+  }
+  function removeAllTalkWindow() {
+    talkwindow_layer.removeAllTalkWindow();
+  }
+}
+
+class FurnitureFocusPanel.ProductInfo {
+  data = null;
+  gauge_exp = null;
+
+  enable_lvup = null;
+
+  view = null;
+  lbl_lv = null;
+  lbl_health = null;
+  lbl_time = null;
+  lbl_exp = null;
+  lbl_lvup = null;
+  btn_lvup = null;
+  btn_detail = null;
+  img_bg_ng = null;
+  img_bg_ok = null;
+
+  constructor(view) {
+    this.view = view;
+
+    this.lbl_lv = this.view.findChild("lbl_lv");
+    this.lbl_health = this.view.findChild("lbl_health");
+    this.lbl_time = this.view.findChild("lbl_time");
+    this.lbl_exp = this.view.findChild("lbl_exp");
+    this.gauge_exp = ValueGauge(this.view.findChild("bar_exp"));
+
+    this.btn_lvup = this.view.findChild("btn_lvup");
+    ::TapButton(this.btn_lvup).view.addEventListener(ACTION_EVENT, actionevent_lvup);
+    this.btn_detail = this.view.findChild("btn_detail");
+    ::TapButton(this.btn_detail).view.addEventListener(ACTION_EVENT, actionevent_detail);
+
+    this.lbl_lvup = this.btn_lvup.findChild("lbl_lvup");
+    this.lbl_lvup.setText(::dict.get("can_level_up"));
+
+    this.img_bg_ng = this.btn_lvup.findChild("img_bg_ng");
+    this.img_bg_ok = this.btn_lvup.findChild("img_bg_ok");
+
+    this.enable_lvup = false;
+  }
+
+  function setData(data) {
+    this.data = data;
+
+    this.lbl_lv.setText(::dict.get("nums_level", [this.data.getLevel()]));
+
+    local _product = this.data.getProductByLevel();
+    this.lbl_health.setText(_product.health);
+    this.lbl_time.setText(::getTimeText(_product.time, 2));
+
+    local exp_now = this.data.getExp();
+    local exp_max = this.data.getMaxExp();
+
+    this.lbl_exp.setText(::dict.get("nums_ratio", [this.data.getExpRatio()]))
+    this.gauge_exp.init(exp_now, exp_max);
+
+    this.enable_lvup = this.data.isEnableLevelUp();
+
+    if (this.enable_lvup) {
+      this.img_bg_ng.setVisible(false);
+      this.img_bg_ok.setVisible(true);
+      this.view.startMethod("start_appeal");
+    } else {
+      this.img_bg_ng.setVisible(true);
+      this.img_bg_ok.setVisible(false);
+      this.view.startMethod("stop_appeal");
+    }
+
+  }
+
+  function actionevent_lvup(e) {
+    e.consume();
+
+    local dlg = ::ConfirmLevelUpFurnitureDialog(this.data);
+    dlg.show();
+
+    while (!dlg.isClosing()) {
+      suspend();
+    }
+
+    if (dlg.ret > 0) {
+      this.view.parent.startLevelupProduct();
+    }
+  }
+  function actionevent_detail(e) {
+    e.consume();
+
+    local dlg = ::FurnitureInfoDialog();
+    dlg.setFurnitureData(this.data, ::FurnitureInfoDialog.MODE_DETAIL);
+    dlg.show();
+  }
+}
+
+class FurnitureFocusPanel.SelectView extends SKView {
+  static SCRIPT_SELECT_NONE = 0;
+  static SCRIPT_SELECTING = 1;
+  static SCRIPT_SELECTED = 2;
+
+  costume_list = null;
+  icon_list = null;
+  selected_cos_table = null;
+  remain_bone_list = null;
+  model = null;
+
+  view = null;
+  pnl_list = null;
+
+  constructor(view) {
+    this.view = view;
+    setRect(this.view.pos.x, this.view.pos.y, this.view.bnd.w, this.view.bnd.h);
+
+    this.pnl_list = this.view.findChild("pnl_icon_list");
+
+    this.model = null;
+    this.selected_cos_table = {};
+
+    _setCostumeIconList();
+  }
+
+  function _setCostumeIconList() {
+    local ud = ::gamesession.getUserData();
+    local rcs = ud.getCurrentRoomResideCharas();
+
+    this.costume_list = [];
+
+    for (local i = 0; i < rcs.len(); i++) {
+      if (i % 2 == 0) {
+        this.costume_list[0] <- rcs[i];
+      } else {
+        this.costume_list + rcs[i];
+      }
+    }
+
+    this.icon_list = [];
+
+    local cx = this.pnl_list.bnd.w / 2.0;
+    local _d = 0;
+    if (this.costume_list.len() < 8) {
+      _d = this.view.bnd.w / 2.0 - cx;
+    }
+    local sx = cx - (132 * this.costume_list.len() / 2.0) - _d;
+    local idx_max = this.costume_list.len() - 1;
+
+    foreach (idx, cos_id in this.costume_list) {
+      local cd = ud.getCostumeData(cos_id);
+      local icon = CharaIcon(cd);
+      icon.setFunc(tapCostumeIcon.bindenv(this));
+      if (idx == idx_max) icon.setVisibleNextLine(false);
+
+      this.pnl_list.addChild(icon);
+      icon.pos.x = sx + idx * icon.bnd.w;
+
+      this.icon_list + icon;
+    }
+  }
+
+  function setCurrentModel(model) {
+    this.model = model;
+
+    _updateCharaIconState();
+    _setAddHealth();
+
+    this.selected_cos_table = {};
+
+    this.remain_bone_list = [];
+    local fs = this.model.getFurnitureData().getSetting();
+    local pos_list = fs.getActionPosData();
+    foreach (pos in pos_list) {
+      local bone = pos["bone"] || null
+      this.remain_bone_list + bone;
+    }
+
+    this.model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_START);
+    this.model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_CHANGE, this.remain_bone_list[0], SCRIPT_SELECTING);
+
+    nextTappedBehavior();
+  }
+
+  function _updateCharaIconState() {
+    foreach (icon in this.icon_list) {
+      icon.updateState();
+      icon.updateCostumeRequest(model.getFurnitureData());
+    }
+  }
+
+  function nextTappedBehavior() {
+    local _next_start = this.remain_bone_list.len() - 1 <= 0;
+    foreach (icon in this.icon_list) {
+      if (icon.getState() != CharaIcon.STATE_ENABLE) icon.setTappedSE(SoundConstants.SOUND_PRODUCT_DECIDE);
+      else icon.setTappedSE(_next_start ? SoundConstants.SOUND_PRODUCT_START : SoundConstants.SOUND_PRODUCT_DECIDE);
+      icon.lastSelect(this.remain_bone_list.len() == 0);
+    }
+  }
+
+  function _setAddHealth() {
+    if (!this.model) return;
+
+    local _pr = this.model.getFurnitureData().getProductByLevel();
+    foreach (icon in this.icon_list) {
+      icon.setAddHealth(_pr.health);
+    }
+  }
+
+  function tapCostumeIcon(cos_id, is_add) {
+    local _object = this.model.getObject();
+    if (is_add) {
+      this.selected_cos_table[cos_id] <- this.remain_bone_list[0];
+      local bone = delete this.remain_bone_list[0];
+
+      if (this.remain_bone_list.len() == 0) {
+        this.model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_END);
+        _startProduct();
+      } else {
+        this.model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_CHANGE, bone, SCRIPT_SELECTED);
+        this.model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_CHANGE, this.remain_bone_list[0], SCRIPT_SELECTING);
+      }
+    } else {
+      this.model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_CHANGE, this.remain_bone_list[0], SCRIPT_SELECT_NONE);
+
+      local delete_bone = delete this.selected_cos_table[cos_id];
+      this.remain_bone_list[0] <- delete_bone;
+      this.model.startEffect(::FurnitureModel.SCRIPT_PRODUCTSELECT_CHANGE, this.remain_bone_list[0], SCRIPT_SELECTING);
+    }
+    nextTappedBehavior();
+  }
+
+  function _startProduct() {
+    local game_scene = ::gamesession.getCurrentScene();
+
+    local pm = game_scene.getProductionManager();
+    local furniture_data = this.model.getFurnitureData();
+
+    local cos_list = [];
+    local select_icons = [];
+    foreach (cos_id, _ in this.selected_cos_table) {
+      cos_list + cos_id;
+
+      foreach (icon in this.icon_list) {
+        if (cos_id != icon.getCostumeID()) continue;
+        select_icons + icon;
+        break;
+      }
+    }
+
+    local room_idx = ::gamesession.getUserData().getCurrentRoomIndex();
+
+    this.view.startMethod(function() {
+      local ret = pm.registerFurnitureProduct(furniture_data, cos_list, room_idx);
+      if (ret) {
+        local _scene = ::gamesession.getCurrentScene();
+        if (getclass(_scene) == ::SanrioGameScene) {
+          local _home_ui = _scene.getUI();
+          _home_ui.setEventStopper(true);
+        }
+
+        foreach (icon in select_icons) {
+          icon.startFixedAnime();
+        }
+        pass(1000);
+
+        this.model.startEffect("removeFocusEffect");
+        this.model.setFurnitureAction(this.selected_cos_table);
+
+        _scene = ::gamesession.getCurrentScene();
+        if (getclass(_scene) == ::SanrioGameScene) {
+          local _home_ui = _scene.getUI();
+          _home_ui.setEventStopper(false);
+        }
+
+        _moveHomeTopPanel();
+      }
+    }.bindenv(this));
+
+  }
+
+  function _moveHomeTopPanel() {
+    ::gamesession.getCurrentScene().getUI().movePanel(::HomeTopPanel);
+  }
+}
+
+class FurnitureFocusPanel.SelectView.CharaIcon extends SKViewEx {
+  data = null;
+  add_health = null;
+
+  state = null;
+  static STATE_ENABLE = 1;
+  static STATE_SELECTED = 2;
+  static STATE_PRODUCTING = -1;
+  static STATE_WORKING = -2;
+
+  func = null;
+
+  view = null;
+  btn = null;
+  lbl_lv = null;
+  lbl_error = null;
+  gauge_health = null;
+  img_line = null;
+  img_icon_quest = null;
+
+  img_decide = null;
+
+  tap_button = null;
+  last_select = false;
+
+  constructor(data) {
+    this.view = ::loadSKView("/ui/common/FurnitureFocusCostumeIcon.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    this.btn = this.view.findChild("btn");
+    this.tap_button = ::TapButton(this.btn);
+    this.tap_button.view.addEventListener(ACTION_EVENT, actionevent);
+
+    this.lbl_lv = this.btn.findChild("lbl_lv");
+    this.gauge_health = ::GrowingValueGauge2Line(this.btn.findChild("gauge_health"));
+    this.img_line = this.view.findChild("img_line_r");
+    this.lbl_error = this.view.findChild("lbl_error");
+    this.img_icon_quest = this.view.findChild("img_icon_quest");
+    this.img_decide = this.view.findChild("img_decide");
+    this.img_decide.setVisible(false);
+
+    this.data = data;
+    this.add_health = 0;
+    this.last_select = false;
+
+    _setupInit();
+  }
+
+  function setTappedSE(sound) {
+    this.tap_button.setTappedSE(sound);
+  }
+
+  function lastSelect(b) {
+    this.last_select = b;
+  }
+
+  function _setupInit() {
+    this.lbl_lv.setText(::dict.get("nums_level", [this.data.getLevel()]));
+
+    local health_now = this.data.getHealth();
+    this.gauge_health.init(health_now, this.data.getMaxHealth(), health_now + this.add_health);
+
+    local cs = this.data.getSetting();
+    local pnl_icon = this.btn.findChild("pnl_icon");
+    local icon = SKImageView(cs.getSpriteCostumeIcon());
+    icon.setRect(0, 0, pnl_icon.bnd.w, pnl_icon.bnd.h);
+    pnl_icon.addChild(icon);
+
+    updateState();
+  }
+
+  function getCostumeID() {
+    return this.data.getID();
+  }
+
+  function getState() {
+    return state;
+  }
+
+  function updateState() {
+    local scene = ::gamesession.getCurrentScene();
+    if (scene.getProductionManager().isProducting(this.data.getID())) {
+      _changeState(STATE_PRODUCTING);
+    } else if (this.data.hasWorkData()) {
+      _changeState(STATE_WORKING);
+    } else {
+      _changeState(STATE_ENABLE);
+    }
+  }
+
+  function updateCostumeRequest(furniture_data) {
+    local _scene = ::gamesession.getCurrentScene();
+    if (getclass(_scene) != ::SanrioGameScene) return;
+    local _request_manager = _scene.getCostumeRequestManager();
+
+    local _b = _request_manager.hasValidRequest(data.getID(), ::CostumeRequestSetting.TYPE_OYUGI, furniture_data.getFurnitureType());
+    this.img_icon_quest.setVisible(_b);
+  }
+
+  function setAddHealth(health) {
+    this.add_health = health;
+    local health_now = this.data.getHealth();
+    this.gauge_health.setPredictValue(health_now + this.add_health);
+  }
+
+  function setFunc(func) {
+    this.func = func;
+  }
+
+  function setVisibleNextLine(b) {
+    this.img_line.setVisible(b);
+  }
+
+  function _changeState(state) {
+    local sp = getScreenPos("FurnitureFocusPanel");
+
+    this.state = state;
+    if (this.state != STATE_ENABLE) this.setTappedSE(SoundConstants.SOUND_PRODUCT_DECIDE);
+    if (this.state == STATE_ENABLE) {
+      this.view.startMethod("select_enable");
+    } else if (this.state == STATE_SELECTED) {
+      this.view.startMethod("select_selected", sp.x, sp.y);
+    } else {
+      this.view.startMethod("select_disable");
+    }
+
+    this.img_decide.setVisible(!this.last_select && this.state == STATE_SELECTED);
+  }
+
+  function startFixedAnime() {
+    this.view.startMethod("select_fixed");
+  }
+
+  function actionevent(e) {
+    e.consume();
+
+    if (this.state > 0) {
+      if (this.state == STATE_ENABLE) {
+        func(this.data.getID(), true);
+        _changeState(STATE_SELECTED);
+      } else {
+        func(this.data.getID(), false);
+        _changeState(STATE_ENABLE);
+      }
+    } else {
+      if (this.state == STATE_PRODUCTING) {
+        this.lbl_error.setText(::dict.get("producting"));
+      } else {
+        this.lbl_error.setText(::dict.get("working"));
+      }
+      this.view.startMethod("show_error_text");
+    }
+  }
+}

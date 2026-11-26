@@ -1,0 +1,18 @@
+return {
+  modeldata = "skillet.mdl"
+  bnd = [0.0, -0.100069, -0.437059, 0.186837, 0.239724, 0.464963]
+
+  material = [
+  {
+    name = "skillet"
+    tec = "shading.basic"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 2139062271
+    Ke = 151587327
+    shiness = 20.0
+    texture0 = "tex/skillet.png"
+  }
+
+  ]
+}

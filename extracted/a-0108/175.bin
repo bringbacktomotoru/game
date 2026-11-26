@@ -1,0 +1,132 @@
+{
+  "ID": "87367ca5-b303-46dc-a3fa-8c517172b119",
+  "Version": "2.3.3.0",
+  "Name": "CharaIconItem",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 524,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/ImageFile.png",
+              "Plist": ""
+            },
+            "Scale9Width": 46,
+            "Scale9Height": 46,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 34.9999,
+              "Y": 42.9999
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.6143
+            },
+            "PreSize": {
+              "X": 0.6571,
+              "Y": 0.6571
+            },
+            "LeftMargin": 11.9999,
+            "RightMargin": 12.0001,
+            "TopMargin": 4.0001,
+            "BottomMargin": 19.9999,
+            "Tag": 525,
+            "ActionTag": -1293086048,
+            "Size": {
+              "X": 46.0,
+              "Y": 46.0
+            },
+            "Name": "img_icon",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 20,
+            "LabelText": "配置中",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 34.9999,
+              "Y": 12.6157
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.1802
+            },
+            "PreSize": {
+              "X": 0.9143,
+              "Y": 0.3429
+            },
+            "LeftMargin": 2.9999,
+            "RightMargin": 3.0001,
+            "TopMargin": 45.3843,
+            "BottomMargin": 0.6157,
+            "Tag": 526,
+            "ActionTag": 1048724533,
+            "Size": {
+              "X": 64.0,
+              "Y": 24.0
+            },
+            "Name": "lbl_added",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 70.0,
+          "Y": 70.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../Default/ImageFile.png",
+        "../font/logotypejp_mp_b_1.ttf"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

@@ -1,0 +1,102 @@
+class PMRectEditor extends SKBoxLayoutView {
+  static fa = FontAttribute(Fonts.ui, 12, 255, SK_FONT_BOLD);
+
+  editor = null;
+  canvas = null;
+
+  pm = null;
+  bordersp = null;
+  mesh = null;
+
+  rect = null;
+  rectbars = null;
+
+  rectheader = null;
+
+  constructor(e) {
+    super();
+
+    editor = e;
+    canvas = e.canvas;
+    bordersp = #Sprite() { color = 0xccccccff; bnd.set(0, 0, 100, 1); };
+
+    rect = Rect3D(0, 0, 0, 0, 0, 0);
+    rectbars = [];
+
+    rectheader = SKView();
+    rectheader.setRect(0, 0, 266, 24);
+    local lbl = SKLabelView("Rect", fa);
+    lbl.setRect(16, 2, 100, 16);
+    rectheader.addChild(lbl);
+    addChild(rectheader)
+
+    rectbars + addValueBarPos();
+    rectbars + addValueBarRst();
+
+    addEventListener(ACTION_EVENT, actionevent);
+  }
+
+  function addValueBarPos() {
+    local bar = Input3ValueBar("POS", -20, 20, 1000, "%.3f");
+    bar.setRect(0, 0, 266, 26);
+    bar.setValue([0.0, 0.0, 0.0]);
+    addChild(bar);
+    return bar;
+  }
+  function addValueBarRst() {
+    local bar = Input3ValueBar("RST", 0, 20, 1000, "%.3f");
+    bar.setRect(0, 0, 266, 26);
+    bar.setValue([0.0, 0.0, 0.0]);
+    addChild(bar);
+    return bar;
+  }
+
+  function setPolygonMesh(p) {
+    pm = p;
+    local _bnd = pm.bnd;
+    rect = pm.bnd;
+
+    local _pos = [rect.x, rect.y, rect.z];
+    local _rst = [rect.r, rect.s, rect.t];
+
+    rectbars[0].setValue(_pos);
+    rectbars[1].setValue(_rst);
+
+    _createWire();
+  }
+
+  function _createWire() {
+    if (mesh) canvas.scn.removeObject(mesh);
+
+    local _mesh = createWireBoundsMesh(rect);
+    mesh = SK3DObject();
+
+    mesh.setPolygonMesh(_mesh);
+    mesh.updateMatrix();
+    canvas.scn.addObject(mesh);
+  }
+
+  function setVisibleRectWire(b) {
+    if (!mesh) return;
+    mesh.setVisible(b);
+  }
+
+  function actionevent(e) {
+    local _r = [];
+    for (local i = 0; i < rectbars.len(); i++) {
+      local bar = rectbars[i];
+      local v = bar.getValue();
+      _r + v[0];
+      _r + v[1];
+      _r + v[2];
+    }
+    rect.x = _r[0];
+    rect.y = _r[1];
+    rect.z = _r[2];
+    rect.r = _r[3];
+    rect.s = _r[4];
+    rect.t = _r[5];
+
+    _createWire();
+  }
+}

@@ -1,0 +1,911 @@
+class PanelMissionPanel extends ::HomeUI.Panel {
+  static need_money_layer = false;
+  static need_rank_layer = false;
+  static disable_long_tap = true;
+
+  static PIECE_NUM_FOUR = 4;
+  static PIECE_NUM_NINE = 9;
+
+  setting_list = null;
+  view_index = null;
+  component = null;
+
+  show_desc_midx = null;
+
+  init_pmid = null;
+  next_pm_show = null;
+  init_roomid = null;
+
+  view = null;
+  pnl_missionlist = null;
+  pnl_mission_info = null;
+  pnl_remain = null;
+  pnl_disable = null;
+
+  lbl_mission_desc = null;
+  lbl_mission_idx = null;
+  lbl_mission_prog = null;
+  lbl_remain = null;
+
+  btn_r = null;
+  btn_l = null;
+  btn_detail_desc = null;
+  btn_back = null;
+
+  is_animating = false;
+
+  img_bg = null;
+
+  function added() {
+    super.added();
+    registerMouseEventReceiver(this);
+    this.view = ::loadSKView("/ui/PanelMissionPanel.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    local _pnl_mouseevent = this.view.findChild("pnl_mouseevent");
+    _pnl_mouseevent.addEventListener(MOUSE_EVENT, mouseevent);
+
+    this.pnl_missionlist = this.view.findChild("pnl_missionlist");
+    this.pnl_remain = this.view.findChild("pnl_remain");
+    this.lbl_remain = this.pnl_remain.findChild("lbl_num");
+
+    this.pnl_mission_info = this.view.findChild("pnl_mission_info");
+    this.pnl_mission_info.setVisible(false);
+    this.lbl_mission_desc = this.pnl_mission_info.findChild("lbl_text");
+    this.lbl_mission_idx = this.pnl_mission_info.findChild("lbl_index");
+    this.lbl_mission_prog = this.pnl_mission_info.findChild("lbl_progress");
+    this.img_bg = this.view.findChild("img_bg");
+    this.btn_detail_desc = this.pnl_mission_info.findChild("btn_detail");
+    ::TapButton(this.btn_detail_desc).view.addEventListener(ACTION_EVENT, actionevent_detaildesc);
+
+    this.btn_back = this.view.findChild("btn_back");
+    ::TapButton(this.btn_back).view.addEventListener(ACTION_EVENT, actionevent_back);
+
+    this.pnl_disable = this.view.findChild("pnl_disable");
+    this.pnl_disable.enabled = false;
+
+    this.btn_r = this.view.findChild("btn_R");
+    ::TapButton(this.btn_r).view.addEventListener(ACTION_EVENT, actionevent_change);
+    this.btn_l = this.view.findChild("btn_L");
+    ::TapButton(this.btn_l).view.addEventListener(ACTION_EVENT, actionevent_change);
+
+    this.pnl_remain.findChild("lbl_text1").setText(::dict.get("diary_complete_made"));
+
+    this.show_desc_midx = -1;
+
+    _setupSettingList();
+    this.component = null;
+    _init();
+  }
+
+  function removed() {
+    super.removed();
+    removeMouseEventReceiver(this);
+  }
+
+  function setPanelParam(param) {
+    this.init_pmid = "panelmission_id" in param ? param.panelmission_id : -1;
+    this.next_pm_show = "next_pm_show" in param ? param.next_pm_show : false;
+    this.init_roomid = "room_id" in param ? param.room_id : -1;
+  }
+
+  function showed() {
+    local _pmd = this.component.getPanelMissionData();
+    if (!_pmd) return;
+
+    if (_pmd.canReceiveReward()) {
+      _receiveRewardProcess(_pmd.getID());
+    }
+
+    local _udl = ::gamesession.getUserDataLocal();
+    local _dlg = _udl.getPanelMissionRewardDialog();
+    if (_dlg) {
+      _dlg.show(true, 1000);
+      _udl.setPanelMissionRewardDialog(null);
+    }
+
+    if (this.next_pm_show) {
+      if (this.view_index == this.setting_list.len() - 1) {
+        local _dlg = ::PanelMissionAllCompleteDialog();
+        _dlg.show();
+      } else {
+        local _ud = ::gamesession.getUserData();
+        local _pmd = _ud.getCurrentPanelMission();
+        local _idx = -1;
+        if (_pmd) {
+          foreach (idx, setting in this.setting_list) {
+            if (_pmd.getID() != setting.getID()) continue;
+            _idx = idx;
+            break;
+          }
+        } else {
+
+          _idx = this.view_index + 1;
+        }
+        sleep(500);
+        _changePanelMission(_idx);
+      }
+      return;
+    }
+
+    if (_pmd.isShowEventSceneForce()) {
+      newthread().start(function() {
+        disableTap(true);
+        local _list = this.component.getPieceList();
+        if (_list) {
+          if (_list.len() <= PIECE_NUM_FOUR) this.view.startMethod("completeDiaryFourPiece");
+          else this.view.startMethod("completeDiary");
+        }
+        ::playJingle(::SoundConstants.JINGLE_COMPLETE_PANEL, 2000);
+        while (this.view.isMethodRunning()) {
+          suspend();
+        }
+        _showEventScene(this.setting_list[this.view_index]);
+      }.bindenv(this), this);
+      return;
+    } else {
+      _checkAndStartAnimeSetPiece();
+    }
+  }
+
+  function _init() {
+    local _ud = ::gamesession.getUserData();
+    local _pmd = null;
+    if (this.init_pmid > 0) {
+      _pmd = _ud.getPanelMissionData(this.init_pmid);
+    } else {
+      if (this.init_roomid < 0) {
+        _pmd = _ud.getCurrentPanelMission();
+        if (!_pmd) {
+          local _setting = this.setting_list[this.setting_list.len() - 1];
+          _pmd = _ud.getPanelMissionData(_setting.getID());
+        }
+      } else {
+        local _red = _ud.getRoomEditData(this.init_roomid);
+        if (_red) {
+          _pmd = _red.getPanelMissionData();
+          if (!_pmd) {
+            local _setting = this.setting_list[this.setting_list.len() - 1];
+            _pmd = _ud.getPanelMissionData(_setting.getID());
+          }
+        } else {
+
+          local _setting = this.setting_list[0];
+          _pmd = _ud.getPanelMissionData(_setting.getID());
+        }
+      }
+    }
+
+    foreach (idx, setting in this.setting_list) {
+      if (_pmd.getID() != setting.getID()) continue;
+      this.view_index = idx;
+      break;
+    }
+
+    local _cmp = _createMissionListComponent(this.view_index, _pmd);
+    this.pnl_missionlist.addChild(_cmp);
+    this.component = _cmp;
+
+    updateRemainMissionNum(_cmp.getRemainMissionsNum());
+    _updateLRButton();
+
+    local _rid = ::gamesession.getUserData().getCurrentRoomEditData().getRoomID();
+    local _room_setting = ::gamesetting.room_settings[_rid];
+    _changeBackGround(_room_setting.getMissionPanelBGImagePath());
+
+  }
+
+  function _setupSettingList() {
+    this.setting_list = [];
+    local _ud = ::gamesession.getUserData();
+    local _rid = this.init_roomid < 0 ? _ud.getCurrentRoomUID() : this.init_roomid;
+
+    foreach (setting in ::gamesetting.panel_mission_settings) {
+      if (_rid != setting.getRoomID()) continue;
+      this.setting_list + setting;
+    }
+
+    this.setting_list = ::sortBy(this.setting_list, function(setting) { return setting.getPriority() });
+    this.setting_list = ::reverse(this.setting_list);
+  }
+
+  function _createMissionListComponent(idx, pmd = null) {
+    local _cmp = MissionListComponent(this, this.setting_list[idx], pmd);
+    return _cmp;
+  }
+
+  function _changePanelMission(idx, init = false) {
+    if (!init && this.view_index == idx) return;
+    local _sub = idx - this.view_index;
+    this.view_index = idx;
+
+    newthread().start(function() {
+      disableTap(true);
+      this.is_animating = true;
+
+      this.pnl_mission_info.setVisible(false);
+      this.pnl_remain.setVisible(false);
+
+      local _scp = _sub > 0 ? "outToL" : "outToR";
+      this.view.startMethod(_scp);
+      while (this.view.isMethodRunning()) {
+        suspend();
+      }
+
+      local _setting = this.setting_list[this.view_index];
+      local _pmd = ::gamesession.getUserData().getPanelMissionData(_setting.getID());
+      local _cmp = _createMissionListComponent(this.view_index, _pmd);
+      this.pnl_missionlist.clearChildren();
+      this.pnl_missionlist.addChild(_cmp);
+      this.component = _cmp;
+
+      local _remain = _cmp.getRemainMissionsNum();
+      updateRemainMissionNum(_remain);
+
+      _scp = _sub > 0 ? "inFromR" : "inFromL";
+      this.view.startMethod(_scp);
+      while (this.view.isMethodRunning()) {
+        suspend();
+      }
+
+      if (_remain > 0) this.pnl_remain.setVisible(true);
+
+      disableTap(false);
+      this.is_animating = false;
+    }.bindenv(this), this);
+
+    _updateLRButton();
+  }
+
+  function showMissionDesc(desc, idx = -1, prog = "", visible_detail = false) {
+    if (is_animating) return
+    if (desc) {
+      this.lbl_mission_desc.setText(desc);
+      this.lbl_mission_idx.setText(idx);
+      this.lbl_mission_prog.setText(prog);
+      this.btn_detail_desc.setVisible(visible_detail);
+      if (1 <= idx && idx <= 9) {
+        this.pnl_mission_info.setVisible(true);
+        this.show_desc_midx = idx;
+
+        this.component.updateFrame(idx);
+        this.view.startMethod("targetMission");
+      }
+    } else {
+      this.pnl_mission_info.setVisible(false);
+      this.show_desc_midx = -1;
+    }
+  }
+
+  function getMissionInfo() {
+    return this.pnl_mission_info;
+  }
+
+  function animeMissionDescAtClear(desc, idx = -1, prog = "", visible_detail = false) {
+    this.lbl_mission_desc.setText(desc);
+    this.lbl_mission_idx.setText(idx);
+    this.lbl_mission_prog.setText(prog);
+    this.btn_detail_desc.setVisible(visible_detail);
+    this.view.startMethod("animClearMission");
+    this.show_desc_midx = idx;
+  }
+  function animeFadeinMissionDescText(desc, idx = -1, prog = "", visible_detail = false) {
+    this.lbl_mission_desc.setText(desc);
+    this.lbl_mission_idx.setText(idx);
+    this.lbl_mission_prog.setText(prog);
+    this.btn_detail_desc.setVisible(visible_detail);
+    this.view.startMethod("fadeinMissionInfo");
+    this.show_desc_midx = idx;
+  }
+  function animeFadeoutMissionDescText() {
+    this.view.startMethod("fadeoutMissionInfo");
+  }
+
+  function isAnimating() {
+    return this.component.is_animating;
+  }
+
+  function disableTap(b) {
+    this.pnl_disable.enabled = b;
+    _disableHomeSlideButton(b);
+    this.flick_enabled = !b;
+  }
+
+  function _disableHomeSlideButton(b) {
+    getHomeUI().getButtonSlide().setEnabled(!b);
+    this.flick_enabled = !b;
+  }
+
+  function _updateLRButton() {
+    local _b = this.view_index != 0 ? true : false;
+    this.btn_l.setVisible(_b);
+
+    _b = this.view_index < this.setting_list.len() - 1 ? true : false;
+    this.btn_r.setVisible(_b);
+  }
+
+  function updateRemainMissionNum(num) {
+    if (num <= 0) {
+      this.pnl_remain.setVisible(false);
+      return;
+    }
+    this.lbl_remain.setText(::dict.get("nums_amount", [num]));
+  }
+
+  function _showEventScene(pms) {
+    ::stopBGM();
+    local _param = { "panelmission_id" = pms.getID(), "diary_id" = pms.getDiaryID() };
+    ::event_manager.startEventSceneDiary(pms.getDiaryID(), ::DiaryPanel, _param, _sendShowedEventSceneAPI.bindenv(this), false);
+    _disableHomeSlideButton(false);
+    return;
+  }
+
+  function _checkAndStartAnimeSetPiece() {
+    newthread().start(function() {
+      disableTap(true);
+      local _pmd = this.component.getPanelMissionData();
+      if (_pmd) {
+        this.component.checkAndStartAnimeSetPiece();
+        while (this.component.isAnimating()) {
+          suspend();
+        }
+
+        if (_pmd.isShowEventSceneForce()) {
+
+          local _list = this.component.getPieceList();
+          if (_list) {
+            if (_list.len() <= PIECE_NUM_FOUR) this.view.startMethod("completeDiaryFourPiece");
+            else this.view.startMethod("completeDiary");
+          }
+          ::playJingle(::SoundConstants.JINGLE_COMPLETE_PANEL, 2000);
+          while (this.view.isMethodRunning()) {
+            suspend();
+          }
+          _showEventScene(this.setting_list[this.view_index]);
+        }
+      }
+
+      disableTap(false);
+    }.bindenv(this), this);
+  }
+
+  function _changeBackGround(path) {
+    if (!path) path = "/ui/image/bg/chara_kitty.png";
+    local _sp = ::getSprite(path);
+    if (_sp) {
+      _sp.blend = SK_PMAMIX;
+      this.img_bg.setSprite(_sp);
+    }
+  }
+
+  function getFirstNoncompletionPiece() {
+    if (!this.component) return null;
+    return this.component.getFirstNoncompletionPiece();
+  }
+
+  function setTutorialLock(b) {
+
+    foreach (piece in this.component.getPieceList()) {
+      piece.setEnabled(b);
+    }
+
+    this.btn_back.setEnabled(b);
+    this.btn_l.setEnabled(b);
+    this.btn_r.setEnabled(b);
+    this.flick_enabled = b;
+  }
+
+  function actionevent_detaildesc(e) {
+    e.consume();
+
+    if (this.show_desc_midx <= 0) return;
+
+    local _piece = this.component.getPiece(this.show_desc_midx - 1);
+    local _md = _piece.getMissionData();
+    if (!_md) return;
+    local _ms = _md.getMissionSetting();
+
+    local _dlg = ::SimpleDialog();
+    _dlg.lbl_msg.setText(_ms.getDetailDesc());
+    _dlg.show();
+  }
+  function actionevent_back(e) {
+    e.consume();
+    ::tutorial_manager.checkWaitingActionEvent(this.btn_back);
+    getHomeUI().moveTopPanel();
+  }
+
+  function actionevent_change(e) {
+    e.consume();
+    local idx = this.view_index;
+    switch (e.src) {
+    case this.btn_r:
+
+      flickRight();
+      break;
+    case this.btn_l:
+
+      flickLeft();
+      break;
+    }
+
+  }
+
+  function flickRight() {
+    this.component.updateFrame(0);
+    if (!this.is_animating) {
+      _changePanelMission(Math.clamp(this.view_index + 1, 0, this.setting_list.len() - 1));
+    }
+  }
+
+  function flickLeft() {
+    this.component.updateFrame(0);
+    if (!this.is_animating) {
+      _changePanelMission(Math.clamp(this.view_index - 1, 0, this.setting_list.len() - 1));
+    }
+  }
+
+  function mouseevent(e) {
+
+    if (e.id == MOUSE_RELEASED) {
+      showMissionDesc(null);
+      this.component.updateFrame(0);
+    }
+
+  }
+
+  function _sendShowedEventSceneAPI() {
+    newthread().start(function() {
+      local _pms = this.setting_list[this.view_index];
+      local _ret = ::gamesession.showedEventAtDiary(_pms.getID());
+
+      if (_ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+        local _ud = ::gamesession.getUserData();
+        local _pmd = _ud.getPanelMissionData(_pms.getID());
+        _pmd.setClearDateAtServer(_ret["clear_date"]);
+
+        if (!_ud.isEndTutorialId(::TutorialSetting.SPECIAL_FLAG_FURNITURE_PURIN) && _pms.getID() == 503) {
+          _ud.addEndTutorial(::TutorialSetting.SPECIAL_FLAG_FURNITURE_PURIN);
+          _removeFurniturePurin();
+        }
+      }
+    }.bindenv(this), this);
+  }
+
+  function _receiveRewardProcess(pmid, control_disable = true) {
+
+    if (control_disable) disableTap(true);
+    local _ret = ::gamesession.receivePanelMissionReward(pmid);
+    if (_ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+      local _ud = ::gamesession.getUserData();
+      local _pmd = _ud.getPanelMissionData(pmid);
+      _pmd.setReceivedRewardAtServer();
+
+      local _newpmid = -1;
+
+      if ("new_panel_mission_ids" in _ret) {
+        local _list = decodeJSON(_ret["new_panel_mission_ids"]);
+        _ud.addPanelMissionDatasAtServer(_list);
+      }
+      if ("set_panel_mission_id" in _ret) {
+        _newpmid = _ret["set_panel_mission_id"];
+        _ud.setPanelMissionID(_newpmid);
+        local _scene = ::gamesession.getCurrentScene();
+        if (_scene instanceof SanrioGameScene) {
+          _scene.getPanelMissionManager().chagnePanelMission(_newpmid);
+        }
+      }
+
+      if ("reward" in _ret) {
+        local _list = decodeJSON(_ret["reward"]);
+        local _ris = [];
+        foreach (item in _list) {
+          local _ri = {};
+          _ri["uid"] <- item[0];
+          _ri["kind"] <- item[1];
+          _ri["id"] <- item[2];
+          _ri["num"] <- item[3];
+          _ri["target_id"] <- _ri[4];
+
+          _ris + _ri;
+        }
+
+        local _dlg = ::DiaryRewardDialogNoNewEvent();
+        _dlg.setData(pmid, _ris);
+
+        ::gamesession.getUserDataLocal().setPanelMissionRewardDialog(_dlg);
+      }
+    }
+    if (control_disable) disableTap(false);
+
+  }
+
+  function _removeFurniturePurin() {
+    local _ud = ::gamesession.getUserData();
+    local _fdt = _ud.getFurnitureDataTable();
+    local _fuid = -1;
+    local _fid = 100004;
+    foreach (uid, fd in _fdt) {
+      if (fd.getID() != _fid) continue;
+      _fuid = uid;
+      break;
+    }
+    if (_fuid < 0) return;
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof SanrioGameScene) {
+      _scene.getStage().removeFurnitureModel(_fuid);
+    }
+
+    local _red = _ud.getRoomEditData(5);
+    _red.removeFurniture_byUID(_fuid);
+    _red.subFurnitureAmount(_fid, _fuid);
+    _ud.removeFurniture(_fuid);
+  }
+}
+
+class PanelMissionPanel.MissionListComponent extends SKView {
+  static STATE_DISABLE = -1;
+  static STATE_CURRENT = 1;
+  static STATE_CLEARED = 2;
+  state = null;
+
+  panel = null;
+  setting = null;
+  pmd = null;
+  piece_list = null;
+
+  is_animating = null;
+
+  view = null;
+  pnl_mission_list = null;
+  pnl_nochallenge = null;
+  lbl_name = null;
+
+  constructor(panel, setting, pmd = null) {
+    super();
+
+    this.panel = panel;
+    this.setting = setting;
+    this.pmd = pmd;
+
+    this.view = ::loadSKView("/ui/common/PanelMissionList.ui");
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    this.pnl_mission_list = this.view.findChild("pnl_mission_list");
+    this.pnl_nochallenge = this.view.findChild("pnl_nochallenge");
+    this.lbl_name = this.view.findChild("lbl_name");
+
+    this.is_animating = false;
+
+    _setup();
+  }
+
+  function _setup() {
+    this.piece_list = [];
+
+    if (this.pmd) {
+      this.state = this.pmd.isAllCleared() ? STATE_CLEARED : STATE_CURRENT;
+    } else {
+      this.state = STATE_DISABLE;
+    }
+
+    local _mids = this.setting.getMissionIDList();
+    local _item_w = this.pnl_mission_list.bnd.w / _mids[0].len();
+    local _item_h = this.pnl_mission_list.bnd.h / _mids.len();
+    local _offset_x = 0;
+    local _offset_y = 0;
+    local _idx = 1;
+
+    for (local i = 0; i < _mids.len(); i++) {
+      _offset_x = 0;
+
+      for (local j = 0; j < _mids[i].len(); j++) {
+        local _mid = _mids[i][j];
+        local _md = _getDoingMissionData(_mid);
+        _mid = _md ? _md.getID() : _mid;
+
+        local _item = MissionItem(_mid, _idx, this.panel, _mids.len());
+        if (_md) _item.setMissionData(_md);
+        _item.setFunc(this.panel.showMissionDesc.bindenv(this.panel));
+        _item.setIllustPiece(this.setting.getSpriteIllustPiece(i, j));
+        this.pnl_mission_list.addChild(_item);
+        _item.pos.x = _offset_x;
+        _item.pos.y = _offset_y;
+
+        this.piece_list + _item;
+        _offset_x += _item_w;
+        _idx++;
+      }
+      _offset_y += _item_h;
+    }
+
+    local _b = this.setting.checkConditions();
+    this.view.startMethod("setupNoChallenge", !_b);
+    if (!_b) {
+      this.pnl_nochallenge.findChild("lbl_condition").setText(this.setting.getConditionText());
+    }
+
+    local _ds = this.setting.getDiarySetting();
+    this.lbl_name.setText(_ds.getNumberingName());
+  }
+
+  function getPieceList() {
+    return this.piece_list;
+  }
+
+  function getPiece(idx) {
+    return this.piece_list[idx] || null;
+  }
+
+  function _getDoingMissionData(mid) {
+    local _ud = ::gamesession.getUserData();
+    local _md = _ud.getMissionData(mid);
+    if (!_md) return null;
+
+    while (_md.isCleared() && _md.hasNext()) {
+      local _nextmd = _ud.getMissionData(_md.getNextMissionID());
+      if (!_nextmd) return _md;
+      _md = _nextmd;
+    }
+    return _md;
+  }
+
+  function getFirstNoncompletionPiece() {
+    if (!this.piece_list) return null;
+    foreach (piece in this.piece_list) {
+      if (!piece.isCleared()) return piece;
+    }
+    return null;
+  }
+
+  function getState() {
+    return this.state;
+  }
+
+  function getPanelMissionData() {
+    return this.pmd;
+  }
+  function getRemainMissionsNum() {
+    if (!pmd) return 0;
+    return this.pmd.getNumNotClearMission();
+  }
+
+  function checkAndStartAnimeSetPiece() {
+    this.is_animating = true;
+
+    local _anime_items = [];
+    local _mids = [];
+    foreach (item in this.piece_list) {
+      local _md = item.getMissionData();
+      if (!_md) continue;
+
+      if (_md.isCleared() && !_md.isSetPiece()) {
+        _anime_items + item;
+        _mids + _md.getID();
+      }
+    }
+
+    if (_anime_items.len() > 0) {
+
+      local _scene = ::gamesession.getCurrentScene();
+      local _ret = 0;
+      if (!(_scene instanceof SanrioGameScene)) return;
+
+      local _pm_keeper = _scene.getProductionManager().time_keeper;
+      _ret = _pm_keeper.processSendPoolTapRequest();
+      if (!_ret) {
+
+        while (_pm_keeper.getSendPoolThread()) {
+          sleep(500);
+          if (!(::gamesession.getCurrentScene() instanceof SanrioGameScene)) return;
+        }
+      }
+      else if (_ret.ret != ::ServletConstants.RESPONSE_SUCCEED) return;
+
+      _ret = ::gamesession.sendSetPiece(this.setting.getID(), _mids);
+      if (_ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+        _scene.getPanelMissionManager().setNewPiece(false);
+
+        foreach (item in _anime_items) {
+          local _md = item.getMissionData();
+          local _hasnext = _md.hasNext();
+          local _old_desc = "";
+          local _old_prog = "";
+          if (!_hasnext) {
+            _md.setPieceFlagAtServer();
+          } else {
+            _old_desc = _md.getDesc();
+            _old_prog = _md.getProgressText();
+            local _newmd = this.pmd.changeNextMission(_md.getID(), _md.getNextMissionID());
+            item.setMissionData(_newmd);
+          }
+
+          item.removeFromParent();
+          this.pnl_mission_list.addChild(item);
+          if (!_hasnext) {
+            item.animeSetPiece();
+          } else {
+            item.animNextMission(_old_desc, _old_prog);
+          }
+          while (item.isAnimating()) {
+            suspend();
+          }
+          sleep(500);
+        }
+
+        if (this.pmd.isAllCleared()) this.state = STATE_CLEARED;
+      }
+    }
+
+    this.is_animating = false;
+  }
+
+  function updateFrame(idx) {
+
+    local _list_idx = idx - 1;
+    if (this.piece_list[_list_idx]) {
+      this.pnl_mission_list.removeChild(this.piece_list[_list_idx]);
+      this.pnl_mission_list.addChild(this.piece_list[_list_idx]);
+    }
+
+    foreach (item in this.piece_list) {
+      item.updateFrameVisible(idx);
+    }
+  }
+
+  function isAnimating() {
+    return this.is_animating;
+  }
+}
+
+class PanelMissionPanel.MissionListComponent.MissionItem extends SKView {
+  static BIGPIECE_NUM = 2;
+  mid = null;
+  index = null;
+  data = null;
+  func = null;
+  is_cleared = null;
+  desc = null;
+  prog_text = null;
+
+  is_animating = null;
+
+  view = null;
+  btn = null;
+
+  panel = null;
+
+  img_frame = null;
+
+  constructor(id, index, panel, len) {
+    this.mid = id;
+    this.index = index;
+    this.panel = panel;
+    local _path = null;
+    if (len == BIGPIECE_NUM) {
+      _path = "/ui/common/PanelMissionBigPiece" + index + ".ui";
+    }
+    else {
+      _path = "/ui/common/PanelMissionPiece" + index + ".ui";
+    }
+
+    this.view = ::loadSKView(_path);
+    addChild(this.view);
+    setRect(0, 0, this.view.bnd.w, this.view.bnd.h);
+
+    this.btn = this.view.findChild("btn");
+    ::TapButton(this.btn, false).view.addEventListener(ACTION_EVENT, actionevent);
+
+    this.img_frame = this.view.findChild("img_frame");
+    this.img_frame.visible = false;
+    this.data = null;
+    this.is_cleared = false;
+    this.desc = null;
+    this.prog_text = null;
+
+    this.is_animating = false;
+  }
+
+  function updateFrameVisible(idx) {
+    this.img_frame.visible = (idx == this.index);
+  }
+
+  function setMissionData(data) {
+    this.data = data;
+
+    if (this.data) {
+      this.is_cleared = this.data.isCleared();
+      this.desc = this.data.getDesc();
+      this.prog_text = this.data.getProgressText();
+    }
+
+  }
+
+  function getMissionData() {
+    return this.data;
+  }
+
+  function setIllustPiece(sp) {
+    local _img_piece = this.view.findChild("img_piece");
+    _img_piece.setSprite(sp);
+    _img_piece.updateLayout();
+
+    local _b = false;
+    if (this.mid < 0 || (this.data && this.data.isSetPiece())) {
+      _b = true;
+    }
+
+    this.view.startMethod("visibleIllust", _b);
+  }
+
+  function setFunc(func) {
+    this.func = func;
+  }
+
+  function actionevent(e) {
+    e.consume();
+
+    if (!this.data) {
+      this.func(null);
+    } else {
+      this.func(this.desc, this.index, this.prog_text, this.data.hasDetailDesc());
+    }
+  }
+
+  function animeSetPiece() {
+    newthread().start(function() {
+      this.is_animating = true;
+      local _visible_detail = this.data ? this.data.hasDetailDesc() : false;
+      this.panel.animeMissionDescAtClear(this.desc, this.index, "", _visible_detail);
+
+      local _home_ui = this.panel.getHomeUI();
+      local _pos = ::getViewCenterPosGlobal(this, _home_ui.current_panel.view);
+
+      _pos.y -= (::screenHeight - ::viewHeight) / 2
+      this.view.startMethod("animSetPiece", _pos);
+      while (this.view.isMethodRunning()) {
+        suspend();
+      }
+      this.is_animating = false;
+    }.bindenv(this), this);
+
+  }
+
+  function animNextMission(old_desc, old_prog) {
+    newthread().start(function() {
+      this.is_animating = true;
+
+      this.panel.animeMissionDescAtClear(old_desc, this.index, old_prog, false);
+      while (this.panel.view.isMethodRunning()) {
+        suspend();
+      }
+      this.panel.animeFadeoutMissionDescText();
+      while (this.panel.view.isMethodRunning()) {
+        suspend();
+      }
+      local _visible_detail = this.data ? this.data.hasDetailDesc() : false;
+      this.panel.animeFadeinMissionDescText(this.desc, this.index, this.prog_text, _visible_detail);
+      while (this.panel.view.isMethodRunning()) {
+        suspend();
+      }
+      this.is_animating = false;
+    }.bindenv(this), this);
+  }
+
+  function isAnimating() {
+
+    return this.is_animating;
+  }
+
+  function isCleared() {
+    if (!this.data) return true;
+    return this.is_cleared;
+  }
+
+  function getButtonView() {
+    return this.btn;
+  }
+}

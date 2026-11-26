@@ -1,0 +1,634 @@
+local PlayerActionManager = class {
+  actions = {};
+  v1 = Vector3D();
+
+  constructor() {
+
+    actions.idle <- ::PlayerActionIdle();
+    actions.script <- ::PlayerActionScript();
+    actions.move <- ::PlayerActionMove();
+    actions.turn <- ::PlayerActionTurn();
+
+  }
+
+  function _getCurrentFloorIndex(p) {
+    return int((p.pos.y - ::HomeStageScene.ROOM_BASE_Y - ::RoomModel.FLOOR_DEPTH) / ::RoomModel.ROOM_HEIGHT);
+  }
+
+  function _getCurrentRoomIndex(p) {
+    return int((p.pos.x - (::HomeStageScene.ROOM_BASE_X - ::RoomModel.ROOM_WIDTH / 2)) / ::RoomModel.ROOM_WIDTH);
+  }
+
+  function getNextTasks(p) {
+
+    if (!p.stage.room_info_manager.getGrid(p.pos)) {
+      return _getMoveNearGridTasks(p);
+    }
+
+    local userdata = ::gamesession.getUserData();
+    local _abs = Math.abs;
+    local _max = Math.max
+
+    local in_room_action_rate = ::PUBLIC_RANDOM.nexti(100);
+
+    if ((userdata.room_layout[0][1] == 0 && userdata.room_layout[1][0] == 0) || in_room_action_rate < 85) {
+
+      local _isContains = function(arr, a) { if (!a) return true; foreach (e in arr) { if (e == a) return true }; return false; }
+
+      local script_name = p.script_name;
+      local total_frequency = 0;
+      local candidates = [];
+      local action_settings = ::gamesetting.action_settings;
+      foreach (id, setting in action_settings) {
+        if (_isContains(setting.prev_actions, script_name)) {
+          candidates + setting;
+          total_frequency += setting.frequency;
+        }
+      }
+
+      local action_setting = null;
+      if (total_frequency == 0) {
+        action_setting = action_settings[1];
+      }
+      else {
+        local val = ::PUBLIC_RANDOM.nexti(total_frequency);
+        foreach (setting in candidates) {
+          val -= setting.frequency;
+          if (val <= 0) {
+            action_setting = setting;
+            break;
+          }
+        }
+      }
+
+      switch (action_setting.action_type) {
+      case ActionSetting.IDLE:
+        return [_getIdleTask(action_setting)];
+      case ActionSetting.ACTION:
+        return [_getScriptTask(action_setting)];
+      case ActionSetting.MOVE:
+        return _getMoveInRoomTasks(action_setting, p);
+      }
+
+    } else {
+
+      local _isContains = function(arr, a) {
+        if (!a) return true;
+        foreach (e in arr) {
+          if (e == a) return true;
+        };
+        return false;
+      }
+
+      local script_name = p.script_name;
+      local total_frequency = 0;
+      local candidates = [];
+      local action_settings = ::gamesetting.action_settings;
+      foreach (id, setting in action_settings) {
+        if (setting.action_type == ::ActionSetting.MOVE && _isContains(setting.prev_actions, script_name)) {
+          candidates + setting;
+          total_frequency += setting.frequency;
+        }
+      }
+
+      local action_setting = null;
+      if (total_frequency == 0) {
+        action_setting = action_settings[1];
+      }
+      else {
+        local val = ::PUBLIC_RANDOM.nexti(total_frequency);
+        foreach (setting in candidates) {
+          val -= setting.frequency;
+          if (val <= 0) {
+            action_setting = setting;
+            break;
+          }
+        }
+      }
+
+      local curr_floor = _getCurrentFloorIndex(p);
+      local curr_room = _getCurrentRoomIndex(p);
+
+      local another_rooms = [];
+      local max_weight = 0;
+      local _checkValid_room = function(id) { return id > 0 };
+      foreach (floor_idx, floor in userdata.room_layout) {
+        foreach (room_idx, room in floor) {
+          if (_checkValid_room(room)) {
+            if (floor_idx == curr_floor && room_idx == curr_room) continue;
+
+            local weight = _abs(floor_idx - curr_floor) * 3 + _abs(room_idx - curr_room);
+            another_rooms + [floor_idx, room_idx, weight];
+            max_weight = _max(max_weight, weight);
+          }
+        }
+      }
+
+      local total_weight = 0;
+      foreach (room in another_rooms) {
+        local new_weight = max_weight - room[2] + 1;
+        room[2] = new_weight;
+        total_weight += new_weight;
+      }
+
+      local val = ::PUBLIC_RANDOM.nexti(total_weight + 1);
+      local next_floor = -1;
+      local next_room = -1;
+      foreach (room in another_rooms) {
+        val -= room[2];
+        if (val <= 0) {
+          next_floor = room[0];
+          next_room = room[1];
+          break;
+        }
+      }
+
+      return _getMoveAnotherRoomTasks(action_setting, p, next_floor, next_room);
+    }
+  }
+
+  function getNeutralTasks(p) {
+    local tasks = [];
+
+    tasks + _getScriptTask(::neutral_action);
+
+    return tasks;
+  }
+
+  function getStopTasks(p) {
+    local tasks = [];
+
+    tasks + _getTurnTask(0);
+    tasks + _getScriptTask(::gamesetting.action_settings[0]);
+
+    return tasks;
+  }
+
+  function getCalledTasks(p) {
+    local tasks = [];
+
+    tasks + _getTurnTask(0);
+    tasks + _getScriptTask(::mayoi_action);
+
+    return tasks;
+  }
+
+  function getStartGrowingTasks(p) {
+    local tasks = [];
+
+    tasks + _getTurnTask(0);
+    tasks + _getScriptTask(::mayoi_action);
+    tasks + _getScriptTask(::gamesetting.action_settings[0]);
+
+    return tasks;
+  }
+
+  function getStartGrowingResultTasks(p) {
+    local tasks = [];
+
+    tasks + _getScriptTask(::tefuri_action);
+    tasks + _getTurnTask(Math.PI / 2);
+    tasks + _getScriptTask(::walk_action);
+
+    return tasks;
+  }
+
+  function getEndGrowingResultTasks(p) {
+    local tasks = [];
+
+    tasks + _getScriptTask(::tefuri_action);
+    tasks + _getScriptTask(::gamesetting.action_settings[0]);
+
+    return tasks;
+  }
+
+  function _hasDirDiff(angle1, angle2) {
+    return (angle2 - angle1) % (Math.PI * 2) != 0.0;
+  }
+
+  function _getVecHead(vec) {
+    if (!vec) return 0.0;
+
+    local x = vec.x;
+    local z = vec.z;
+
+    if (x == 0.0) {
+      return z >= 0.0 ? 0.0 : Math.PI;
+    }
+    else {
+      if (x > 0.0) {
+        return Math.PI / 2 - Math.atan(z / x);
+      }
+      else {
+        return Math.PI * 3 / 2 - Math.atan(z / x);
+      }
+    }
+  }
+
+  function _getDiffHead(pos1, pos2) {
+    if (!pos1 || !pos2) return 0.0;
+
+    local x = pos1.x - pos2.x;
+    local y = pos1.y - pos2.y;
+    local z = pos1.z - pos2.z;
+    return _getVecHead(v1.set(x, y, z));
+  }
+
+  function _getRandomActionTask() {
+
+    local total_frequency = 0;
+    local candidates = [];
+    local action_settings = ::gamesetting.action_settings;
+    foreach (id, setting in action_settings) {
+      if (setting.action_type == ::ActionSetting.ACTION) {
+        candidates + setting;
+        total_frequency += setting.frequency;
+      }
+    }
+
+    local action_setting = null;
+    if (total_frequency == 0) {
+      action_setting = action_settings[2];
+    }
+    else {
+      local val = ::PUBLIC_RANDOM.nexti(total_frequency);
+      foreach (setting in candidates) {
+        val -= setting.frequency;
+        if (val <= 0) {
+          action_setting = setting;
+          break;
+        }
+      }
+    }
+
+    return _getScriptTask(action_setting);
+  }
+
+  function _getTurnTask(target_angle) {
+
+    return [actions.turn, { script = turn_action.id, target = target_angle }];
+  }
+
+  function _getMoveTask(setting, target_pos) {
+
+    return [actions.move, { script = setting.id, speed = setting.move_speed, target = target_pos }];
+  }
+
+  function _getIdleTask(setting) {
+
+    return [actions.idle, { script = setting.id, time = 500 + ::PUBLIC_RANDOM.nexti(1500) }];
+  }
+
+  function _getScriptTask(setting) {
+
+    return [actions.script, { script = setting.id }];
+  }
+
+  function _getMoveNearGridTasks(p) {
+    local tasks = [];
+
+    local _isContains = function(arr, a) { if (!a) return true; foreach (e in arr) { if (e == a) return true }; return false; }
+
+    local script_name = p.script_name;
+    local total_frequency = 0;
+    local candidates = [];
+    local action_settings = ::gamesetting.action_settings;
+    foreach (id, setting in action_settings) {
+      if (setting.action_type == ::ActionSetting.MOVE && _isContains(setting.prev_actions, script_name)) {
+        candidates + setting;
+        total_frequency += setting.frequency;
+      }
+    }
+
+    local action_setting = null;
+    if (total_frequency == 0) {
+      action_setting = action_settings[1];
+    }
+    else {
+      local val = ::PUBLIC_RANDOM.nexti(total_frequency);
+      foreach (setting in candidates) {
+        val -= setting.frequency;
+        if (val <= 0) {
+          action_setting = setting;
+          break;
+        }
+      }
+    }
+
+    if (p.pos.z < 0.0) {
+
+      local room_idx = _getCurrentRoomIndex(p);
+
+      local g_pos_x = ::HomeStageScene.ROOM_BASE_X - ::RoomModel.ROOM_WIDTH / 2 + room_idx * ::RoomModel.ROOM_WIDTH;
+      local next = p.pos.x > g_pos_x + ::RoomModel.ROOM_WIDTH / 2 ? 1 : -1;
+
+      local floor_idx = _getCurrentFloorIndex(p);
+
+      if (next < 1 || p.pos.x >= g_pos_x + p.stage.room_info_manager.rooms[floor_idx][room_idx].right.pos_x - 4 * RoomInfo.GRID_LENGTH) {
+        floor_idx -= next;
+      }
+      tasks.extend(_getUseStairTasks(action_setting, p, p.pos, floor_idx, room_idx, next));
+    }
+    else {
+      local floor_idx = _getCurrentFloorIndex(p);
+      local room_idx = _getCurrentRoomIndex(p);
+      local room = p.stage.room_info_manager.rooms[floor_idx][room_idx];
+      local g_pos_y = ::HomeStageScene.ROOM_BASE_Y + ::RoomModel.FLOOR_DEPTH + floor_idx * ::RoomModel.ROOM_HEIGHT;
+      local g_pos_x = ::HomeStageScene.ROOM_BASE_X - ::RoomModel.ROOM_WIDTH / 2 + room_idx * ::RoomModel.ROOM_WIDTH;
+      local pos_x = p.pos.x - g_pos_x;
+      local grid = null;
+      if (pos_x < room.grids[0].pos_x) {
+
+        grid = room.grids[0];
+      }
+      else if (pos_x > room.right.pos_x) {
+
+        grid = room.right;
+      }
+      else {
+
+        grid = room.getNearGrid(pos_x, p.pos.z);
+      }
+
+      local target_pos = Vector3D(g_pos_x + grid.pos_x, g_pos_y, grid.pos_z);
+      local target_angle = _getDiffHead(p.pos, target_pos);
+      if (_hasDirDiff(p.dir, target_angle)) {
+        tasks + _getTurnTask(target_angle);
+      }
+      tasks + _getMoveTask(action_setting, target_pos);
+    }
+
+    return tasks;
+  }
+
+  function _getMoveInRoomTasks(setting, p, target_pos = null) {
+
+    local tasks = [];
+
+    local PI = Math.PI;
+    local PI2 = PI * 2;
+    local PIh = PI / 2;
+
+    local floor = _getCurrentFloorIndex(p);
+    local room = _getCurrentRoomIndex(p);
+    local room_info_manager = p.stage.room_info_manager;
+    local room_info = room_info_manager.rooms[floor][room];
+    local curr_grid = room_info_manager.getGrid(p.pos);
+    local grid = null;
+    while (!grid) {
+      if (target_pos) {
+        grid = room_info_manager.getGrid(target_pos);
+        target_pos = null;
+      }
+      else {
+
+        grid = room_info.grids[::PUBLIC_RANDOM.nexti(length(room_info.grids))];
+      }
+
+      if (grid == curr_grid) {
+        grid = null;
+      }
+    }
+
+    local g_pos_x = ::HomeStageScene.ROOM_BASE_X - ::RoomModel.ROOM_WIDTH / 2 + room * ::RoomModel.ROOM_WIDTH;
+    local g_pos_y = ::HomeStageScene.ROOM_BASE_Y + ::RoomModel.FLOOR_DEPTH + floor * ::RoomModel.ROOM_HEIGHT;
+    local prev_target_pos = Vector3D();
+    local target_pos = Vector3D().set(p.pos);
+    local prev_target_angle = 0.0;
+    local target_angle = p.dir;
+    local pathes = room_info.getRoute(room_info_manager.getGrid(p.pos), grid);
+    foreach (path in pathes) {
+      prev_target_pos.set(target_pos);
+      target_pos = Vector3D(g_pos_x + path[0], g_pos_y, path[1]);
+      if (_getDistances(prev_target_pos, target_pos) > 0.0) {
+        prev_target_angle = target_angle;
+        target_angle = _getDiffHead(prev_target_pos, target_pos);
+        if (_hasDirDiff(prev_target_angle, target_angle)) {
+          if (::PUBLIC_RANDOM.nexti(100) < 50) {
+
+            tasks + _getRandomActionTask();
+          }
+          tasks + _getTurnTask(target_angle);
+        }
+        tasks + _getMoveTask(setting, target_pos);
+      }
+    }
+
+    return tasks;
+  }
+
+  function _getUseStairTasks(setting, p, curr_pos, curr_floor, curr_room, next) {
+    local tasks = [];
+    local phase = 0;
+
+    local PI = Math.PI;
+    local PI2 = PI * 2;
+    local PIh = PI / 2;
+
+    local manager = p.stage.room_info_manager;
+    local next_floor = curr_floor + next;
+    local curr_info = manager.rooms[curr_floor][curr_room];
+    local next_info = manager.rooms[next_floor][curr_room];
+
+    local g_pos_x = ::HomeStageScene.ROOM_BASE_X - ::RoomModel.ROOM_WIDTH / 2 + curr_room * ::RoomModel.ROOM_WIDTH;
+    local g_curr_pos_y = ::HomeStageScene.ROOM_BASE_Y + ::RoomModel.FLOOR_DEPTH + curr_floor * ::RoomModel.ROOM_HEIGHT;
+    local g_next_pos_y = ::HomeStageScene.ROOM_BASE_Y + ::RoomModel.FLOOR_DEPTH + next_floor * ::RoomModel.ROOM_HEIGHT;
+
+    if (curr_pos.z < 0.0) {
+
+      local start_grid = next >= 1 ? curr_info.grids[0] : curr_info.right;
+      local goal_grid = next >= 1 ? next_info.right : next_info.grids[0];
+      if (curr_pos.y == g_curr_pos_y) {
+        if (curr_pos.x == g_pos_x + start_grid.pos_x) {
+          phase = 1;
+        }
+        else {
+          phase = 2;
+        }
+      }
+      else if (curr_pos.y == g_next_pos_y) {
+        if (curr_pos.x == g_pos_x + goal_grid.pos_x) {
+          phase = 5;
+        }
+        else {
+          phase = 4;
+        }
+      }
+      else {
+        phase = 3;
+      }
+    }
+
+    local _moveTo = function(tasks, setting, curr_pos, curr_angle, next_pos) {
+      if (_getDistances(curr_pos, next_pos) > 0.0) {
+        local target_angle = _getDiffHead(curr_pos, next_pos);
+        if (_hasDirDiff(curr_angle, target_angle)) {
+          tasks + _getTurnTask(target_angle);
+        }
+        tasks + _getMoveTask(setting, next_pos);
+
+        return target_angle;
+      }
+
+      return curr_angle;
+    }
+
+    local prev_target_pos = Vector3D();
+    local target_pos = Vector3D().set(curr_pos);
+    local prev_target_angle = 0.0;
+    local target_angle = p.dir;
+    switch (phase) {
+    case 0:
+
+      local grid = next_floor < curr_floor ? curr_info.right : curr_info.grids[0];
+      local pathes = curr_info.getRoute(manager.getGrid(curr_pos), grid);
+      foreach (path in pathes) {
+        prev_target_pos.set(target_pos);
+        target_pos = Vector3D(g_pos_x + path[0], g_curr_pos_y, path[1]);
+        prev_target_angle = target_angle;
+        target_angle = _moveTo(tasks, setting, prev_target_pos, prev_target_angle, target_pos);
+      }
+    case 1:
+
+      local grid = next_floor < curr_floor ? curr_info.right : curr_info.grids[0];
+      prev_target_pos.set(target_pos);
+      target_pos = Vector3D(g_pos_x + grid.pos_x, g_curr_pos_y, STAIR_POS_Z);
+      prev_target_angle = target_angle;
+      target_angle = _moveTo(tasks, setting, prev_target_pos, prev_target_angle, target_pos);
+    case 2:
+
+      local grid = next_floor < curr_floor ? curr_info.right : curr_info.grids[0];
+      local step = next_floor < curr_floor ? -4 * RoomInfo.GRID_LENGTH : 4 * RoomInfo.GRID_LENGTH;
+      local dir = next_floor < curr_floor ? PIh : -PIh;
+      prev_target_pos.set(target_pos);
+      target_pos = Vector3D(g_pos_x + grid.pos_x + step, g_curr_pos_y, STAIR_POS_Z);
+      prev_target_angle = target_angle;
+      target_angle = _moveTo(tasks, setting, prev_target_pos, prev_target_angle, target_pos);
+    case 3:
+
+      local grid = next_floor < curr_floor ? next_info.grids[0] : next_info.right;
+      local step = next_floor < curr_floor ? -4 * RoomInfo.GRID_LENGTH : 4 * RoomInfo.GRID_LENGTH;
+      prev_target_pos.set(target_pos);
+      target_pos = Vector3D(g_pos_x + grid.pos_x - step, g_next_pos_y, STAIR_POS_Z);
+      prev_target_angle = target_angle;
+      target_angle = _moveTo(tasks, setting, prev_target_pos, prev_target_angle, target_pos);
+    case 4:
+
+      local grid = next_floor < curr_floor ? next_info.grids[0] : next_info.right;
+      prev_target_pos.set(target_pos);
+      target_pos = Vector3D(g_pos_x + grid.pos_x, g_next_pos_y, STAIR_POS_Z);
+      prev_target_angle = target_angle;
+      target_angle = _moveTo(tasks, setting, prev_target_pos, prev_target_angle, target_pos);
+    case 5:
+
+      local grid = next_floor < curr_floor ? next_info.grids[0] : next_info.right;
+      prev_target_pos.set(target_pos);
+      target_pos = Vector3D(g_pos_x + grid.pos_x, g_next_pos_y, 0.0);
+      prev_target_angle = target_angle;
+      target_angle = _moveTo(tasks, setting, prev_target_pos, prev_target_angle, target_pos);
+    }
+    return tasks;
+  }
+
+  function _getDistances(v_1, v_2) {
+    local x_diff = v_1.x - v_2.x;
+    local y_diff = v_1.y - v_2.y;
+    local z_diff = v_1.z - v_2.z;
+    return Math.sqrt(x_diff * x_diff + y_diff * y_diff + z_diff * z_diff);
+  }
+
+  function _getMoveAnotherRoomTasks(setting, p, target_floor, target_room) {
+
+    local PI = Math.PI;
+    local PI2 = PI * 2;
+    local PIh = PI / 2;
+
+    local tasks = [];
+
+    local room_layout = ::gamesession.getUserData().room_layout;
+    local curr_floor = _getCurrentFloorIndex(p);
+    local curr_room = _getCurrentRoomIndex(p);
+    local manager = p.stage.room_info_manager;
+    local next = target_room > curr_room ? 1 : -1;
+    local prev_target_pos = Vector3D();
+    local target_pos = Vector3D().set(p.pos);
+    local prev_target_angle = 0.0;
+    local target_angle = p.dir;
+    while (target_room != curr_room) {
+      local g_pos_x = ::HomeStageScene.ROOM_BASE_X - ::RoomModel.ROOM_WIDTH / 2 + curr_room * ::RoomModel.ROOM_WIDTH;
+      local g_pos_y = ::HomeStageScene.ROOM_BASE_Y + ::RoomModel.FLOOR_DEPTH + curr_floor * ::RoomModel.ROOM_HEIGHT;
+      prev_target_pos.set(target_pos);
+
+      if (target_room != curr_room && room_layout[curr_floor][curr_room + next] > 0) {
+
+        local curr_info = manager.rooms[curr_floor][curr_room];
+        local grid = target_room < curr_room ? curr_info.grids[0] : curr_info.right;
+        local pathes = curr_info.getRoute(manager.getGrid(prev_target_pos), grid);
+        foreach (path in pathes) {
+          prev_target_pos.set(target_pos);
+          target_pos = Vector3D(g_pos_x + path[0], g_pos_y, path[1]);
+          if (_getDistances(prev_target_pos, target_pos) > 0.0) {
+            prev_target_angle = target_angle;
+            target_angle = _getDiffHead(prev_target_pos, target_pos);
+            if (_hasDirDiff(prev_target_angle, target_angle)) {
+              if (::PUBLIC_RANDOM.nexti(100) < 30) tasks + _getRandomActionTask();
+              tasks + _getTurnTask(target_angle);
+            }
+            tasks + _getMoveTask(setting, target_pos);
+          }
+        }
+
+        local prev_room = curr_room;
+        while (target_room != curr_room && room_layout[curr_floor][curr_room + next] > 0) {
+          curr_room += next;
+        }
+        g_pos_x = ::HomeStageScene.ROOM_BASE_X - ::RoomModel.ROOM_WIDTH / 2 + curr_room * ::RoomModel.ROOM_WIDTH;
+        curr_info = manager.rooms[curr_floor][curr_room];
+        grid = target_room < prev_room ? curr_info.right : curr_info.grids[0];
+        prev_target_pos.set(target_pos);
+        target_pos = Vector3D(g_pos_x + grid.pos_x, g_pos_y, grid.pos_z);
+        if (_getDistances(prev_target_pos, target_pos) > 0.0) {
+          prev_target_angle = target_angle;
+          target_angle = _getDiffHead(prev_target_pos, target_pos);
+          if (_hasDirDiff(prev_target_angle, target_angle)) {
+            tasks + _getTurnTask(target_angle);
+          }
+          tasks + _getMoveTask(setting, target_pos);
+        }
+      }
+
+      if (target_room != curr_room) {
+        tasks.extend(_getUseStairTasks(setting, p, target_pos, curr_floor, curr_room, -1));
+        curr_floor--;
+
+        g_pos_y = ::HomeStageScene.ROOM_BASE_Y + ::RoomModel.FLOOR_DEPTH + curr_floor * ::RoomModel.ROOM_HEIGHT;
+        local curr_info = manager.rooms[curr_floor][curr_room];
+        local grid = target_room < curr_room ? curr_info.grids[0] : curr_info.right;
+        prev_target_pos.set(target_pos);
+        target_pos = Vector3D(g_pos_x + grid.pos_x, g_pos_y, grid.pos_z);
+        prev_target_angle = target_angle;
+        target_angle = PI;
+      }
+    }
+
+    local next = target_floor > curr_floor ? 1 : -1;
+    while (target_floor != curr_floor) {
+      tasks.extend(_getUseStairTasks(setting, p, target_pos, curr_floor, curr_room, next));
+      local prev_floor = curr_floor;
+      curr_floor += next;
+
+      local g_pos_x = ::HomeStageScene.ROOM_BASE_X - ::RoomModel.ROOM_WIDTH / 2 + curr_room * ::RoomModel.ROOM_WIDTH;
+      local g_pos_y = ::HomeStageScene.ROOM_BASE_Y + ::RoomModel.FLOOR_DEPTH + curr_floor * ::RoomModel.ROOM_HEIGHT;
+      local curr_info = manager.rooms[curr_floor][curr_room];
+      local grid = target_floor < prev_floor ? curr_info.grids[0] : curr_info.right;
+      prev_target_pos.set(target_pos);
+      target_pos = Vector3D(g_pos_x + grid.pos_x, g_pos_y, grid.pos_z);
+      prev_target_angle = target_angle;
+      target_angle = PI;
+    }
+
+    return tasks;
+  }
+}
+
+charaActionListFactory <- PlayerActionManager();

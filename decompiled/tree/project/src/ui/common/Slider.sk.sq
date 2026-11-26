@@ -1,0 +1,153 @@
+local cmat = Matrix.fromTranslate(0.5, 0.5, 0.5);
+local r_1 = Rect2D();
+
+class Slider
+{
+  baseview = null;
+  bar = null;
+  barw = 1.0;
+  barh = 1.0;
+
+  round = false;
+
+  intv = 0;
+
+  uvw = 0.0;
+  stx = 0.0;
+  stw = 0.0;
+
+  constructor(v, r = false) {
+    baseview = v;
+    bar = v.findChild("bar") || v.children[0];
+    barw = bar.bnd.w;
+    barh = bar.bnd.h;
+    round = r;
+
+    if (bar.sp.uvmat0) {
+      uvw = bar.sp.uvmat0[0];
+    } else {
+      bar.sp.uvmat0 = Matrix();
+      uvw = 1.0;
+    }
+    if (bar.sp.streach) {
+      local _r = bar.sp.streach;
+      stx = _r.x;
+      stw = _r.w;
+    } else {
+      stx = 0;
+      stw = 0;
+    }
+  }
+
+  function setValue(v) {
+    v = Math.min(1.0, v);
+    local w = Math.min(barw * v, barw);
+    if (round) {
+
+    } else {
+      if (w <= 0.0001) {
+        bar.visible = false;
+      } else {
+        bar.bnd.w = w;
+        if (bar.sp.uvmat0) {
+          bar.sp.uvmat0[0] = uvw * v;
+        }
+        if (bar.sp.streach) {
+          bar.sp.streach.x = stx;
+          bar.sp.streach.w = stw * v;
+        }
+        bar.visible = true;
+      }
+    }
+    bar.updateLayout();
+    baseview.repaint();
+  }
+
+  function blink() {
+    if (!(bar instanceof SKImageView)) {
+      return;
+    }
+    local sp = bar.sp;
+    local mat = cmat;
+    local cnt = [20];
+    local func = function() {
+      sp.colormat = sp.colormat ? null : mat;
+      bar.repaint();
+      if (--cnt[0] <= 0) {
+        intv = 0;
+        sp.colormat = null;
+        return undefined;
+      }
+    }.bindenv(this);
+    setInterval(func, 40);
+  }
+}
+
+class Slider2Line
+{
+  baseview = null;
+  bar = null;
+  bar_add = null;
+  barw = 1.0;
+  barh = 1.0;
+
+  round = false;
+
+  intv = 0;
+
+  uvw = 0;
+
+  constructor(v, r = false) {
+    baseview = v;
+    bar = v.findChild("bar") || v.children[0];
+    bar_add = v.findChild("bar_add") || v.children[1];
+    barw = bar.bnd.w;
+    barh = bar.bnd.h;
+    round = r;
+
+    if (bar.sp.uvmat0) {
+      uvw = bar.sp.uvmat0[0];
+    } else {
+      bar.sp.uvmat0 = Matrix();
+      uvw = 1.0;
+    }
+  }
+
+  function setValue(v, v_add = -1) {
+    v = Math.min(1.0, v);
+    v_add = Math.min(1.0, v_add);
+    local w = Math.min(barw * v, barw);
+
+    if (round) {
+
+    } else {
+      if (w <= 0.0001) {
+        bar.visible = false;
+      } else {
+        bar.bnd.w = w;
+        if (bar.sp.uvmat0) {
+          bar.sp.uvmat0[0] = uvw * v;
+        }
+
+        bar.visible = true;
+      }
+      if (v_add >= 0) {
+        local w_add = Math.min(barw * v_add, barw);
+        if (w_add < 0.0001) {
+          bar_add.visible = false;
+        } else {
+          bar_add.bnd.w = w_add;
+          if (bar_add.sp.uvmat0) {
+            bar_add.sp.uvmat0[0] = uvw * v_add;
+          }
+
+          bar_add.visible = true;
+        }
+        bar_add.updateLayout();
+      }
+    }
+    bar.updateLayout();
+    baseview.repaint();
+  }
+
+}

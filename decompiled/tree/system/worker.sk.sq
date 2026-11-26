@@ -1,0 +1,321 @@
+local SENDER_NON = 0x80000000;
+
+local reshandlers = {};
+local initializer = [];
+local recvhandlers = {};
+local sendhandlers = {};
+
+::workerdriver <- null;
+
+class WorkerResponse
+{
+  stat = undefined;
+  retobj = undefined;
+}
+
+class WorkerDriver
+{
+  recvqid = 0;
+  recvqueue = null;
+  recvtimeout = 0;
+  maxworker = 1;
+  a = null;
+  qpool = null;
+  queue = null;
+  running = false;
+  reqid = 0;
+
+  static function addWorkerInitializer(o) {
+
+    local s = null;
+    if (o instanceof Resource) {
+      s = o.loadData().asText();
+      initializer + [s, o.path];
+    } else
+    if (o instanceof FileRef) {
+      s = o.load().asText();
+      initializer + [s, o.name];
+    } else {
+      initializer + [o, null];
+    }
+  }
+
+  static function registerOnewayHandler(name, recvfunc) {
+    local recvqid = skGetWorkerID();
+    local args = #[];
+
+    local func = function(...) {
+      local postq = popq();
+      args.clear(); (args + name + recvqid + nextreqid()).extend(varguments());
+      postq.pushMessageA(args);
+    }
+    sendhandlers[name] <- func;
+    recvhandlers[name] <- recvfunc;
+  }
+
+  static function registerResponsiveHandler(name, recvfunc, timeout = 30000) {
+    local recvqid = skGetWorkerID();
+    local args = #[];
+    local _rh = reshandlers;
+
+    local func = function(postq, _name, vargs) {
+      local _reqid = nextreqid();
+      args.clear(); (args + _name + recvqid + _reqid).extend(vargs);
+      postq.pushMessageA(args);
+      local res = WorkerResponse();
+
+      _rh[_reqid] <- function(stat, retobj) { res.stat = stat; res.retobj = retobj };
+      return res;
+    }
+
+    local iname = name + "_nowait";
+    local invokefunc = function(...) {
+      local postq = popq();
+      return func(postq, iname, varguments());
+    }
+
+    local waitfunc = function(...) {
+      local postq = popq();
+      local res = func(postq, name, varguments());
+      local t0 = skGetTime();
+      for (;;) {
+        switch (res.stat) {
+        case undefined: break;
+        case 0: return res.retobj;
+        default: throw Exception(sprintf("worker func[%S] caused an error. code=%S", name, res.stat));
+        }
+        if (skGetTime(t0) >= timeout) {
+          throw Exception("worker timeout. qid=%d", postq.getID());
+        }
+        suspend();
+      }
+    }
+    sendhandlers[iname] <- invokefunc;
+    sendhandlers[name] <- waitfunc;
+    recvhandlers[iname] <- recvfunc;
+    recvhandlers[name] <- recvfunc;
+  }
+
+  constructor(qid) {
+    recvqueue = MessageQueue(qid);
+    a = [];
+    qpool = [];
+    queue = {};
+  }
+
+  function _get(id) {
+    return sendhandlers[id];
+  }
+
+  function popq() {
+
+    local len = length(qpool);
+    if (len < maxworker) {
+      local w = WorkerThread(len + 1);
+      w.start();
+      local q = MessageQueue(len + 1);
+      qpool + q;
+      queue[len + 1] <- q;
+
+      foreach (v in initializer) {
+        q.pushMessage("compilerun", SENDER_NON, -1, v);
+      }
+      return q;
+    } else {
+      local q = delete qpool[0];
+      qpool + q;
+      return q;
+    }
+  }
+
+  function nextreqid() {
+    return reqid = (reqid + 1) & 65535;
+  }
+
+  function receive() {
+    while (recvqueue.peekMessage(a, recvtimeout)) {
+      local type = a[0];
+      local senderid = a[1];
+      local reqid = a[2];
+      local func = recvhandlers[type];
+      if (!func) {
+        printf("worker function[%S] not found..\n", type);
+        throw Exception();
+        if (senderid != SENDER_NON) {
+          MessageQueue(senderid).pushMessage("response", SENDER_NON, 0, reqid, -2, type);
+        }
+      } else {
+        local ret, stat;
+        try {
+          switch (length(a)) {
+          case 3: ret = func(); break;
+          case 4: ret = func(a[3]); break;
+          case 5: ret = func(a[3], a[4]); break;
+          case 6: ret = func(a[3], a[4], a[5]); break;
+          case 7: ret = func(a[3], a[4], a[5], a[6]); break;
+          case 8: ret = func(a[3], a[4], a[5], a[6], a[7]); break;
+          case 9: ret = func(a[3], a[4], a[5], a[6], a[7], a[8]); break;
+          }
+          stat = 0;
+        } catch (ex) {
+          printexception(ex);
+          stat = -1;
+          ret = null;
+        }
+
+        if (senderid != SENDER_NON) {
+          MessageQueue(senderid).pushMessage("response", SENDER_NON, 0, reqid, stat, ret);
+        }
+      }
+      suspend();
+    }
+    suspend();
+  }
+
+  static function startWorker() {
+    local qid = skGetWorkerID();
+    local wd = WorkerDriver(qid)
+    printf("WorkerDriver[%d] start.\n", qid);
+    wd.running = true;
+    wd.recvtimeout = 1000;
+    ::workerdriver = wd;
+    do {
+      suspend();
+      wd.receive();
+    } while (wd.running);
+  }
+
+  static function startMaster(maxw = 3) {
+    local qid = skGetWorkerID();
+    local wd = WorkerDriver(qid);
+    newthread().start(function() {
+      printf("WorkerMaster[%d] start.\n", qid);
+      wd.maxworker = maxw;
+      wd.running = true;
+      do {
+        suspend();
+        wd.receive();
+      } while (wd.running);
+    });
+    ::workerdriver = wd;
+    return wd;
+  }
+
+  static function startPrivateMaster(maxw = 1) {
+    local qid = skGetWorkerID();
+    local wd = WorkerDriver(qid);
+    newthread().start(function() {
+      printf("PrivateWorkerMaster[%d] start.\n", qid);
+      wd.maxworker = maxw;
+      wd.running = true;
+      do {
+        suspend();
+        wd.receive();
+      } while (wd.running);
+    });
+    return wd;
+  }
+
+  static function get() {
+    return ::workerdriver || ::WorkerDriver.startMaster();
+  }
+}
+
+MessageQueue.reqid <- 0;
+
+function MessageQueue ::_get(id) {
+  return sendhandlers[id];
+}
+
+function MessageQueue ::popq() {
+  return this;
+}
+
+function MessageQueue ::nextreqid() {
+  return (getID() << 12) | (reqid = (reqid + 1) & 65535);
+}
+
+WorkerDriver.registerOnewayHandler(
+"response",
+function(reqid, stat, ret) {
+  local func = delete reshandlers[reqid];
+
+  if (func) {
+    func(stat, ret);
+  } else {
+    printf("reqid[%d] handler not found.\n", reqid);
+  }
+}
+);
+
+WorkerDriver.registerResponsiveHandler(
+"close",
+function() {
+  running = false;
+  return true;
+}
+);
+
+WorkerDriver.registerResponsiveHandler(
+"setReceiveTimeout",
+function(time) {
+  recvtimeout = time;
+  return true;
+}
+);
+
+WorkerDriver.registerResponsiveHandler(
+"compress",
+function(bb, ziplv = 4) {
+  local bbref = bb.compress(ziplv).transfer();
+  return bbref;
+}
+);
+
+WorkerDriver.registerResponsiveHandler(
+"eval",
+function(s, ...) {
+  local func = compilestring(s).bindenv(getroottable());
+  switch (vargc) {
+  case 0: return func();
+  case 1: return func(vargv[0]);
+  case 2: return func(vargv[0], vargv[1]);
+  case 3: return func(vargv[0], vargv[1], vargv[2]);
+  case 4: return func(vargv[0], vargv[1], vargv[2], vargv[3]);
+  case 5: return func(vargv[0], vargv[1], vargv[2], vargv[3], vargv[4]);
+  case 6: return func(vargv[0], vargv[1], vargv[2], vargv[3], vargv[4], vargv[5]);
+  }
+  throw Exception("too many args .. " + vargc);
+}
+);
+
+WorkerDriver.registerOnewayHandler(
+"compilerun",
+function(v) {
+  local func = compilestring(v[0], v[1]).bindenv(getroottable());
+  return func();
+}
+);
+
+WorkerDriver.registerResponsiveHandler(
+"uncompress",
+function(bb) {
+  local bbref = bb.uncompress().transfer();
+  return bbref;
+}
+);
+
+WorkerDriver.registerResponsiveHandler(
+"filesave",
+function(path, bb) {
+  FileRef(path).save(bb);
+  return true;
+}
+);
+
+WorkerDriver.registerResponsiveHandler(
+"fileload",
+function(path) {
+  return FileRef(path).load(#ByteBuffer());
+}
+);

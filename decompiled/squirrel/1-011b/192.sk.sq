@@ -1,0 +1,11 @@
+runsk("/src/etc/Dictionary.sk");
+runsk("/src/etc/TalkWindowLayer.sk");
+runsk("/src/etc/Talk.sk");
+runsk("/src/etc/SentenceTalk.sk");
+if (::DEBUG_PANEL) runsk("/src/etc/DebugFPS.sk");
+runsk("/src/etc/LoadingView.sk");
+runsk("/src/etc/TapEffect.sk");
+runsk("/src/etc/EventSceneManager.sk");
+runsk("/src/etc/TutorialManager.sk");
+runsk("/src/etc/FurnitureLayouter.sk");
+runsk("/src/etc/ReviewRequestProcessor.sk");

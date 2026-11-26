@@ -1,0 +1,310 @@
+sanrio_chara_settings[1] <- SanrioCharaSetting({
+  permission = 1;
+  name = "ハローキティ";
+  nick_name = "キティ";
+  name_key = "kitty";
+  desc = "明るくて、優しい女のコ。/nクッキーを作ったり、/nピアノをひくのが大好きで、/n夢はピアニストか、/n詩人になること。/n音楽と英語が得意。/n好きな食べ物は、/nママが作ったアップルパイ。";
+  birth = "1101";
+
+  def_costume_id = 109001;
+  icon = "icon_kitty.png";
+
+  face = "/res/facial/kitty_face.pm";
+  body = "/res/clothes/default/kitty.pm";
+  action = "/res/anime/base.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  handdir = "/res/hand/kitty";
+  talk_key = "kitty";
+  first_event_id = 1;
+  voice_channel = 1001;
+
+  chara_sentence_list = [-1];
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+
+  text_color = 0xc85c78ff;
+})
+
+sanrio_chara_settings[2] <- SanrioCharaSetting({
+  permission = 1;
+  name = "マイメロディ";
+  nick_name = "メロディ";
+  name_key = "mymelo";
+  desc = "すなおで明るい、/n弟思いの女のコ。/n宝物はおばあちゃんが/n作ってくれたかわいいずきん。/nお母さんといっしょに/nクッキーを焼くのが好きで、/n好きな食べ物は、/nアーモンドパウンドケーキ 。";
+  birth = "0118";
+
+  def_costume_id = 108002;
+  icon = "icon_mymelo.png";
+
+  face = "/res/facial/mymelo_face.pm";
+  body = "/res/clothes/default/mymelo.pm";
+  action = "/res/anime/base_mymelo.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  handdir = "/res/hand/mymelo";
+  talk_key = "mymelo";
+  first_event_id = 1;
+  voice_channel = 1002;
+
+  chara_sentence_list = [-1];
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+
+  text_color = 0xff6aa0ff;
+})
+
+sanrio_chara_settings[101] <- SanrioCharaSetting({
+  permission = 1;
+  name = "ポムポムプリン";
+  nick_name = "プリン";
+  name_key = "purin";
+  desc = "こげ茶色のベレー帽が/nトレードマークの、/nのんびり屋な/nゴールデンレトリバーの/n男のコ。/nくつ集めが趣味。ミルクと、/nふにゃふにゃしたものと、/nママが作ったプリンが好き。";
+  birth = "0416";
+
+  def_costume_id = 111101;
+  icon = "icon_purin.png";
+
+  face = "/res/facial/purin_face.pm";
+  body = "/res/clothes/default/purin.pm";
+  action = "/res/anime/base_purin.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  motion_key = "purin";
+  handdir = "/res/hand/purin";
+  talk_key = "purin";
+  first_event_id = 1;
+  voice_channel = 1003;
+
+  chara_sentence_list = [-1];
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+
+  text_color = 0xb59701ff;
+})
+
+sanrio_chara_settings[102] <- SanrioCharaSetting({
+  permission = 1;
+  name = "シナモロール";
+  nick_name = "シナモン";
+  name_key = "cinnamon";
+  desc = "遠いお空の雲の上で生まれた、/n白い子イヌの男のコ。/nシッポがまるで/nシナモンロールのように/nくるくる巻いている。/n特技は、/n大きな耳をパタパタさせて、/n空を飛ぶこと。";
+  scale = 0.8;
+  birth = "0306";
+
+  def_costume_id = 101102;
+  icon = "icon_cinnamon.png";
+
+  face = "/res/facial/cinnamon_face.pm";
+  body = "/res/clothes/default/cinnamon.pm";
+  action = "/res/anime/base_cinnamon.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  motion_key = "cinnamon";
+  handdir = "/res/hand/cinnamon";
+  talk_key = "cinnamon";
+  first_event_id = 1;
+  voice_channel = 1004;
+
+  chara_sentence_list = [-1];
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+
+  text_color = 1286454527;
+})
+
+sanrio_chara_settings[3] <- SanrioCharaSetting({
+  name = "ララ";
+  name_key = "lala";
+  desc = "ゆめ星雲のおもいやり星でうまれた双子のきょうだい星。/nキキのお姉さんで、こわがりで、ちょっぴり泣き虫。/n絵や詩をかくのが大好き。お料理が得意。";
+  birth = "1224";
+
+  def_costume_id = 108003;
+  icon = "icon_lala.png";
+
+  face = "/res/facial/lala_face.pm";
+  body = "/res/clothes/default/lala.pm";
+  action = "/res/anime/base_lala.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  motion_key = "kiki";
+  handdir = "/res/hand/lala";
+  talk_key = "lala";
+  first_event_id = 1;
+  voice_channel = 1005;
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+})
+
+sanrio_chara_settings[103] <- SanrioCharaSetting({
+  name = "キキ";
+  name_key = "kiki";
+  desc = "ゆめ星雲のおもいやり星でうまれた双子のきょうだい星。/nララの弟で、好奇心旺盛で、ちょっぴりあわてんぼう。/n星つりと発明が大好き。";
+  birth = "1224";
+
+  def_costume_id = 106103;
+  icon = "icon_kiki.png";
+
+  face = "/res/facial/kiki_face.pm";
+  body = "/res/clothes/default/kiki.pm";
+  action = "/res/anime/base_kiki.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  motion_key = "kiki";
+  handdir = "/res/hand/kiki";
+  talk_key = "kiki";
+  first_event_id = 1;
+  voice_channel = 1006;
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+})
+
+sanrio_chara_settings[4] <- SanrioCharaSetting({
+  name = "ウィッシュミーメル";
+  name_key = "mell";
+  desc = "フランスからやってきたウサギの女のコ。/nちょっぴりとぼけているけど素直で、優しい心の持ち主。/nホットケーキとオムライスが大好きで苦手なものは雷。";
+  birth = "0920";
+
+  def_costume_id = 101004;
+  icon = "icon_mell.png";
+
+  face = "/res/facial/mell_face.pm";
+  body = "/res/clothes/default/mell.pm";
+  action = "/res/anime/base.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  handdir = "/res/hand/mell";
+  talk_key = "mell";
+  first_event_id = 1;
+  voice_channel = 1007;
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+})
+
+sanrio_chara_settings[104] <- SanrioCharaSetting({
+  name = "ポチャッコ";
+  name_key = "pocha";
+  desc = "好奇心旺盛で、おっちょこちょいで、/nちょっぴりおせっかい。より道お散歩が大好きなイヌの男のコ。/nれんげ草とバナナアイスが大好き。";
+  birth = "0229";
+
+  def_costume_id = 102104;
+  icon = "icon_pocha.png";
+
+  face = "/res/facial/pocha_face.pm";
+  body = "/res/clothes/default/pocha.pm";
+  action = "/res/anime/base_pocha.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  handdir = "/res/hand/pocha";
+  talk_key = "pocha";
+  first_event_id = 1;
+  voice_channel = 1008;
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+})
+
+sanrio_chara_settings[105] <- SanrioCharaSetting({
+  permission = 1;
+  name = "けろけろけろっぴ";
+  nick_name = "けろっぴ";
+  name_key = "keroppi";
+  desc = "冒険好きで、元気いっぱい！/nドーナツ池の人気者。/nカエル泳ぎは苦手で、/nクロールが得意。/n歌が上手なカエルの男のコ。";
+  scale = 0.8;
+  birth = "0710";
+
+  def_costume_id = 112105;
+  icon = "icon_keroppi.png";
+
+  face = "/res/facial/keroppi_face.pm";
+  body = "/res/clothes/default/keroppi.pm";
+  action = "/res/anime/base_pocha.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  handdir = "/res/hand/keroppi";
+  talk_key = "keroppi";
+  first_event_id = 1;
+  voice_channel = 1009;
+
+  chara_sentence_list = [-1];
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+
+  text_color = 1821319167;
+})
+
+sanrio_chara_settings[107] <- SanrioCharaSetting({
+  name = "めろぉ";
+  name_key = "mello";
+  desc = "メロディのはとこの男の子。愛称は「めろぉ」で口癖は「なのです」。趣味はボタン集めと大好きなメロディと遊ぶこと。メロディから貰った赤いずきんが宝物。";
+  birth = "0618";
+
+  def_costume_id = 109107;
+  icon = "icon_mello.png";
+
+  face = "/res/facial/mello_face.pm";
+  body = "/res/clothes/default/mello.pm";
+  action = "/res/anime/base_pocha.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  handdir = "/res/hand/mello";
+  talk_key = "mello";
+  first_event_id = 1;
+  voice_channel = 1010;
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+})
+
+sanrio_chara_settings[7] <- SanrioCharaSetting({
+  name = "ぼんぼんりぼん";
+  name_key = "ribon";
+  desc = "おしゃれが大好きなピンクのうさぎ。/n大好きなママが作ってくれた大きなリボンがチャームポイント。/nママのようなおしゃれ上手なデザイナーになりたいと思っているけれど、今は歌とダンスに夢中。";
+  birth = "0808";
+
+  def_costume_id = 108007;
+  icon = "icon_ribon.png";
+
+  face = "/res/facial/ribon_face.pm";
+  body = "/res/clothes/default/ribon.pm";
+  action = "/res/anime/base.sk3";
+  efx_script = "/res/efx/chara_effects.sk3";
+  handdir = "/res/hand/ribon";
+  talk_key = "ribon";
+  first_event_id = 1;
+  voice_channel = 1011;
+
+  favorite_series = [
+  { id = 1, favorite = FAVORITE_BEST },
+  { id = 8, favorite = FAVORITE_BEST },
+  { id = 60, favorite = FAVORITE_BEST },
+  ];
+})

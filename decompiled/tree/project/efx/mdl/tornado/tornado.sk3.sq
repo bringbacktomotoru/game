@@ -1,0 +1,22 @@
+model =
+{
+  root = {
+    pm = "tornado.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+    setPivot(0.0, -0.6, 0.0);
+  }
+
+  function start() {
+    setBlend(SK_MIX);
+    uvscroll(-3, 0);
+
+    spin(0, -16, 0, 100000);
+  }
+}

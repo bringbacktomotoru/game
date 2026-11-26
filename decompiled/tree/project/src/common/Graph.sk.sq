@@ -1,0 +1,140 @@
+class Graph {
+  nodes = null;
+
+  constructor() {
+    this.nodes = {};
+  }
+
+  function hasNode() {
+    return length(this.nodes) >= 1;
+  }
+
+  function clear() {
+    Table.clear(this.nodes);
+  }
+  function clearAllConnect() {
+    foreach (n, _ in nodes) {
+      n.clearConnect();
+    }
+  }
+
+  function resetNodes() {
+    foreach (node, _ in this.nodes) {
+      node.reset();
+    }
+  }
+
+  function addNodeConnect(from, to) {
+
+    local connect = _createNodeConnect(from);
+    to.addConnect(connect);
+  }
+  function _createNodeConnect(node) {
+    return NodeConnect(node);
+  }
+  function removeNodeConnect(from, to) {
+    to.removeConnectByNode(from);
+  }
+
+  function calcShortestPath(goal) {
+
+    foreach (n, _ in this.nodes) {
+      n.reset();
+    }
+
+    local work1 = [];
+    local work2 = [];
+    local curr_level = work1;
+    local next_level = work2;
+    local for_swap = null;
+
+    goal.setGoal();
+    curr_level + goal;
+
+    local update_func = _updateShortestPathNode;
+    while (length(curr_level)) {
+      foreach (node in curr_level) {
+        update_func(node, next_level);
+      }
+
+      for_swap = curr_level;
+      curr_level = next_level;
+      next_level = for_swap;
+      next_level.clear();
+    }
+
+  }
+  function _updateShortestPathNode(node, next) {
+    local connects = node.connects;
+    foreach (connect, _ in connects) {
+      local node_cost = node.cost + connect.cost;
+      if (connect.node.cost != -1) {
+        if (node_cost > connect.node.cost) continue;
+      }
+      connect.node.cost = node_cost;
+      connect.node.to = node;
+
+      next + connect.node;
+    }
+  }
+}
+
+class Graph.Node {
+  connects = null;
+
+  cost = -1;
+  to = null;
+
+  constructor() {
+    this.connects = {};
+  }
+
+  function addConnect(connect) {
+    local info = _createAdditionalInfo();
+    this.connects[connect] <- info;
+  }
+  function _createAdditionalInfo() {
+    return null;
+  }
+
+  function removeConnect(connect) {
+    delete this.connects[connect];
+  }
+  function removeConnectByNode(node) {
+    foreach (connect, _ in this.connects) {
+      if (connect.node == node) {
+        removeConnect(connect);
+        break;
+      }
+    }
+  }
+
+  function clearConnects() {
+    Table.clear(this.connects);
+  }
+
+  function hasConnect() {
+    return length(this.connects) != 0;
+  }
+  function getConnectNum() {
+    return length(this.connects);
+  }
+
+  function reset() {
+    this.cost = -1;
+    this.to = null;
+  }
+
+  function setGoal() {
+    this.cost = 0;
+  }
+}
+
+class Graph.NodeConnect {
+  node = null;
+  cost = 1;
+
+  constructor(node) {
+    this.node = node;
+  }
+}

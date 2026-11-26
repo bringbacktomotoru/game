@@ -1,0 +1,209 @@
+import SKViewPropertyID;
+
+class SKViewData
+{
+  version = 0;
+  rootdata = null;
+  script = null;
+
+  res = null;
+
+  constructor(t = null) {
+    if (t) {
+      readJSON(t);
+    } else {
+      rootdata = ::SKViewEntityData();
+      rootdata.staticparams = [
+      [SIZE_STATIC, [400, 240]],
+      [PIVOT_STATIC, [0, 0]],
+      ]
+    }
+  }
+
+  function loaded(r) {
+    res = r;
+    local scppath = "./" + (r.name.substring(0, r.name.lastIndexOf(".")) + ".scp");
+    local scpr = r.getResource(scppath);
+    if (scpr) {
+      try {
+        script = {};
+        scpr.getContent().compile().bindenv(script)();
+      } catch (ex) {
+        printexception(ex);
+      }
+    }
+  }
+
+  function createSKView(uiclass = null) {
+    local v = rootdata.createSKView(uiclass || ::SKLibView);
+    v.script = script;
+    return v;
+  }
+
+  function writeJSON() {
+    local t = {
+      version = 0,
+      rootdata = rootdata.writeJSON(),
+    };
+    return t;
+  }
+
+  function readJSON(t) {
+    version = t.version;
+    rootdata = ::SKViewEntityData(this);
+    rootdata.readJSON(t.rootdata);
+  }
+}
+
+class SKViewEntityData
+{
+  type = 0;
+  layerflags = 3;
+  link = "";
+  motion = null;
+  staticparams = null;
+  fxdata = null;
+
+  children = null;
+
+  function createSKView(uiclass = null) {
+    local c = null;
+    switch (type) {
+    case 0:
+      local clz = uiclass || SKGroupView;
+      c = clz();
+      break;
+    case 1:
+      local res = ::getResource(link);
+      local data = res.getContent();
+      c = data.createSKView(::SKLibView);
+      c.res = res;
+      break;
+    case 2:
+      local clz = getroottable()[link];
+      c = clz();
+      break;
+    }
+    c.layerflags = layerflags;
+    c.setSKViewEntityData(this);
+
+    if (fxdata) {
+      local a = array(length(fxdata));
+      foreach (i, d in fxdata) a[i] = createFX(d);
+      c.setFXList(a);
+    }
+
+    foreach (cd in children) {
+      local cc = cd.createSKView(null);
+      c.addChild(cc);
+    }
+
+    if (c["loadFinished"]) {
+      c.loadFinished();
+    }
+    return c;
+  }
+
+  static function createFX(d) {
+    local clz = getroottable()[d.fxclass];
+    local fx = clz();
+    foreach (v in d.staticparams) {
+      fx.setParam(v[0], v[1]);
+    }
+    fx.motion = d.motion;
+    fx.moveFrame(-1.0, 0.0);
+    return fx;
+  }
+
+  function writeJSON() {
+    local t = {};
+    t.type <- type;
+    if (link) t.link <- link;
+    if (layerflags != 3) t.layerflags <- layerflags;
+    t.staticparams <- staticparams;
+
+    if (motion) {
+      local a = [];
+      foreach (f in motion) {
+        a + f.writeJSON();
+      }
+      t.motion <- a;
+    }
+    if (fxdata) {
+      local a = [];
+      foreach (f in fxdata) {
+        local ma = [];
+        foreach (m in f.motion) {
+          ma + m.writeJSON();
+        }
+        a + {
+          fxclass = f.fxclass,
+          staticparams = f.staticparams,
+          motion = ma,
+        }
+      }
+      t.fxdata <- a;
+    }
+
+    if (children) {
+      local a = [];
+      foreach (c in children) {
+        a + c.writeJSON();
+      }
+      t.children <- a;
+    }
+    return t;
+  }
+
+  function readJSON(t) {
+    type = t.type;
+    if ("link" in t) link = t.link;
+    layerflags = "layerflags" in t ? t.layerflags : 3;
+    staticparams = t.staticparams;
+
+    if (t["motion"]) {
+      motion = [];
+      foreach (mt in t.motion) {
+        local m = MotionTimeline();
+        m.readJSON(mt);
+        motion + m;
+      }
+    }
+    if (t["fxdata"]) {
+      fxdata = [];
+      foreach (f in t.fxdata) {
+        local ma = [];
+        foreach (md in f.motion) {
+          local m = MotionTimeline();
+          m.readJSON(md);
+          ma + m;
+        }
+        fxdata + {
+          fxclass = f.fxclass,
+          staticparams = f.staticparams,
+          motion = ma,
+        }
+      }
+    }
+
+    if (t["children"]) {
+      children = [];
+      foreach (ct in t.children) {
+        local cd = SKViewEntityData();
+        cd.readJSON(ct);
+        children + cd;
+      }
+    }
+  }
+}
+
+function loadSKView(r, uiclass = null) {
+  if (typeof(r) == SS_STRING) {
+    local _r = ::getResource(r);
+    if (!_r) throw Exception("resource not found : " + r);
+    r = _r;
+  }
+  local d = r.getContent();
+  local v = d.createSKView(uiclass);
+  return v;
+}

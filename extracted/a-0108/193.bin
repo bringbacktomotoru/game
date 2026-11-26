@@ -1,0 +1,190 @@
+{
+  "ID": "b5018617-cce2-466a-b315-f5d68648def3",
+  "Version": "2.3.3.0",
+  "Name": "FurnitureItemMaterialListItem",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 1296,
+        "Children": [
+          {
+            "IsCustomSize": true,
+            "FontSize": 16,
+            "LabelText": "/1",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Right",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 111,
+              "G": 59,
+              "B": 59
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 111,
+              "G": 59,
+              "B": 59
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 30.0,
+              "Y": 10.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.1124
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.2247
+            },
+            "TopMargin": 69.0,
+            "Tag": 577,
+            "ActionTag": 410842621,
+            "Size": {
+              "X": 60.0,
+              "Y": 20.0
+            },
+            "Name": "lbl_num",
+            "ctype": "TextObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 24,
+            "LabelText": "0",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Right",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 111,
+              "G": 59,
+              "B": 59
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 20.0,
+              "Y": 29.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.3333,
+              "Y": 0.3258
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.3146
+            },
+            "LeftMargin": -10.0,
+            "RightMargin": 10.0,
+            "TopMargin": 46.0,
+            "BottomMargin": 15.0,
+            "Tag": 578,
+            "ActionTag": 1434891426,
+            "Size": {
+              "X": 60.0,
+              "Y": 28.0
+            },
+            "Name": "lbl_possession_num",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/ImageFile.png",
+              "Plist": ""
+            },
+            "Scale9Width": 46,
+            "Scale9Height": 46,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 30.0,
+              "Y": 66.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.7416
+            },
+            "PreSize": {
+              "X": 0.7667,
+              "Y": 0.5169
+            },
+            "LeftMargin": 7.0,
+            "RightMargin": 7.0,
+            "BottomMargin": 43.0,
+            "Tag": 579,
+            "ActionTag": 63713986,
+            "Size": {
+              "X": 46.0,
+              "Y": 46.0
+            },
+            "Name": "img_item",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 60.0,
+          "Y": 89.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../Default/ImageFile.png",
+        "../font/logotypejp_mp_b_1.ttf"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

@@ -1,0 +1,337 @@
+;
+;----------- 初期登場 -------------
+[playbgm bgm="BGM08"]
+[changeroom id=2]
+
+;使用する家具
+
+;クラシカルラビットドレッサー
+[popfurniture fname=bed1 id=602 x=-2.5 y=0 z=-2.5 angle=180]
+;キューティプリンセスラグ
+[popfurniture fname=bed2 id=6004 x=-2.5 y=0 z=-2.5 angle=0]
+;ピンクプリンセスチェア
+[popfurniture fname=chair1 id=10201 x=2.3 y=0 z=-1.5 angle=270]
+;ピンクプリンセスチェア
+[popfurniture fname=chair2 id=10201 x=7 y=0 z=-3.5 angle=140]
+;ピンクプリンセスチェア
+[popfurniture fname=chair3 id=10201 x=6.5 y=0 z=1 angle=30]
+;ももいろハイキングテーブル（仮）
+[popfurniture fname=table1 id=12602 x=5 y=0 z=-1.5 angle=0]
+;キューティープリンセストルソー
+[popfurniture fname=book1 id=6005 x=-0 y=0 z=-3.5 angle=145]
+;チェリードールハウススタンドランプ
+[popfurniture fname=rug1 id=14205 x=-5.5 y=0 z=-4 angle=120]
+;キューティプリンセスロッキングラビット
+[popfurniture fname=rug2 id=6003 x=-6.5 y=0 z=2 angle=240]
+;キューティプリンセスベッド
+[popfurniture fname=rug3 id=6006 x=-7.5 y=0 z=-3 angle=180]
+
+[focusdoor]
+
+[startscene]
+
+;カメラが完成した部屋の様子を映す
+;配置した家具を見せるように
+
+[movecamera x=0 y=2.3 z=15 time=0]
+[rotatecamera pitch=0 head=193]
+
+
+
+[wait time=1500]
+
+[rotatecamera type=1 pitch=0 head=-25 time=7000]
+[wait time=8000]
+
+
+; キティ出現 マイメロの方へ回転
+[popchara costume=1005001 x=-0.2 z=-5.6 angle=190 relative=true]
+[startanime name=kitty  script=yokoyure_set2 script_args={[3,"warau"]}]
+[waitaction name=kitty script=yokoyure_set2]
+
+; マイメロ出現
+[popchara costume=1012002 x=2.1 z=-5.1 angle=150 relative=true]
+[startanime name=mymelo  script=yokoyure_set2 script_args={[3,"smile2"]}]
+[waitaction name=mymelo script=yokoyure_set2]
+
+; シナモン出現 マイメロの方へ回転
+[popchara costume=101102 x=-2.1 z=-5.1 angle=210 relative=true]
+[startanime name=cinnamon  script=yokoyure_set2 script_args={[3,"smile"]}]
+[waitaction name=cinnamon script=yokoyure_set2]
+
+
+; カメラ初期位置
+[focusdoor]
+[movecamera type=1 z=6 y=2.3 time=0]
+[rotatecamera pitch=0 head=180]
+
+[wait time=1000]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[balloon name=mymelo time=3000]
+ねぇねぇ/n
+#playername/n
+みんな、どうかな#q1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tabetai_set]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=sentence_hyahho script_args={[{face=["kya", "kya"],loop_num = 3}]}]
+[balloon name=cinnamon time=3000]
+わ～#e1#/n
+すごくいい感じだよ#e1#
+[startanime name=mymelo time=2000 script=yokoyure_set2 script_args={[3,"smile2"]}]
+[wait time=3000]
+[endballoon name=cinnamon]
+
+; キティアクション
+[startanime name=kitty time=2000 script=pyonpyon_set script_args={[3,"kya","kya"]}]
+[balloon name=kitty time=3000]
+ほんとにお姫さまの/n
+お部屋みたい#e1#
+[wait time=3000]
+[endballoon name=kitty]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=yokoyure_set2 script_args={[2,"warau"]}]
+[balloon name=mymelo time=3000]
+#playername/n
+シナモンくん
+[wait time=1500]
+[startanime name=cinnamon time=2000 script=kubikashige script_args={[3,"kyomi"]}]
+[startanime name=kitty time=2000 script=uun2_set script_args={[3,"kyomi"]}]
+[wait time=1500]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=yokoyure_set2]
+
+; マイメロフォーカス
+[charavisible name=kitty visible=false]
+[movecamera type=1 x=1.8 z=-3.3 y=-0.4 time=0]
+[wait time=800]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=cos_ojigi]
+[balloonoffset x=-1.5 y=-0.5]
+[balloon name=mymelo time=3000 type=2]
+[voice voice_key="e7" name=mymelo]
+おへやを すてきに/n
+してくれてありがとう#e1#
+[wait time=2000]
+[startanime name=cinnamon time=2000 script=yokoyure_set2 script_args={[3,"warau"]}]
+[startanime name=kitty time=2000 script=yokoyure_set2 script_args={[3,"smile2"]}]
+[wait time=2000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=tefuri]
+
+; カメラ戻る
+[charavisible name=kitty visible=true]
+[movecamera type=1 x=-1.8 z=3.3 y=0.4 time=0]
+[wait time=800]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=burabura_loop2_set script_args={[3,"smile2"]}]
+[balloonoffset]
+[balloon name=cinnamon time=3000]
+えへへ/n
+すてきなお部屋になって/n
+ぼくもうれしいよ#e1#
+[startanime name=mymelo time=2000 script=yokoyure_set2 script_args={[3,"smile2"]}]
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=burabura_loop2_set]
+
+; マイメロフォーカス
+[charavisible name=kitty visible=false]
+[movecamera type=1 x=1.8 z=-3.3 y=-0.4 time=0]
+[wait time=800]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=sentence_banzai3 script_args={[{loop_num = 3,face=["kya", "kya"]}]}]
+[balloonoffset x=-1.5 y=0.5]
+[balloon name=mymelo time=3000 type=2]
+キティちゃんも/n
+おかしづくり てつだって/n
+くれてありがとう#h1#
+[wait time=3000]
+[endballoon name=mymelo]
+[startanime name=mymelo time=2000 script=yokoyure_set2 script_args={[3,"smile2"]}]
+
+; カメラ戻る
+[charavisible name=kitty visible=true]
+[movecamera type=1 x=-1.8 z=3.3 y=0.4 time=0]
+[wait time=800]
+
+; キティアクション
+[startanime name=kitty time=2000 script=kubikashige script_args={[3,"smile2"]}]
+[balloonoffset]
+[balloon name=kitty time=3000]
+うふふ/n
+メロディとお菓子作るの/n
+とっても楽しかったわ#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=cos_bishi]
+[balloon name=cinnamon time=3000]
+これで準備は/n
+ばっちりだね#e1#
+[startanime name=kitty time=2000 script=stand_end2 script_args={["def"]}]
+[wait time=3000]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=cos_bishi]
+
+; カメラドアにフォーカス
+[startanime name=cinnamon time=2000 script=stand_end2 script_args={["def"]}]
+[focusdoor]
+[movecamera type=0 x=-3 y=2.3 z=-6.5 time=0]
+[rotatecamera pitch=0 head=0]
+
+[playse se="ui/doorchime.wav"]
+[wait time=2500]
+
+; カメラ初期位置
+[focusdoor]
+[movecamera type=1 z=6 y=2.3 time=0]
+[rotatecamera pitch=0 head=180]
+
+[wait time=500]
+
+; シナモンアクション
+[startanime name=cinnamon time=2000 script=mitsuketa_set script_args={["biku","meisou"]}]
+[balloon name=cinnamon time=3000]
+あ#e1#　お客さんが/n
+来たみたいだよ#e1#
+[wait time=1500]
+[startanime name=kitty time=2000 script=pyonpyon_set script_args={[1,"smile","smile"]}]
+[startanime name=mymelo time=2000 script=mitsuketa_set script_args={["kirasmile","meisou"]}]
+[wait time=1500]
+[endballoon name=cinnamon]
+[waitaction name=cinnamon script=mitsuketa_set]
+
+; キティフォーカス
+[charavisible name=cinnamon visible=false]
+[charavisible name=mymelo visible=false]
+[movecamera type=1 z=-4.2 y=-0.4 time=0]
+[wait time=800]
+; キティアクション
+[startanime name=kitty time=2000 script=ketsui2 script_args={[3,"smile"]}]
+[balloonoffset x=1.5 y=-0.5]
+[balloon name=kitty time=3000 type=1]
+さあ、メロディ#e1#/n
+お迎えしなくっちゃ#e1#
+[startanime name=cinnamon time=2000 script=yokoyure_set2 script_args={[3,"smile"]}]
+[startanime name=mymelo time=2000 script=bou_unaduku_face script_args={[2,"smile"]}]
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=ketsui2]
+
+; 3人フォーカス
+[charavisible name=cinnamon visible=true]
+[charavisible name=mymelo visible=true]
+[movecamera type=1 z=4.2 y=0.4 time=0]
+[wait time=800]
+
+; キティアクション
+[startanime name=kitty time=2000 script=kurukuru_set script_args={[3,"smile","smile"]}]
+[balloonoffset]
+[balloon name=kitty time=3000]
+すてきなおへやの/n
+管理人さん#o1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=kurukuru_set]
+[charavisible name=cinnamon visible=true]
+
+[turnchara name=mymelo script=walk_face angle=180 script_args={["smile"]} time=300]
+[wait time=300]
+[startanime name=mymelo time=0 script=stand_end2 script_args={["smile"]}]
+
+; マイメロフォーカス
+[charavisible name=kitty visible=false]
+[movecamera type=1 x=2.1 z=-2.5 y=-0.4 time=0]
+[wait time=800]
+
+[diarybranch]
+[wait time=3000];
+[s]
+
+
+*branch1
+; マイメロ頷く
+[startanime name=mymelo time=2000 script=sentence_ketsui2 script_args={[{loop_num = 3, face=["tere"]}]}]
+[balloonoffset x=1.3 y=-0.5]
+[balloon name=mymelo time=3000 type=1]
+[voice voice_key="e8" name=mymelo]
+うん#e1# みんなが/n
+ステキなおへやに/n
+してくれたんだもの#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=cos_bishi]
+
+; マイメロポーズ
+[startanime name=mymelo time=3000 script=cos_bishi]
+[balloon name=mymelo time=3000 type=1]
+せいいっぱい/n
+おきゃくさまを/n
+おもてなしするわ#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=event_unaduku]
+
+; マイメロポーズ
+[startanime name=mymelo time=3000 script=event_onegai2 script_args={["kirasmile"]}]
+[balloon name=mymelo time=3000 type=1]
+いってくるね#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=event_unaduku]
+
+[wait time=500]
+
+[jump target={"*end"}]
+
+
+*branch2
+
+; マイメロ决意
+[startanime name=mymelo time=3000 script=event_onegai2 script_args={["tere"]}]
+[balloonoffset x=1.3 y=-0.5]
+[balloon name=mymelo time=3000 type=1]
+[voice voice_key="e8" name=mymelo]
+だいじょうぶ#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=kubikashige]
+
+; マイメロ照れる
+[startanime name=mymelo time=2000 script=munehari script_args={["kiri2",3]}]
+[balloon name=mymelo time=3000 type=1]
+メロディ、もう りっぱな/n
+かんりにんさん だもの#e1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=ketsui2]
+
+; マイメロ照れる
+[startanime name=mymelo time=2000 script=kubikashige script_args={[3,"smile2"]}]
+[balloon name=mymelo time=3000 type=1]
+…でも、もしこまったら/n
+こっそりたすけてね#h1#/n
+#playername
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=ketsui2]
+
+[wait time=500]
+
+[jump target={"*end"}]
+
+
+*end
+[fadeoutbgm spd=12]
+[wait time=2300]

@@ -1,0 +1,221 @@
+class ConfirmShopFurnitureDialog extends ::Dialog {
+  lbl_price = null;
+  lbl_name = null;
+  lbl_capacity = null;
+  lbl_desc = null;
+  lbl_caution = null;
+
+  lbl_tap = null;
+  lbl_amount = null;
+  lbl_layout = null;
+
+  lbl_value_sum = null;
+
+  pnl_gm = null;
+  lbl_shortage = null;
+
+  img_series = null;
+  img_ok = null;
+  img_ng = null;
+
+  component = null;
+
+  buy_state = 0;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/ConfirmShopFurnitureDialog.ui"));
+
+    local _pnl_info = this.view.findChild("pnl_info");
+    local _pnl_slide = this.view.findChild("pnl_slide");
+    local _pnl_tap_hapiness = this.view.findChild("pnl_tap_hapiness");
+    _pnl_tap_hapiness.visible = false;
+
+    this.lbl_price = this.view.findChild("lbl_price");
+    this.lbl_name = this.view.findChild("lbl_name");
+    this.lbl_capacity = this.view.findChild("lbl_capacity");
+    this.lbl_desc = this.view.findChild("lbl_desc");
+    this.lbl_caution = this.view.findChild("lbl_caution");
+    this.lbl_caution.setVisible(false);
+
+    this.lbl_tap = _pnl_info.findChild("lbl_value_tap");
+    this.lbl_amount = _pnl_info.findChild("lbl_value_amount");
+    this.lbl_layout = _pnl_info.findChild("lbl_value_layout");
+    this.lbl_value_sum = _pnl_info.findChild("lbl_value_tap_sum");
+
+    this.img_series = this.view.findChild("img_series");
+    this.component = FurnitureComponent(this.view.findChild("pnl_view"));
+    this.img_ok = this.btn_ok.findChild("img_ok");
+    this.img_ng = this.btn_ok.findChild("img_ng");
+
+    this.pnl_gm = this.view.findChild("pnl_gm");
+    this.lbl_shortage = this.view.findChild("lbl_shortage");
+
+    this.btn_ok.findChild("lbl_ok").setText(::dict.get("decide"));
+    this.btn_cancel.findChild("lbl_cancel").setText(::dict.get("cancel"));
+    this.view.findChild("lbl_confirm").setText(::dict.get("shop_confirm_furniture"));
+
+    _pnl_info.findChild("lbl_text_tap").setText(::dict.get("tap"));
+    _pnl_info.findChild("lbl_text_amount").setText(::dict.get("possession"));
+    _pnl_info.findChild("lbl_text_layout").setText(::dict.get("layout"));
+
+    _pnl_slide.findChild("lbl_slide").setText(::dict.get("rewarddialog_slide_desc"));
+
+    this.pnl_gm.findChild("lbl_old").setText(::dict.get("have_hapiness"));
+    this.pnl_gm.findChild("lbl_new").setText(::dict.get("purchased_hapiness"));
+  }
+
+  function setShopFurniture(ss, state) {
+    local _fid = ss.getItemID();
+    local _ud = ::gamesession.getUserData();
+    local _fad = _ud.getFurnitureAmountData(_fid);
+    local _fs = ::gamesetting.furniture_settings[_fid];
+    this.buy_state = state;
+
+    this.lbl_name.setText(ss.getItemName());
+    local _action_num = _fs.getEnableActionNum();
+    if (_action_num > 1) {
+      this.lbl_capacity.visible = true;
+      this.lbl_capacity.setText(::dict.get("product_chara_num", [_fs.getEnableActionNum()]));
+    }
+    else {
+      this.lbl_capacity.visible = false;
+    }
+    this.lbl_desc.setText(_fs.getDesc());
+
+    local _sp = _fs.getSeriesSetting().getIconSprite();
+    this.img_series.setSprite(_sp);
+    this.img_series.updateLayout();
+
+    local _key = "";
+    switch (ss.getPriceType()) {
+    case PRICE_GM:
+      _key = "shop_confirm_gm_price";
+      break;
+    case PRICE_RM:
+    case PRICE_ONEROUS_RM:
+      _key = "shop_confirm_rm_price";
+      break;
+    }
+
+    local _price = ss.getPrice();
+    this.lbl_price.setText(::dict.get(_key, [::formatNumberString(_price)]));
+
+    this.component.setFurniture(_fid);
+
+    local _gm = _ud.getGameMoney();
+    local _rm = _ud.getTotalRealMoney();
+    if (canBuy()) {
+      this.img_ok.visible = true;
+      this.img_ng.visible = false;
+
+      this.lbl_shortage.setVisible(false);
+
+      this.pnl_gm.findChild("lbl_gm_old").setText(::formatNumberString(_gm));
+      this.pnl_gm.findChild("lbl_rm_old").setText(::formatNumberString(_rm));
+
+      local _sub = _gm - _price;
+      local _newgm = Math.clamp(_sub, 0, _gm);
+      local _newrm = _sub >= 0 ? _rm : _rm + _sub;
+
+      this.pnl_gm.findChild("lbl_gm_new").setText(::formatNumberString(_newgm));
+      this.pnl_gm.findChild("lbl_rm_new").setText(::formatNumberString(_newrm));
+    }
+    else {
+      this.img_ok.visible = false;
+      this.img_ng.visible = true;
+
+      this.pnl_gm.setVisible(false);
+      local _shortage = _price - (_gm + _rm);
+      this.lbl_shortage.setText(::dict.get("no_have_gm_val", [::formatNumberString(_shortage)]));
+    }
+
+    local _amount = 0;
+    local _layout = 0;
+    if (_fad) {
+      _amount = _fad.getFurnitureAmount();
+      _layout = _fad.getLayoutAmount();
+    }
+    local _add_tap_gm = _fs.calcTapGM(_amount + ss.getAmount()) - _fs.calcTapGM(_amount);
+    this.lbl_amount.setText(::formatNumberString(_amount));
+    this.lbl_tap.setText("+" + ::formatNumberString(_add_tap_gm));
+    this.lbl_layout.setText(_layout);
+
+    local _tap_gm = _ud.getTapHapiness();
+    lbl_value_sum.setText(::dict.get("nums_yazirushi_kakko", [::formatNumberString(_tap_gm), ::formatNumberString(_tap_gm + _add_tap_gm)]));
+
+    if (!_fs.canUseFurniture()) {
+      this.lbl_caution.setText(::dict.get("shop_cant_use"));
+      this.lbl_caution.setVisible(true);
+    }
+  }
+
+  function canBuy() {
+    return this.buy_state == ::ShopPanel.ShopCard.BUY_STATE_OK ? true : false;
+  }
+
+  function actionevent(e) {
+    switch (e.src) {
+    case btn_ok:
+      if (canBuy()) {
+        ret = 1;
+        close();
+        ::tutorial_manager.checkWaitingActionEvent(this.btn_ok);
+      }
+      else {
+        showBuyStateDialog();
+      }
+      break;
+    case btn_cancel:
+    case btn_close: ret = 0; close(); break;
+    }
+
+    if (func) func(ret);
+  }
+
+  function showBuyStateDialog() {
+    local _dlg = ::SimpleDialog();
+    _dlg.lbl_msg.setText(::ShopPanel.ShopCard.getBuyStateMessage(this.buy_state));
+    _dlg.show();
+  }
+}
+
+class FurnitureComponent {
+  sk3dview = null;
+
+  obj = null;
+  last_x = null;
+  angle = null;
+
+  constructor(pnl_view) {
+    this.sk3dview = ::Furniture3DView();
+    this.sk3dview.setRect(0, 0, pnl_view.bnd.w, pnl_view.bnd.h);
+    pnl_view.addChild(this.sk3dview);
+
+    pnl_view.addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function setFurniture(fid) {
+    this.angle = 0;
+    local _setting = ::gamesetting.furniture_settings[fid];
+
+    this.sk3dview.setFurniture(_setting, 1);
+    this.sk3dview.build(true);
+    this.obj = this.sk3dview.obj;
+  }
+
+  function mouseevent(e) {
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.last_x = e.x;
+      break;
+    case MOUSE_DRAGGED:
+      local diff = e.x - this.last_x;
+      this.angle -= diff;
+      this.obj.setAngle(angle);
+      this.last_x = e.x;
+      break;
+    case MOUSE_RELEASED:
+      break;
+    }
+  }
+}

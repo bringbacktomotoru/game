@@ -1,0 +1,21 @@
+model =
+{
+  root = {
+    pm = "afimage_c2_red.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function setup() {
+  }
+
+  function start() {
+    setBlend(SK_ADD);
+    uvscroll(-0.7, 0);
+    pass(700);
+    kill();
+  }
+}

@@ -1,0 +1,16 @@
+room_slot_unlock_condition_settings[0] <- ConditionSetting({
+  condition = {
+    rank = [0],
+  }
+})
+
+room_slot_unlock_condition_settings[1] <- ConditionSetting({
+  condition = {
+    rank = [10],
+  }
+})
+room_slot_unlock_condition_settings[2] <- ConditionSetting({
+  condition = {
+    rank = [20],
+  }
+})

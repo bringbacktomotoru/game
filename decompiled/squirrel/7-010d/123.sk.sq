@@ -1,0 +1,79 @@
+parentcoord <- false
+currentgroup <- 2
+groups <- [
+with ParticleGroupData() {
+  name = "fire"
+  enabled = true
+  aimtype = 1
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 0, start_spr = 0
+    life = 500, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = -1.48353, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.15708, dir_sprz = 0.05236
+  },
+  shapetype = 0
+  shapedata = { "w": 0.5, "h": 0.5, "axis": 0 }
+  texture = "fire_red_mix.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_scale", "scale": [0.538462, 1.615385], "xyz": 7 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 0.653846, 1.0], "scale": 9.320058, "axisid": 2 },
+  { "classid": "ptcmod_color", "color": [-1, -1, -9109249, -16777216] },
+  ] },
+with ParticleGroupData() {
+  name = "GROUP1"
+  enabled = false
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 8
+    start = 0, start_spr = 2500
+    life = 250, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.5, "h": 0.5, "axis": 0 }
+  texture = "shockwave02.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_scale", "scale": [0.230769, 1.692308, 2.0], "xyz": 7 },
+  { "classid": "ptcmod_color", "color": [-1, 0] },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 1.0], "scale": 3.1416, "axisid": 2 },
+  ] },
+with ParticleGroupData() {
+  name = "smoke"
+  enabled = true
+  aimtype = 1
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 1
+    start = 170, start_spr = 0
+    life = 600, life_spr = 200
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.1
+    dirx = 0.0, diry = -1.48353, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.10472, dir_sprz = 0.069813
+  },
+  shapetype = 0
+  shapedata = { "w": 0.4, "h": 0.4, "axis": 0 }
+  texture = "smoke01.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_color", "color": [-855638016, -1828716289, 454761098, 1347964160] },
+  { "classid": "ptcmod_scale", "scale": [0.423077, 1.038462], "xyz": 7 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 1.0], "scale": 3.1416, "axisid": 2 },
+  ] },
+]

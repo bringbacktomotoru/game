@@ -1,0 +1,46 @@
+class WebPanel extends SK3DView
+{
+  baseview = null;
+  url = null;
+
+  navi_close = null;
+  pnl_area = null;
+
+  webview = null;
+
+  constructor(_url) {
+    url = _url;
+    setRect(0, 0, ::screenWidth, ::screenHeight);
+    baseview = loadCocos("/ui/common/WebPanel.json");
+    addChild(baseview);
+
+    navi_close = baseview.findChild("navi_close");
+    TapButton(navi_close);
+
+    pnl_area = baseview.findChild("pnl_area");
+
+    webview = WebView();
+    webview.setType(3);
+
+    addEventListener(ACTION_EVENT, actionevent);
+  }
+
+  function added() {
+    updateMatrixAll();
+    local r = Rect2D(0, 0, pnl_area.bnd.w, pnl_area.bnd.h) * pnl_area.mat;
+    webview.setRect(r.x, r.y, r.w, r.h);
+    webview.openURL(url);
+    webview.show();
+  }
+
+  function actionevent(e) {
+    switch (e.src) {
+    case navi_close:
+      webview.close();
+      webview = null;
+      parent.removeChild(this);
+      break;
+    }
+  }
+
+}

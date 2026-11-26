@@ -1,0 +1,32 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "go_1"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 8
+    start = 0, start_spr = 0
+    life = 400, life_spr = 0
+    posx = 0.0, posy = 0.1, posz = 0.0
+    pos_sprx = 0.0, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = 0.0, dirz = 1.570796
+    dir_sprx = 2.740167, dir_spry = 0.0, dir_sprz = 0.0
+    linearbits = 32
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.12, "h": 0.12 }
+  texture = "tap_effect_big.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = false
+  mod = [
+  { "xyz": 7, "scale": [2.0, 0.0, 1.769231, 0.576923, 1.269231, 0.115385, 0.807692, 0.0], "classid": "ptcmod_scale" },
+  { "vel": 1.22, "classid": "ptcmod_vel", "vel_spr": 0.0 },
+  { "axisid": 1, "classid": "ptcmod_acc", "acc_spr": 0.0, "coord": 0, "acc": -0.256 },
+  { "scale": 0.785398, "classid": "ptcmod_rot", "rot": [-1.0, -1.0], "axisid": 2 },
+  ] },
+]

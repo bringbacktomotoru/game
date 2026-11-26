@@ -1,0 +1,129 @@
+parentcoord <- false
+currentgroup <- 1
+groups <- [
+with ParticleGroupData() {
+  name = "red"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 20
+    start = 0, start_spr = 5000
+    life = 3000, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 4.2, pos_spry = 0.0, pos_sprz = 4.2
+    dirx = 0.0, diry = 3.141593, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 0.523599, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.09, "h": 0.09, "axis": 0 }
+  texture = ""
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.0, "vel_spr": 0.5 },
+  { "classid": "ptcmod_rot", "rot": [1.0, -1.0], "scale": 12.566371, "axisid": 2 },
+  { "classid": "ptcmod_color", "color": [-16776961, -16776961] },
+  ] },
+with ParticleGroupData() {
+  name = "blue"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 15
+    start = 200, start_spr = 4800
+    life = 3000, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 3.8, pos_spry = 0.0, pos_sprz = 3.8
+    dirx = 0.0, diry = 3.141593, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 0.453786, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = ""
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.0, "vel_spr": 0.5 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 1.0], "scale": 12.566371, "axisid": 2 },
+  { "classid": "ptcmod_color", "color": [65535, 65535] },
+  ] },
+with ParticleGroupData() {
+  name = "green"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 17
+    start = 400, start_spr = 4600
+    life = 3000, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 4.6, pos_spry = 0.0, pos_sprz = 4.6
+    dirx = 0.0, diry = 3.141593, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 0.366519, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.07, "h": 0.07, "axis": 0 }
+  texture = ""
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.0, "vel_spr": 0.5 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 1.0], "scale": 12.566371, "axisid": 2 },
+  { "classid": "ptcmod_color", "color": [16711935, 16711935] },
+  ] },
+with ParticleGroupData() {
+  name = "yellow"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 18
+    start = 600, start_spr = 4400
+    life = 3000, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 5.0, pos_spry = 0.0, pos_sprz = 5.0
+    dirx = 0.0, diry = 3.141593, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 0.296706, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.08, "h": 0.08, "axis": 0 }
+  texture = ""
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.0, "vel_spr": 0.5 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 1.0], "scale": 12.566371, "axisid": 2 },
+  { "classid": "ptcmod_color", "color": [-65281, -65281] },
+  ] },
+with ParticleGroupData() {
+  name = "pink"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 13
+    start = 800, start_spr = 4200
+    life = 3000, life_spr = 0
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 4.5, pos_spry = 0.0, pos_sprz = 4.5
+    dirx = 0.0, diry = 3.141593, dirz = 0.0
+    dir_sprx = 3.141593, dir_spry = 0.296706, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.08, "h": 0.08, "axis": 0 }
+  texture = ""
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel": 2.0, "vel_spr": 0.5 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 1.0], "scale": 12.566371, "axisid": 2 },
+  { "classid": "ptcmod_color", "color": [-16728065, -16728065] },
+  ] },
+]

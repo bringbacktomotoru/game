@@ -1,0 +1,55 @@
+parentcoord <- false
+currentgroup <- 1
+groups <- [
+with ParticleGroupData() {
+  name = "fire"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 60
+    start = 0, start_spr = 2500
+    life = 250, life_spr = 100
+    posx = 0.0, posy = 0.0, posz = 0.0
+    pos_sprx = 0.5, pos_spry = 0.3, pos_sprz = 0.1
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.0, dir_sprz = 0.0
+  },
+  shapetype = 0
+  shapedata = { "w": 0.2, "h": 0.2, "axis": 0 }
+  texture = "fire.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_scale", "scale": [0.0, 0.923077, 0.884615, 1.653846, 1.846154, 1.230769, 1.153846, 0.0], "xyz": 7 },
+  { "classid": "ptcmod_vel", "vel": 2.0, "vel_spr": 0.7 },
+  { "classid": "ptcmod_rot", "rot": [-1.0, 0.961538], "scale": 3.490659, "axisid": 2 },
+  ] },
+with ParticleGroupData() {
+  name = "hibana"
+  enabled = true
+  aimtype = 1
+  localcoord = false
+  emitter = with ParticleEmitter() {
+    num = 30
+    start = 0, start_spr = 2500
+    life = 100, life_spr = 60
+    posx = 0.0, posy = 0.5, posz = 0.0
+    pos_sprx = 0.2, pos_spry = 0.0, pos_sprz = 0.0
+    dirx = 0.0, diry = -0.471239, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.418879, dir_sprz = 0.837758
+  },
+  shapetype = 0
+  shapedata = { "w": 0.1, "h": 0.1, "axis": 0 }
+  texture = "ball16.png"
+  color = 0xffffffff
+  blend = 3
+  tec = null
+  mod = [
+  { "classid": "ptcmod_vel", "vel_spr": 2.96, "vel": 7.1 },
+  { "classid": "ptcmod_follow", "k1": 1.0, "k0": 2.0 },
+  { "classid": "ptcmod_color", "color": [-10878721, -1459617537, -10878721, -1409285889, -10878721, -1442840321, -10878721, -1442840321] },
+  { "classid": "ptcmod_scale", "scale": [0.0, 1.192308, 0.884615, 1.653846, 0.961538, 1.115385, 0.346154, 0.1], "xyz": 7 },
+  ] },
+]

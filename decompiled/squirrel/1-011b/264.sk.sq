@@ -1,0 +1,55 @@
+class Model {
+  scene = null;
+
+  angle = 0.0;
+  is_visible = true;
+
+  is_need_update = false;
+
+  constructor(scene) {
+    this.scene = scene;
+
+  }
+
+  function build() {}
+  function release() {}
+
+  function startUpdate() {
+    this.is_need_update = true;
+  }
+  function stopUpdate() {
+    this.is_need_update = false;
+  }
+  function update(dt) {
+    return is_need_update;
+  }
+
+  function applyAngle() {}
+  function setAngle(angle) {
+    this.angle = int(angle % 360);
+    applyAngle();
+  }
+  function addAngle(angle) {
+    setAngle(getAngle() + angle);
+  }
+  function getAngle() {
+    return this.angle;
+  }
+  function getDir() {
+    return getAngle() * Math.DTOR;
+  }
+
+  function applyVisible() {}
+  function setVisible(v) {
+    this.is_visible = v;
+    applyVisible();
+  }
+  function isVisible() {
+    return this.is_visible;
+  }
+
+  function inBounds(pos) {
+
+    return false;
+  }
+}

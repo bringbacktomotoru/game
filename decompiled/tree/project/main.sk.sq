@@ -1,0 +1,121 @@
+printf("Kitty main\n");
+
+::isSendLog <- false;
+
+if (isSendLog) {
+  local _os_name = skGetOSName();
+
+  local _filepath = skGetDataDir() + "/";
+
+  changeStdOut(FileRef(_filepath + "before_login.log"), "w");
+}
+
+::DEBUG <- true;
+
+::viewWidth <- 1280.0;
+::viewHeight <- 720.0;
+
+::screenWidth <- 1280.0;
+
+::screenHeight <- 720.0;
+
+::uiWidth <- 1280;
+::uiHeight <- 960;
+
+::displayWidth <- 0.0;
+::displayHeight <- 0.0;
+
+::DISPLAY_SCALE <- 0.8;
+
+skCreateScreen("Kitty", ::screenWidth * ::DISPLAY_SCALE, ::screenHeight * ::DISPLAY_SCALE, 1);
+
+skBeginRender();
+local cp = ClearParam();
+cp.R = 0.0; cp.G = 0.0; cp.B = 0.0;
+skClearParam(cp);
+
+skInitializeSound();
+
+runsk("load.sk");
+
+::soundmanager.loadOption();
+
+::workerthread <- WorkerDriverEx.startMaster(3);
+
+function getDisplayScale() {
+  return ::displayHeight / ::screenHeight;
+}
+
+function getViewScale() {
+  return ::viewHeight / ::displayHeight;
+}
+
+function countKoban() {
+  local list = [];
+  foreach (v in ::gamesetting.stage) {
+    if (v.stageid < 10000) {
+      list + v;
+    }
+  }
+  list.sort(function(a, b) { return a.stageid - b.stageid });
+  local dir = ::getResource("/stagedata");
+  foreach (v in list) {
+    local s = "stage[" + v.stageid + "] ";
+    local num = 0;
+    foreach (c in v.course) {
+      try {
+        local r = dir.getResource(c.datapath);
+        local bb = r.getContent();
+        r.flush();
+        local sd = StageData();
+        sd.loadStageData(bb);
+        local _n = sd.countObjects(1) + sd.countObjects(2) * 3;
+        s = s + " " + _n;
+        num += _n;
+      } catch (ex) {
+        printf("stage loading error [%S]\n", c.datapath);
+      }
+    }
+    s = s + " total:" + num;
+    printf("%S\n", s);
+  }
+}
+
+skSetFPS(60.0);
+
+::debugenabled <- false;
+{
+  local args = ::arguments;
+  for (local l = 0; l < length(args); l++) {
+    if (args[l] == "-debugenable" && skGetOSName() == "Windows") {
+      debugenabled = true;
+    }
+
+    if (args[l] == "-kobancount") {
+      countKoban();
+      return;
+    }
+  }
+}
+
+if (1)
+{
+  try {
+    ::rootview <- GameRootView();
+
+    local game = GameSession();
+    game.init(::rootview);
+    game.fitscreen(::rootview);
+    setGameSession(game);
+
+    game.changePackageCheckScene();
+    game.start();
+  } catch (ex) {
+    println("error in main loop....");
+    printexception(ex);
+    sendException(ex, "error in main loop....");
+  }
+  printf("OWARI!!!!!!\n");
+  skEndRender();
+  return;
+}

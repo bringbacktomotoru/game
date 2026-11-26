@@ -1,0 +1,30 @@
+return {
+  modeldata = "_masi.mdl"
+  bnd = [0.202305, 5.963635, 1.000001, 15.849842, 5.965208, 13.0]
+
+  material = [
+  {
+    name = "room_mt"
+    tec = "shading.basic"
+    Ka = 0xfffffffd
+    Kd = 0xffffffff
+    Ks = 0xdbdbdbff
+    Ke = 0
+    shiness = 20.0
+    texture0 = "../tex/floweryantique.png"
+  }
+  {
+    name = "alpha_mt"
+    tec = "shading.basic"
+    Ka = 0xfffffffd
+    Kd = 0xffffffff
+    Ks = 255
+    Ke = 0
+    shiness = 20.0
+    blend = SK_MIX
+    depthmask = 0
+    fresnel = 0.0
+    texture0 = "../tex/floweryantique.png"
+  }
+  ]
+}

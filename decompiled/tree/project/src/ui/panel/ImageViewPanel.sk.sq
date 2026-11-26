@@ -1,0 +1,178 @@
+class ImageViewPanel extends ::HomeUI.Panel {
+  static need_money_layer = false;
+  static need_rank_layer = false;
+  static need_menu_layer = false;
+  static need_panel_name = false;
+
+  view = null;
+
+  pnl_image = null;
+  btn_close = null;
+  btn_r = null;
+  btn_l = null;
+  lbl_pages = null;
+
+  lbl_title = null;
+  lbl_desc = null;
+
+  is_rotate = false;
+
+  can_no_read = true;
+
+  image_list = null;
+  current_idx = null;
+
+  init_setting = null;
+
+  function added() {
+    super.added();
+    registerMouseEventReceiver(this);
+    this.view = ::loadSKView("/ui/ImageViewPanel.ui");
+    addChild(this.view);
+
+    this.pnl_image = this.view.findChild("pnl_image");
+    this.lbl_pages = this.view.findChild("lbl_pages");
+
+    this.lbl_title = this.view.findChild("lbl_help_title");
+    this.lbl_desc = this.view.findChild("lbl_help_text");
+    this.btn_r = this.view.findChild("btn_r");
+    ::TapButton(this.btn_r).view.addEventListener(ACTION_EVENT, actionevent_page);
+    this.btn_l = this.view.findChild("btn_l");
+    ::TapButton(this.btn_l).view.addEventListener(ACTION_EVENT, actionevent_page);
+
+    this.btn_close = this.view.findChild("btn_close");
+    ::TapButton(this.btn_close).view.addEventListener(ACTION_EVENT, actionevent_back);
+    this.btn_close.findChild("lbl_close").setText(dict.get("close"));
+    this.current_idx = -1;
+
+    if (this.init_setting) setup(this.init_setting);
+  }
+
+  function removed() {
+    super.removed();
+    removeMouseEventReceiver(this);
+  }
+
+  function setPanelParam(param) {
+    if ("can_no_read" in param) this.can_no_read = param.can_no_read;
+    if ("setting" in param) this.init_setting = param.setting;
+  }
+
+  function setNoReadFlag(b) {
+    this.can_no_read = b;
+  }
+
+  function setImagePathList(list) {
+    this.image_list = list;
+    if (this.image_list.len() == 1) {
+      this.btn_r.setVisible(false);
+      this.btn_l.setVisible(false);
+    }
+    if (!this.can_no_read) this.btn_close.visible = false;
+    _changePage(0);
+  }
+
+  function setup(setting) {
+    setImagePathList(setting.getImagePathList());
+    this.lbl_title.setText(setting.getTitle());
+    this.lbl_desc.setText(setting.getDesc());
+  }
+
+  function setupFromTable(table) {
+    setImagePathList(table.getImagePathList());
+    this.lbl_title.setText(table.title);
+    this.lbl_desc.setText(table.desc);
+  }
+
+  function setRotate(b) {
+    this.is_rotate = b;
+  }
+
+  function _changePage(idx) {
+    local old_idx = this.current_idx;
+    local max_page_num = this.image_list.len();
+
+    if (this.is_rotate) {
+      if (this.current_idx == idx) return false;
+
+      idx = idx % max_page_num;
+      if (idx < 0) {
+        this.current_idx = idx + max_page_num;
+      } else {
+        this.current_idx = idx;
+      }
+    }
+    else {
+      if (idx < 0 || idx >= max_page_num) return false;
+
+      if (max_page_num > 1) {
+        if (idx == 0) this.btn_l.setVisible(false);
+        else this.btn_l.setVisible(true);
+
+        if (idx == max_page_num - 1) this.btn_r.setVisible(false);
+        else this.btn_r.setVisible(true);
+      }
+      this.current_idx = idx;
+    }
+
+    if (!this.can_no_read && idx == max_page_num - 1) this.btn_close.visible = true;
+
+    this.lbl_pages.setText(::dict.get("nums_slash", [this.current_idx + 1, max_page_num]));
+
+    this.pnl_image.clearChildren();
+    local _sp = ::getSprite(this.image_list[this.current_idx]);
+    if (!_sp) {
+      this.current_idx = old_idx;
+      return false;
+    }
+    _sp.blend = SK_MIX;
+    local _img = SKImageView();
+    _img.setSprite(_sp);
+    _img.setRect(0, 0, this.pnl_image.bnd.w, this.pnl_image.bnd.h);
+    this.pnl_image.addChild(_img);
+    return true;
+  }
+
+  function actionevent_back(e) {
+    local _ud = ::gamesession.getUserData();
+
+    if (::gamesetting.game_rule.disableTutorial()) {
+
+      getHomeUI().backPanel();
+    }
+    else if (!_ud.isEndTutorialId(::TutorialSetting.TUTORIAL_FIRST_LOGIN)) {
+
+      getHomeUI().movePanel(::RoomSelectPanel, false, null, _getTrans());
+    }
+  }
+
+  function _getTrans() {
+    return MaskPanelTransition(::getTexture(::getLoadImagePath()), ::getTexture("/image/black.jpg"), 5.0, 50);;
+  }
+
+  function actionevent_page(e) {
+    e.consume();
+
+    switch (e.src) {
+    case this.btn_r:
+      _changePage(this.current_idx + 1);
+      break;
+    case this.btn_l:
+      _changePage(this.current_idx - 1);
+      break;
+    }
+  }
+
+  function flickRight() {
+    if (_changePage(this.current_idx + 1)) {
+      ::playSound(::SoundConstants.SOUND_BUTTON);
+    }
+  }
+
+  function flickLeft() {
+    if (_changePage(this.current_idx - 1)) {
+      ::playSound(::SoundConstants.SOUND_BUTTON);
+    }
+  }
+
+}

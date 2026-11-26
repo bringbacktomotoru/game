@@ -1,0 +1,596 @@
+const VP_SIZE = -1
+const VP_HALF = -2
+const VP_QUAT = -3
+const VP_EIGHTH = -4
+
+local _getImageMesh = function() {
+  local mb = PolygonMeshBuilder();
+  mb.setMaterial(Material());
+  mb.begin(SK_TRIANGLESTRIP);
+  mb.color(-1);
+  mb.texcoord(0, 1); mb.vertex(-1, -1, 0);
+  mb.texcoord(0, 0); mb.vertex(-1, 1, 0);
+  mb.texcoord(1, 1); mb.vertex(1, -1, 0);
+  mb.texcoord(1, 0); mb.vertex(1, 1, 0);
+  mb.end();
+
+  local m2 = Material(); m2.Ke = 0xff00ff00;
+  mb.setMaterial(m2);
+  mb.begin(SK_TRIANGLESTRIP);
+  mb.color(-1);
+  mb.texcoord(0, 1); mb.vertex(-1, 1, 0);
+  mb.texcoord(0, 0); mb.vertex(-1, -1, 0);
+  mb.texcoord(1, 1); mb.vertex(1, 1, 0);
+  mb.texcoord(1, 0); mb.vertex(1, -1, 0);
+  mb.end();
+  return mb.toPolygonMesh();
+}
+
+function createSceneRenderer() {
+  local r = SK3DRenderer();
+  r.setRenderSetting(
+  {
+    targets = {
+    }
+    passes = [
+    {
+      cls = "MainRenderPass"
+    }
+    ]
+
+  }
+  );
+  return r;
+}
+
+function createRenderSetting(t) {
+  local type = t["type"] || 0;
+  local rs = null;
+  switch (type) {
+  case 1:
+    {
+      rs = {
+        targets = {
+          colortex = [VP_SIZE, VP_SIZE, SK_RGBA, 2]
+          halftex = [VP_HALF, VP_HALF, SK_RGBA, 0]
+          quattex = [VP_QUAT, VP_QUAT, SK_RGBA, 0]
+          eighthtex = [VP_EIGHTH, VP_EIGHTH, SK_RGBA, 0]
+        }
+        passes = [
+        {
+          cls = "MainRenderPass"
+          clearparam = { color = 286331391, depth = 1.0 }
+          target = "colortex"
+        },
+        {
+          cls = "BloomBlurImagePass"
+          src1 = "colortex"
+          src2 = "halftex"
+          src3 = "quattex"
+          target = "eighthtex"
+
+          color = t["bloomc"] || 0xffffffff
+          thrs = t["bloomthrs"] || 0.4
+          blur = t["bloomblur"] || 0.1
+          power = t["bloompower"] || 0.5
+        },
+        {
+          cls = "FXMixImagePass"
+          src1 = "colortex"
+          src2 = "eighthtex"
+          target = null
+
+        }
+        ]
+      }
+      break;
+    }
+  case 2:
+    {
+
+    }
+  default:
+    {
+
+      rs = {
+        targets = {
+        }
+        passes = [
+        {
+          cls = "MainRenderPass"
+        }
+        ]
+      }
+    }
+  }
+  return rs;
+}
+
+class SK3DRenderer
+{
+  scn = null;
+
+  vpw = -1;
+  vph = -1;
+
+  targets = null;
+  passes = null;
+
+  currenttarget = null;
+  finaltarget = null;
+  finalvp = null;
+
+  cameraobj = null;
+  camera = null;
+
+  cullfilterfunc = null;
+
+  constructor() {
+    targets = {};
+    passes = [];
+    local p = MainRenderPass();
+    p.renderer = this;
+    passes + p;
+    finalvp = [0, 0, 0, 0];
+
+    camera = Camera();
+    camera.perspective(40.0, 1.0, 0.1, 100.0);
+    camera.lookat(Vector3D(0, 2, -8), Vector3D(0, 1, 0));
+  }
+
+  function setScene(s) {
+    scn = s;
+  }
+
+  function setCameraObject(o) {
+    cameraobj = o;
+    o.toCamera(camera, vpw, vph);
+  }
+
+  function setRenderSetting(rs) {
+    targets = {};
+    foreach (name, ts in rs.targets) {
+      local t = Texture();
+      t.ref = ts;
+      targets[name] <- t;
+    }
+    passes = [];
+    foreach (ps in rs.passes) {
+      local pass = SK3DRenderer[ps.cls]();
+      pass.renderer = this;
+      pass.setPassSetting(ps);
+      passes + pass;
+    }
+    vpw = vph = -1;
+  }
+
+  function getTarget(name) {
+    return targets[name] || null;
+  }
+
+  function setTarget(t) {
+    if (currenttarget == t) return;
+    currenttarget = t;
+    if (t) {
+      skSetRenderTarget(t);
+      skSetViewport();
+    } else {
+      currenttarget = finaltarget;
+      skSetRenderTarget(finaltarget);
+      skSetViewport(finalvp);
+    }
+  }
+
+  function setViewportSize(w, h) {
+    foreach (t in targets) {
+      local rs = t.ref;
+      if (rs[0] < 0 || rs[1] < 0) {
+        t.create(_texsize(rs[0], w), _texsize(rs[1], h), rs[2], rs[3]);
+      }
+    }
+    vpw = w; vph = h;
+  }
+
+  function _texsize(s, vp) {
+    switch (s) {
+    case -1: return Math.max(vp | 0, 4);
+    case -2: return Math.max(vp >> 1, 4);
+    case -3: return Math.max(vp >> 2, 4);
+    case -4: return Math.max(vp >> 3, 4);
+    default: return s;
+    }
+  }
+
+  static oldvp = [0, 0, 0, 0];
+
+  function render(vp) {
+
+    skGetViewport(oldvp);
+    skSetViewport(vp);
+    skPushMatrix(0, 1, 2);
+    skPushRenderStates();
+
+    if (vp[2] != vpw || vp[3] != vph) {
+      setViewportSize(vp[2], vp[3]);
+    }
+    if (cameraobj) cameraobj.toCamera(camera, vpw, vph);
+    currenttarget = finaltarget = skGetRenderTarget();
+    skGetViewport(finalvp);
+    foreach (p in passes) p.render();
+    setTarget(null);
+
+    skSetViewport(oldvp);
+    skPopMatrix(2, 1, 0);
+    scn.env.earlyz = 0;
+
+    skPopRenderStates();
+  }
+}
+
+class SK3DRenderer.RenderPass
+{
+  renderer = null;
+
+  target = null;
+  clearparam = null;
+  visiblemask = -1;
+
+  function setPassSetting(ps) {
+    local cp = ps["clearparam"];
+    if (cp) {
+      clearparam = ClearParam();
+      foreach (i, v in cp) clearparam[i] = v;
+    }
+    target = renderer.getTarget(ps["target"]);
+    if ("visiblemask" in ps) visiblemask = ps.visiblemask;
+  }
+
+  function getCamera() {
+    return renderer.camera;
+  }
+
+  function render() {
+
+    local scn = renderer.scn;
+    local cam = getCamera();
+    local env = scn.env;
+    env.znear = cam.znear;
+    env.zfar = cam.zfar;
+    skSetCamera(cam);
+    if (scn.env["computeParams"]) scn.env.computeParams();
+    skBindEnvironment(scn.env);
+    skPushRenderStates();
+
+    local objs = scn.cull(cam, visiblemask, renderer.cullfilterfunc);
+    local old, oldvp;
+    renderer.setTarget(target);
+    if (clearparam) skClearScreen(clearparam);
+    beginPass();
+    foreach (n in objs) {
+      if (n.visiblemask & visiblemask) {
+        if (n.mesh) drawMesh(n);
+        else if (n.ptc) drawParticle(n);
+      }
+    }
+    endPass();
+    skClearLightParameters();
+    skPopRenderStates();
+  }
+
+  function beginPass() {
+  }
+
+  function endPass() {
+  }
+
+  function drawMesh(n) {
+  }
+
+  function drawParticle(n) {
+  }
+}
+
+class SK3DRenderer.SingleImagePass
+{
+  renderer = null;
+
+  target = null;
+  m = null;
+  vtx = null;
+  fidx = null;
+  ridx = null;
+
+  constructor() {
+    m = Material();
+    m.cullface = 0;
+    m.depthtest = 0;
+    m.depthmask = 0;
+    local _pm = #_getImageMesh();
+    vtx = _pm.vtx;
+    fidx = _pm.face[0].idx;
+    ridx = _pm.face[1].idx;
+  }
+
+  function setPassSetting(ps) {
+    target = renderer.getTarget(ps["target"]);
+    m.tex0 = renderer.getTarget(ps["src1"]);
+    m.tex1 = renderer.getTarget(ps["src2"]);
+    m.tex2 = renderer.getTarget(ps["src3"]);
+    m.tex3 = renderer.getTarget(ps["src4"]);
+    m.colormat = ps["colormat"] || null;
+    m.depthtest = 0;
+    m.depthmask = 0;
+  }
+
+  function render() {
+    local old, oldvp;
+    renderer.setTarget(target);
+    local idx = renderer.currenttarget ? ridx : fidx;
+    skBindVertexBuffer(vtx);
+    skDrawIndexBuffer(m, SK_TRIANGLESTRIP, idx);
+    skBindVertexBuffer(null);
+  }
+}
+
+class SK3DRenderer.MultiImagePass
+{
+  renderer = null;
+
+  target = null;
+  m = null;
+  vtx = null;
+  fidx = null;
+  ridx = null;
+
+  constructor() {
+    target = [];
+    m = [];
+    local _pm = #_getImageMesh();
+    vtx = _pm.vtx;
+    fidx = _pm.face[0].idx;
+    ridx = _pm.face[1].idx;
+  }
+
+  function render() {
+    local old, oldvp;
+    skBindVertexBuffer(vtx);
+    local len = length(m);
+    for (local l = 0; l < len; l++) {
+      local m = m[l];
+      local target = target[l];
+      renderer.setTarget(target);
+      local idx = renderer.currenttarget ? ridx : fidx;
+      skDrawIndexBuffer(m, SK_TRIANGLESTRIP, idx);
+    }
+    skBindVertexBuffer(null);
+  }
+
+  function createMaterial(tecname) {
+    local m1 = Material();
+    m1.tec = skFXFindTechnique(tecname);
+    m1.cullface = m1.depthtest = m1.depthmask = 0;
+    m1.miscmat0 = Matrix();
+    return m1;
+  }
+}
+
+class SK3DRenderer.MainRenderPass extends SK3DRenderer.RenderPass
+{
+  visiblemask = SK_VISIBLE_MAIN;
+
+  function beginPass() {
+    local scn = renderer.scn;
+    skSetLights(scn.lights, scn.env.envlights);
+  }
+
+  function endPass() {
+    skSetLights(null);
+  }
+
+  function drawMesh(n) {
+    skSetMatrix(SK_WORLD, n.gmat);
+    if (n.billboard) skBillboardMatrix(n.billboardbank);
+    skCalcLightParameters(n.gbnd);
+    n.mesh.render(visiblemask);
+  }
+
+  function drawParticle(n) {
+
+    skCalcLightParameters(n.gbnd);
+    skDrawParticleGroups(n.ptc.groups);
+
+  }
+}
+
+class SK3DRenderer.SubRenderPass extends SK3DRenderer.RenderPass
+{
+  mbuf = null;
+
+  constructor() {
+    mbuf = [];
+    for (local l = 0; l < 16; l++) mbuf + Material();
+  }
+
+  function drawMesh(n) {
+    skSetMatrix(SK_WORLD, n.gmat);
+    if (n.billboard) skBillboardMatrix(n.billboardbank);
+    local mesh = n.mesh, fa = mesh.face, mb = mbuf;
+    foreach (i, f in fa) { local m = (mb[i] << f.m); mb[i] = f.m; f.m = m; }
+    replaceMaterials(n, fa);
+    mesh.render(visiblemask);
+    foreach (i, f in fa) { local m = mb[i]; mb[i] = f.m; f.m = m; }
+  }
+
+  function drawParticle(n) {
+    local ptc = n.ptc, fa = ptc.groups, mb = mbuf;
+    foreach (i, f in fa) { local m = (mb[i] << f.m); mb[i] = f.m; f.m = m; }
+    replaceMaterials(n, fa);
+    skDrawParticleGroups(fa);
+    foreach (i, f in fa) { local m = mb[i]; mb[i] = f.m; f.m = m; }
+  }
+}
+
+class SK3DRenderer.SelectorRenderPass extends SK3DRenderer.SubRenderPass
+{
+  visiblemask = SK_VISIBLE_SELECTOR;
+  static decal_def = skFXFindTechnique("decal.def");
+  static decal_color = skFXFindTechnique("decal.color");
+
+  function getSelectorID(n) {
+    while (n) {
+      if (n["selectorid"]) {
+        local e = n.sk3dentity;
+        if (!e || ((e.layerflags & 3) == 3)) return n.selectorid;
+      }
+      n = n["parent"];
+    }
+    return 0;
+  }
+
+  function replaceMaterials(n, fa) {
+    local Kd = getSelectorID(n);
+    foreach (f in fa) {
+      local m = f.m;
+      m.tec = decal_color;
+      m.Kd = Kd;
+    }
+  }
+
+  function drawMesh(n) {
+    if (getSelectorID(n)) super.drawMesh(n);
+  }
+
+  function drawParticle(n) {}
+}
+
+class SK3DRenderer.DepthRenderPass extends SK3DRenderer.SubRenderPass
+{
+  visiblemask = SK_VISIBLE_DEPTH;
+  static depth_def = skFXFindTechnique("depth.def");
+  static depth_mix = skFXFindTechnique("depth.mix");
+  static depth_add = skFXFindTechnique("depth.add");
+
+  function replaceMaterials(n, fa) {
+    foreach (f in fa) {
+      local m = f.m;
+      if (!(m.blend || m.alphatest)) {
+        m.tec = depth_def;
+      } else
+      if (m.blend == SK_ADD) {
+        m.tec = depth_add;
+      } else {
+        m.tec = depth_mix;
+      }
+    }
+  }
+}
+
+class SK3DRenderer.DrawImagePass extends SK3DRenderer.SingleImagePass
+{
+  constructor() {
+  }
+
+  function setPassSetting(ps) {
+    super.setPassSetting(ps);
+    m.tec = skFXFindTechnique(ps["tec"] || "sprite.def");
+  }
+}
+
+class SK3DRenderer.VividizeImagePass extends SK3DRenderer.SingleImagePass
+{
+  constructor() {
+    m.tec = skFXFindTechnique("spritefx.vividize");
+    m.miscmat0 = Matrix();
+  }
+
+  function setPassSetting(ps) {
+    super.setPassSetting(ps);
+    local mat = m.miscmat0;
+    local mi = 0.2;
+    local ma = 0.7;
+    mat[0] = -mi; mat[1] = 1.0 / (ma - mi);
+    m.colormat = ps["colormat"] || Matrix.fromHSV(0.0, 2.0, 1.0);
+  }
+}
+
+class SK3DRenderer.BlurImagePass extends SK3DRenderer.MultiImagePass
+{
+  constructor() {
+    local m1 = createMaterial("spritefx.blur");
+    local m2 = createMaterial("spritefx.blur");
+    m + m1 + m2;
+    target = [null, null];
+  }
+
+  function setPassSetting(ps) {
+    target[1] = renderer.getTarget(ps["target"]);
+    m[0].tex0 = renderer.getTarget(ps["src1"]);
+    m[1].tex0 = target[0] = renderer.getTarget(ps["src2"]);
+    m[1].colormat = ps["colormat"] || null;
+
+    setBlur(ps, m[0], m[1]);
+  }
+
+  function setBlur(ps, m1, m2) {
+    local b = (ps["blur"] || 0.01) / 100.0;
+    local mx = m1.miscmat0;
+    local my = m2.miscmat0;
+    for (local l = 0; l < 16; l++) mx[l] = my[l] = 0.0;
+    mx[0] = my[1] = b * 1.0;
+    mx[2] = my[3] = b * 2.0;
+    mx[4] = my[5] = b * 3.0;
+    mx[6] = my[7] = b * 4.0;
+    mx[8] = my[9] = b * 5.0;
+    mx[10] = my[11] = b * 6.0;
+  }
+}
+
+class SK3DRenderer.BloomBlurImagePass extends SK3DRenderer.BlurImagePass
+{
+  constructor() {
+
+    local m1 = createMaterial("spritefx.bloomextract");
+    m[0] <- m1;
+    target + null;
+  }
+
+  function setPassSetting(ps) {
+    target[2] = renderer.getTarget(ps["target"]);
+    m[0].tex0 = renderer.getTarget(ps["src1"]);
+    m[1].tex0 = target[0] = renderer.getTarget(ps["src2"]);
+    m[2].tex0 = target[1] = renderer.getTarget(ps["src3"]);
+    local mb = m[0].miscmat0;
+    for (local l = 0; l < 16; l++) mb[l] = 0.0;
+    local thrs = ps["thrs"] || 0.4;
+    mb[0] = mb[1] = mb[2] = mb[3] = -thrs;
+    local c = ps["color"] || 0x80808080;
+    local pw = (ps["power"] || 0.5) / 255.0;
+
+    mb[4] = (c >>> 24) * pw;
+    mb[5] = ((c >>> 16) & 255) * pw;
+    mb[6] = ((c >>> 8) & 255) * pw;
+    mb[7] = (c & 255) * pw;
+    setBlur(ps, m[1], m[2]);
+  }
+}
+
+class SK3DRenderer.FXMixImagePass extends SK3DRenderer.SingleImagePass
+{
+  constructor() {
+  }
+
+  function setPassSetting(ps) {
+    super.setPassSetting(ps);
+    m.tec = skFXFindTechnique("spritefx.fxmix");
+
+    m.miscmat0 = Matrix();
+    m.miscmat0[0] = 0.0;
+    m.miscmat0[1] = ps["dofrange"] || 0.3;
+  }
+
+  function render() {
+
+    m.miscmat0[0] = 0.0;
+    super.render();
+  }
+}

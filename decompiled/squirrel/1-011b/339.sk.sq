@@ -1,0 +1,5 @@
+class ImageViewDialogNoTitle extends ::ImageViewDialog {
+  constructor() {
+    super(::loadSKView("/ui/dialog/ImageViewDialogNoTitle.ui"));
+  }
+}

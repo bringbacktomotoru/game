@@ -1,0 +1,337 @@
+{
+  "ID": "7a5ac97f-db41-4b86-b4e3-a1a0d39bfd83",
+  "Version": "2.3.3.0",
+  "Name": "GrowingPauseDialog",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 91,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/dialog/dialog_m.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 10,
+            "Scale9OriginY": 10,
+            "Scale9Width": 688,
+            "Scale9Height": 614,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 93,
+            "ActionTag": 814809629,
+            "Size": {
+              "X": 708.0,
+              "Y": 634.0
+            },
+            "Name": "img_bg",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 30,
+            "LabelText": "新商品のお知らせ",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 320.0,
+              "Y": 425.4474
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.452,
+              "Y": 0.6711
+            },
+            "PreSize": {
+              "X": 0.565,
+              "Y": 0.0473
+            },
+            "LeftMargin": 120.0,
+            "RightMargin": 188.0,
+            "TopMargin": 193.5526,
+            "BottomMargin": 410.4474,
+            "Tag": 524,
+            "ActionTag": 2117896496,
+            "Size": {
+              "X": 400.0,
+              "Y": 30.0
+            },
+            "Name": "lbl_name",
+            "ctype": "TextObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 18,
+            "LabelText": "推奨衣装レアリティ１、推奨衣装レベル１のおしごと",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/logotypejp_mp_b_1.ttf",
+              "Plist": ""
+            },
+            "VerticalAlignmentType": "VT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 320.0,
+              "Y": 395.4472
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.452,
+              "Y": 0.6237
+            },
+            "PreSize": {
+              "X": 0.565,
+              "Y": 0.0284
+            },
+            "LeftMargin": 120.0,
+            "RightMargin": 188.0,
+            "TopMargin": 229.5528,
+            "BottomMargin": 386.4472,
+            "Tag": 4995,
+            "ActionTag": 1886555491,
+            "Size": {
+              "X": 400.0,
+              "Y": 18.0
+            },
+            "Name": "lbl_desc",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/button/button_pause_gamestop.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 66,
+            "Scale9OriginY": 33,
+            "Scale9Width": 357,
+            "Scale9Height": 35,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 359.9999,
+              "Y": 255.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5085,
+              "Y": 0.4022
+            },
+            "PreSize": {
+              "X": 0.6907,
+              "Y": 0.1593
+            },
+            "LeftMargin": 115.4999,
+            "RightMargin": 103.5001,
+            "TopMargin": 328.5,
+            "BottomMargin": 204.5,
+            "Tag": 238,
+            "ActionTag": -1465846410,
+            "Size": {
+              "X": 489.0,
+              "Y": 101.0
+            },
+            "Name": "btn_suspend",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/button/button_pause_gameend.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 66,
+            "Scale9OriginY": 33,
+            "Scale9Width": 357,
+            "Scale9Height": 35,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 359.9999,
+              "Y": 140.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5085,
+              "Y": 0.2208
+            },
+            "PreSize": {
+              "X": 0.6907,
+              "Y": 0.1593
+            },
+            "LeftMargin": 115.4999,
+            "RightMargin": 103.5001,
+            "TopMargin": 443.5,
+            "BottomMargin": 89.5,
+            "Tag": 4996,
+            "ActionTag": -770628591,
+            "Size": {
+              "X": 489.0,
+              "Y": 101.0
+            },
+            "Name": "btn_stop",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/button/button_x.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 24,
+            "Scale9OriginY": 25,
+            "Scale9Width": 25,
+            "Scale9Height": 26,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 670.0,
+              "Y": 600.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.9463,
+              "Y": 0.9464
+            },
+            "PreSize": {
+              "X": 0.1031,
+              "Y": 0.1199
+            },
+            "LeftMargin": 633.5,
+            "RightMargin": 1.5,
+            "TopMargin": -4.0,
+            "BottomMargin": 562.0,
+            "Tag": 4998,
+            "ActionTag": -482146841,
+            "Size": {
+              "X": 73.0,
+              "Y": 76.0
+            },
+            "Name": "btn_close",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 708.0,
+          "Y": 634.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../font/logotypejp_mp_b_1.ttf",
+        "../image/button/button_pause_gameend.png",
+        "../image/button/button_pause_gamestop.png",
+        "../image/button/button_x.png",
+        "../image/dialog/dialog_m.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

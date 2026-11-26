@@ -1,0 +1,47 @@
+room_conditions[1] <- ConditionSetting({
+  condition = {
+    end_panelmission_event = [201],
+  }
+})
+
+room_conditions[2] <- ConditionSetting({
+  condition = {
+    end_panelmission_event = [202],
+  }
+})
+
+room_conditions[3] <- ConditionSetting({
+  condition = {
+    end_panelmission_event = [301],
+  }
+})
+
+room_conditions[4] <- ConditionSetting({
+  condition = {
+    end_panelmission_event = [401],
+  }
+})
+
+room_conditions[5] <- ConditionSetting({
+  condition = {
+    end_panelmission_event = [501],
+  }
+})
+
+room_conditions[6] <- ConditionSetting({
+  condition = {
+    end_panelmission_event = [502],
+  }
+})
+
+room_conditions[7] <- ConditionSetting({
+  condition = {
+    end_panelmission_event = [503],
+  }
+})
+
+room_conditions[8] <- ConditionSetting({
+  condition = {
+    end_panelmission_event = [102],
+  }
+})

@@ -1,0 +1,20 @@
+;
+;----------- テストダンス -------------
+
+; 作業部屋指定
+[focusroom address={[0,0]}]
+
+; カメラ初期位置
+[movecamera type=1 x=-20.5 z=3 y=3 time=0]
+[rotatecamera pitch=30]
+
+; ダンス＋カメラ移動開始
+[movecamera type=1 z=7 y=-4.5 time=4000]
+[rotatecamera pitch=0 time=4000]
+[popchara name=kitty y=0.5 angle=0]
+[startanime name=kitty time=13500 script=dance1_2]
+[waitaction name=kitty script=dance1_2]
+
+[wait time=1000]
+
+

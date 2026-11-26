@@ -1,0 +1,1118 @@
+import SKViewPropertyID;
+
+::fillsp <- Sprite(); fillsp.color = 0xffffff00;
+
+with SKView
+{
+  name <- null;
+  listeners <- null;
+  updateFunc <- null;
+  invervalid <- -1;
+  dragsource <- null;
+  motion <- null;
+  mouseincount <- 0;
+  mouseid <- -1;
+
+  bufflags <- 1;
+
+  tabgroup <- null;
+
+  tag <- 0;
+  userdata <- null;
+
+  res <- null;
+  layerflags <- 3;
+
+  fxlist <- null;
+
+  script <- null;
+
+  constructor <- function() {
+    pos = Vector3D();
+    scale = Vector3D(1, 1, 1);
+    rot = Vector3D();
+    bnd = Rect2D(0, 0, 10, 10);
+    mat = Matrix();
+  }
+
+  function addChild(c) {
+    if (c.parent) throw Exception("SKView has another parent");
+    if (!children) children = [c];
+    else children + c;
+    c.parent = this;
+    c.matdirty = true;
+    if (getRoot() == ::rootview) c.added();
+    repaint();
+  }
+
+  function insertChild(i, c) {
+    if (c.parent) throw Exception("SKView has another parent");
+    if (!children) children = [c];
+    else children[i] <- c;
+    c.parent = this;
+    c.matdirty = true;
+    if (getRoot() == ::rootview) c.added();
+    repaint();
+  }
+
+  function removeChild(c) {
+    local i = children.indexOf(c);
+    if (i >= 0) {
+      if (getRoot() == ::rootview) c.removed();
+      delete children[i];
+      c.parent = null;
+      dorepaint = true;
+      if (c.containsFocus()) {
+        requestFocus("removeChild");
+      }
+      repaint();
+      return i;
+    }
+    return -1;
+  }
+
+  function removeFromParent() {
+    if (parent) parent.removeChild(this);
+  }
+
+  function moveChild(c, mi) {
+    if (c.parent != this) throw Exception("SKView has another parent");
+    local i = children.indexOf(c);
+    if (i == mi) return;
+    if (i < mi) {
+      children[mi] <- c;
+      delete children[i];
+    } else {
+      delete children[i];
+      children[mi] <- c;
+    }
+    repaint();
+  }
+
+  function childIndexOf(c) {
+    return children.indexOf(c);
+  }
+
+  function clearChildren() {
+    if (!children) return;
+    if (getRoot() == ::rootview) {
+      foreach (o in children) {
+        o.removed();
+        o.parent = null;
+      }
+    } else {
+      foreach (o in children) {
+        o.parent = null;
+      }
+    }
+    children.clear();
+    repaint();
+  }
+
+  function startModal() {
+    local root = ::rootview;
+    modal = 1;
+    if (currentthread() == root.eventthread) {
+
+      root.eventloop(this);
+    } else {
+      while (getRoot() == root && modal) {
+        suspend();
+      }
+    }
+  }
+
+  function setRect(x, y, w, h, px = 0, py = 0) {
+    pos.set(x + px, y + py, 0);
+    bnd.set(-px, -py, w, h);
+    updateLayout();
+    matdirty = true;
+  }
+
+  function setScale(x, y = null, z = null) {
+    if (y == null) {
+      y = z = x;
+    }
+    scale.x = x;
+    scale.y = y;
+    scale.z = z;
+    matdirty = true; if (parent) { parent.dorepaint = true; }
+  }
+
+  function centerize(ax = 0.5, ay = 0.5) {
+    local dx = (bnd.x + bnd.w * ax) | 0;
+    local dy = (bnd.y + bnd.h * ay) | 0;
+    bnd.x -= dx;
+    bnd.y -= dy;
+    pos.x += dx;
+    pos.y += dy;
+    matdirty = true;
+  }
+
+  function updateLayout() {
+  }
+
+  function revalidate() {
+    if (parent) parent.revalidate();
+  }
+
+  function getPreferredSize(v_1) {
+    return v_1(bnd.w, bnd.h, 1);
+  }
+
+  function setFocused(b) {
+    b = b ? 1 : 0;
+    if (b != focused) {
+      focused = b;
+      focusStateChanged(b);
+    }
+  }
+
+  function setEnabled(b) {
+    b = b ? 1 : 0;
+    if (b != enabled) {
+      enabled = b;
+      enableStateChanged(b);
+    }
+  }
+
+  function requestFocus(cmd = null) {
+    ::rootview.changeKeyEventFocus(this, cmd);
+  }
+
+  function containsFocus() {
+    if (focused) return true;
+    foreach (c in children) {
+      if (c.containsFocus()) return true;
+    }
+    return false;
+  }
+
+  function requestDrag(e) {
+    ::rootview.changeDragTarget(e.mouseid, this, e);
+  }
+
+  function setUpdateFunc(func) {
+    updateFunc = func;
+  }
+
+  function addUpdateFunc(func) {
+    if (typeof(func) == SS_CLOSURE) func.bindenv(this);
+    if (typeof(updateFunc) == SS_ARRAY) {
+      updateFunc + func;
+    } else
+    if (updateFunc) {
+      local f0 = updateFunc.bindenv(this);
+      local f1 = function(dt) {
+        f0(dt);
+        return true;
+      };
+      updateFunc = [f1, func];
+    } else {
+      updateFunc = [func];
+    }
+  }
+
+  function removeUpdateFunc(filt) {
+    if (typeof(updateFunc) == SS_ARRAY) {
+      foreach (v in updateFunc) {
+        if (filt(v)) removei;
+      }
+    }
+  }
+
+  function rotateFocus() {
+    local tg = tabgroup;
+    if (!tg) return null;
+    local c = this;
+    local p = parent;
+    local next = null;
+    while (p) {
+      local i = p.children.indexOf(c) + 1;
+      if (next = p.getNextTab(i, tg)) break;
+      c = p;
+      p = p.parent;
+    }
+    if (!next) {
+      local root = getModalRoot();
+      if (!root) root = getRoot();
+      if (root) next = root.getNextTab(-1, tg);
+    }
+    if (next && next != this) {
+      next.requestFocus("rotateFocus");
+      return next;
+    } else {
+      return null;
+    }
+  }
+
+  function getNextTab(ci, tabg) {
+    if (ci < 0) {
+      if (tabgroup == tabg && isAvailable()) return this;
+      ci = 0;
+    }
+    local a = children;
+    if (!a) return null;
+    local len = length(a), c;
+    for (local l = ci; l < len; l++) {
+      if (c = (a[l].getNextTab(-1, tabg))) return c;
+    }
+    return null;
+  }
+
+  function _call(caller, n) {
+    return findChild(n);
+  }
+
+  function findChild(n) {
+    if (!n) return null;
+    local v;
+    local i = n.indexOf(".");
+    local s = (i >= 0) ? n.substring(0, i) : n;
+    v = findChildRecurs(this, s);
+    while (v && i >= 0) {
+      local i2 = n.indexOf(".", i + 1);
+      s = (i2 >= 0) ? n.substring(i + 1, i2) : n.substring(i + 1);
+      v = findChildRecurs(v, s);
+      i = i2;
+    }
+    return v;
+  }
+
+  function findChildRecurs(c, n) {
+
+    foreach (v in c.children) {
+      if (v.name == n) return v;
+    }
+    foreach (v in c.children) {
+      local v = c.findChildRecurs(v, n);
+      if (v) return v;
+    }
+    return null;
+  }
+
+  function added() {
+
+    foreach (c in children) { c.added(); }
+  }
+
+  function removed() {
+
+    foreach (c in children) { c.removed(); }
+  }
+
+  function focusStateChanged(b) {
+  }
+
+  function enableStateChanged(b) {
+    foreach (c in children) {
+      if ((c.enabled & (b ^ 1)) != b) c.enableStateChanged(b);
+    }
+  }
+
+  function startMethod(func, ...) {
+
+    if (typeof(func) == SS_STRING) {
+      local s = func;
+      func = script[s];
+      if (!func) {
+
+        printf("WARNING!! startMethod function not found. methodname=%S, name=%S, parent.name=%S\n", s, name, parent["name"])
+        return false;
+      }
+    }
+    stopMethod();
+    local vm = null;
+    local vargs = varguments();
+    local t = newthread();
+    t.call(runMethod, this, func, vargs);
+    if (t.getState() != 2) return true;
+    addUpdateFunc(SKViewMethod(t));
+    return true;
+  }
+
+  function runMethod(func, args = null) {
+    try {
+      switch (length(args)) {
+      case 0: func(); break;
+      case 1: func(args[0]); break;
+      case 2: func(args[0], args[1]); break;
+      case 3: func(args[0], args[1], args[2]); break;
+      default: throw Exception("too many arguments > 3");
+      }
+    } catch (ex) {
+      if (!(ex instanceof Exception)) {
+        return false;
+      } else {
+        throw ex;
+      }
+    }
+  }
+
+  function isExistMethod(name) {
+    if (script[name]) return true;
+    return false;
+  }
+
+  function stopMethod() {
+    foreach (v in updateFunc) {
+      if (v instanceof ::SKViewMethod && v.thread) { v.thread.wakeupThrow("interrupt"); v.thread = null; }
+    }
+  }
+
+  function waitForMethod() {
+    while (isMethodRunning()) {
+      suspend();
+    }
+  }
+
+  function isMethodRunning() {
+    foreach (v in updateFunc) {
+      if (v instanceof ::SKViewMethod && v.thread) return true;
+    }
+    return false;
+  }
+
+  function addEventListener(type, func, self = null) {
+    if (!listeners) listeners = array(30);
+    if (!listeners[type]) listeners[type] = [];
+    local fn = (func.bindenv(self || getcaller(1)));
+    listeners[type] + fn;
+    return fn;
+  }
+
+  function removeEventListener(type, func) {
+    foreach (l in listeners[type]) {
+      if (l == func) {
+        removei;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function processEvent(e) {
+    foreach (f in (listeners && listeners[e.id / 100])) {
+      f(e)
+      if (e.consumed) return false;
+
+    }
+    if (modal) { e.consume(); return false; }
+    return (parent && parent.processEvent(e));
+  }
+
+  function acceptDrop(e, x, y) {
+    return false;
+  }
+
+  function setBuffer(b, flags = 1) {
+    if (typeof(b) != SS_INTEGER) {
+      b = b ? flags : 0;
+    }
+    if (b) {
+      if (buf[flags] == b) return;
+      local tex = Texture();
+      bufflags = flags;
+      tex.create(bnd.w, bnd.h, SK_RGBA, b, 0);
+      tex.setSamplerState(#SamplerState(SK_CLAMP, SK_CLAMP, SK_LINEAR, SK_LINEAR));
+      buf = Sprite(tex);
+      buf.blend = SK_PMAMIX;
+      buf.color = Math.lerpcolor(bufcolor & 255, bufcolor, (bufcolor & 255) / 255.0);
+    } else {
+      buf = null;
+    }
+    repaint();
+  }
+
+  function setFXList(a) {
+    fxlist = a;
+  }
+
+  function render() {}
+
+  function renderView() {
+    dorepaint = false;
+    if (!(visible && (layerflags & 1))) {
+      return;
+    }
+    skSetMatrix(SK_WORLD, mat);
+    if (buf) {
+      skDrawSprite(buf);
+    } else {
+      render();
+      foreach (c in children) { c.renderView(); };
+    }
+  }
+
+  function renderToBuffer() {
+    _renderToBuffer(buf, bufflags, fxlist);
+  }
+
+  function _renderToBuffer(buf, bufflags, fxlist) {
+    local tex = buf.tex0;
+    local swaptex = null;
+
+    local numpass = 0;
+
+    local mbnd = #Rect2D(); mbnd.set(0, 0, bnd.w, bnd.h);
+    foreach (fx in fxlist) {
+      if (fx.isEnabled()) {
+        numpass += length(fx.pass);
+        fx.growBound(mbnd);
+      }
+    }
+
+    local bx, by, bndw, bndh;
+    bx = mbnd.x, by = mbnd.y, bndw = mbnd.w, bndh = mbnd.h;
+
+    if (bndw <= 0 || bndh <= 0) return;
+
+    if (tex.width < bndw || tex.height < bndh) {
+      tex.create(bndw, bndh, tex.format, bufflags, 0);
+    }
+    buf.bnd.set(0, 0, bndw, bndh);
+    buf.setSubBounds(buf.bnd);
+    buf.bnd.x = bx;
+    buf.bnd.y = by;
+
+    if (numpass & 1) { swaptex = tex; tex = gettempbuf(tex); }
+    else { swaptex = gettempbuf(tex); }
+
+    {
+      skSetRenderTarget(tex);
+      skClearScreen(#ClearParam(0, 0, 0, 0, 1));
+      skSetViewport(0, 0, bndw, bndh);
+      skPushMatrix(0, 1, 2);
+      skSetMatrix(SK_WORLD, mat);
+      skSetMatrix(SK_VIEW, getInvMatrix());
+      skSetMatrix(SK_PROJECTION, Matrix.fromOrtho(bx, bndw + bx, bndh + by, by, -2000, 2000));
+
+      if (buf.blend == SK_PMAMIX) skSetPMAMode(SK_MIX);
+      render();
+      foreach (c in children) { c.renderView(); };
+      if (buf.blend == SK_PMAMIX) skSetPMAMode(0);
+
+      if (numpass) {
+        skInitMatrix(SK_WORLD);
+        skInitMatrix(SK_VIEW);
+        skSetMatrix(SK_PROJECTION, Matrix.fromOrtho(0, bndw, bndh, 0, -2000, 2000));
+        foreach (fx in fxlist) {
+          if (fx.isEnabled()) {
+            fx.prepare(swaptex, tex);
+            foreach (fxpass in fx.pass) {
+              local tmp = tex; tex = swaptex; swaptex = tmp;
+              skSetRenderTarget(tex);
+              skSetViewport(0, 0, bndw, bndh);
+              fx.renderfx(fxpass, tex, swaptex, buf.bnd, bndw, bndh);
+            }
+          }
+        }
+      }
+      skPopMatrix(2, 1, 0);
+    }
+  }
+
+  function gettempbuf(t) {
+    local tbmap = #{};
+    local id = t.width | (t.height << 13) | (t.flags << 26);
+    if (id in tbmap) return tbmap[id];
+    local t1 = Texture();
+    t1.create(t.width, t.height, t.format, t.flags, 0);
+    tbmap[id] <- t1;
+    return t1;
+  }
+
+  function capture(bufflags = 3, fxlist = null) {
+    if (skBeginRender()) {
+      local sp = null;
+      try {
+        local tex = Texture();
+        tex.create(bnd.w, bnd.h, SK_RGBA, bufflags, 0);
+        sp = Sprite(tex);
+        sp.blend = SK_MIX;
+        skPushRenderStates();
+        local rt = skGetRenderTarget();
+        skSetRenderTarget(tex);
+        skClearScreen(SK_CLEAR_DEPTH);
+        _renderToBuffer(sp, bufflags, fxlist);
+        skSetRenderTarget(rt);
+        skPopRenderStates();
+      } catch (ex) {
+        printexception(ex);
+      }
+      skEndRender();
+      return sp;
+    } else {
+      return null;
+    }
+  }
+
+  function anime(st, en = null, spd = null, lp = false) {
+    if (en == null) {
+      en = st;
+      spd = 1.0;
+    } else
+    if (spd == null) {
+      spd = en;
+      en = st;
+      st = framepos;
+    }
+    removeUpdateFunc(function(o) { return (o instanceof ::SKAnimationMethod); });
+    moveFrame(framepos, st + 0.0);
+    if (st != en) {
+      local a = Animation();
+      a.set(st, en, spd, lp);
+      addUpdateFunc(SKAnimationMethod(this, a));
+    }
+  }
+
+  function passAnime(...) {
+    switch (vargc) {
+    case 1:
+      anime(vargv[0], vargv[0], 1000.0 / 1, false);
+      break;
+    case 2:
+      anime(vargv[0], Math.abs(vargv[0] - framepos) * 1000 / vargv[1]);
+      break;
+    case 3:
+      anime(vargv[0], vargv[1], Math.abs(vargv[1] - vargv[0]) * 1000.0 / vargv[2], false);
+      break;
+    case 4:
+      anime(vargv[0], vargv[1], Math.abs(vargv[1] - vargv[0]) * 1000.0 / vargv[2], vargv[3] || false);
+      break;
+    }
+  }
+
+  function animate(a, dt) {
+    local ret = a.update(dt);
+    moveFrame(framepos, a.frametime);
+    return ret;
+  }
+
+  function moveFrame(t0, t, depth = 0) {
+    foreach (f in motion) {
+      if (!f.key) continue;
+      local pid = f.pid;
+      local k = f.keyAt(t);
+      local tweenfunc = k.next && k.tweenfunc;
+      if (tweenfunc) {
+        setParam(pid, k.p, k.next.p, tweenfunc((t - k.time) * k.iw));
+      } else {
+        if (k != f.keyAt(t0) || (t0 < 0.0 && t >= 0.0)) {
+          setParam(pid, k.p);
+        }
+      }
+    }
+    framepos = t;
+
+    foreach (fx in fxlist) {
+      fx.moveFrame(t0, t);
+      dorepaint |= fx.dorepaint;
+      fx.dorepaint = false;
+    }
+  }
+
+  function getMotion(pid, create = true) {
+    if (!motion) {
+      if (!create) return null;
+      motion = [MotionTimeline(pid)];
+      return motion[0];
+    } else {
+      foreach (m in motion) {
+        if (m.pid == pid) return m;
+      }
+      if (create) {
+        motion + MotionTimeline(pid);
+        return motion.last();
+      } else {
+        return null;
+      }
+    }
+  }
+
+  function scrollRectToVisible(c, r) {
+    if (parent) {
+      return parent.scrollRectToVisible(c, r);
+    }
+    return false;
+  }
+
+  function postActionEvent(cmd = null, count = 1, modifiers = 0) {
+    local e = Event();
+    e.id = ACTION_PERFORMED;
+    e.src = this;
+    e.actioncmd = cmd;
+    e.count = count;
+    e.modifiers = modifiers;
+    ::rootview.postEvent(e);
+  }
+
+  function postNotifyEvent(cmd = null) {
+    local e = Event();
+    e.id = NOTIFY_STATUS;
+    e.src = this;
+    e.actioncmd = cmd;
+    ::rootview.postEvent(e);
+  }
+
+  function callInEventThread(func, ...) {
+    local root = ::rootview;
+    if (vargc > 0) func = func.bindenv(vargv[0])
+    local args = [];
+    for (local l = 0; l < vargc; l++) args + vargv[l];
+    local _func = function(e) {
+      local t = currentthread();
+      switch (length(args)) {
+      case 2: func(args[1]); break;
+      case 3: func(args[1], args[2]); break;
+      case 4: func(args[1], args[2], args[3]); break;
+      case 5: func(args[1], args[2], args[3], args[4]); break;
+      default: func(); break;
+      };
+      return false;
+    }
+    if (currentthread() == root.eventthread) {
+      _func(null);
+    } else {
+      local e = Event();
+      e.id = -1;
+      e.src = {
+        processEvent = _func
+      }
+      root.postEvent(e);
+    }
+  }
+
+  function getProperties() {
+    return #[
+    (SKVP[NAME]),
+    (SKVP[VISIBLE]),
+    (SKVP[SIZE]),
+    (SKVP[PIVOT]),
+    (SKVP[POSITION]),
+    (SKVP[SCALE]),
+    (SKVP[ROTATION]),
+    (SKVP[USERDATA]),
+    ]
+  }
+
+  function getProperty(pid) {
+    local a = getProperties();
+    foreach (p in a) {
+      if (p.id == pid) return p;
+    }
+    return null;
+  }
+
+  function isParamKeyed(pid) {
+    foreach (f in motion) {
+      if (f.pid == pid) {
+        local k = f.existingkey(framepos | 0);
+        return k ? k.tween + 1 : 0;
+      }
+    }
+    return 0;
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case NAME: return name;
+    case POSITION: return [pos.x | 0, pos.y | 0, pos.z | 0];
+    case SCALE: return [(scale.x * 100.0) | 0, (scale.y * 100.0) | 0, (scale.z * 100.0) | 0];
+    case ROTATION: return [(rot.x * Math.RTOD) | 0, (rot.y * Math.RTOD) | 0, (rot.z * Math.RTOD) | 0];
+    case VISIBLE: return visible;
+    case ENABLED: return enabled;
+    case SIZE:
+    case SIZE_STATIC: return [bnd.w | 0, bnd.h | 0];
+    case PIVOT:
+    case PIVOT_STATIC: return [-bnd.x | 0, -bnd.y | 0];
+    case BUFFER: return !!buf;
+    case BUFFERCOLOR: return bufcolor;
+    case MOUSEENABLED: return pickable;
+    }
+    return null;
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case NAME:
+      name = (p0 && p0 != "") ? p0 : null;
+      break;
+    case POSITION:
+      transivec3(p0, p1, w, pos);
+      matdirty = true; if (parent) { parent.dorepaint = true; }
+      break;
+    case SCALE:
+      transivec3(p0, p1, w, scale).scale(0.01);
+      matdirty = true; if (parent) { parent.dorepaint = true; }
+      break;
+    case ROTATION:
+      transivec3(p0, p1, w, rot).scale(Math.DTOR);
+      matdirty = true; if (parent) { parent.dorepaint = true; }
+      break;
+    case VISIBLE:
+      visible = p0 ? true : false;
+      if (parent) parent.repaint();
+      break;
+    case ENABLED:
+      enabled = p0 ? 1 : 0;
+      repaint();
+      break;
+    case MOUSEENABLED:
+      pickable = p0 ? 1 : 0;
+      break;
+    case SIZE:
+    case SIZE_STATIC:
+      local _w, _h;
+      if (w > 0.0) {
+        _w = (p0[0] + (p1[0] - p0[0]) * w) | 0; _h = (p0[1] + (p1[1] - p0[1]) * w) | 0;
+      } else {
+        _w = p0[0] | 0; _h = p0[1] | 0;
+      }
+      if (_w != bnd.w || _h != bnd.h) {
+        bnd.w = _w;
+        bnd.h = _h;
+        updateLayout();
+        matdirty = dorepaint = true;
+      }
+      break;
+    case PIVOT:
+    case PIVOT_STATIC:
+      if (w > 0.0) {
+        bnd.x = -(p0[0] + (p1[0] - p0[0]) * w) | 0; bnd.y = -(p0[1] + (p1[1] - p0[1]) * w) | 0;
+      } else {
+        bnd.x = -p0[0] | 0; bnd.y = -p0[1] | 0;
+      }
+      matdirty = true; if (parent) { parent.dorepaint = true; }
+      break;
+
+    case BUFFER:
+
+      setBuffer(p0);
+      break;
+    case BUFFERCOLOR:
+      bufcolor = Math.lerpcolor(p0, p1, w);
+      if (buf) {
+        buf.color = (buf.blend == SK_PMAMIX) ? Math.lerpcolor(bufcolor & 255, bufcolor, (bufcolor & 255) / 255.0) : bufcolor;
+        if (parent) parent.repaint();
+      }
+      break;
+    }
+  }
+
+  function transivec3(i0, i1, w, ret) {
+    if (w > 0.0) {
+      return ret(
+      (i0[0] + (i1[0] - i0[0]) * w),
+      (i0[1] + (i1[1] - i0[1]) * w),
+      (i0[2] + (i1[2] - i0[2]) * w)
+      ).floor();
+    } else {
+      return ret(i0[0], i0[1], i0[2]);
+    }
+  }
+
+  function setSKViewEntityData(d) {
+    foreach (v in d.staticparams) {
+      setParam(v[0], v[1]);
+    }
+    motion = d.motion;
+    moveFrame(-1.0, 0.0);
+  }
+
+  function setVisible(b) {
+    visible = b;
+  }
+
+  function pass(dt = -1) {
+    if (dt >= 0) {
+      sleep(dt);
+      return dt;
+    } else {
+      local t = skGetTime();
+      suspend();
+      return skGetTime() - t;
+    }
+  }
+
+  function kill() {
+    removeFromParent();
+  }
+}
+
+class SKViewMethod
+{
+  thread = null;
+
+  constructor(t) {
+    thread = t;
+  }
+
+  function _call(caller, dt) {
+    if (!thread) return false;
+    local b = thread.wakeup(dt);
+    return b && thread;
+  }
+}
+
+class SKAnimationMethod
+{
+  view = null;
+  anim = null;
+
+  constructor(v, a) {
+    view = v;
+    anim = a;
+  }
+
+  function _call(caller, dt) {
+    return view ? view.animate(anim, dt) : false;
+  }
+}
+
+class MotionKey
+{
+  time = 0;
+  tween = 0;
+  tweenfunc = null;
+  iw = 0.0;
+  p = null;
+
+  next = null;
+}
+
+local tweenlist = ::PresetTweenList;
+
+class MotionTimeline
+{
+  pid = null;
+  key = null;
+  keyline = null;
+  tailkey = null;
+
+  constructor(_pid = null) {
+    pid = _pid;
+  }
+
+  function _clone() {
+    keyline = null;
+    tailkey = null;
+
+    key = clone key;
+    local k = key, pk = null;
+    while (k) {
+      local nk = clone k.next;
+      nk.prev = k;
+      k.next = nk;
+      k = nk;
+    }
+  }
+
+  function keyAt(i) {
+    return (i < key.time) ? key : (keyline[i] || tailkey);
+  }
+
+  function move(c, t0, t) {
+    if (!key) return;
+    local k0 = keyAt(t0 | 0);
+    local k = keyAt(t | 0);
+    local tweenfunc = k.next && k.tweenfunc;
+    if (tweenfunc) {
+      printf("tw %S func %S\n", k.tween, k.tweenfunc);
+      c.setParam(pid, k.p, k.next.p, tweenfunc((t - k.time) * k.iw));
+    } else
+    if (k != k0 || (t0 < 0.0 && t >= 0.0)) {
+      c.setParam(pid, k.p, k.p, 0.0);
+    }
+  }
+
+  function existingkey(t) {
+    if (!key) return null;
+    local k = keyAt(t);
+    return k.time == t ? k : null;
+  }
+
+  function remove(time) {
+    local kt = key, prev = null;
+    if (!kt) return null;
+    while (kt.time < time) {
+      if (!kt.next) { return this; }
+      prev = kt;
+      kt = kt.next;
+    }
+    if (kt.time == time) {
+      if (prev) {
+        prev.next = kt.next;
+      } else {
+        key = null;
+      }
+    }
+    return null;
+  }
+
+  function put(time, p = null, tween = null) {
+    local k;
+    if (p == null) {
+      k = time;
+    } else {
+      k = MotionKey();
+      k.time = time;
+      k.p = p;
+      k.tween = tween;
+    }
+
+    if (!key) { key = k; return this; }
+    local kt = key, prev = null;
+    while (kt.time < k.time) {
+      if (!kt.next) { kt.next = k; k.next = null; return this; }
+      prev = kt;
+      kt = kt.next;
+    }
+    if (kt.time == k.time) {
+      if (prev) {
+        k.next = kt.next;
+        prev.next = k;
+      } else {
+        k.next = kt.next;
+        key = k;
+      }
+    } else {
+      if (prev) {
+        prev.next = k;
+        k.next = kt;
+      } else {
+        k.next = key;
+        key = k;
+      }
+    }
+    return this;
+  }
+
+  function tail() {
+    local kt = key;
+    while (kt.next) kt = kt.next;
+    return kt;
+  }
+
+  function build() {
+    if (!key) { keyline = null; return this; }
+    local t = tail();
+    keyline = array(t.time + 1);
+    local kt = key;
+    while (kt != t) {
+      kt.tweenfunc = kt.tween ? tweenlist[kt.tween] : null;
+      local t0 = kt.time;
+      local t1 = kt.next.time;
+      kt.iw = 1.0 / (t1 - t0);
+      for (local l = t0; l < t1; l++) keyline[l] = kt;
+      kt = kt.next;
+    }
+    keyline[t.time] = t;
+    tailkey = keyline.last();
+
+    return this;
+  }
+
+  function writeJSON() {
+    local a = [];
+    local t = { pid = pid, key = a };
+    local k = key;
+    while (k) {
+      a + { time = k.time, tween = k.tween, p = k.p };
+      k = k.next;
+    }
+    return t;
+  }
+
+  function readJSON(t) {
+    pid = t.pid;
+    local k0 = null;
+    foreach (kt in t.key) {
+      local k = MotionKey();
+      k.time = kt.time;
+      k.tween = kt.tween;
+      k.p = kt.p;
+      if (k0) k0.next = k;
+      else key = k;
+      k0 = k;
+    }
+    build();
+  }
+}
+
+local r_1 = Rect2D();
+
+class SKGroupView extends SKView
+{
+  static isdir = true;
+  icontype = "dir";
+  syncanime = true;
+
+  function getProperties() {
+    return #[
+    (SKVP[NAME]),
+    (SKVP[VISIBLE]),
+    (SKVP[SIZE_STATIC]),
+    (SKVP[PIVOT]),
+    (SKVP[POSITION]),
+    (SKVP[SCALE]),
+    (SKVP[ROTATION]),
+    (SKVP[BUFFER]),
+    (SKVP[BUFFERCOLOR]),
+    (SKVP[SYNC_ANIMATION]),
+    (SKVP[ENABLED]),
+    (SKVP[USERDATA]),
+    ];
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case SYNC_ANIMATION: return syncanime;
+    default: return super.getParam(pid);
+    }
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case SYNC_ANIMATION: syncanime = p0; break;
+    default: return super.setParam(pid, p0, p1, w);
+    }
+  }
+
+  function moveFrame(t0, t, depth = 0) {
+    super.moveFrame(t0, t);
+    if (syncanime) {
+      foreach (c in children) {
+        c.moveFrame(c.framepos, t, 1);
+      }
+    }
+  }
+}
+
+class SKLibView extends SKView
+{
+  static isdir = false;
+  icontype = "ui";
+
+  function getProperties() {
+    return #[
+    (SKVP[NAME]),
+    (SKVP[VISIBLE]),
+    (SKVP[POSITION]),
+    (SKVP[SCALE]),
+    (SKVP[ROTATION]),
+    (SKVP[BUFFER]),
+    (SKVP[BUFFERCOLOR]),
+    (SKVP[ENABLED]),
+    (SKVP[USERDATA]),
+    ];
+  }
+
+  function moveFrame(t0, t, depth = 0) {
+    super.moveFrame(t0, t);
+    if (depth) return;
+    foreach (c in children) {
+      if (!(c instanceof ::SKLibView)) c.moveFrame(c.framepos, t, depth);
+    }
+  }
+}

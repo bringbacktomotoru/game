@@ -1,0 +1,491 @@
+class SoundManager
+{
+  rootmixer = null;
+  bgmmixer = null;
+  semixer = null;
+  searchpath = null;
+
+  bgmvol = 0.8;
+  bgmmute = false;
+  sevol = 0.8;
+  voicevol = 0.8;
+  semute = false;
+
+  sounds = null;
+  soundch = null;
+
+  jingle_thread = null;
+
+  lastplaybgm = null;
+
+  constructor() {
+    sounds = {};
+    searchpath = [];
+
+    addPath("/snd/");
+
+    soundch = {};
+  }
+
+  function loadOption() {
+
+    local file = FileRef(skGetDataDir() + "/sound_option");
+    if (file.exists()) {
+      try {
+        local txt = file.load().asText();
+        local ji = JSONInput(decodeJSON(txt));
+        local data = ji.readObject();
+
+        this.bgmmute = data.bgmmute;
+        setupBGMVolume(data.bgmvol);
+        this.semute = data.semute;
+        setupSEVolume(data.sevol);
+      } catch (ex) {
+        this.bgmmute = false;
+        setupBGMVolume(0.8);
+        this.semute = false;
+        setupSEVolume(0.8);
+      }
+    }
+    else {
+      this.bgmmute = false;
+      setupBGMVolume(0.8);
+      this.semute = false;
+      setupSEVolume(0.8);
+    }
+  }
+
+  function addPath(p) {
+    searchpath + p;
+  }
+
+  function checkmixer() {
+    if (!rootmixer) {
+      rootmixer = skGetRootMixer();
+      bgmmixer = rootmixer;
+      semixer = rootmixer;
+    }
+  }
+
+  function loadConf(path) {
+    local bb = ::getResourceContent(path);
+    if (bb) {
+      try {
+        conf = decodeJSON(bb);
+      } catch (ex) {
+        printexception(ex);
+      }
+    }
+    if (!conf) {
+      conf = {
+        sounds = {},
+        tags = ["UI", "バトル"],
+      };
+    }
+    updateAliases();
+  }
+
+  function getConf() {
+    if (!conf) loadConf("/sndconf.json");
+    return conf;
+  }
+
+  function updateAliases() {
+    alias = {};
+    foreach (i, v in conf.sounds) {
+      if (length(v["alias"])) alias[v.alias] <- i;
+    }
+  }
+
+  function flushSound(name) {
+    delete sounds[name];
+  }
+
+  function setBGMVolume(vol) {
+    bgmvol = vol;
+    if (currentbgm) currentbgm.setVolume((vol * 255) | 0);
+  }
+
+  function setVoiceVolume(vol) { voicevol = vol; }
+
+  function playSound(param, cln = false, vol = 1.0) {
+    checkmixer();
+    local ss = getSound(param);
+    if (ss) {
+      if (cln) ss = clone ss;
+      local ch = param["ch"];
+      if (ch != undefined) {
+        local s = soundch[ch];
+        if (s) s.stop();
+        soundch[ch] <- ss;
+      }
+      ss[0] = semute ? 0 : int(sevol * vol * 255);
+      ss.stplay();
+    }
+    return ss;
+  }
+
+  function playVoice(param, play_ch = 0, cln = false) {
+    checkmixer();
+    local ss = getSound(param);
+    if (ss) {
+      if (cln) ss = clone ss;
+      local ch = param["ch"];
+      if (ch != undefined) {
+        local s = soundch[ch];
+        if (s) s.stop();
+        soundch[ch] <- ss;
+      }
+      else {
+        local s = soundch[play_ch];
+        if (s) s.stop();
+        soundch[play_ch] <- ss;
+      }
+      ss[0] = semute ? 0 : int(voicevol * 255);
+      ss.stplay();
+    }
+    return ss;
+  }
+
+  function stopSound(play_ch = 0) {
+    local s = soundch[play_ch];
+    if (s) s.stop();
+  }
+
+  function getSound(param) {
+    local name;
+
+    switch (typeof(param)) {
+    case SS_TABLE:
+    case SS_INSTANCE:
+      name = param["name"] || param["path"];
+      break;
+    default:
+      name = param;
+      break;
+    }
+    local ss = sounds[name];
+    if (ss) return ss;
+
+    local wav = null;
+    foreach (p in searchpath) {
+      local r = ::getResource(p + name);
+      if (r) {
+        wav = r.getContent();
+        r.flush();
+        break;
+      }
+    }
+    if (!wav) {
+      return null;
+    }
+    ss = wav.toSoundSource();
+
+    if ("vol" in param) {
+      ss[0] = Math.min((param.vol * sevol * 255) | 0, 255);
+    } else {
+      ss[0] = Math.min((sevol * 255) | 0, 255);
+    }
+    if ("pitch" in param) {
+      ss[1] = (param.pitch * 96.0) | 0;
+    } else
+    if ("speed" in param) {
+      ss[1] = (Math.logn(param.speed, 2.0) * 96.0 * 12.0) | 0;
+    }
+
+    sounds[name] <- ss;
+    return ss;
+  }
+
+  currentbgm = null;
+
+  function playBGM(param = null) {
+
+    checkmixer();
+    if (currentbgm) {
+      if (currentbgm.param == param && currentbgm.playing) return;
+    }
+    stopBGM();
+    local t;
+    if (param instanceof BGMThread) {
+      t = param;
+    } else if (!param && lastplaybgm) {
+      t = BGMThread(lastplaybgm);
+    } else {
+      t = BGMThread(param);
+    }
+    t.start(bgmmute ? 0.0 : bgmvol);
+    currentbgm = t;
+    if (param) lastplaybgm = param;
+    return t;
+  }
+
+  function fadeBGM(param, spd = 8) {
+    checkmixer();
+    spd = spd * 2 / 3;
+    local oldbgm = currentbgm;
+    if (currentbgm) {
+      if (currentbgm.param == param && currentbgm.playing) return;
+      currentbgm.fadeout(spd);
+    }
+    local t;
+    if (param instanceof BGMThread) {
+      t = param;
+    } else {
+      t = BGMThread(param);
+    }
+    t.fadein(spd, bgmmute ? 0.0 : bgmvol, spd * 128);
+    currentbgm = t;
+
+    return t;
+  }
+
+  function fadeoutBGM(spd = 4) {
+    local oldbgm = currentbgm;
+    if (currentbgm) {
+      currentbgm.fadeout(spd);
+      currentbgm = null;
+    }
+
+    return oldbgm;
+  }
+
+  function stopBGM() {
+    local oldbgm = currentbgm;
+    if (currentbgm) {
+      currentbgm.stop();
+      currentbgm = null;
+    }
+    return oldbgm;
+  }
+
+  function setupBGMVolume(rate) {
+    this.bgmvol = rate;
+    if (currentbgm) {
+      currentbgm.setVolume(bgmmute ? 0.0 : bgmvol);
+    }
+  }
+
+  function playJingle(param, wait_time) {
+    if (!jingle_thread) jingle_thread = newthread();
+    else {
+      jingle_thread.wakeupThrow("stop");
+      local _snd = getSound(param);
+      if (_snd) _snd.stop();
+    }
+    local _env = {
+      self = this,
+      param = param,
+      wait = wait_time
+    }
+
+    jingle_thread.start(function() {
+      try {
+        self.setupBGMVolume(0.0);
+        self.playSound(param);
+        sleep(wait);
+        self.setupBGMVolume(0.8);
+      } catch (ex) {
+        if (ex != "stop") {
+          printexception(ex);
+        }
+        self.setupBGMVolume(0.8);
+      }
+    }, _env);
+  }
+
+  function fadeBGMVolume(rate, spd = 8) {
+    checkmixer();
+    spd = spd * 2 / 3;
+    this.bgmvol = rate;
+    if (currentbgm) {
+      currentbgm.fadeVolume(spd, bgmmute ? 0.0 : bgmvol, spd * 128);
+    }
+  }
+
+  function setupBGMMute(b) {
+    this.bgmmute = b;
+    if (currentbgm) {
+      currentbgm.setVolume(bgmmute ? 0.0 : bgmvol);
+    }
+  }
+
+  function setupSEVolume(rate) {
+    this.sevol = rate;
+    sounds = {};
+  }
+
+  function setupSEMute(b) {
+    this.semute = b;
+  }
+
+  function resumeBGM() {
+    if (currentbgm) {
+      currentbgm.stop();
+      currentbgm.start(bgmmute ? 0.0 : bgmvol);
+    }
+  }
+
+  function hasLastPlayBGM() {
+    return lastplaybgm != null;
+  }
+}
+
+class BGMThread
+{
+  param = null;
+  name = null;
+  snd = null;
+  ov = null;
+  playing = false;
+  wavbuf = null;
+
+  thread = null;
+
+  vol = 256;
+
+  constructor(p) {
+    param = p;
+    name = param.name;
+    local r = ::getResource("/music/" + name);
+    wavbuf = ByteBuffer(44100 * 2 * 2 * 2);
+
+    local bb = r.getContent();
+    ov = VorbisDecoder(bb);
+    r.flush();
+
+    local s = param["startpoint"] || 0;
+    local e = param["endpoint"] || -1;
+    local lp = param["looppoint"] || 0;
+    vol = param["vol"] || 220;
+
+    ov.setRange(s, e, lp);
+
+    snd = StreamSoundSource(ov.freq, ov.ch, SK_WAVE_SHORTLE, 44100 * 2 * ov.ch * 6);
+  }
+
+  function setVolume(rate) {
+    snd[0] = int(vol * Math.clamp(rate, 0.0, 1.0));
+  }
+
+  function stop() {
+    if (!playing) return;
+    playing = false;
+    if (thread) {
+      thread.wakeupThrow("stop");
+      thread = null;
+    }
+  }
+
+  function start(rate) {
+    setVolume(rate);
+
+    thread = newthread();
+    thread.start(run, this);
+    playing = true;
+  }
+
+  function fadeVolume(spd, rate, predelay = 0) {
+    local t = newthread();
+    t.start(function() {
+      if (predelay) sleep(predelay);
+      local v = snd[0];
+      local maxvol = int(vol * Math.clamp(rate, 0.0, 1.0));
+      while (Math.abs(v - maxvol) != 0) {
+        local _sub = v - maxvol;
+        if (_sub < 0) { v = Math.min(v + 1, vol); }
+        else if (_sub > 0) { v = Math.max(v - 1, 0); }
+
+        snd[0] = v;
+        sleep(spd);
+      }
+    }, this);
+  }
+
+  function fadein(spd, rate, predelay = 0) {
+    local t = newthread();
+    t.start(function() {
+      if (predelay) sleep(predelay);
+      start();
+      snd[0] = 0;
+      local v = 0;
+      local maxvol = int(vol * Math.clamp(rate, 0.0, 1.0));
+      while (v < maxvol) {
+        v = Math.min(v + 1, vol);
+        snd[0] = v;
+        sleep(spd);
+      }
+    }, this);
+  }
+
+  function fadeout(spd) {
+    local t = newthread();
+    t.start(function() {
+      local v = snd[0];
+      while (v > 0) {
+        v = Math.max(v - 1, 0);
+        snd[0] = v;
+        sleep(spd);
+      }
+      stop();
+    }, this);
+  }
+
+  function charge(chargeframes) {
+    local rem = snd.getRemaining();
+    if (!ov.invokeDecode(chargeframes)) {
+      printf("ov.invokeDecode fail???? \n");
+      return;
+    }
+    while (ov.isDecoding()) {
+      suspend();
+    }
+    snd + ov.toByteBuffer(wavbuf);
+  }
+
+  function run() {
+    try {
+
+      charge(44100);
+      snd.setLoop(true);
+      snd.play();
+      snd.pause(false);
+      snd.setStreamCharger(ov);
+      for (;;) {
+        suspend();
+      }
+    } catch (ex) {
+
+      if (ex != "stop") {
+        printf("BGMThread caused an Exception .. %S\n", name);
+        printexception(ex);
+      }
+    }
+    snd.setLoop(false);
+    playing = false;
+
+    snd.pause(true);
+    snd.stop();
+    snd.setStreamCharger(null);
+  }
+}
+
+local m = SoundManager();
+::soundmanager <- m;
+
+::playSound <- m.playSound.bindenv(m);
+::stopSound <- m.stopSound.bindenv(m);
+::playVoice <- m.playVoice.bindenv(m);
+::getSound <- m.getSound.bindenv(m);
+::playBGM <- m.playBGM.bindenv(m);
+::fadeBGM <- m.fadeBGM.bindenv(m);
+::fadeoutBGM <- m.fadeoutBGM.bindenv(m);
+::stopBGM <- m.stopBGM.bindenv(m);
+
+::interruptBGM <- function() {
+  m.setupBGMVolume(0.0);
+}
+::restartBGM <- function() {
+  m.setupBGMVolume(0.85);
+}
+::playJingle <- m.playJingle.bindenv(m);

@@ -1,0 +1,30 @@
+class SentenceTalkWindow extends TalkWindow {
+  constructor(chara_key, big_size = false, small_size = false, use_talk_bal = false) {
+    super(null, chara_key, big_size, small_size, use_talk_bal);
+
+    this.chara_key = chara_key;
+    state = STATE_STAY;
+
+    _setupView(big_size, small_size, use_talk_bal);
+    this.matdirty = true;
+    this.repaint();
+
+    v_1 = Vector3D();
+    bone_offset = Vector3D(0, 0, 0);
+    setOffset(0, 3.5, 0);
+    scene = ::gamesession.getCurrentScene();
+    scene_bnd = clone scene.bnd;
+    this.big_size = big_size;
+  }
+
+  function _setupTalkList() {
+  }
+
+  function startTalk(sentence) {
+    this.sentence_list = _getSentenceList(sentence);
+
+    thread = newthread();
+    thread.start(_startTalk, this);
+    if (sk3d) setUpdateFunc(updateFrame.bindenv(this));
+  }
+}

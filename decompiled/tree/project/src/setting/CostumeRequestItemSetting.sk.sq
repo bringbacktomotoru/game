@@ -1,0 +1,4 @@
+class CostumeRequestItemSetting extends ::Setting {
+  conditions = null;
+  items = null;
+}

@@ -1,0 +1,168 @@
+title_settings[1] <- ::TitleSetting({
+  key = "HomeTopPanel";
+  name = "ホーム";
+  icon_id = 0;
+  panel_type = 1;
+})
+
+title_settings[2] <- ::TitleSetting({
+  key = "FirstCostumeSelectPanel";
+  name = "初期キャラ選択";
+  icon_id = 0;
+  panel_type = 1;
+})
+
+title_settings[3] <- ::TitleSetting({
+  key = "RoomMemberPanel";
+  name = "おともだち";
+  icon_id = 3;
+  panel_type = 0;
+})
+
+title_settings[4] <- ::TitleSetting({
+  key = "MemberSelectPanel";
+  name = "選択";
+  icon_id = 3;
+  panel_type = 0;
+})
+
+title_settings[5] <- ::TitleSetting({
+  key = "CharaFocusPanel";
+  name = "キャラモード";
+  icon_id = 0;
+  panel_type = 1;
+})
+
+title_settings[6] <- ::TitleSetting({
+  key = "FurnitureFocusPanel";
+  name = "家具モード";
+  icon_id = 0;
+  panel_type = 1;
+})
+
+title_settings[7] <- ::TitleSetting({
+  key = "GachaPanel";
+  name = "ガチャ";
+  icon_id = 1;
+  panel_type = 0;
+})
+
+title_settings[8] <- ::TitleSetting({
+  key = "GachaResultPanel";
+  name = "ガチャ結果";
+  icon_id = 1;
+  panel_type = 0;
+})
+
+title_settings[9] <- ::TitleSetting({
+  key = "ShopPanel";
+  name = "ショップ";
+  icon_id = 0;
+  panel_type = 0;
+})
+
+title_settings[10] <- ::TitleSetting({
+  key = "RoomEditPanel";
+  name = "家具レイアウト";
+  icon_id = 4;
+  panel_type = 0;
+  large_background = true;
+})
+
+title_settings[11] <- ::TitleSetting({
+  key = "PropertyPanel";
+  name = "もちもの";
+  icon_id = 2;
+  panel_type = 0;
+})
+
+title_settings[12] <- ::TitleSetting({
+  key = "RoomSlotPanel";
+  name = "お部屋変更";
+  icon_id = 5;
+  panel_type = 0;
+})
+
+title_settings[13] <- ::TitleSetting({
+  key = "RoomListPanel";
+  name = "お部屋一覧";
+  icon_id = 5;
+  panel_type = 0;
+})
+
+title_settings[14] <- ::TitleSetting({
+  key = "TalkViewPanel";
+  name = "イベントシーン";
+  icon_id = 0;
+  panel_type = 1;
+})
+
+title_settings[15] <- ::TitleSetting({
+  key = "ARCharaSelectPanel";
+  name = "キャラクター変更";
+  icon_id = 7;
+  panel_type = 0;
+})
+
+title_settings[16] <- ::TitleSetting({
+  key = "HelpPanel";
+  name = "設定";
+  icon_id = 6;
+  panel_type = 0;
+})
+
+title_settings[17] <- ::TitleSetting({
+  key = "MailPanel";
+  name = "ポスト";
+  icon_id = 6;
+  panel_type = 0;
+})
+
+title_settings[18] <- ::TitleSetting({
+  key = "CharaListPanel";
+  name = "プロフィール";
+  icon_id = 3;
+  panel_type = 0;
+})
+
+title_settings[19] <- ::TitleSetting({
+  key = "CharaProfilePanel";
+  name = "おともだち";
+  icon_id = 3;
+  panel_type = 0;
+})
+
+title_settings[20] <- ::TitleSetting({
+  key = "ARFurnitureSelectPanel";
+  name = "家具変更";
+  icon_id = 4;
+  panel_type = 0;
+})
+
+title_settings[21] <- ::TitleSetting({
+  key = "RoomSelectPanel";
+  name = "お部屋を選択";
+  icon_id = 5;
+  panel_type = 0;
+})
+
+title_settings[22] <- ::TitleSetting({
+  key = "DiaryPanel";
+  name = "おもいで日記";
+  icon_id = 7;
+  panel_type = 0;
+})
+
+title_settings[23] <- ::TitleSetting({
+  key = "DiaryContentsPanel";
+  name = "おもいで日記 一覧";
+  icon_id = 7;
+  panel_type = 0;
+})
+
+title_settings[24] <- ::TitleSetting({
+  key = "PanelMissionPanel";
+  name = "イベントピース";
+  icon_id = 7;
+  panel_type = 0;
+})

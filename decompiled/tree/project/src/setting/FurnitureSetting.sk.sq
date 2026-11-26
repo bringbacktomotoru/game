@@ -1,0 +1,412 @@
+class FurnitureSetting extends ::SanrioSetting {
+  static PLACE_FLOOR = 1;
+  static PLACE_BACK_WALL = 2;
+  static PLACE_WALL = 3;
+  static PLACE_CEILING = 4;
+
+  static ACTION_AREA_NONE = -1;
+  static ACTION_AREA_ALL = 1;
+  static ACTION_AREA_FRONT = 2;
+  static ACTION_AREA_SIDE = 3;
+  static ACTION_AREA_IGUNORE_BACK = 4;
+  static ACTION_AREA_RIGHT = 5;
+  static ACTION_AREA_LEFT = 6;
+
+  static TYPE_RUG = 11;
+
+  static TAP_GM_AMOUNT_RATE = [1, 1.6, 1.8];
+
+  id = 0;
+  name = "";
+  desc = "";
+
+  view_level = null;
+  name_list = null;
+  desc_list = null;
+  grade = 1;
+
+  body = "";
+  parts = null;
+  script = "";
+  efx_script = null;
+
+  view_list = null;
+
+  series = 0;
+  type = 0;
+  place = 0;
+
+  size_origin_x = 0.0;
+  size_origin_z = 0.0;
+
+  size_w = 0;
+  size_h = 0;
+  size_d = 0;
+
+  action_pos_data = null;
+
+  stay_action_setting_id = null;
+
+  drop_box_pos_list = null;
+
+  action_setting_list = null;
+
+  leveltable_id = -1;
+  production_id = -1;
+  motion_drop_items_id = -1;
+
+  sell_price = 0;
+  sell_enable = 0;
+
+  shadows = null;
+
+  static TEXT_OFFSET_DEFAULT_X = 0.0;
+  static TEXT_OFFSET_DEFAULT_Y = -200.0;
+  text_offset = null;
+
+  camera_view_offsets = null;
+
+  base_tap_gm = null;
+  disable_touch = null;
+  invisible_properties = null;
+
+  constructor(t = null) {
+    super(t);
+
+    action_setting_list = [];
+  }
+
+  function loadConfAtServer(t) {
+    local setting = FurnitureSetting();
+
+    foreach (k, v in t) {
+      switch (k) {
+      case "name_list":
+      case "desc_list":
+      case "view_list":
+      case "vlew_level":
+      case "action_pos_data":
+      case "drop_box_pos_list":
+      case "shadows":
+      case "text_offset":
+      case "camera_view_offsets":
+        setting[k] = decodeJSON(v);
+        break;
+      case "disable_touch":
+      case "invisible_properties":
+        setting[k] = v > 0 ? true : false;
+        break
+      default:
+        setting[k] = v;
+      }
+
+    }
+    return setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (name_list) trans + "name_list";
+    if (desc_list) trans + "desc_list";
+
+    return trans;
+  }
+
+  function isWindow() {
+    return place == PLACE_BACK_WALL;
+  }
+
+  function getWallPath() {
+    if (isWindow()) {
+      local wall = path.substring(0, length(path) - 3);
+      return "/res" + wall + "_wall.pm";
+    }
+    else {
+      return null;
+    }
+  }
+
+  function getID() {
+    return this.id;
+  }
+
+  function getGrade() {
+    return this.grade;
+  }
+
+  function getName(idx = 0) {
+
+    return this.name_list[idx];
+  }
+  function getNameByLevel(level) {
+    return getName(0);
+
+  }
+
+  function getUIName(new_line = true, idx = 0) {
+    local _series_name = "";
+    local _ss = getSeriesSetting();
+    if (_ss) _series_name = _ss.getName();
+    if (new_line) _series_name += "/n";
+    return _series_name + getName(idx);
+  }
+  function getDesc(idx = 0) {
+    return this.desc_list[idx];
+  }
+  function getDescByLevel(level) {
+    local idx = getViewIndex(level);
+    return getDesc(idx);
+  }
+  function getViewLeve(idx = 0) {
+    return this.view_level[idx];
+  }
+  function getViewPath(idx = 0) {
+    if (!this.view_list[idx]) return undefined;
+    return "/res/furniture" + this.view_list[idx];
+  }
+  function getIconPathByLevel(level) {
+    local idx = getViewIndex(level);
+    local path = "/image/icon/furniture/" + this.id + "_" + idx + ".png";
+    return path;
+  }
+
+  function getIconPathByIndex(idx) {
+    local path = "/image/icon/furniture/" + this.id + "_" + idx + ".png";
+    return path;
+  }
+
+  function getIconSpriteByIndex(idx) {
+    local _path = getIconPathByIndex(idx);
+    local _sp = ::getSprite(_path);
+    if (!_sp) _sp = ::getSprite("/image/icon/furniture/" + this.id + "_0.png");
+    _sp.blend = SK_MIX;
+    return _sp;
+  }
+  function getIconSpriteByLevel(level) {
+    local idx = getViewIndex(level);
+    return getIconSpriteByIndex(idx);
+  }
+
+  function getIconSpriteUnacquired() {
+    local _path = "/image/icon/furniture/" + this.id + ".png";
+    local _sp = ::getSprite(_path);
+    if (!_sp) _sp = ::getSprite("/image/icon/furniture/" + this.id + "_0.png");
+    _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  function getEffectScript() {
+    return efx_script;
+  }
+
+  function getViewLevelList() {
+    return this.view_level;
+  }
+  function getViewIndex(lv) {
+
+    if (!this.view_level) return 0;
+
+    local _ret = 0;
+    for (local i = 1; i < this.view_level.len(); i++) {
+      if (lv >= this.view_level[i]) _ret++;
+      else break;
+    }
+    return _ret;
+  }
+
+  function getViewLength() {
+    if (!this.view_level || this.view_level.len() == 0) return 1;
+    return this.view_level.len();
+  }
+
+  function getActionSettingList() {
+    if (action_setting_list.len() == 0) {
+      for (local i = 0; i < action_setting_ids.len(); i++) {
+        action_setting_list + ::gamesetting.action_settings[action_setting_ids[i]];
+      }
+    }
+
+    return action_setting_list;
+  }
+
+  function getScriptUseFurniture() {
+    return this.use_script;
+  }
+
+  function getStayActionSettingAtUseFurniture() {
+    return ::gamesetting.action_settings[this.stay_action_setting_id];
+  }
+
+  function getProductionID() {
+    return this.production_id;
+  }
+
+  function isProductionize() {
+    return this.production_id != -1;
+  }
+
+  function getDropBoxPosList() {
+    return this.drop_box_pos_list;
+  }
+
+  function getEnableActionNum() {
+    if (this.production_id < 0) return 0;
+    if (!this.action_pos_data) return 1;
+    return this.action_pos_data.len();
+  }
+
+  function getMaxLevel() {
+    local lv_setting = ::gamesetting.level_settings[this.leveltable_id];
+    if (!lv_setting) return 1;
+    return lv_setting.exp_list.len() + 1;
+  }
+
+  function getLevelupGM(level) {
+    local lv_setting = ::gamesetting.level_settings[this.leveltable_id];
+
+    local _gm_list = lv_setting.gm_list;
+    local idx = 0;
+    if (level <= _gm_list.len()) {
+      idx = level - 1;
+    } else {
+      idx = _gm_list.len() - 1;
+    }
+    return _gm_list[idx];
+  }
+
+  function getLevelupTime(level) {
+    local lv_setting = ::gamesetting.level_settings[this.leveltable_id];
+
+    local _time_list = lv_setting.time_list;
+    local idx = 0;
+    if (level <= _time_list.len()) {
+      idx = level - 1;
+    } else {
+      idx = _time_list.len() - 1;
+    }
+    return _time_list[idx];
+  }
+
+  function getMaxExp(level) {
+    local lv_setting = ::gamesetting.level_settings[this.leveltable_id];
+    if (!lv_setting) return -1;
+
+    local _exp_list = lv_setting.exp_list;
+    local idx = 0;
+    if (level <= _exp_list.len()) {
+      idx = level - 1;
+    } else {
+      idx = _exp_list.len() - 1;
+    }
+    return _exp_list[idx];
+  }
+
+  function isOverlaid() {
+    return type == TYPE_RUG;
+  }
+
+  function getActionArea() {
+    local _aarea = null;
+    if (this.action_area == FurnitureSetting.ACTION_AREA_FRONT) {
+      _aarea = [{ f = this.action_pos_z, b = 0, l = 0, r = 0 }];
+    }
+    else if (this.action_area == FurnitureSetting.ACTION_AREA_ALL) {
+      _aarea = [{ f = this.action_pos_z, b = this.action_pos_z, l = 0, r = 0 },
+      { f = 0, b = 0, l = this.action_pos_x, r = this.action_pos_x }];
+    }
+    else if (this.action_area == FurnitureSetting.ACTION_AREA_IGUNORE_BACK) {
+      _aarea = [{ f = this.action_pos_z, b = 0, l = 0, r = 0 },
+      { f = 0, b = 0, l = this.action_pos_x, r = this.action_pos_x }];
+    }
+    else {
+      _aarea = [{ f = 0, b = 0, l = 0, r = 0 }];
+    }
+    return _aarea;
+  }
+
+  function getActionPosData() {
+    return this.action_pos_data;
+  }
+
+  function hasProductionID() {
+    return production_id > 0 ? true : false;
+  }
+
+  function getProductionSetting() {
+    if (this.production_id < 0) return null;
+    return ::gamesetting.furniture_item_production_settings[this.production_id];
+  }
+
+  function getProductByLevel(lv) {
+    local _ps = getProductionSetting();
+    if (!_ps) return null;
+    return _ps.getProductByLevel(lv);
+  }
+
+  function getMaxProduct() {
+    local _ps = getProductionSetting();
+    if (!_ps) return null;
+    return _ps.getMaxProduct();
+  }
+
+  function getSellPrice() {
+    if (!this.sell_enable) return 0;
+    return this.sell_price;
+  }
+
+  function getShadows() {
+    return this.shadows;
+  }
+
+  function canSell() {
+    return this.sell_enable;
+  }
+
+  function getSeriesSetting() {
+    return ::gamesetting.series_settings[this.series];
+  }
+
+  function getSeries() {
+    return this.series;
+  }
+
+  function getType() {
+    return this.type;
+  }
+  function getTypeSetting() {
+    return ::gamesetting.furniture_type_settings[this.type];
+  }
+  function canUseFurniture() {
+    return getTypeSetting().canUse();
+  }
+
+  function getTextOffset() {
+    return this.text_offset;
+  }
+
+  function getCameraViewOffsets() {
+    return this.camera_view_offsets;
+  }
+
+  function getBaseTapGM() {
+    if (this.base_tap_gm == null) return 5;
+    return this.base_tap_gm;
+  }
+
+  function calcTapGM(amount) {
+
+    if (amount <= 0) return 0;
+
+    local _base = getBaseTapGM();
+    local _rate = TAP_GM_AMOUNT_RATE[amount - 1] || TAP_GM_AMOUNT_RATE[TAP_GM_AMOUNT_RATE.len() - 1];
+    return int(_base * _rate);
+  }
+
+  function invisibleProperties() {
+    return this.invisible_properties;
+  }
+  function disableTouch() {
+    return this.disable_touch;
+  }
+}

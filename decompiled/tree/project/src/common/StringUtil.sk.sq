@@ -1,0 +1,74 @@
+function formatNumberString(i) {
+
+  local s = "";
+  while (i >= 1000) {
+    s = sprintf(",%03d", i % 1000) + s;
+    i /= 1000;
+  }
+  s = sprintf("%d", i) + s;
+  return s;
+}
+
+function replaceNewLine(s) {
+  if (typeof(s) != SS_STRING) return s;
+  local idx = s.indexOf("/n");
+  while (idx != -1) {
+    s = s.slice(0, idx) + "\n" + s.slice(idx + 2, s.len());
+    idx = s.indexOf("/n");
+  }
+  return s;
+}
+
+function replacePlayerName(s) {
+  if (typeof(s) != SS_STRING) return s;
+  local idx = s.indexOf("#playername");
+  if (!::gamesession || !::gamesession.getUserData()) return s;
+  local _pname = ::gamesession.getUserData().getPlayerName();
+
+  while (idx != -1) {
+    s = s.slice(0, idx) + _pname + s.slice(idx + 11, s.len());
+    idx = s.indexOf("#playername");
+  }
+  return s;
+}
+
+function replaceJPY(s) {
+  if (typeof(s) != SS_STRING) return s;
+
+  local idx = indexOfChar(s, 165);
+  while (idx != -1) {
+    local idx2 = idx < s.len() ? idx + 1 : idx;
+    s = s.slice(0, idx) + "￥" + s.slice(idx2);
+    idx = indexOfChar(s, 165);
+  }
+  return s;
+}
+
+function indexOfChar(s, c) {
+  if (typeof(s) != SS_STRING) return -1;
+
+  for (local i = 0; i < s.len(); i++) {
+    if (c == s[i]) return i;
+  }
+  return -1;
+}
+
+function split(s, sepa) {
+  if (typeof(s) != SS_STRING) return null;
+
+  if (s.len() == 0) return null;
+
+  local idx = s.indexOf(sepa);
+  local result = [];
+  while (idx != -1) {
+    result + s.slice(0, idx);
+    idx += sepa.len();
+    if (idx >= s.len()) break;
+
+    s = s.slice(idx);
+    idx = s.indexOf(sepa);
+  }
+  result + s;
+
+  return result;
+}

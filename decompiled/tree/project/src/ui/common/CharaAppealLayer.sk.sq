@@ -1,0 +1,1240 @@
+class CharaAppealLayer {
+
+  static BALLOON_TYPE_ATTRACT = 0;
+  static BALLOON_TYPE_ATTRACT_APPROACH = 1;
+  static BALLOON_TYPE_NOTICE = 2;
+  static BALLOON_TYPE_HAPINESS = 3;
+  static BALLOON_TYPE_HAPINESS_PRODUCT = 4;
+  static BALLOON_TYPE_SELECT_FURNTIURE = 5;
+  static BALLOON_TYPE_TAP_HAPINESS = 6;
+  static BALLOON_TYPE_APPROACH_FURNITURE = 7;
+  static BALLOON_TYPE_WANNA_USE_FURNITURE = 8;
+  static BALLOON_TYPE_NOTE = 9;
+  static BALLOON_TYPE_FAILUER = 10;
+
+  balloons = null;
+  stage = null;
+  user_data = null;
+  last_room_index = null;
+
+  view = null;
+
+  recently_added_type = -1;
+
+  constructor(view) {
+    this.view = view;
+    this.balloons = {};
+
+    local scene = ::gamesession.getCurrentScene();
+    this.user_data = ::gamesession.getUserData();
+    this.stage = scene.getStage();
+
+    this.last_room_index = this.user_data.getCurrentRoomIndex();
+    this.view.setUpdateFunc(update.bindenv(this));
+  }
+
+  function update(dt) {
+
+    local room_index = this.user_data.getCurrentRoomIndex();
+    if (this.last_room_index != room_index) {
+      releaseAllBalloons();
+      this.last_room_index = room_index;
+    }
+
+    local _sk_time = skGetTime();
+    foreach (bl in this.balloons) {
+      if (!bl.isValidate()) {
+        releaseBalloon(bl);
+      }
+      bl.update(_sk_time);
+    }
+
+  }
+
+  function addAttractBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_ATTRACT)
+    } else {
+      if (bl instanceof AttractBalloonAtFurniture) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_ATTRACT)
+      }
+    }
+  }
+
+  function addAttractApproachBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_ATTRACT_APPROACH)
+    } else {
+      if (bl instanceof AttractApproachBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_ATTRACT_APPROACH)
+      }
+    }
+  }
+
+  function addNoticeBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_NOTICE)
+    } else {
+      if (bl instanceof NoticeBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_NOTICE)
+      }
+    }
+  }
+
+  function addNoteBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_NOTE)
+    } else {
+      if (bl instanceof NoteBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_NOTE)
+      }
+    }
+  }
+
+  function addFailuerBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_FAILUER)
+    } else {
+      if (bl instanceof FailuerBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_FAILUER)
+      }
+    }
+  }
+
+  function addHapinessBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_HAPINESS);
+    } else {
+      if (bl instanceof HapinessBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_HAPINESS)
+      }
+    }
+  }
+
+  function addHapinessProductBalloon(model, pd) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_HAPINESS_PRODUCT, pd);
+    } else {
+      if (bl instanceof HapinessProductBalloon) {
+        bl.build(model);
+        bl.setParam(pd);
+      } else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_HAPINESS_PRODUCT, pd);
+      }
+    }
+  }
+
+  function addSelectFurnitureBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_SELECT_FURNTIURE);
+    } else {
+      if (bl instanceof SelectingFurnitureBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_SELECT_FURNTIURE)
+      }
+    }
+  }
+
+  function addApproachFurnitureBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_APPROACH_FURNITURE);
+    } else {
+      if (bl instanceof ApproachFurnitureBalloon) {
+        bl.build(model);
+      }
+      else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_APPROACH_FURNITURE)
+      }
+    }
+  }
+
+  function addTapHapinessBalloon(model, pd) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_TAP_HAPINESS, pd);
+    } else {
+      if (bl instanceof TapHapinessBalloon) {
+        bl.build(model);
+        bl.setParam(pd);
+      } else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_TAP_HAPINESS, pd);
+      }
+    }
+  }
+
+  function addWannaUseFurnitureBalloon(model, tutorial_mode = false) {
+    local bl = this.balloons[model] || null;
+    if (!bl) {
+      addNewBalloon(model, BALLOON_TYPE_WANNA_USE_FURNITURE, tutorial_mode);
+    } else {
+      if (bl instanceof WannaUseFurnitureBalloon) {
+        bl.build(model);
+        bl.setParam(tutorial_mode);
+      } else {
+        releaseBalloon(bl);
+        addNewBalloon(model, BALLOON_TYPE_WANNA_USE_FURNITURE);
+      }
+    }
+  }
+
+  function addNewBalloon(model, type, param = null) {
+    local bl;
+    switch (type) {
+    case BALLOON_TYPE_ATTRACT: bl = AttractBalloonAtFurniture(this, this.stage); break;
+    case BALLOON_TYPE_ATTRACT_APPROACH: bl = AttractApproachBalloon(this, this.stage); break;
+    case BALLOON_TYPE_NOTICE: bl = NoticeBalloon(this, this.stage); break;
+    case BALLOON_TYPE_HAPINESS: bl = HapinessBalloon(this, this.stage); break;
+    case BALLOON_TYPE_HAPINESS_PRODUCT: bl = HapinessProductBalloon(this, this.stage); break;
+    case BALLOON_TYPE_SELECT_FURNTIURE: bl = SelectingFurnitureBalloon(this, this.stage); break;
+    case BALLOON_TYPE_APPROACH_FURNITURE: bl = ApproachFurnitureBalloon(this, this.stage); break;
+    case BALLOON_TYPE_TAP_HAPINESS: bl = TapHapinessBalloon(this, this.stage); break;
+    case BALLOON_TYPE_WANNA_USE_FURNITURE: bl = WannaUseFurnitureBalloon(this, this.stage); break;
+    case BALLOON_TYPE_NOTE: bl = NoteBalloon(this, this.stage); break;
+    case BALLOON_TYPE_FAILUER: bl = FailuerBalloon(this, this.stage); break;
+    }
+    if (!bl) return;
+    bl.build(model);
+    if (param) bl.setParam(param);
+    this.view.addChild(bl.view);
+    this.balloons[model] <- bl;
+
+    this.recently_added_type = type;
+    local _cp = ::gamesession.getCurrentScene().getUI().getCurrentPanel();
+    ::tutorial_manager.checkAndStartTutorialAtCharaAppealBalloon(_cp);
+  }
+
+  function releaseAllBalloons() {
+    foreach (bl in this.balloons) {
+      bl.release();
+      this.view.removeChild(bl.view);
+    }
+    this.balloons = {};
+  }
+
+  function releaseBalloon(bl) {
+    bl.release();
+    this.view.removeChild(bl.view);
+    delete this.balloons[bl.getModel()];
+  }
+
+  function getBalloon(model) {
+    return this.balloons[model];
+  }
+
+  function getHapinessBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (bl instanceof HapinessBalloon) return bl;
+
+    return null;
+  }
+
+  function getTapHapinessBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (bl instanceof TapHapinessBalloon) return bl;
+
+    return null;
+  }
+  function getHapinessProductBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (bl instanceof HapinessProductBalloon) return bl;
+
+    return null;
+  }
+
+  function getWannaUseFurnitureBalloon(model) {
+    local bl = this.balloons[model] || null;
+    if (bl instanceof WannaUseFurnitureBalloon) return bl;
+
+    return null;
+  }
+
+  function hasBalloon(type) {
+    foreach (bl in this.balloons) {
+      switch (type) {
+      case BALLOON_TYPE_ATTRACT:
+        if (bl instanceof AttractBalloonAtFurniture) return true;
+        break;
+      case BALLOON_TYPE_ATTRACT_APPROACH:
+        if (bl instanceof AttractApproachBalloon) return true;
+        break;
+      case BALLOON_TYPE_NOTICE:
+        if (bl instanceof NoticeBalloon) return true;
+        break;
+      case BALLOON_TYPE_HAPINESS:
+        if (bl instanceof HapinessBalloon) return true;
+        break;
+      case BALLOON_TYPE_HAPINESS_PRODUCT:
+        if (bl instanceof HapinessProductBalloon) return true;
+        break;
+      case BALLOON_TYPE_SELECT_FURNTIURE:
+        if (bl instanceof SelectingFurnitureBalloon) return true;
+        break;
+      case BALLOON_TYPE_ATTRACT_APPROACH:
+        if (bl instanceof ApproachFurnitureBalloon) return true;
+      case BALLOON_TYPE_TAP_HAPINESS:
+        if (bl instanceof TapHapinessBalloon) return true;
+        break;
+      case BALLOON_TYPE_NOTE:
+        if (bl instanceof NoteBalloon) return true;
+        break;
+      case BALLOON_TYPE_FAILUER:
+        if (bl instanceof FailuerBalloon) return true;
+        break;
+      }
+    }
+    return false;
+  }
+
+  function getRecentlyAddedType() {
+    return this.recently_added_type;
+  }
+
+  function setVisible(b) {
+    this.view.visible = b;
+    this.view.repaint();
+  }
+
+  function setEnabled(b) {
+    this.view.enabled = b;
+  }
+}
+
+class CharaAppealLayer.CharaBalloon {
+  layer = null;
+  camera = null;
+  stage = null;
+
+  view = null;
+
+  model = null;
+
+  click_func = null;
+  tap_lock = false;
+
+  v_1 = Vector3D();
+
+  constructor(layer, stage, view) {
+    this.layer = layer;
+    this.stage = stage;
+    this.camera = stage.renderer.camera;
+    this.view = view;
+    if (this.view) this.view.addEventListener(MOUSE_EVENT, mouseevent);
+  }
+
+  function build(model) {
+    this.model = model;
+  }
+
+  function setParam(param) {
+  }
+
+  function release() {
+  }
+
+  function update(sk_time) {
+    if (!this.model || !this.view) return;
+    _updateViewPosition();
+  }
+
+  function _updateViewPosition() {
+    v_1.set(0, 0, 0);
+
+    local sk3d = this.model.obj.sk3d;
+    if (sk3d.parent) {
+      local bone = sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(sk3d.parent.gmat);
+      v_1.add(sk3d.parent.pos);
+    }
+
+    v_1.add(this.model.getPos()).add(0, 2.5, 0.0);
+
+    local v = this.camera.project(v_1);
+
+    local x = (layer.view.bnd.w - ::screenWidth) / 2.0 + ::screenWidth * v.x;
+    local y = (layer.view.bnd.h - ::screenHeight) / 2.0 + ::screenHeight * v.y;
+    this.view.pos.set(x, y, v.z);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function getView() {
+    return this.view;
+  }
+
+  function getModel() {
+    return this.model;
+  }
+
+  function isValidate() {
+    return false;
+  }
+
+  function setClickFunc(f) {
+    this.click_func = f;
+  }
+
+  function setTapLock(b) {
+    this.tap_lock = b;
+  }
+
+  function mouseevent(e) {
+    if (this.tap_lock) return;
+
+    e.consume();
+
+    switch (e.id) {
+    case MOUSE_CLICKED:
+      if (this.click_func) this.click_func();
+      break;
+    }
+  }
+}
+
+class CharaAppealLayer.AttractBalloon extends CharaAppealLayer.CharaBalloon {
+  static START_BLINK = 2000;
+
+  static STATE_INIT = 0;
+  static STATE_BLINK = 1;
+  state = null;
+
+  last_count = -1;
+  lbl_count = null;
+
+  constructor(layer, stage, view = null) {
+
+    super(layer, stage, ::loadSKView("/ui/common/CharaAttractIcon.ui"));
+    this.view.pickable = false;
+    this.lbl_count = this.view.findChild("lbl_count");
+  }
+
+  function build(model) {
+    this.model = model;
+    local _tm = this.model.getAttractTarget();
+
+    local _fd = _tm.getFurnitureData();
+    local _sp = _fd.getCurrentIconSprite();
+    local _icon = this.view.findChild("img_icon");
+    _icon.setSprite(_sp);
+    _icon.updateLayout();
+
+    state = STATE_INIT;
+
+    local cnt = this.model.getAttractCount();
+    this.lbl_count.setText(cnt);
+    this.last_count = cnt;
+  }
+
+  function update(sk_time) {
+
+    local _remain = this.model.getLoseAttractTime() - sk_time;
+    if (_remain > START_BLINK && this.state != STATE_INIT) {
+      this.view.startMethod("init");
+      this.state = STATE_INIT;
+    } else if (_remain <= START_BLINK && this.state != STATE_BLINK) {
+      this.view.startMethod("blink");
+      this.state = STATE_BLINK;
+    }
+
+    local cnt = this.model.getAttractCount();
+    if (cnt != this.last_count) {
+      this.lbl_count.setText(cnt);
+      this.last_count = cnt;
+    }
+
+    _updateViewPosition();
+  }
+
+  function isValidate() {
+    if (!this.model.hasAttractTarget()) return false;
+    if (!this.model.isStateAttractTap()) return false;
+
+    if (this.last_count <= 0) return false;
+
+    return true;
+  }
+}
+
+class CharaAppealLayer.AttractBalloonAtFurniture extends CharaAppealLayer.CharaBalloon {
+  static START_BLINK = 2000;
+
+  static STATE_INIT = 0;
+  static STATE_BLINK = 1;
+  state = null;
+
+  last_count = -1;
+  lbl_count = null;
+  furniture_model = null;
+
+  constructor(layer, stage, view = null) {
+
+    super(layer, stage, ::loadSKView("/ui/common/CharaAttractIcon.ui"));
+    this.view.pickable = false;
+    this.lbl_count = this.view.findChild("lbl_count");
+  }
+
+  function build(model) {
+    this.model = model;
+    this.furniture_model = this.model.getAttractTarget();
+
+    local _cs = this.model.getCostumeData().getCharaSetting();
+    local _sp = _cs.getIconSprite();
+    local _icon = this.view.findChild("img_icon");
+    _icon.setSprite(_sp);
+    _icon.updateLayout();
+
+    state = STATE_INIT;
+
+    local cnt = this.model.getAttractCount();
+    this.lbl_count.setText(cnt);
+    this.last_count = cnt;
+  }
+
+  function update(sk_time) {
+
+    local _remain = this.model.getLoseAttractTime() - sk_time;
+    if (_remain > START_BLINK && this.state != STATE_INIT) {
+      this.view.startMethod("init");
+      this.state = STATE_INIT;
+    } else if (_remain <= START_BLINK && this.state != STATE_BLINK) {
+      this.view.startMethod("blink");
+      this.state = STATE_BLINK;
+    }
+
+    local cnt = this.model.getAttractCount();
+    if (cnt != this.last_count) {
+      this.lbl_count.setText(cnt);
+      this.last_count = cnt;
+    }
+
+    _updateViewPosition();
+  }
+
+  function _updateViewPosition() {
+    v_1.set(0, 0, 0);
+
+    v_1.add(this.furniture_model.getPos()).add(0, 2.5, 0.0);
+
+    local v = this.camera.project(v_1);
+
+    local x = (layer.view.bnd.w - ::screenWidth) / 2.0 + ::screenWidth * v.x;
+    local y = (layer.view.bnd.h - ::screenHeight) / 2.0 + ::screenHeight * v.y;
+    this.view.pos.set(x, y, v.z);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function isValidate() {
+    if (!this.model.hasAttractTarget()) return false;
+    if (!this.model.isStateAttractTap()) return false;
+
+    if (this.last_count <= 0) return false;
+
+    return true;
+  }
+}
+
+class CharaAppealLayer.AttractApproachBalloon extends CharaAppealLayer.CharaBalloon {
+
+  constructor(layer, stage, view = null) {
+    super(layer, stage, ::loadSKView("/ui/common/CharaAppealIcon.ui"));
+    this.view.pickable = false;
+  }
+
+  function build(model) {
+    this.model = model;
+    local _tm = this.model.getAttractTarget();
+
+    local _fd = _tm.getFurnitureData();
+    local _sp = _fd.getCurrentIconSprite();
+    local _icon = this.view.findChild("img_icon");
+    _icon.setSprite(_sp);
+    _icon.updateLayout();
+  }
+
+  function isValidate() {
+    if (this.model.isFurnitureScriptRunning()) return false;
+    if (!this.model.hasAttractTarget()) return false;
+    if (!this.model.isStateAttractApproach() && !this.model.isStateAttractUseFurniture()) return false;
+
+    return true;
+  }
+}
+
+class CharaAppealLayer.NoticeBalloon extends CharaAppealLayer.CharaBalloon {
+  static DISP_LIMIT = 3000;
+
+  limit_time = -1;
+
+  constructor(layer, stage, view = null) {
+    super(layer, stage, ::loadSKView("/ui/common/CharaNoticeIcon.ui"));
+
+  }
+
+  function build(model) {
+    this.model = model;
+    this.limit_time = skGetTime() + DISP_LIMIT;
+  }
+
+  function _charaFocus() {
+    if (!this.model) return;
+    ::gamesession.getCurrentScene().getUI().movePanel(::CharaFocusPanel, false, { "model" = this.model });
+  }
+
+  function isValidate() {
+    return skGetTime() < this.limit_time;
+  }
+}
+
+class CharaAppealLayer.NoteBalloon extends CharaAppealLayer.CharaBalloon {
+  static DISP_LIMIT = 1500;
+
+  limit_time = -1;
+
+  constructor(layer, stage, view = null) {
+    super(layer, stage, ::loadSKView("/ui/common/CharaEmotionIcon.ui"));
+    this.view.findChild("img_failuer").visible = false;
+  }
+
+  function build(model) {
+    this.model = model;
+    this.limit_time = skGetTime() + DISP_LIMIT;
+  }
+
+  function isValidate() {
+    return skGetTime() < this.limit_time;
+  }
+}
+
+class CharaAppealLayer.FailuerBalloon extends CharaAppealLayer.CharaBalloon {
+  static DISP_LIMIT = 1500;
+
+  limit_time = -1;
+
+  constructor(layer, stage, view = null) {
+    super(layer, stage, ::loadSKView("/ui/common/CharaEmotionIcon.ui"));
+    this.view.findChild("img_note").visible = false;
+  }
+
+  function build(model) {
+    this.model = model;
+    this.limit_time = skGetTime() + DISP_LIMIT;
+  }
+
+  function isValidate() {
+    return skGetTime() < this.limit_time;
+  }
+}
+
+class CharaAppealLayer.HapinessBalloon extends CharaAppealLayer.CharaBalloon {
+  user_data = null;
+  cos_id = null;
+
+  constructor(layer, stage, view = null) {
+    super(layer, stage, ::loadSKView("/ui/common/CharaHapinessIcon.ui"));
+    setClickFunc(_tapped);
+
+    this.user_data = ::gamesession.getUserData();
+  }
+
+  function build(model) {
+    this.model = model;
+
+    this.cos_id = this.model.getCostumeData().getID();
+    this.view.startMethod("startAnim");
+  }
+
+  function _updateViewPosition() {
+    v_1.set(0, 0, 0);
+
+    local sk3d = this.model.obj.sk3d;
+    if (sk3d.parent) {
+      local bone = sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(sk3d.parent.gmat);
+      v_1.add(sk3d.parent.pos);
+    }
+
+    v_1.add(this.model.getPos()).add(0, 2.5, 0.0);
+
+    local v = this.camera.project(v_1);
+
+    local x = (layer.view.bnd.w - ::screenWidth) / 2.0 + ::screenWidth * v.x;
+    local y = (layer.view.bnd.h - ::screenHeight) / 2.0 + ::screenHeight * v.y;
+    this.view.pos.set(x, y, v.z);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function tapped() {
+    _tapped();
+  }
+  function _tapped() {
+    if (!this.model) return;
+    if (this.model.isDisableStartTappedScript()) return;
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof ::SanrioGameScene) {
+      this.model.setDisableResetTapScriptName();
+
+      ::playSound(::SoundConstants.SOUND_TAP_HAPPINESS_HERAT);
+      _scene.getUI().movePanel(::CharaFocusPanel, false, { model = this.model });
+    }
+  }
+  function isValidate() {
+
+    if (!user_data.hasBonusHapinessNum()) return false;
+    if (!this.model.hasTappedScript()) {
+      this.user_data.failHapinessAction(cos_id);
+      return false;
+    }
+    return true;
+  }
+}
+
+class CharaAppealLayer.HapinessProductBalloon extends CharaAppealLayer.CharaBalloon {
+
+  furniture_data = null;
+  user_data = null;
+
+  constructor(layer, stage, view = null) {
+    super(layer, stage, ::loadSKView("/ui/common/CharaHapinessIcon.ui"));
+    setClickFunc(_tapped);
+    this.user_data = ::gamesession.getUserData();
+  }
+
+  function build(model) {
+    this.model = model;
+    this.view.startMethod("startAnim");
+  }
+  function setParam(pd) {
+    local _ud = ::gamesession.getUserData();
+    this.furniture_data = _ud.getFurnitureData(pd.getProducerID());
+  }
+
+  function _updateViewPosition() {
+    v_1.set(0, 0, 0);
+
+    local sk3d = this.model.obj.sk3d;
+    if (sk3d.parent) {
+      local bone = sk3d.parentbone;
+      local p0 = bone.parts.bindpose;
+      v_1.set(p0[12], 0, p0[14]).transform0(sk3d.parent.gmat);
+      v_1.add(sk3d.parent.pos);
+    }
+
+    v_1.add(this.model.getPos()).add(0, 2.5, 0.0);
+
+    local v = this.camera.project(v_1);
+
+    local x = (layer.view.bnd.w - ::screenWidth) / 2.0 + ::screenWidth * v.x;
+    local y = (layer.view.bnd.h - ::screenHeight) / 2.0 + ::screenHeight * v.y;
+    this.view.pos.set(x, y, v.z);
+    this.view.matdirty = true;
+    this.view.repaint();
+  }
+
+  function tapped() {
+    _tapped();
+  }
+  function _tapped() {
+    if (!this.model) return;
+    if (!this.furniture_data.hasProductData()) return;
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof ::SanrioGameScene) {
+
+      local _pd = this.furniture_data.getProductData();
+      local _cid = _pd.getCostumeIDList()[0] || -1;
+      if (_cid > 0) {
+        ::playSound(::SoundConstants.SOUND_TAP_HAPPINESS_HERAT);
+        _scene.getProductionManager().stopUpdate();
+        local _cm = _scene.getStage().getChara(_cid);
+        _scene.getUI().movePanel(::CharaFocusPanel, false, { model = _cm });
+        return;
+      }
+    }
+
+  }
+  function isValidate() {
+
+    if (!this.user_data.hasBonusHapinessNum()) return false;
+    if (!this.furniture_data.hasProductData()) return false;
+    local _pd = this.furniture_data.getProductData();
+    if (_pd.isEndBonusHapiness()) return false;
+    if (!_pd.isRewardStateBonus()) return false;
+
+    return true;
+  }
+}
+
+class CharaAppealLayer.SelectingFurnitureBalloon extends CharaAppealLayer.CharaBalloon {
+  target_furniture = null;
+  img_cancel = null;
+
+  constructor(layer, stage, view = null) {
+    super(layer, stage, ::loadSKView("/ui/common/CharaAppealIcon.ui"));
+    this.img_cancel = this.view.findChild("img_cancel");
+    this.img_cancel.visible = false;
+    this.view.pickable = false;
+  }
+
+  function build(model) {
+    this.model = model;
+    this.target_furniture = this.model.getTargetFurniture();
+    _setupFurnitureIcon();
+  }
+
+  function _setupFurnitureIcon() {
+    local _fd = this.target_furniture.getFurnitureData();
+    local _sp = _fd.getCurrentIconSprite();
+    local _icon = this.view.findChild("img_icon");
+    _icon.setSprite(_sp);
+    _icon.updateLayout();
+  }
+
+  function update(sk_time) {
+    local _tf = this.model.getTargetFurniture();
+    if (_tf && _tf != this.target_furniture) {
+      this.target_furniture = _tf;
+      _setupFurnitureIcon();
+    }
+
+    _updateViewPosition();
+  }
+
+  function isValidate() {
+    if (this.model.isFurnitureScriptRunning()) return false;
+    if (!this.model.isStateSelectFurniture()) return false;
+
+    return true;
+  }
+}
+
+class CharaAppealLayer.ApproachFurnitureBalloon extends CharaAppealLayer.SelectingFurnitureBalloon {
+  static CANCEL_USE_FURNITURE_SCRIPT = "cancel_use_furniture_kubifuri";
+  static ALIVE_TIME = 2000;
+  end_time = null;
+  alive = null;
+
+  function build(model) {
+    super.build(model);
+    this.end_time = skGetTime() + ALIVE_TIME;
+    this.alive = true;
+    this.view.pickable = true;
+    if (::tutorial_manager.canCancelUseFurniture()) {
+      this.img_cancel.visible = true;
+      ::TapButton(this.img_cancel).view.addEventListener(ACTION_EVENT, actionevent_cancel);
+    }
+  }
+  function update(sk_time) {
+    super.update(sk_time);
+    if (this.alive && sk_time > this.end_time) this.alive = false;
+  }
+
+  function isValidate() {
+    if (!this.alive) return false;
+    if (this.model.isFurnitureScriptRunning()) return false;
+    if (!this.model.isStateApproachFurniture()) return false;
+
+    return true;
+  }
+
+  function actionevent_cancel(e) {
+    if (!this.model) return;
+
+    e.consume();
+
+    this.model.clearAction();
+    this.model.startCharaScriptAction(CANCEL_USE_FURNITURE_SCRIPT, null, false);
+  }
+}
+
+class CharaAppealLayer.TapHapinessBalloon extends CharaAppealLayer.CharaBalloon {
+  static SOUND_TIME = 400;
+
+  production_setting = null;
+  remain_tap_cnt = null;
+  pool_tap_cnt = null;
+  next_heart_start_time = null;
+  heart_index = null;
+  is_finished = null;
+  limit_tap_time = null;
+
+  current_tap_index = null;
+
+  production_manager = null;
+  happiness_barrage_manager = null;
+
+  static REMAIN_VISIBLE_MSEC = 3000;
+  lbl_remain = null;
+  remain_visible_time = -1;
+
+  furniture_data = null;
+
+  btn = null;
+
+  static CANCEL_VISIBLE_MSEC = 3000;
+  img_cancel = null;
+  cancel_visible_time = -1;
+
+  tap_sound_time = -1;
+
+  constructor(layer, stage, view = null) {
+    super(layer, stage, view);
+
+    this.view = null;
+
+    this.production_setting = null;
+    this.remain_tap_cnt = [];
+    this.pool_tap_cnt = 0;
+    this.next_heart_start_time = -1;
+    this.heart_index = -1;
+    this.is_finished = false;
+    this.limit_tap_time = 0;
+    this.current_tap_index = -1;
+
+    local _scene = ::gamesession.getCurrentScene();
+    if (_scene instanceof SanrioGameScene) {
+      this.production_manager = _scene.getProductionManager();
+      this.happiness_barrage_manager = _scene.getHappinessBarrageManager();
+    }
+  }
+
+  function setParam(pd) {
+    this.production_setting = pd.getSetting();
+    this.furniture_data = ::gamesession.getUserData().getFurnitureData(pd.getProducerID());
+
+    local _heart_num = this.production_setting.getTapNums().len();
+    switch (_heart_num) {
+    case 1: this.view = ::loadSKView("/ui/common/TapHapiness1.ui"); break;
+    case 2: this.view = ::loadSKView("/ui/common/TapHapiness2.ui"); break;
+    case 3: this.view = ::loadSKView("/ui/common/TapHapiness3.ui"); break;
+    }
+
+    this.btn = this.view.findChild("btn");
+    local _tap_button = ::TapButton(this.btn);
+    _tap_button.setTappedSE(null);
+    _tap_button.view.addEventListener(ACTION_EVENT, actionevent_tap);
+
+    local _st = pd.getStartTime();
+    local _now = ::getServerTime();
+    local _el = _now - _st;
+    local _tmp_cnt = 0;
+    local _wait_taps = this.production_setting.getWaitTaps();
+
+    this.remain_tap_cnt = clone this.production_setting.getTapNums();
+    local _tapped_num = pd.getTappedNum();
+    if (_tapped_num > 0) {
+      for (local i = 0; i < this.remain_tap_cnt.len(); i++) {
+        this.remain_tap_cnt[i] -= _tapped_num;
+        this.remain_tap_cnt[i] = Math.max(0, this.remain_tap_cnt[i]);
+
+        _tapped_num -= this.production_setting.getTapNums()[i];
+        if (_tapped_num <= 0) break;
+      }
+    }
+
+    this.heart_index = -1;
+    for (local i = _wait_taps.len() - 1; i >= 0; i--) {
+      if (_el >= _wait_taps[i]) {
+        this.heart_index = i;
+        this.next_heart_start_time = _now + _wait_taps[i] - _el;
+        break;
+      }
+    }
+
+    this.lbl_remain = this.view.findChild("lbl_remain");
+    this.lbl_remain.visible = false;
+    this.img_cancel = this.btn.findChild("img_cancel");
+    this.img_cancel.visible = false;
+
+    if (this.heart_index < 0) {
+      this.next_heart_start_time = _now + _wait_taps[0] - _el;
+      this.current_tap_index = -1;
+
+      this.view.startMethod("init_all");
+    } else {
+      local _started = [];
+      local _end = [];
+
+      for (local i = 0; i < this.remain_tap_cnt.len(); i++) {
+        if (this.remain_tap_cnt[i] <= 0) {
+          _end + i + 1;
+        } else {
+          if (this.heart_index >= i) {
+            _started + i + 1;
+          } else {
+            break;
+          }
+        }
+      }
+      this.current_tap_index = _started[0] ? _started[0] - 1 : -1;
+      this.view.startMethod("init_continue", _started, _end)
+    }
+
+    this.limit_tap_time = _st + this.production_setting.getLimitTapTime();
+  }
+
+  function update(sk_time) {
+    local _now = ::getServerTime();
+
+    if (this.next_heart_start_time > 0) {
+      if (this.next_heart_start_time <= _now) {
+
+        this.heart_index++;
+
+        if (this.current_tap_index < 0) {
+          this.current_tap_index = this.heart_index;
+        } else {
+          for (local idx = this.current_tap_index; idx <= heart_index; idx++) {
+            if (this.remain_tap_cnt[idx] > 0) {
+              this.current_tap_index = idx;
+              break;
+            }
+          }
+        }
+
+        if (this.remain_tap_cnt[current_tap_index] > 0) this.view.startMethod("tapStart", this.heart_index + 1, this.current_tap_index + 1);
+        local _wait_taps = this.production_setting.getWaitTaps();
+        local _next_wait = _wait_taps[this.heart_index + 1] || -1;
+        if (_next_wait > 0) {
+          this.next_heart_start_time = _now + _next_wait - _wait_taps[this.heart_index];
+        } else {
+          this.next_heart_start_time = -1;
+        }
+        this.lbl_remain.visible = false;
+      }
+      else {
+        if ((this.remain_visible_time < sk_time) ||
+        (this.heart_index >= 0 && this.remain_tap_cnt[this.heart_index] > 0)) {
+          this.lbl_remain.visible = false;
+        }
+        else {
+          this.lbl_remain.setText(::getTimeText(this.next_heart_start_time - _now));
+        }
+      }
+    }
+    else {
+      this.lbl_remain.visible = false;
+    }
+
+    if (this.cancel_visible_time < sk_time) this.img_cancel.visible = false;
+    else this.img_cancel.visible = true;
+
+    if (this.limit_tap_time > 0 && _now > this.limit_tap_time) this.is_finished = true;
+
+    _updateViewPosition();
+  }
+
+  function actionevent_tap(e) {
+    e.consume();
+
+    if (this.img_cancel.visible) {
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof ::SanrioGameScene) {
+        local _pm = _scene.getProductionManager();
+        local _pd = _pm.getProductDataByCostumeID(getModel().getCostumeID());
+        if (_pd) _pm.cancelProduct(_pd.getProducerID());
+      }
+      return;
+    }
+
+    local _ret = _tapped();
+    if (!_ret) {
+      this.remain_visible_time = skGetTime() + REMAIN_VISIBLE_MSEC;
+    }
+  }
+
+  function tapped(barrage = false) {
+    local _ret = _tapped(barrage);
+    if (!_ret) {
+
+      this.remain_visible_time = skGetTime() + REMAIN_VISIBLE_MSEC;
+    }
+    return _ret;
+  }
+
+  function _tapped(barrage = false) {
+    if (!this.production_manager) return false;
+    if (this.is_finished) return false;
+    if (this.heart_index < 0) return false;
+
+    local _ret = false;
+
+    for (local i = 0; i < this.remain_tap_cnt.len(); i++) {
+      if (this.remain_tap_cnt[i] <= 0) continue;
+
+      if (this.heart_index >= i) {
+        _ret = true;
+        this.pool_tap_cnt++;
+        this.remain_tap_cnt[i]--;
+        this.furniture_data.getProductData().addTapped();
+        this.production_manager.updateSendPoolTapTime();
+        this.view.startMethod("tapHeart", i + 1, this.view.pos);
+
+        local _remain = this.remain_tap_cnt[i];
+        local _sktime = skGetTime();
+        if (_remain == 0) {
+          this.view.startMethod("finishHeart", i + 1, this.view.pos);
+
+          if (this.heart_index == i) {
+          } else {
+            this.current_tap_index++;
+            this.view.startMethod("changeTapPointer", this.current_tap_index + 1);
+          }
+          if (i == this.remain_tap_cnt.len() - 1) {
+            this.is_finished = true;
+          }
+
+          ::playSound(::SoundConstants.SOUND_TAP_HERAT_END);
+          this.tap_sound_time = _sktime + SOUND_TIME;
+        }
+        else {
+          if (_sktime > this.tap_sound_time) {
+            ::playSound(::SoundConstants.SOUND_TAP_HERAT);
+            this.tap_sound_time = _sktime + SOUND_TIME;
+          }
+        }
+        ::gamesession.getUserData().addGameMoneyAtTapped();
+      }
+
+      break;
+    }
+    if (_ret && !barrage && this.happiness_barrage_manager) {
+      this.happiness_barrage_manager.tapHappinessBalloon(getModel());
+    }
+    return _ret;
+  }
+
+  function longTapped() {
+    if (this.is_finished) return;
+    this.cancel_visible_time = skGetTime() + CANCEL_VISIBLE_MSEC;
+    this.img_cancel.visible = true;
+  }
+
+  function isValidate() {
+    if (!this.furniture_data.hasProductData()) return false;
+    if (!this.furniture_data.getProductData().isRewardStateTap()) return false;
+    if (this.is_finished) {
+      return false;
+    }
+    return true;
+  }
+}
+
+class CharaAppealLayer.WannaUseFurnitureBalloon extends CharaAppealLayer.CharaBalloon {
+  furniture_type = null;
+  chara_data = null;
+  alive_time = null;
+  last_update = null;
+  tutorial_mode = true;
+
+  static ALIVE_TIME = 3000;
+
+  constructor(layer, stage, view = null) {
+    super(layer, stage, ::loadSKView("/ui/common/CharaAppealIcon.ui"));
+
+    this.view.pickable = false;
+    this.furniture_type = -1;
+    this.last_update = -1;
+  }
+
+  function build(model) {
+    this.model = model;
+    this.chara_data = this.model.getCharaData();
+    local _ufts = this.chara_data.getUseFurnitureType();
+    this.furniture_type = _ufts[0];
+
+    _updateIcon();
+
+    this.alive_time = ALIVE_TIME;
+  }
+
+  function setParam(param) {
+    this.tutorial_mode = param;
+  }
+
+  function _updateIcon() {
+    local _settings = ::gamesetting.furniture_settings;
+    local _sp = null;
+    foreach (setting in _settings) {
+      if (setting.getType() != this.furniture_type) continue;
+      _sp = setting.getIconSpriteByIndex(0);
+      break;
+    }
+
+    if (!_sp) {
+      this.view.visible = false;
+      this.alive_time = -1;
+      return;
+    }
+    local _icon = this.view.findChild("img_icon");
+    _icon.setSprite(_sp);
+    _icon.updateLayout();
+    _icon.setColor(255);
+  }
+
+  function update(sk_time) {
+    local _ufts = this.chara_data.getUseFurnitureType();
+    if (this.furniture_type != _ufts[0]) {
+      this.furniture_type = _ufts[0];
+      _updateIcon();
+    }
+
+    if (this.last_update > 0) {
+      local _dt = sk_time - this.last_update;
+      this.alive_time -= _dt;
+    }
+    this.last_update = sk_time;
+
+    _updateViewPosition();
+
+  }
+
+  function isValidate() {
+    if (this.tutorial_mode) return true;
+    if (this.model.isFurnitureScriptRunning()) return false;
+    if (!this.model.isStateNone()) return false;
+    if (this.alive_time < 0) return false;
+
+    return true;
+  }
+}

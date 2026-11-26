@@ -1,0 +1,17 @@
+return {
+  modeldata = "papercup.mdl"
+  bnd = [-0.022047, 0.026075, 0.116035, 0.205554, 0.248309, 0.354283]
+
+  material = [
+  {
+    name = "papercup_mt"
+    tec = "shading.basic"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 2139062271
+    Ke = 151587327
+    shiness = 20.0
+    texture0 = "tex/tray.png"
+  }
+  ]
+}

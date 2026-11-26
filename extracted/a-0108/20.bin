@@ -1,0 +1,16 @@
+// UIScript created by HomeTopPanel.ui 
+
+function show() {
+}
+
+function hide() {
+}
+
+function show_slots() {
+}
+
+function hide_slots() {
+}
+function clear_mission() {
+	$pnl_clear_num.anime(10,5,10);
+}

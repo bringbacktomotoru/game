@@ -1,0 +1,18 @@
+class IAPCautionDialog extends ::Dialog {
+  lbl = null;
+
+  constructor() {
+    super(::loadSKView("/ui/dialog/IAPCautionDialog.ui"));
+
+    this.lbl = this.view.findChild("lbl");
+
+    local _osname = skGetOSName();
+    if (_osname == "iOS") {
+      this.lbl.setText(::dict.get("iap_init_fail_ios"));
+    } else if (_osname == "Android") {
+      this.lbl.setText(::dict.get("iap_init_fail_and"));
+    }
+
+    this.btn_close.findChild("lbl_close").setText(::dict.get("close"));
+  }
+}

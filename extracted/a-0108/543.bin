@@ -1,0 +1,324 @@
+{
+  "ID": "74ee5de1-51ed-4b01-b5a4-347aae6ebf36",
+  "Version": "2.3.3.0",
+  "Name": "HomeLayoutPanel",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 318,
+        "Children": [
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": -0.0003,
+              "Y": -0.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": -0.0003,
+            "RightMargin": 0.0003,
+            "TopMargin": 0.0001,
+            "BottomMargin": -0.0001,
+            "Tag": 6,
+            "ActionTag": 1267629539,
+            "Size": {
+              "X": 960.0,
+              "Y": 1280.0
+            },
+            "Name": "pnl_mouseevent",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/home/deco_hintbar.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 47,
+            "Scale9OriginY": 12,
+            "Scale9Width": 499,
+            "Scale9Height": 168,
+            "AnchorPoint": {
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 234.9998,
+              "Y": 1150.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2448,
+              "Y": 0.8984
+            },
+            "PreSize": {
+              "X": 0.6177,
+              "Y": 0.15
+            },
+            "LeftMargin": 234.9998,
+            "RightMargin": 132.0002,
+            "TopMargin": 34.0,
+            "BottomMargin": 1054.0,
+            "Tag": 99,
+            "ActionTag": 1703804824,
+            "Size": {
+              "X": 593.0,
+              "Y": 192.0
+            },
+            "Alpha": 204,
+            "Name": "img_bar",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 289.9998,
+              "Y": 1212.9998
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.3021,
+              "Y": 0.9477
+            },
+            "PreSize": {
+              "X": 0.5208,
+              "Y": 0.025
+            },
+            "LeftMargin": 289.9998,
+            "RightMargin": 170.0002,
+            "TopMargin": 51.0002,
+            "BottomMargin": 1196.9998,
+            "Tag": 150,
+            "Children": [
+              {
+                "FontSize": 28,
+                "LabelText": "模様替えする場所を選択して下さい",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Bottom",
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 111,
+                  "G": 59,
+                  "B": 59
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 0.0,
+                  "Y": 16.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 0.794,
+                  "Y": 1.0
+                },
+                "RightMargin": 103.0,
+                "Tag": 253,
+                "ActionTag": 1081587355,
+                "Size": {
+                  "X": 397.0,
+                  "Y": 32.0
+                },
+                "Name": "lbl_hint",
+                "ctype": "TextObjectData"
+              }
+            ],
+            "ActionTag": 975278209,
+            "Size": {
+              "X": 500.0,
+              "Y": 32.0
+            },
+            "Name": "scroll_area",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/button/button_back.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 179.9993,
+              "Y": 1210.0005
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.1875,
+              "Y": 0.9453
+            },
+            "PreSize": {
+              "X": 0.0948,
+              "Y": 0.0734
+            },
+            "LeftMargin": 134.4993,
+            "RightMargin": 734.5007,
+            "TopMargin": 22.9995,
+            "BottomMargin": 1163.0005,
+            "Tag": 110,
+            "ActionTag": -266301102,
+            "Size": {
+              "X": 91.0,
+              "Y": 94.0
+            },
+            "Name": "btn_back",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "dummyDisplayFrame.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0008,
+              "Y": -0.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 0.0008,
+            "RightMargin": -0.0008,
+            "TopMargin": 0.0002,
+            "BottomMargin": -0.0002,
+            "Tag": 225,
+            "ActionTag": 699506392,
+            "Size": {
+              "X": 960.0,
+              "Y": 1280.0
+            },
+            "Name": "dummy_Frame",
+            "ctype": "ProjectNodeObjectData"
+          }
+        ],
+        "Size": {
+          "X": 960.0,
+          "Y": 1280.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "dummyDisplayFrame.json",
+        "font/logotypejp_mp_b_1.ttf",
+        "image/button/button_back.png",
+        "image/home/deco_hintbar.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

@@ -1,0 +1,228 @@
+class Setting
+{
+  constructor(t = null) {
+    foreach (i, v in t) {
+      this[i] = v;
+    }
+    initialized();
+  }
+
+  function initialized() {
+  }
+
+  function loadConfAtServer(param) {
+    return null;
+  }
+
+  function _fromStringArrayToString(arr) {
+    local txt = "[";
+    for (local i = 0; i < arr.len(); i++) {
+      txt = txt + "\"" + arr[i] + "\"";
+      if (arr[i + 1] != undefined) txt = txt + ",";
+    }
+    txt = txt + "]";
+
+    return txt;
+  }
+
+  function getTranslateTarget() {
+    return null;
+  }
+
+  static function getGMIconSprite() {
+    local _sp = ::getSprite("/ui/image/icon/icon/icon_gm_l.png");
+    if (_sp) _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  static function getRMIconSprite() {
+    local _sp = ::getSprite("/ui/image/icon/icon/icon_rm_l.png");
+    if (_sp) _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  static function getRoomIconSprite(idx) {
+    local _tex = ::getTexture("/image/icon/room/room/icon_room_slot" + idx + ".png");
+    if (!_tex) _tex = ::getTexture("/image/icon/room/room/icon_room_slot.png");
+    return Sprite(_tex);
+  }
+
+  static function getRoomFrameSprite(idx) {
+    local _tex = ::getTexture("/image/icon/room/room/frame_room" + idx + ".png");
+    if (!_tex) _tex = ::getTexture("/image/icon/room/room/frame_room.png");
+    return Sprite(_tex);
+  }
+
+  static function getRarityIconSprite(grade) {
+    local path = "/ui/image/icon/icon/icon_rarity" + grade + ".png";
+    local sp = ::getSprite(path);
+    sp.blend = SK_MIX;
+    return sp;
+  }
+
+  function getMailIconSprite() {
+    local sp = ::getSprite("/ui/image/ar/ar/btn_menu_charachange.png");
+    sp.blend = SK_MIX;
+    return sp;
+  }
+
+  function getNoticeTabIconSprite() {
+    local sp = ::getSprite("/ui/image/icon/icon/icon_post_letter.png");
+    sp.blend = SK_MIX;
+    return sp;
+  }
+
+  function getMailTabIconSprite() {
+    local sp = ::getSprite("/ui/image/icon/icon/icon_posttab_letter.png");
+    sp.blend = SK_MIX;
+    return sp;
+  }
+
+  static function getItemFrame(kind) {
+    local _path = "";
+
+    switch (kind) {
+    case ITEM_TYPE_ONEROUSRM: _path = "/ui/image/item/frame_rm.png"; break;
+    case ITEM_TYPE_FREERM: _path = "/ui/image/item/frame_rm.png"; break;
+    case ITEM_TYPE_GM: _path = "/ui/image/item/frame_gm.png"; break;
+    case ITEM_TYPE_ITEM: _path = "/ui/image/item/frame_item.png"; break;
+    case ITEM_TYPE_COSTUME: _path = "/ui/image/item/frame_item.png"; break;
+    case ITEM_TYPE_FURNITURE: _path = "/ui/image/item/frame_item.png"; break;
+    case ITEM_TYPE_MOTION: _path = "/ui/image/item/frame_motion.png"; break;
+    default: _path = ""; break;
+    }
+
+    local _sp = ::getSprite(_path);
+    if (_sp) _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  function getRarityFrame(rank, is_large = false) {
+    local _path = "/ui/image/gacha/frame_" + rank + "_" + (is_large ? "l" : "s") + ".png";
+    local _sp = ::getSprite(_path);
+    if (!_sp) {
+      _path = "/ui/image/gacha/frame_" + 3 + "_" + (is_large ? "l" : "s") + ".png";
+      _sp = ::getSprite(_path);
+    }
+    if (_sp) _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  static function getItemName(kind, id, num = -1) {
+    local _name = "no text";
+    switch (kind) {
+    case ITEM_TYPE_FREERM:
+      _name = ::dict.get("free_real_money");
+      if (num >= 0) _name += ::dict.get("nums", [num]);
+      break;
+    case ITEM_TYPE_GM:
+      _name = ::dict.get("game_money")
+      if (num >= 0) _name += ::dict.get("nums", [num]);
+      break;
+    case ITEM_TYPE_COSTUME:
+      local _cs = ::gamesetting.costume_settings[id];
+      if (_cs) _name = _cs.getName();
+      break;
+    case ITEM_TYPE_FURNITURE:
+      local _fs = ::gamesetting.furniture_settings[id];
+      if (_fs) _name = _fs.getName();
+      break;
+    case ITEM_TYPE_ROOM:
+      local _rs = ::gamesetting.room_settings[id];
+      if (_rs) _name = _rs.getName();
+      break;
+    case ITEM_TYPE_ITEM:
+      _name = "item" + this.reward.id;
+      break;
+    case ITEM_TYPE_MOTION:
+      local _m = ::gamesetting.costume_motion_settings[id];
+      if (_m) _name = _m.getDesc();
+      break;
+    }
+    return _name;
+  }
+
+}
+
+class Setting.TranslateTextInfo {
+  static WILD_CARD = "*";
+
+  res = null;
+
+  constructor(conf, ...) {
+    local keys = [];
+    local argc = vargc;
+    for (local i = 0; i < argc; i++) {
+      keys + vargv[i];
+    }
+
+    init(conf, keys);
+  }
+
+  function init(conf, keys) {
+    local key_len = length(keys);
+    local tmp = null;
+    local prm = null;
+    local res = [];
+    res + array(key_len, null);
+
+    foreach (idx, key in keys) {
+      if (key == WILD_CARD) {
+
+        local i = 0;
+        tmp = [];
+        foreach (r in res) {
+
+          prm = _getParam(conf, r);
+          local prm_len = length(prm);
+          for (local i = 0; i < prm_len; i++) {
+            local arr = array(key_len, null);
+            tmp + arr;
+            foreach (idx2, r2 in r) {
+              arr[idx2] = r2;
+            }
+          }
+
+          foreach (k, _ in prm) {
+            tmp[i][idx] = k;
+            i++;
+          }
+        }
+        res = tmp;
+      }
+      else {
+        foreach (r in res) {
+          r[idx] = key;
+        }
+      }
+    }
+
+    this.res = res;
+  }
+
+  function get() {
+    return this.res;
+  }
+
+  function _getParam(conf, keys) {
+    local ret = conf;
+    foreach (key in keys) {
+      if (!key) break;
+      ret = ret[key];
+    }
+
+    return ret;
+  }
+
+  function _testResPrint(res) {
+    foreach (arr in res) {
+      local txt = "[";
+      foreach (e in arr) {
+        txt = txt + e + ", ";
+      }
+      txt = txt + "]";
+
+      ::debugln("test res print : " + txt);
+    }
+  }
+}

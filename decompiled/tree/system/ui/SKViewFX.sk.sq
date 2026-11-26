@@ -1,0 +1,623 @@
+enum SKViewFXPropertyID
+{
+
+  ENABLED = 10000
+  HSV = 10001
+
+  BLURSIZE = 10100
+  CLIPBORDER = 10101
+
+  BLURDIR = 10102
+
+  CENTERUV = 10103
+
+  SPECULARTEX = 10200
+  SPECULARCOLOR = 10201
+  UVOFFSET = 10202
+  UVSCALE = 10203
+  UVROT = 10204
+
+  MASKIMAGE = 10300
+  MASKDEPTH = 10301
+  MASKSPREAD = 10302
+  MASKINVERT = 10303
+
+  HALOSIZE = 10400
+  HALOCOLOR = 10401
+  HALORAY = 10402
+  HALOGLOW = 10403
+}
+
+import PropertyType;
+import SKViewFXPropertyID;
+
+::SKFP <- SKProperties();
+::SKFP + { id = ENABLED, label = "有効", type = BOOL, };
+::SKFP + { id = HSV, label = "HSV", type = FLOAT3, min = -100, max = 100, anime = 2 };
+::SKFP + { id = BLURSIZE, label = "ブラー幅", type = FLOAT1, min = 0.0, max = 64.0, quat = 100, fmt = "%.2f", anime = 2 };
+::SKFP + { id = CLIPBORDER, label = "端クリップ", type = BOOL, };
+::SKFP + { id = BLURDIR, label = "ブラー方向", type = FLOAT1, min = 0, max = 360, quat = 1, fmt = "%d", anime = 2 };
+::SKFP + { id = CENTERUV, label = "中心UV", type = VEC2, min = 0.0, max = 1.0, quat = 100, fmt = "%.2f", anime = 2, val = [0, 0] };
+::SKFP + { id = SPECULARTEX, label = "反射画像", type = PATH, };
+::SKFP + { id = SPECULARCOLOR, label = "反射色", type = RGBA, anime = 2 };
+::SKFP + { id = UVOFFSET, label = "UV位置", type = VEC2, min = -2.0, max = 2.0, quat = 100, fmt = "%.2f", anime = 2 };
+::SKFP + { id = UVSCALE, label = "UVサイズ", type = VEC2, min = -10.0, max = 10.0, quat = 100, fmt = "%.2f", anime = 2 };
+::SKFP + { id = UVROT, label = "UV回転", type = FLOAT1, min = -360.0, max = 360.0, quat = 1, fmt = "%d", anime = 2 };
+::SKFP + { id = MASKIMAGE, label = "マスク画像", type = PATH };
+::SKFP + { id = MASKINVERT, label = "反転", type = BOOL };
+::SKFP + { id = MASKDEPTH, label = "重み", type = FLOAT1, min = 0.0, max = 1.0, quat = 100, fmt = "%.2f", anime = 2 };
+::SKFP + { id = MASKSPREAD, label = "ボカシ", type = FLOAT1, min = 0.0, max = 1.0, quat = 100, fmt = "%.2f", anime = 2 };
+::SKFP + { id = HALOSIZE, label = "光輪幅", type = FLOAT1, min = 0.0, max = 96.0, quat = 1, fmt = "%d", anime = 2 };
+::SKFP + { id = HALOCOLOR, label = "光輪色", type = RGBA, anime = 2 };
+::SKFP + { id = HALORAY, label = "レイ", type = FLOAT3, min = 0.0, max = 1.0, quat = 100, fmt = "%.2f", anime = 2 };
+::SKFP + { id = HALOGLOW, label = "グロー", type = FLOAT1, min = 0.0, max = 1.0, quat = 100, fmt = "%.2f", anime = 2 };
+
+class SKViewFX
+{
+  pass = null;
+  enabled = true;
+  hsv = null;
+  hsvmat = null;
+
+  motion = null;
+
+  framepos = -1;
+
+  dorepaint = true;
+
+  constructor() {
+    hsv = [0, 0, 0];
+  }
+
+  function isEnabled() {
+    return enabled && (hsv[0] | hsv[1] | hsv[2]);
+  }
+
+  function growBound(bnd) {
+  }
+
+  function renderfx(p, target, tex, bnd, bndw, bndh) {
+    skSetRenderTarget(target);
+    skSetViewport(0, 0, bndw, bndh);
+    p.tex0 = tex;
+    p.bnd.set(0, 0, bnd.w, bnd.h);
+    p.setSubBounds(p.bnd);
+    skDrawSprite(p);
+  }
+
+  function getProperties() {
+    return #[];
+  }
+
+  function getProperty(pid) {
+    local a = getProperties();
+    foreach (p in a) {
+      if (p.id == pid) return p;
+    }
+    return null;
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case ENABLED: return enabled;
+    case HSV: return clone hsv;
+    }
+    return null;
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case ENABLED: enabled = p0; break;
+    case HSV:
+      if (w > 0.0) {
+        setHSV(Math.lerp(p0[0], p1[0], w), Math.lerp(p0[1], p1[1], w), Math.lerp(p0[2], p1[2], w));
+      } else {
+        setHSV(p0[0], p0[1], p0[2]);
+      }
+      break;
+    }
+  }
+
+  function isParamKeyed(pid) {
+    foreach (f in motion) {
+      if (f.pid == pid) {
+        local k = f.existingkey(framepos | 0);
+        return k ? k.tween + 1 : 0;
+      }
+    }
+    return 0;
+  }
+
+  function setHSV(h, s, v) {
+    hsv[0] = h = Math.clamp(h, -100, 100) | 0;
+    hsv[1] = s = Math.clamp(s, -100, 100) | 0;
+    hsv[2] = v = Math.clamp(v, -100, 100) | 0;
+    if (h | s | v) {
+      local hv = Math.lerp(-Math.PI, Math.PI, h * 0.005 + 0.5);
+      local sv = Math.lerp(0.0, 2.0, s * 0.005 + 0.5);
+      local vv = Math.lerp(0.0, 2.0, v * 0.005 + 0.5);
+      pass.last().colormat = hsvmat = Matrix.fromHSV(hv, sv, vv);
+    } else {
+      pass.last().colormat = hsvmat = null;
+    }
+  }
+
+  function moveFrame(t0, t) {
+    foreach (f in motion) {
+      if (!f.key) continue;
+      local pid = f.pid;
+      local k0 = f.keyAt(t0 | 0);
+      local k = f.keyAt(t | 0);
+      local tweenfunc = k.next && k.tweenfunc;
+      if (tweenfunc) {
+        setParam(pid, k.p, k.next.p, tweenfunc((t - k.time) * k.iw));
+        dorepaint = true;
+      } else
+      if (k != k0 || (t0 < 0.0 && t >= 0.0)) {
+        setParam(pid, k.p, k.p, 0.0);
+        dorepaint = true;
+      }
+    }
+    framepos = t;
+  }
+
+  function getMotion(pid, create = true) {
+    if (!motion) {
+      if (!create) return null;
+      motion = [MotionTimeline(pid)];
+      return motion[0];
+    } else {
+      foreach (m in motion) {
+        if (m.pid == pid) return m;
+      }
+      if (create) {
+        motion + MotionTimeline(pid);
+        return motion.last();
+      } else {
+        return null;
+      }
+    }
+  }
+}
+
+class SKViewBlurFX extends SKViewFX
+{
+  static fxname = "Blur";
+
+  blursize = 4.0;
+  clipborder = true;
+
+  constructor(bs = 4.0, cb = true) {
+    pass = [Sprite(), Sprite()]
+    pass[0].shadersrc = pass[1].shadersrc = skFXFindTechnique("spritefx.blur").getShaderSource(0);
+    pass[0].miscmat = Matrix();
+    pass[1].miscmat = Matrix();
+    blursize = bs;
+    clipborder = cb;
+  }
+
+  function growBound(bnd) {
+    if (!clipborder) {
+      local blurw = (blursize + 0.9) | 0;
+      local blurh = (blursize + 0.9) | 0;
+      bnd.x -= blurw;
+      bnd.y -= blurh;
+      bnd.w += blurw * 2.0;
+      bnd.h += blurh * 2.0;
+    }
+  }
+
+  function prepare(t0, t1) {
+
+    local pixdiv = 6.0;
+    local bx = blursize / pixdiv / t0.width;
+    local by = blursize / pixdiv / t1.height;
+    local mx = pass[0].miscmat;
+    local my = pass[1].miscmat;
+    for (local l = 0; l < 16; l++) mx[l] = my[l] = 0.0;
+    mx[0] = bx * 0.5;
+    my[1] = by * 0.5;
+    mx[2] = bx * 1.5;
+    my[3] = by * 1.5;
+    mx[4] = bx * 2.5;
+    my[5] = by * 2.5;
+    mx[6] = bx * 3.5;
+    my[7] = by * 3.5;
+    mx[8] = bx * 4.5;
+    my[9] = by * 4.5;
+    mx[10] = bx * 5.5;
+    my[11] = by * 5.5;
+    mx[12] = bx * 6.5;
+    my[13] = by * 6.5;
+    mx[14] = bx * 7.5;
+    my[15] = by * 7.5;
+  }
+
+  function getProperties() {
+    return #[
+    (SKFP[ENABLED]),
+    (SKFP[HSV]),
+    (SKFP[BLURSIZE]),
+    (SKFP[CLIPBORDER]),
+    ];
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case BLURSIZE: return blursize;
+    case CLIPBORDER: return clipborder;
+    }
+    return super.getParam(pid);
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case BLURSIZE: blursize = w > 0.0 ? p0 + (p1 - p0) * w : p0; break;
+    case CLIPBORDER: clipborder = p0; break;
+    default: super.setParam(pid, p0, p1, w);
+    }
+  }
+
+  function isEnabled() {
+    return enabled && ((hsv[0] | hsv[1] | hsv[2]) || blursize > 0.0);
+  }
+}
+
+class SKViewMotionBlurFX extends SKViewFX
+{
+  static fxname = "MotionBlur";
+
+  blursize = 4.0;
+  blurdir = 0.0;
+
+  constructor(bs = 4.0, dir = 0.0) {
+    pass = [Sprite()]
+    pass[0].shadersrc = skFXFindTechnique("spritefx.blur").getShaderSource(0);
+    pass[0].miscmat = Matrix();
+    blursize = bs;
+    blurdir = dir;
+  }
+
+  function growBound(bnd) {
+
+    local blurw = Math.abs(((blursize + 0.9) * Math.cos(blurdir * Math.DTOR))) | 0;
+    local blurh = Math.abs(((blursize + 0.9) * Math.sin(blurdir * Math.DTOR))) | 0;
+    bnd.x -= blurw;
+    bnd.y -= blurh;
+    bnd.w += blurw * 2.0;
+    bnd.h += blurh * 2.0;
+  }
+
+  function prepare(t0, t1) {
+    local bx = blursize / 6.0 / t0.width * Math.cos(blurdir * Math.DTOR);
+    local by = blursize / 6.0 / t1.height * Math.sin(blurdir * Math.DTOR);
+    local m = pass[0].miscmat;
+    m[0] = bx * 1.0;
+    m[1] = by * 1.0;
+    m[2] = bx * 2.0;
+    m[3] = by * 2.0;
+    m[4] = bx * 3.0;
+    m[5] = by * 3.0;
+    m[6] = bx * 4.0;
+    m[7] = by * 4.0;
+    m[8] = bx * 5.0;
+    m[9] = by * 5.0;
+    m[10] = bx * 6.0;
+    m[11] = by * 6.0;
+  }
+
+  function getProperties() {
+    return #[
+    (SKFP[ENABLED]),
+    (SKFP[HSV]),
+    (SKFP[BLURSIZE]),
+    (SKFP[BLURDIR]),
+    ];
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case BLURSIZE: return blursize;
+    case BLURDIR: return blurdir;
+    }
+    return super.getParam(pid);
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case BLURSIZE: blursize = w > 0.0 ? p0 + (p1 - p0) * w : p0; break;
+    case BLURDIR: blurdir = w > 0.0 ? p0 + (p1 - p0) * w : p0; break;
+    default: super.setParam(pid, p0, p1, w);
+    }
+  }
+
+  function isEnabled() {
+    return enabled && ((hsv[0] | hsv[1] | hsv[2]) || blursize > 0.0);
+  }
+}
+
+class SKViewZoomBlurFX extends SKViewFX
+{
+  static fxname = "ZoomBlur";
+
+  blursize = 12.0;
+  cu = 0.5, cv = 0.5;
+  clipborder = true;
+
+  constructor(bs = 4.0) {
+    pass = [Sprite()]
+    pass[0].shadersrc = skFXFindTechnique("spritefx.zoomblur").getShaderSource(0);
+    pass[0].miscmat = Matrix();
+    blursize = bs;
+  }
+
+  function growBound(bnd) {
+    if (!clipborder) {
+      local blurw = (blursize + 0.9) | 0;
+      local blurh = (blursize + 0.9) | 0;
+      bnd.x -= blurw;
+      bnd.y -= blurh;
+      bnd.w += blurw * 2.0;
+      bnd.h += blurh * 2.0;
+    }
+  }
+
+  function prepare(t0, t1) {
+    local m = pass[0].miscmat;
+    m[0] = cu;
+    m[1] = cv;
+    m[2] = blursize * 1.0 / t0.width;
+    m[3] = blursize * 1.0 / t0.height;
+  }
+
+  function getProperties() {
+    return #[
+    (SKFP[ENABLED]),
+    (SKFP[HSV]),
+    (SKFP[BLURSIZE]),
+    (SKFP[CENTERUV]),
+    (SKFP[CLIPBORDER]),
+    ];
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case BLURSIZE: return blursize;
+    case CLIPBORDER: return clipborder;
+    case CENTERUV: return [cu, cv];
+    }
+    return super.getParam(pid);
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case BLURSIZE: blursize = w > 0.0 ? p0 + (p1 - p0) * w : p0; break;
+    case CLIPBORDER: clipborder = p0; break;
+    case CENTERUV:
+      if (w > 0.0) {
+        cu = Math.lerp(p0[0], p1[0], w); cv = Math.lerp(p0[1], p1[1], w);
+      } else {
+        cu = p0[0]; cv = p0[1];
+      }
+    default: super.setParam(pid, p0, p1, w);
+    }
+  }
+
+  function isEnabled() {
+    return enabled && ((hsv[0] | hsv[1] | hsv[2]) || blursize > 0.0);
+  }
+}
+
+class SKViewUniversalMaskFX extends SKViewFX
+{
+  static fxname = "UniversalMask";
+
+  maskpath = "";
+  mask = null;
+  spread = 0.0;
+  depth = 0.0;
+  invert = false;
+
+  constructor() {
+    pass = [Sprite()]
+    pass[0].shadersrc = skFXFindTechnique("spritefx.unitrans").getShaderSource(0);
+    pass[0].miscmat = Matrix();
+  }
+
+  function setMask(ref) {
+    mask = ::getTexture(ref);
+    pass[0].tex0 = mask;
+  }
+
+  function prepare(t0, t1) {
+    local s = 1.01 / (spread + 0.01);
+    local m = pass[0].miscmat;
+    local w1 = -1.0 / s;
+    local w2 = 1.0 + 1.0 / s;
+    m[0] = invert ? -Math.lerp(w1, w2, depth) : Math.lerp(w2, w1, depth);
+    m[1] = invert ? -1.0 : 1.0;
+    m[2] = s;
+  }
+
+  function isEnabled() {
+    return enabled && ((hsv[0] | hsv[1] | hsv[2]) || depth > 0.0);
+  }
+
+  function getProperties() {
+    return #[
+    (SKFP[ENABLED]),
+    (SKFP[HSV]),
+    (SKFP[MASKIMAGE]),
+    (SKFP[MASKINVERT]),
+    (SKFP[MASKDEPTH]),
+    (SKFP[MASKSPREAD]),
+    ];
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case MASKIMAGE: return maskpath;
+    case MASKINVERT: return invert;
+    case MASKDEPTH: return depth;
+    case MASKSPREAD: return spread;
+    }
+    return super.getParam(pid);
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case MASKIMAGE:
+      maskpath = p0;
+      pass[0].tex1 = mask = ::getTexture(p0);
+      break;
+    case MASKINVERT: invert = p0; break;
+    case MASKDEPTH: depth = w > 0.0 ? p0 + (p1 - p0) * w : p0; break;
+    case MASKSPREAD: spread = w > 0.0 ? p0 + (p1 - p0) * w : p0; break;
+    default: super.setParam(pid, p0, p1, w);
+    }
+  }
+}
+
+class SKViewHighLightFX extends SKViewFX
+{
+  static fxname = "HighLight";
+
+  sppath = "";
+  sptex = null;
+  spcolor = 0xffffffff;
+  uvoffs = null;
+  uvscale = null;
+  uvrot = 0.0;
+
+  constructor() {
+    uvoffs = [0.0, 0.0];
+    uvscale = [1.0, 1.0];
+    pass = [Sprite()]
+    pass[0].shadersrc = skFXFindTechnique("sprite.mixadd").getShaderSource(0);
+    pass[0].uvmat1 = Matrix();
+  }
+
+  function prepare(t0, t1) {
+
+    local p = pass[0];
+    p.uvmat1.identity().scale(uvscale[0], uvscale[1], 1.0).translate(uvoffs[0], uvoffs[1], 0.0).rotate(uvrot * Math.DTOR, 0.0, 0.0);
+    p.subcolor = spcolor;
+  }
+
+  function getProperties() {
+    return #[
+    (SKFP[ENABLED]),
+    (SKFP[HSV]),
+    (SKFP[SPECULARTEX]),
+    ];
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case SPECULARTEX: return sppath;
+    }
+    return super.getParam(pid);
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case SPECULARTEX:
+      sppath = p0;
+      pass[0].tex1 = sptex = ::getTexture(p0);
+      break;
+    default: super.setParam(pid, p0, p1, w);
+    }
+  }
+}
+
+class SKViewHaloFX extends SKViewFX
+{
+  static fxname = "Halo";
+
+  halosize = 40.0;
+  halocolor = 0xffff6600;
+  cu = 0.5, cv = 0.5;
+  rayw = 0.3;
+  raypow = 0.3;
+  rayoffs = 0.0;
+  glow = 1.0;
+
+  constructor(hs = 40.0) {
+    pass = [Sprite()]
+    pass[0].shadersrc = skFXFindTechnique("spritefx.halo").getShaderSource(0);
+    pass[0].miscmat = Matrix();
+    halosize = hs;
+  }
+
+  function growBound(bnd) {
+    local halow = (halosize + 0.9) | 0;
+    local haloh = (halosize + 0.9) | 0;
+    bnd.x -= halow;
+    bnd.y -= haloh;
+    bnd.w += halow * 2.0;
+    bnd.h += haloh * 2.0;
+  }
+
+  function prepare(t0, t1) {
+    local m = pass[0].miscmat;
+    m[0] = cu;
+    m[1] = cv;
+    m[2] = halosize * 1.0 / t0.width;
+    m[3] = halosize * 1.0 / t0.height;
+    m[4] = rayoffs * 4.0;
+    m[5] = rayw * 100.0;
+    m[6] = raypow * 0.5;
+    m[7] = 1.0 - raypow * 1.5;
+    m[8] = glow;
+  }
+
+  function getProperties() {
+    return #[
+    (SKFP[ENABLED]),
+    (SKFP[HSV]),
+    (SKFP[HALOSIZE]),
+    (SKFP[HALOCOLOR]),
+    (SKFP[HALORAY]),
+    (SKFP[HALOGLOW]),
+    (SKFP[CENTERUV]),
+    ];
+  }
+
+  function getParam(pid) {
+    switch (pid) {
+    case HALOSIZE: return halosize;
+    case HALOCOLOR: return halocolor;
+    case HALORAY: return [rayw, raypow, rayoffs];
+    case HALOGLOW: return glow;
+    case CENTERUV: return [cu, cv];
+    }
+    return super.getParam(pid);
+  }
+
+  function setParam(pid, p0, p1 = null, w = 0.0) {
+    switch (pid) {
+    case HALOSIZE: halosize = w > 0.0 ? p0 + (p1 - p0) * w : p0; break;
+    case HALOCOLOR: halocolor = pass[0].subcolor = w > 0.0 ? Math.lerpcolor(p0, p1, w) : p0; break;
+    case HALORAY:
+      if (w > 0.0) {
+        rayw = Math.lerp(p0[0], p1[0], w); raypow = Math.lerp(p0[1], p1[1], w); rayoffs = Math.lerp(p0[2], p1[2], w);
+      } else {
+        rayw = p0[0]; raypow = p0[1]; rayoffs = p0[2];
+      }
+      break;
+    case HALOGLOW: glow = w > 0.0 ? p0 + (p1 - p0) * w : p0; break;
+    case CENTERUV:
+      if (w > 0.0) {
+        cu = Math.lerp(p0[0], p1[0], w); cv = Math.lerp(p0[1], p1[1], w);
+      } else {
+        cu = p0[0]; cv = p0[1];
+      }
+      break;
+    default: super.setParam(pid, p0, p1, w);
+    }
+  }
+
+  function isEnabled() {
+    return enabled && ((hsv[0] | hsv[1] | hsv[2]) || (halosize > 0.0 && halocolor));
+  }
+}

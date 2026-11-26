@@ -1,0 +1,316 @@
+class SKScrollbarBase extends SKView
+{
+  knob = null;
+  bar = null;
+  inc = null;
+  dec = null;
+
+  orient = 0;
+  knoblength = 0.0;
+  scrange = 0.0;
+
+  visibleamount = 0;
+  min = 0;
+  max = 0;
+  range = 0;
+  value = 0;
+
+  indiback = false;
+  barmouseloc = 0.0;
+  knobdx = 0.0;
+
+  knobmouseloc = 0.0;
+
+  barw = 20;
+  btnlen = 20;
+  minknob = 10;
+
+  scrolladapt = null;
+  defscrolladapt = null;
+
+  constructor(ori = 1) {
+    scrolladapt = defscrolladapt = ScrollAdaptor();
+    setOrientation(ori);
+    min = 0;
+    max = 100;
+    range = 100;
+    visibleamount = 10;
+    value = 0;
+  }
+
+  function createComponents() {
+    if (children) clear();
+    knob = createKnob(orient);
+    bar = createBar(orient);
+    inc = createInc(orient);
+    dec = createDec(orient);
+    addChild(bar);
+    addChild(knob);
+    addChild(dec);
+    addChild(inc);
+
+    addEventListener(ACTION_EVENT, procevent);
+    knob.addEventListener(MOUSE_EVENT, procevent);
+    bar.addEventListener(MOUSE_EVENT, procevent);
+  }
+
+  function setOrientation(i) {
+    orient = i;
+    createComponents();
+  }
+
+  function getOrientation() {
+    return orient;
+  }
+
+  function getBarLength() {
+    return orient == 0 ? bnd.h : bnd.w;
+  }
+
+  function setRect(x, y, w, h, px = 0, py = 0) {
+    if (orient == 0) {
+      super.setRect(x, y, barw, h, px, py);
+    } else {
+      super.setRect(x, y, w, barw, px, py);
+    }
+  }
+
+  function updateLayout() {
+    local _w = bnd.w, _h = bnd.h;
+    local barlen = getBarLength();
+    local barrange = barlen - btnlen * 2;
+    knoblength = visibleamount * barrange / (range);
+    if (knoblength < minknob) {
+      scrange = (barrange * ((barrange - minknob) / (barrange - knoblength)));
+      knoblength = minknob;
+    } else {
+      scrange = barrange;
+    }
+    if (orient == 0) {
+      dec.setRect(0, 0, barw, btnlen);
+      inc.setRect(0, barlen - btnlen, barw, btnlen);
+      bar.setRect(0, 0, barw, barlen);
+      knob.setRect(0, valueToPos(value), barw, knoblength);
+    } else {
+      dec.setRect(0, 0, btnlen, barw);
+      inc.setRect(barlen - btnlen, 0, btnlen, barw);
+      bar.setRect(0, 0, barlen, barw);
+      knob.setRect(valueToPos(value), 0, knoblength, barw);
+    }
+    dec.updateMatrix();
+    inc.updateMatrix();
+    bar.updateMatrix();
+    knob.updateMatrix();
+    repaint();
+
+  }
+
+  function valueToFrame(v) {
+    return (v - min) / range;
+  }
+
+  function valueToPos(v) {
+    if (range <= visibleamount) {
+      return btnlen;
+    } else
+    return btnlen + (((v - min) * (scrange) / (range)) | 0);
+
+  }
+
+  function posToValue(x) {
+    return scrolladapt.getScrollTrack(this, ((x - btnlen) * (range) / (scrange) + min) | 0);
+  }
+
+  function setScrollAdaptor(sc) {
+    if (sc) {
+      scrolladapt = sc;
+    } else {
+      scrolladapt = defscrolladapt;
+    }
+  }
+
+  function setIncSize(unit, block) {
+    defscrolladapt.setUnitInc(orient, unit);
+    defscrolladapt.setBlockInc(orient, block);
+  }
+
+  function setUnitInc(unit) {
+    defscrolladapt.setUnitInc(orient, unit);
+  }
+
+  function setBlockInc(block) {
+    defscrolladapt.setBlockInc(orient, block);
+  }
+
+  function getUnitInc() {
+    return defscrolladapt.getUnitInc(orient);
+  }
+
+  function getBlockInc() {
+    return defscrolladapt.getBlockInc(orient);
+  }
+
+  function setFixSize(f) {
+    defscrolladapt.setFixSize(orient, f);
+  }
+
+  function getFixSize() {
+    return defscrolladapt.getFixSize(orient);
+  }
+
+  function setValue(v) {
+    v = v | 0;
+    if (v != value) {
+      value = v;
+      updateKnobPosition();
+    }
+  }
+
+  function getValue() {
+    return value;
+  }
+
+  function setRange(_min, _max) {
+    min = _min;
+    max = _max;
+    range = max - min;
+    value = Math.max(min, Math.min(max - visibleamount, value));
+    updateLayout();
+  }
+
+  function setVisibleAmount(amount) {
+    visibleamount = ::min(amount, max - min);
+    value = Math.max(min, Math.min(max - visibleamount, value));
+    updateLayout();
+  }
+
+  function setValues(_min, _max, amount, v) {
+    min = _min;
+    max = _max;
+    range = max - min;
+    visibleamount = Math.min(amount, max - min);
+    value = scrolladapt.getScrollTrack(this, v);
+    updateLayout();
+  }
+
+  function updateKnobPosition() {
+
+    local x = (btnlen + (value - min) * scrange / range + 0.999) | 0;
+    if (orient == 0) {
+      knob.pos.y = x;
+    } else {
+      knob.pos.x = x;
+    }
+    knob.updateMatrix();
+    knob.repaint();
+  }
+
+  function procevent(e) {
+    local src = e.src;
+    switch (e.id) {
+    case ACTION_PERFORMED:
+      e.consume();
+      if (src == inc) {
+        incrementUnit();
+      } else
+      if (src == dec) {
+        decrementUnit();
+      } else
+      if (src == bar) {
+        local post = true;
+        if (orient == 0) {
+          post = (!indiback && barmouseloc < knob.pos.y) || (indiback && barmouseloc > knob.pos.y);
+        } else {
+          post = (!indiback && barmouseloc < knob.pos.x) || (indiback && barmouseloc > knob.pos.x);
+        }
+        if (post) {
+          if (indiback) {
+            incrementBlock();
+          } else {
+            decrementBlock();
+          }
+        }
+      }
+      break;
+    case MOUSE_PRESSED:
+      e.computeLocal(src.getInvMatrix());
+      if (src == bar) {
+        e.consume();
+        indiback = orient == 0 ? (e.ly > knob.pos.y) : (e.lx > knob.pos.x);
+        barmouseloc = (orient == 0) ? e.ly : e.lx;
+      } else
+      if (src == knob) {
+        e.consume();
+        knobdx = (orient == 0) ? e.ly : e.lx;
+      }
+      break;
+    case MOUSE_DRAGGED:
+      e.computeLocal(src.getInvMatrix());
+      if (src == bar) {
+        e.consume();
+        barmouseloc = (orient == 0) ? e.ly : e.lx;
+      } else
+      if (src == knob) {
+        e.consume();
+        local knobx = (orient == 0) ? knob.pos.y : knob.pos.x;
+        local x = (orient == 0 ? e.ly : e.lx) | 0;
+        local pos = Math.clamp(knobx + x - knobdx, btnlen, btnlen + scrange);
+        local v = posToValue(pos);
+        if (v != value) {
+          setValue(v);
+
+        }
+      }
+      break;
+    }
+  }
+
+  function incrementUnit() {
+    if (!isEnabled() || value >= max - visibleamount) return false;
+    local v = value + scrolladapt.getScrollUnitInc(this, 1);
+    if (v != value) {
+      value = v;
+      updateKnobPosition();
+
+    }
+    return true;
+  }
+
+  function decrementUnit() {
+    if (!isEnabled() || value <= min) return false;
+    local v = value + scrolladapt.getScrollUnitInc(this, -1);
+    if (v != value) {
+      value = v;
+      updateKnobPosition();
+
+    }
+    return true;
+  }
+
+  function incrementBlock() {
+    if (value >= max - visibleamount) return false;
+    local v = value + scrolladapt.getScrollBlockInc(this, 1);
+    if (v != value) {
+      value = v;
+      updateKnobPosition();
+
+    }
+    return true;
+  }
+
+  function decrementBlock() {
+    if (value == min) return false;
+    local v = value + scrolladapt.getScrollBlockInc(this, -1);
+    if (v != value) {
+      value = v;
+      updateKnobPosition();
+
+    }
+    return true;
+  }
+
+  function createKnob(ori) { throw Exception("not impremented.."); }
+  function createBar(ori) { throw Exception("not impremented.."); }
+  function createInc(ori) { throw Exception("not impremented.."); }
+  function createDec(ori) { throw Exception("not impremented.."); }
+}

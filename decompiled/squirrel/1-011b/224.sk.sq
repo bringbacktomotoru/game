@@ -1,0 +1,11 @@
+class NewsSetting extends Setting {
+  id = 0;
+  title = null;
+  type = 0;
+  url = null;
+
+  from = null;
+  to = null;
+
+  target = 0
+}

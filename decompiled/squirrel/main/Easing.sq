@@ -1,0 +1,545 @@
+local _bounceTime = function(time1) {
+  time1 = Math.saturate(time1);
+  if (time1 < 1.0 / 2.75) {
+    return 7.5625 * time1 * time1;
+  } else if (time1 < 2.0 / 2.75) {
+    time1 -= 1.5 / 2.75;
+    return 7.5625 * time1 * time1 + 0.75;
+  } else if (time1 < 2.5 / 2.75) {
+    time1 -= 2.25 / 2.75;
+    return 7.5625 * time1 * time1 + 0.9375;
+  }
+  time1 -= 2.625 / 2.75;
+  return 7.5625 * time1 * time1 + 0.984375;
+};
+
+class Easing
+{
+  function easeConst() {
+    return {
+      easing = function(dt) {
+        return 0.0;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeLinear() {
+    return {
+      easing = function(dt) {
+        return Math.saturate(dt);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeIn(rate) {
+    return {
+      easing = function(dt) {
+        return Math.pow(Math.saturate(dt), rate);
+      },
+      reverse = function() {
+        return ::Easing.easeIn(1.0 / rate);
+      }
+    };
+  }
+
+  function easeOut(rate) {
+    local irate = 1.0 / rate;
+    return {
+      easing = function(dt) {
+        return Math.pow(dt, irate);
+      },
+      reverse = function() {
+        return ::Easing.easeOut(rate);
+      }
+    };
+  }
+
+  function easeInOut(rate) {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) * 2.0;
+        if (dt < 1.0) return 0.5 * Math.pow(dt, rate);
+        else return 1.0 - 0.5 * Math.pow(2.0 - dt, rate);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeExponentialIn() {
+    return {
+      easing = function(dt) {
+        return Math.pow(2.0, 10.0 * (Math.saturate(dt) - 1.0));
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeExponentialOut() {
+    return {
+      easing = function(dt) {
+        return -(Math.pow(2.0, -10.0 * Math.saturate(dt))) + 1.0;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeExponentialInOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) * 2.0;
+        if (dt < 1.0) return 0.5 * Math.pow(2, 10.0 * (dt - 1.0));
+        else return 0.5 * (-Math.pow(2.0, -10.0 * (dt - 1.0)) + 2.0);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeSineIn() {
+    return {
+      easing = function(dt) {
+        return -Math.cos(Math.saturate(dt) * Math.PI * 0.5) + 1.0;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeSineOut() {
+    return {
+      easing = function(dt) {
+        return Math.sin(Math.saturate(dt) * Math.PI * 0.5);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeSineInOut() {
+    return {
+      easing = function(dt) {
+        return -0.5 * (Math.cos(Math.PI * Math.saturate(dt)) - 1.0);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeElasticIn(period = 0.3) {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) - 1.0;
+        return -Math.pow(2.0, 10.0 * dt) * Math.sin((dt - (period / 4.0)) * Math.PI * 2.0 / period);
+      },
+      reverse = function() {
+        return ::Easing.easeElasticOut(period);
+      }
+    };
+  }
+
+  function easeElasticOut(period = 0.3) {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        return Math.pow(2.0, -10.0 * dt) * Math.sin((dt - (period / 4.0)) * Math.PI * 2.0 / period) + 1.0;
+      },
+      reverse = function() {
+        return ::Easing.easeElasticIn(period);
+      }
+    };
+  }
+
+  function easeElasticInOut(period = 0.3) {
+    return {
+      easing = function(dt) {
+        local newT = 0.0;
+        local locPeriod = period;
+        dt = Math.saturate(dt) * 2.0;
+
+        local s = locPeriod / 4.0;
+        dt = dt - 1.0;
+        if (dt < 0.0) newT = -0.5 * Math.pow(2.0, 10.0 * dt) * Math.sin((dt - s) * Math.PI2 / locPeriod);
+        else newT = Math.pow(2.0, -10.0 * dt) * Math.sin((dt - s) * Math.PI2 / locPeriod) * 0.5 + 1.0;
+        return newT;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeBounceIn() {
+    local btfunc = _bounceTime;
+    return {
+      easing = function(dt) {
+        return 1.0 - btfunc(1.0 - dt);
+      },
+      reverse = function() {
+        return ::Easing.easeBounceOut();
+      }
+    };
+  }
+
+  function easeBounceOut() {
+    local btfunc = _bounceTime;
+    return {
+      easing = function(dt) {
+        return btfunc(dt);
+      },
+      reverse = function() {
+        return ::Easing.easeBounceIn();
+      }
+    };
+  }
+
+  function easeBounceInOut() {
+    local btfunc = _bounceTime;
+    return {
+      easing = function(dt) {
+        local newT;
+        if (dt < 0.5) {
+          dt *= 2.0;
+          newT = (1.0 - btfunc(1.0 - dt)) * 0.5;
+        } else {
+          newT = btfunc(dt * 2.0 - 1.0) * 0.5 + 0.5;
+        }
+        return newT;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeBackIn(overshoot = 1.70158) {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        return (dt <= 0.0 || dt >= 1.0) ? dt : dt * dt * ((overshoot + 1.0) * dt - overshoot);
+      },
+      reverse = function() {
+        return ::Easing.easeBackOut(overshoot);
+      }
+    };
+  }
+
+  function easeBackOut(overshoot = 1.70158) {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) - 1.0;
+        return dt * dt * ((overshoot + 1.0) * dt + overshoot) + 1.0;
+      },
+      reverse = function() {
+        return ::Easing.easeBackIn(overshoot);
+      }
+    };
+  }
+
+  function easeBackInOut(overshoot = 2.5949094) {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) * 2.0;
+        if (dt < 1.0) {
+          return (dt * dt * ((overshoot + 1.0) * dt - overshoot)) / 2.0;
+        } else {
+          dt -= 2.0;
+          return (dt * dt * ((overshoot + 1.0) * dt + overshoot)) / 2.0 + 1.0;
+        }
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeBezier(a, b, c, d) {
+
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        return (Math.pow(1.0 - dt, 3.0) * a + 3.0 * t * (Math.pow(1.0 - dt, 2.0)) * b + 3.0 * Math.pow(dt, 2.0) * (1.0 - t) * c + Math.pow(dt, 3.0) * d);
+      },
+      reverse = function() {
+        return ::Easing.easeBezier(d, c, b, a);
+      }
+    };
+  }
+
+  function easeQuadraticIn() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        return dt * dt;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeQuadraticOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        return -dt * (dt - 2.0);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeQuadraticInOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        local resultTime = dt;
+        dt *= 2.0;
+        if (dt < 1.0) {
+          resultTime = dt * dt * 0.5;
+        } else {
+          dt -= 1.0;
+          resultTime = -0.5 * (dt * (dt - 2.0) - 1.0)
+        }
+        return resultTime;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeQuarticIn() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        return dt * dt * dt * dt;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeQuarticOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) - 1.0;
+        return -(dt * dt * dt * dt - 1);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeQuarticInOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) * 2.0;
+        if (dt < 1.0)
+        return 0.5 * dt * dt * dt * dt;
+        dt -= 2.0;
+        return -0.5 * (dt * dt * dt * dt - 2.0);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeQuinticIn() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        return dt * dt * dt * dt * dt;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeQuinticOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) - 1.0;
+        return -(dt * dt * dt * dt * dt - 1);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeQuinticInOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) * 2.0;
+        if (dt < 1.0) return 0.5 * dt * dt * dt * dt * dt;
+        dt -= 2.0;
+        return -0.5 * (dt * dt * dt * dt * dt - 2.0);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeCircleIn() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        return -1.0 * (Math.sqrt(1.0 - dt * dt) - 1.0);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeCircleOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) - 1.0;
+        return Math.sqrt(1.0 - dt * dt);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeCircleInOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) * 2.0;
+        if (dt < 1.0) return -0.5 * (Math.sqrt(1.0 - dt * dt) - 1.0);
+        dt -= 2.0;
+        return 0.5 * (Math.sqrt(1.0 - dt * dt) + 1.0);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeCubicIn() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt);
+        return dt * dt * dt;
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeCubicOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) - 1.0;
+        return -(-dt * dt * dt - 1.0);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+
+  function easeCubicInOut() {
+    return {
+      easing = function(dt) {
+        dt = Math.saturate(dt) * 2.0;
+        if (dt < 1.0) return 0.5 * dt * dt * dt;
+        dt -= 2.0;
+        return -0.5 * (-dt * dt * dt - 2.0);
+      },
+      reverse = function() {
+        return this;
+      }
+    };
+  }
+}
+
+enum TweenType
+{
+  CONST = 0,
+  LINEAR = 1,
+
+  SINE_EASEIN = 2,
+  SINE_EASEOUT = 3,
+  SINE_EASEINOUT = 4,
+
+  QUAD_EASEIN = 5,
+  QUAD_EASEOUT = 6,
+  QUAD_EASEINOUT = 7,
+
+  CUBIC_EASEIN = 8,
+  CUBIC_EASEOUT = 9,
+  CUBIC_EASEINOUT = 10,
+
+  QUART_EASEIN = 11,
+  QUART_EASEOUT = 12,
+  QUART_EASEINOUT = 13,
+
+  EXPO_EASEIN = 14,
+  EXPO_EASEOUT = 15,
+  EXPO_EASEINOUT = 16,
+
+  ELASTIC_EASEIN = 17,
+  ELASTIC_EASEOUT = 18,
+  ELASTIC_EASEINOUT = 19,
+
+  BACK_EASEIN = 20,
+  BACK_EASEOUT = 21,
+  BACK_EASEINOUT = 22,
+
+  BOUNCE_EASEIN = 23,
+  BOUNCE_EASEOUT = 24,
+  BOUNCE_EASEINOUT = 25,
+}
+
+::PresetTweenList <-
+[
+Easing.easeConst().easing,
+Easing.easeLinear().easing,
+Easing.easeSineIn().easing,
+Easing.easeSineOut().easing,
+Easing.easeSineInOut().easing,
+Easing.easeQuadraticIn().easing,
+Easing.easeQuadraticOut().easing,
+Easing.easeQuadraticInOut().easing,
+Easing.easeCubicIn().easing,
+Easing.easeCubicOut().easing,
+Easing.easeCubicInOut().easing,
+Easing.easeExponentialIn().easing,
+Easing.easeExponentialOut().easing,
+Easing.easeExponentialInOut().easing,
+Easing.easeElasticIn().easing,
+Easing.easeElasticOut().easing,
+Easing.easeElasticInOut().easing,
+Easing.easeBackIn().easing,
+Easing.easeBackOut().easing,
+Easing.easeBackInOut().easing,
+Easing.easeBounceIn().easing,
+Easing.easeBounceOut().easing,
+Easing.easeBounceInOut().easing,
+]

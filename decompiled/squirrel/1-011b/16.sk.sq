@@ -1,0 +1,674 @@
+dict_table["test"] <- "aaaaaaaaaaaaaaaaa";
+dict_table["bbb"] <- "bbbbbbbbbbbbbbb";
+dict_table["ccc"] <- "ccc";
+dict_table["ddd"] <- "dddddd";
+dict_table["eee"] <- "eeeeeeeeeeee";
+
+dict_table["test2"] <- "aaa %s aaa";
+
+dict_table["server_error"] <- "【ERROR CODE：%s】サーバーでエラーが発生しました";
+dict_table["api_error_sessionclosed"] <- "長時間操作がなかったため/nタイトル画面に戻ります。";
+dict_table["error_code"] <- "【ERROR CODE：%s】";
+dict_table["error_connect_fail"] <- "サーバーに接続できませんでした。/n※電波状況、および端末のネットワーク設定を確認してください。";
+dict_table["error_server"] <- "予期せぬエラーが発生したため、続行できませんでした。/n一度タイトル画面に戻ります。";
+dict_table["error_maintenance"] <- "メンテナンスのためサーバーがシャットダウンされました。/nタイトル画面に戻ります。";
+
+dict_table["error_pkgversion_ios"] <- "アプリのバージョンアップデートが/nあります。/n/nApp Storeにてアプリを/nアップデートしてください。";
+dict_table["error_pkgversion_and"] <- "アプリのバージョンアップデートが/nあります。/n/nGoogle Play Storeにてアプリを/nアップデートしてください。";
+
+dict_table["iap_init_fail_ios"] <- "App Storeとの認証が正しく行えませんでした。/n/nApple IDが正しく設定されていることを/n確認した上でアプリを再起動してください。";
+dict_table["iap_init_fail_and"] <- "Google Play Storeとの認証が正しく行えませんでした。/n/nGoogleアカウントが正しく設定されていることを/n確認した上でアプリを再起動してください。";
+
+dict_table["game_money"] <- "ハピネス";
+dict_table["free_real_money"] <- "オーロラジェム";
+dict_table["real_money"] <- "オーロラジェム";
+dict_table["room_exp"] <- "お部屋EXP";
+dict_table["costume_exp"] <- "お洋服EXP";
+dict_table["unimplemented"] <- "未実装のため、この機能は使用できません。";
+dict_table["comfirm_exit_message"] <- "ゲームを終了しますか？";
+dict_table["comfirm_exit_caution"] <- "※もう一度戻るボタンをタップでも終了します。";
+dict_table["comfirm_title_message"] <- "タイトル画面に戻りますか？/n";
+dict_table["comfirm_title_caution"] <- "※もう一度戻るボタンをタップでも戻ります。";
+dict_table["network_error_message"] <- "ネットワークエラーが発生しました。";
+dict_table["network_error_caution"] <- "※電波状況、および端末のネットワーク設定を/n確認してください。";
+dict_table["login_error"] <- "ネット接続に失敗しました。もう一度試しますか？";
+dict_table["connection_error_message"] <- "サーバーとの通信に失敗しました。";
+dict_table["connection_error_caution"] <- "電波の状態を確認してください。/nもう一度試しますか？/n※キャンセルを選ぶとタイトル画面に戻ります。";
+dict_table["move_title_with_error"] <- "エラーが発生しました。/nタイトル画面に戻ります。"
+
+dict_table["sex_male"] <- "おとこのこ";
+dict_table["sex_female"] <- "おんなのこ";
+dict_table["name_male"] <- "%sくん";
+dict_table["name_female"] <- "%sちゃん";
+
+dict_table["terms_of_service_title"] <- "利用規約とプライバシーポリシー";
+dict_table["terms_of_service_desc"] <- "トモトル ～ハローキティとハピネスライフ～ を/nプレイするためには、利用規約とプライバシーポリシーに/n同意いただく必要があります。/n/n内容を確認のうえ、「同意する」ボタンを押してください。";
+dict_table["terms_of_service"] <- "利用規約";
+dict_table["privacy_policy"] <- "プライバシーポリシー";
+dict_table["agree"] <- "同意する";
+dict_table["no_agree"] <- "同意しない";
+
+dict_table["shop"] <- "ショップ";
+dict_table["furniture"] <- "家具";
+dict_table["ornament"] <- "置物";
+dict_table["item"] <- "アイテム";
+dict_table["room"] <- "お部屋";
+dict_table["limited"] <- "期間限定";
+dict_table["remain"] <- "のこり";
+dict_table["oyugi"] <- "おゆうぎ";
+dict_table["detail"] <- "詳細";
+dict_table["random_reward"] <- "ランダム報酬";
+dict_table["use_item"] <- "アイテムを使う";
+dict_table["close"] <- "閉じる";
+dict_table["shorten"] <- "今すぐ完了";
+dict_table["possession"] <- "所持数";
+dict_table["ok"] <- "OK";
+dict_table["cancel"] <- "キャンセル";
+dict_table["levelup"] <- "レベルアップ";
+dict_table["get"] <- "GET";
+dict_table["buy"] <- "買う";
+dict_table["exp"] <- "経験値";
+dict_table["rare"] <- "レア";
+dict_table["decide"] <- "決定";
+dict_table["focus"] <- "フォーカス";
+dict_table["not_possession"] <- "未所持";
+dict_table["motion"] <- "ポーズ";
+dict_table["ar_motion"] <- "AR用ポーズ";
+dict_table["costume"] <- "お洋服";
+dict_table["prop"] <- "小道具";
+dict_table["tap"] <- "タップ";
+dict_table["layout"] <- "配置中";
+dict_table["proceed"] <- "つづける";
+dict_table["category"] <- "種類";
+dict_table["event"] <- "イベント";
+
+dict_table["update_check"] <- "リソースを確認中です";
+dict_table["update_checked"] <- "リソースの確認が完了しました";
+dict_table["update_download"] <- "リソースのダウンロードを開始します";
+dict_table["update_prepare"] <- "%";
+
+dict_table["update_downloading"] <- "ダウンロード中 : %s %";
+dict_table["update_downloaded"] <- "ダウンロードが完了しました。";
+
+dict_table["game_start"] <- "タップしてスタート";
+dict_table["copyright"] <- "#m2#'76,'79,'88,'93,'96,'99,'01,'04,'12,'15,'18 SANRIO#m1#";
+dict_table["application_state"] <- "ベータテスト";
+dict_table["nowloading"] <- "ロード中…";
+dict_table["userid"] <- "ID:%s";
+
+dict_table["charafocus_costume_desc"] <- "お洋服説明";
+dict_table["charafocus_level_up_reward"] <- "以下のアイテムを入手しました";
+dict_table["charafocus_select_mode"] <- "おでかけ";
+dict_table["recover_full_health"] <- "ハピネスがいっぱいになりました";
+dict_table["max_health_up_text"] <- "ハピネスの最大値が";
+dict_table["get_new_work"] <- "新しいおでかけ先が見つかりました";
+dict_table["costume_levelup_get_reward"] <- "以下を入手しました";
+dict_table["costume_levelup_num"] <- "Lv%sになりました！";
+dict_table["change_work_select"] <- "おでかけ";
+dict_table["rental_costumes"] <- "貸出中のお洋服一覧";
+dict_table["confirm_rental"] <- "お洋服を借りますか？";
+dict_table["rental"] <- "借りる";
+
+dict_table["can_level_up"] <- "レベルアップ";
+dict_table["furniture_level_up_start"] <- "レベルアップの完了を待ちましょう";
+
+dict_table["work_select_health"] <- "つかうハピネス";
+dict_table["work_select_time"] <- "おでかけ時間";
+dict_table["work_select_gm"] <- "必ずもらえるもの";
+dict_table["work_select_exp"] <- "報酬EXP";
+dict_table["work_select_reward"] <- "ランダムでもらえるもの";
+dict_table["work_select_shortage_level"] <- "Lv%sからおでかけできます";
+dict_table["work_select_shortage_health"] <- "ハピネスが不足しています。家具を使ってハピネスを集めましょう。";
+dict_table["work_select_confirm"] <- "おでかけさせますか？";
+dict_table["work_select_btn_confirm"] <- "おでかけさせる";
+
+dict_table["work_confirm_ar_tap"] <- "タップして様子を見に行こう！";
+dict_table["work_confirm_ar_start"] <- "ARが起動します";
+dict_table["work_confirm_working"] <- "おでかけ中なので変更できません";
+dict_table["work_confirm_working_athome"] <- "おでかけ中です。";
+dict_table["work_confirm_shorten"] <- "今すぐおでかけを完了しますか？";
+dict_table["work_confirm_reward"] <- "もらえるもの一覧";
+dict_table["work_randomrewards_list"] <- "このおでかけでもらえるランダム報酬";
+dict_table["work_confirm_btn_interrupt"] <- "おでかけをやめる";
+
+dict_table["work_list_title"] <- "おでかけ中キャラ一覧";
+
+dict_table["property_furniture_edit"] <- "置く";
+dict_table["property_furniture_current_room"] <- "今のお部屋で使われています。";
+dict_table["property_furniture_other_room"] <- "別のお部屋で使われています。";
+dict_table["property_furniture_cant_layout"] <- "お部屋に配置中です。";
+dict_table["property_before_levelup"] <- "レベルアップ前";
+dict_table["property_after_levelup"] <- "レベルアップ後";
+
+dict_table["nums"] <- "x %s ";
+dict_table["nums_slash"] <- "%s / %s ";
+dict_table["nums_colon"] <- "%s : %s ";
+dict_table["nums_slash2"] <- "/ %s";
+dict_table["nums_num"] <- "%s個";
+dict_table["nums_amount"] <- "あと%s個";
+dict_table["nums_more_amount"] <- "あと%s個まで";
+dict_table["nums_count"] <- "%s回";
+dict_table["nums_yazirushi"] <- "%s → %s";
+dict_table["nums_yazirushi_kakko"] <- "（%s → %s）";
+dict_table["nums_yazirushi_level"] <- "Lv%s → Lv%s";
+dict_table["nums_plus"] <- "+ %s";
+dict_table["nums_plus2"] <- "%s ＋ %s";
+dict_table["nums_plus3"] <- "%s+";
+dict_table["nums_minus"] <- "- %s";
+dict_table["nums_kakeru"] <- "× %s";
+dict_table["nums_level"] <- "Lv%s";
+dict_table["nums_level_per_max"] <- "Lv %s / %s";
+dict_table["nums_level_made"] <- "Lv%sまで";
+dict_table["nums_range"] <- "%s ～ %s";
+dict_table["nums_up"] <- "%sアップ！";
+dict_table["nums_ratio"] <- "%s%";
+dict_table["nums_chara"] <- "%s人まで";
+dict_table["cash_label"] <- "￥"
+dict_table["prof_nums_slash"] <- "所持数 %s / %s ";
+
+dict_table["lv_nums"] <- "Lv %s";
+dict_table["plus_nums"] <- "＋ %s";
+dict_table["minus_nums"] <- "－ %s";
+dict_table["mult_nums"] <- "× %s";
+dict_table["naminami"] <- "～ %s ～";
+dict_table["colon_only"] <- "：";
+
+dict_table["20YYMMDD"] <- "20%d / %d / %d";
+dict_table["YYYYMMDD"] <- "%s/%s/%s";
+
+dict_table["sunday"] <- "日";
+dict_table["monday"] <- "月";
+dict_table["tuesday"] <- "火";
+dict_table["wednesday"] <- "水";
+dict_table["thursday"] <- "木";
+dict_table["friday"] <- "金";
+dict_table["saturday"] <- "土";
+
+dict_table["timer_dhms"] <- "%s日%s時間%s分%s秒";
+dict_table["timer_hms"] <- "%s時間%s分%s秒";
+dict_table["timer_ms"] <- "%s分%s秒";
+dict_table["timer_d"] <- "%s日";
+dict_table["timer_h"] <- "%s時間";
+dict_table["timer_m"] <- "%s分";
+dict_table["timer_s"] <- "%s秒";
+
+dict_table["timeYYYYMMDDhhmmss"] <- "%s/%s/%s %s:%s:%s"
+
+dict_table["limit_timeYYYYMMDDWhhmm"] <- "%s/%s/%s(%s) %s:%sまで"
+
+dict_table["dlg_get_item"] <- "%s を獲得しました";
+dict_table["none"] <- "なし";
+
+dict_table["constellation_aquarius"] <- "みずがめ";
+dict_table["constellation_pisces"] <- "うお";
+dict_table["constellation_aries"] <- "おひつじ";
+dict_table["constellation_taurus"] <- "おうし";
+dict_table["constellation_gemini"] <- "ふたご";
+dict_table["constellation_cancer"] <- "かに";
+dict_table["constellation_leo"] <- "しし";
+dict_table["constellation_virgo"] <- "おとめ";
+dict_table["constellation_libra"] <- "てんびん";
+dict_table["constellation_scopio"] <- "さそり";
+dict_table["constellation_sagittarius"] <- "いて";
+dict_table["constellation_capricorn"] <- "やぎ";
+
+dict_table["prof_motion"] <- "ポーズ";
+dict_table["prof_costume"] <- "お洋服";
+dict_table["prof_profile"] <- "プロフィール";
+dict_table["prof_birth"] <- "誕生日：%s月%s日";
+dict_table["prof_constellation"] <- "星座：%s座";
+dict_table["prof_not_achieve"] <- "未達成";
+dict_table["prof_reward"] <- "なかよし報酬";
+dict_table["prof_get_reward"] <- "%sを獲得しました";
+dict_table["prof_need_motion"] <- "ポーズあと：%s";
+dict_table["prof_request_motion"] <- "ポーズあとを%s個で受け取れます";
+dict_table["prof_no_reward"] <- "受け取れる報酬がありません";
+dict_table["prof_reward_text"] <- "なかよし報酬を受け取るためには条件を達成する必要があります。";
+dict_table["prof_wearing"] <- "着用中";
+dict_table["prof_wearing_change"] <- "着替える";
+dict_table["prof_sell_room_costume"] <- "『%s』の/nショップで買えます。";
+dict_table["prof_sell_room_not"] <- "今は入手できない衣装です";
+dict_table["prof_motion_play"] <- "再生する";
+dict_table["prof_motion_playing"] <- "再生中";
+dict_table["prof_sell_room_motion"] <- "おともだちのいるお部屋の/nショップで買えます。";
+
+dict_table["furniture_change_view"] <- "見た目を変更できます";
+
+dict_table["const_style1"] <- "リラックス";
+
+dict_table["const_color1"] <- "パープル";
+
+dict_table["checking"] <- "チェック中"
+dict_table["loading"] <- "ロード中"
+
+dict_table["hlp_hint_base"] <- "模様替えする場所を選択して下さい。";
+dict_table["hlp_hint_room_add"] <- "部屋の配置が可能です。";
+dict_table["hlp_hint_room_edit"] <- "家具の配置や部屋の入れ替えが可能です。";
+dict_table["hlp_hint_room_eidt_remove"] <- "家具の配置や部屋の入れ替え、撤去が可能です。";
+dict_table["hlp_hint_chara_edit"] <- "住人の追加や削除が可能です。";
+dict_table["hlp_hint_shop"] <- "家具やキャラクターの購入が可能です。";
+
+dict_table["chara_house_state_removed"] <- "待機中";
+dict_table["chara_house_state_added"] <- "設置中";
+dict_table["chara_house_alert_remove0"] <- "設置中のキャラクターを0人以下にはできません。";
+
+dict_table["reset_furniture"] <- "お部屋をリセットしますか？";
+dict_table["sucess_reset_furniture"] <- "お部屋をリセットしました！";
+dict_table["furniture_series"] <- "シリーズ:";
+dict_table["msg_add_furniture"] <- "この家具を部屋に配置してください。";
+dict_table["msg_add_furniture_desc"] <- "配置後にレベルアップが可能になります。OKを押すと家具配置画面に移ります。";
+dict_table["has_product"] <- "おゆうぎ中のため移動できません。";
+dict_table["has_levelup"] <- "レベルアップ中のため移動できません。";
+dict_table["has_deliver"] <- "配達中のため移動できません。";
+
+dict_table["layout_message_none"] <- "家具を配置することができない場所です";
+dict_table["layout_message_overlap"] <- "他の家具と重ねて配置することはできません";
+dict_table["layout_message_outside"] <- "お部屋の外には配置できません";
+dict_table["layout_message_block_route"] <- "通路をふさぐ場所には配置できません";
+dict_table["layout_message_capacity_over"] <- "これ以上家具を配置できません";
+
+dict_table["hint_furniture_edit"] <- "家具配置 家具をスワイプすることで部屋に家具を設置出来ます。";
+dict_table["hint_furniture_info"] <- "家具詳細 家具をスワイプすると回ります。";
+dict_table["edit_furniture_failed"] <- "この場所に家具を置くことはできません。";
+
+dict_table["caution_view_level"] <- "レベル%sで変更できます";
+dict_table["room_edit_mode"] <- "家具編集モード";
+dict_table["furniture_deliver_start"] <- "家具を購入しました。配達されるまで待ちましょう。";
+dict_table["furniture_deliver_end"] <- "家具の配達が完了しました";
+
+dict_table["room_using"] <- "使用中";
+dict_table["room_swap"] <- "入れ替え";
+dict_table["room_can_use"] <- "設置可能";
+dict_table["is_remove_room"] <- "お部屋を撤去してもよろしいですか？";
+dict_table["remove_room"] <- "お部屋を撤去しました！";
+dict_table["alart_cannot_change_room"] <- "家具を使っている、もしくは/nおでかけ中のキャラクターが居る場合は/nお部屋を切り替えられません。";
+dict_table["alart_using_room"] <- "使用中のお部屋です。";
+dict_table["hint_select_room"] <- "模様替えする場所を選択して下さい";
+dict_table["room_slot_change_confirm"] <- "お部屋を変更してもよろしいですか？";
+dict_table["room_slot_change_caution"] <- "お部屋を変更するとお部屋に置いてある家具は/nすべてもちものにしまわれます。";
+dict_table["room_slot_canadd"] <- "お部屋を追加できます";
+
+dict_table["go_other_room"] <- "%sに行きますか？";
+dict_table["room_story"] <- "おはなし";
+dict_table["room_select"] <- "お部屋に行く";
+
+dict_table["room_member_producting"] <- "家具ですごしている間は/n変更できません";
+dict_table["room_member_working"] <- "おでかけ中は変更できません。";
+dict_table["room_member_other_room"] <- "別のお部屋に出ています。";
+dict_table["room_member_same_costume"] <- "すでにお部屋にいます。";
+dict_table["room_member_no_release"] <- "未解放のスロットです。";
+dict_table["room_member_confirm"] <- "すでにお部屋にいるおともだちです。/n着替えますか？";
+dict_table["room_member_selected"] <- "選択中";
+dict_table["room_member_remove"] <- "お部屋から外す";
+
+dict_table["purchase_free"] <- "無料"
+dict_table["purchase"] <- "購入"
+dict_table["purchase_limit"] <- "残り %s個"
+dict_table["purchase_limit_over"] <- "これ以上買えません"
+dict_table["purchase_condition"] <- "条件を満たしていません"
+dict_table["purchase_tutorial"] <- "はじめてのお部屋を最後までプレイすると/n購入できるようになります。"
+dict_table["no_have_gm"] <- "ハピネスが足りません！";
+dict_table["no_have_gm_val"] <- "%sハピネス足りません！";
+dict_table["lack_rm"] <- "オーロラジェムが足りません！";
+dict_table["bought_costume"] <- "購入済みのお洋服です";
+dict_table["bought_motion"] <- "購入済みのポーズです";
+dict_table["purchase_furniture"] <- "家具を買いました！";
+dict_table["is_purchase_room"] <- "お部屋を購入してもよろしいですか？";
+dict_table["purchase_room"] <- "お部屋を購入しました！";
+dict_table["failed_purchase_room"] <- "お部屋の購入に失敗しました";
+dict_table["shop_deliver"] <- "配達されるまで少しまってね";
+dict_table["shop_confirm"] <- "を買いますか？";
+dict_table["shop_buy_confirm"] <- "を購入しますか？";
+dict_table["shop_buy_success"] <- "を買いました";
+dict_table["shop_buy_rm_success"] <- "を購入しました";
+dict_table["shop_buy_rm_cancel"] <- "の購入をキャンセルしました";
+dict_table["shop_buy_rm_failure"] <- "購入結果の反映に失敗しました。/nタイトル画面から入り直すと/n再試行しますのでお試しください。/n/nそれでも反映されない場合は、/nお手数ですが「お問い合わせ」に/nご報告ください。";
+dict_table["shop_buy_rm_restore"] <- "反映できていなかった決済内容を反映しました。";
+dict_table["shop_buy_room"] <- "新しいお部屋に行けるようになりました。";
+dict_table["furniture_desc"] <- "家具説明";
+dict_table["shop_sell"] <- "売る";
+dict_table["shop_price"] <- "価格";
+dict_table["shop_sell_message"] <- "お部屋に置いてあるため売却できません";
+dict_table["shop_sell_room_message"] <- "配置中のお部屋は売却できません";
+dict_table["deliver_time"] <- "配達時間";
+dict_table["shop_sold_out"] <- "購入済み";
+dict_table["shop_message_sold_out"] <- "購入済みの商品です";
+dict_table["shop_sell_confirm"] <- "を売却しますか？";
+dict_table["shop_sold"] <- "%sを売却しました";
+dict_table["shop_buy_fail"] <- "購入に失敗しました。";
+dict_table["shop_buy_rm_fail"] <- "購入に失敗しました。";
+dict_table["shop_cant_use"] <- "この家具はおともだちが使いません";
+dict_table["shop_caution_motion"] <- "AR機能で使えます";
+dict_table["release_at_roombuy"] <- "購入するとショップに追加されるアイテム";
+dict_table["disable_purchase_error"] <- "購入/nできません";
+
+dict_table["shop_costume_cant_buy"] <- "このお洋服はまだ買えません";
+dict_table["shop_costume_condition"] <- "以下の条件を満たすと買えるうになります";
+
+dict_table["shop_confirm_gm_price"] <- "%sハピネスで";
+dict_table["shop_confirm_rm_price"] <- "%sオーロラジェムで";
+dict_table["shop_confirm_cash"] <- "%sで";
+dict_table["shop_confirm_furniture"] <- "この家具を買いますか？";
+dict_table["shop_confirm_costume"] <- "このお洋服を買いますか？";
+dict_table["shop_confirm_motion"] <- "このポーズを買いますか？";
+dict_table["shop_confirm_rm"] <- "%sを買いますか？";
+
+dict_table["have_hapiness"] <- "所持ハピネス";
+dict_table["purchased_hapiness"] <- "購入後ハピネス";
+dict_table["shop_explain_rm"] <- "購入した共通ハピネスはすべてのお部屋で使うことができます。/nハピネスを使う場合、お部屋のハピネスが先に消費され、/n不足額が共通ハピネスから消費されます。";
+
+dict_table["hint_shop_home"] <- "いろいろな商品を買うことができます。";
+
+dict_table["shop_can_purchase"] <- "新しい%sが買えるようになりました。";
+
+dict_table["shop_sale"] <- "リリース記念セール期間3月22日14：00まで";
+
+dict_table["roomdetail_chara"] <- "登場するおともだち";
+dict_table["purchase_restore"] <- "購入情報のリストア";
+dict_table["purchase_restore_desc"] <- "アプリに反映されていない購入済みアイテムが/n存在する場合、リストアを行ないます。";
+dict_table["purchase_restore_caution"] <- "※ 購入を行なったApple IDでサインインしてください。";
+dict_table["purchase_restore_nothing"] <- "リストアの対象となる購入済みアイテムが/n存在しませんでした。";
+dict_table["purchase_restore_success"] <- "リストアが正常に完了しました。";
+
+dict_table["gacha_get_costume"] <- "『%s』を手に入れたよ！";
+dict_table["gacha_play_num"] <- "%s回引く";
+dict_table["gacha_play_nums"] <- "%s回引く";
+dict_table["gacha_result"] <- "ガチャ結果";
+dict_table["gacha_retry"] <- "もう1回引く";
+dict_table["gacha_period"] <- "開催期間";
+dict_table["gacha_poverty"] <- "お金が足りません";
+dict_table["gacha_period_outside"] <- "期間外です";
+dict_table["gacha_limit"] <- "このガチャは１日１回までです。また明日来てくださいね。";
+dict_table["gacha_error"] <- "エラー";
+dict_table["gachas_confirm"] <- "ガチャ%s連を引きますか？";
+dict_table["gacha_confirm"] <- "ガチャを引きますか？";
+dict_table["gachas_confirm_button"] <- "%s連を引く";
+dict_table["gacha_confirm_button"] <- "引く";
+dict_table["gacha_list"] <- "リスト";
+dict_table["gacha_list_caution"] <- "入手済みのお洋服はガチャから出なくなります。";
+dict_table["has_already"] <- "入手済み";
+
+dict_table["working"] <- "おでかけ中です";
+dict_table["work_clear"] <- "CLEAR!!";
+dict_table["work_cancel"] <- "おでかけをやめますか？";
+dict_table["work_cancel_caution"] <- "おでかけをやめると報酬や経験値は手に入りません。";
+dict_table["work_finished_tohome"] <- "すでにおでかけから帰ってきたようです。/nホームに移動しますか？";
+dict_table["work_finished_athome"] <- "すでにおでかけから帰ってきたようです。/nおむかえしますか？";
+dict_table["work_reward_roulette_title"] <- "何が入っているのかな？";
+dict_table["work_reward_roulette_stop"] <- "タップでとまるよ";
+dict_table["work_result"] <- "おでかけ結果";
+dict_table["work_shorten_caution"] <- "オーロラジェムを使用して今すぐおでかけを/n完了させることができます。";
+dict_table["work_interrupted"] <- "おでかけを中断しました";
+dict_table["work_shorten"] <- "おでかけを完了させました";
+
+dict_table["producting"] <- "おゆうぎ中です";
+dict_table["producting_costume"] <- "おゆうぎ中のキャラクター";
+dict_table["product_finished"] <- "完了";
+dict_table["product_delivered"] <- "配達が完了しました！";
+dict_table["product_cancel"] <- "家具をつかうのをやめますか？";
+dict_table["product_cancel_levelup"] <- "家具のレベルアップをやめますか？";
+dict_table["product_cancel_deliver"] <- "配達をキャンセルしますか？";
+dict_table["product_cancel_caution"] <- "やめるとハピネスはもらえません。";
+dict_table["product_cancel_levelup_caution"] <- "家具のレベルアップをやめると/n使用したスタードロップは戻りません。";
+dict_table["product_cancel_deliver_caution"] <- "※使用したGMは戻りません。";
+dict_table["product_interrupt"] <- "つかうのをやめる";
+dict_table["product_interrupt_levelup"] <- "レベル/nアップを/nやめる";
+dict_table["product_interrupted"] <- "家具をつかうのをやめました";
+dict_table["product_interrupted_levelup"] <- "レベルアップをやめました";
+dict_table["product_shorten"] <- "完了させました";
+dict_table["product_shorten_levelup"] <- "レベルアップを完了させました";
+dict_table["product_shorten_deliver"] <- "配達を短縮しました";
+dict_table["got_deliver"] <- "%s を受け取りました。/nお部屋に配置することができます！";
+dict_table["msg_attention_cannot_lvup_producting"] <- "生産中なのでレベルアップを開始できません。";
+dict_table["product_finished_tohome"] <- "おゆうぎがすでに完了しています。/nホームに移動しますか？";
+dict_table["product_chara_num"] <- "%s人用";
+dict_table["recover_health"] <- "もらえるハピネス";
+dict_table["need_time"] <- "必要時間";
+dict_table["detail_nextlevel"] <- "レベルアップ後の詳細";
+
+dict_table["confirm_shortentime_product"] <- "今すぐ完了させますか？";
+dict_table["confirm_shortentime_levelup"] <- "今すぐレベルアップを完了させますか？";
+dict_table["confirm_shortentime_deliver"] <- "今すぐ配達を完了させますか？";
+dict_table["confirm_caution_product"] <- "オーロラジェムを使用して今すぐ完了させることができます。";
+dict_table["confirm_caution_levelup"] <- "オーロラジェムを使用してレベルアップを/n完了させることができます。";
+dict_table["confirm_caution_deliver"] <- "オーロラを使用して今すぐ配達を/n完了させることができます。";
+
+dict_table["lvd_levelup"] <- "レベルアップ可能";
+dict_table["lvd_producting"] <- "生産中";
+dict_table["lvd_product_finished"] <- "生産完了";
+dict_table["btn_levelup"] <- "レベル/nアップ！";
+dict_table["btn_forcing_finish"] <- "RMで/n完了";
+dict_table["btn_recieve_product"] <- "報酬受取";
+
+dict_table["confirm_lvup_costume"] <- "このお洋服をレベルアップさせますか？";
+dict_table["confirm_lvup_furniture"] <- "をレベルアップさせますか？";
+dict_table["levelup_fail_gm"] <- "GMが足りないので/nレベルアップできません。";
+dict_table["levelup_fail_exp"] <- "経験値が足りません。";
+dict_table["levelup_fail_gmexp"] <- "GMと経験が足りないので/nレベルアップできません。";
+
+dict_table["levelup_complete"] <- "がレベル %s になりました";
+dict_table["levelup_complete_onlytext"] <- "がレベルアップしました！";
+dict_table["product_time"] <- "つかう時間";
+dict_table["levelup_health"] <- "ハピネス";
+
+dict_table["confirm_set_helper"] <- "%s を助っ人に設定しますか？";
+dict_table["confirm_release_helper"] <- "%s を助っ人から解除しますか？";
+dict_table["confirm_add_residechara"] <- "%s をお部屋に追加しますか？";
+dict_table["confirm_remove_residechara"] <- "%s をお部屋からはずしますか？";
+dict_table["msg_add_residechara"] <- "キャラをお部屋に配置してください。";
+dict_table["no_pat_power"] <- "まだなでなでできません。/n時間をおいてからなでなでしてください。";
+dict_table["collection_ratio"] <- "コレクション率";
+
+dict_table["useitem_select_target"] <- "どれにアイテムをつかう？";
+dict_table["useitem_unable_exp"] <- "経験値がいっぱいなので使えません。";
+dict_table["useitem_unable_health"] <- "ハピネスがいっぱいなので使えません。";
+dict_table["useitem_unable_shorten"] <- "すでに完了してるので使えません。";
+dict_table["useitem_unable_boost_work"] <- "発動中のお出かけブーストがあるので使えません。/n今の効果を消して、このアイテムを使いますか？";
+dict_table["useitem_unable_boost_product"] <- "発動中のお遊戯ブーストがあるので使えません。/n今の効果を消して、このアイテムを使いますか？";
+
+dict_table["roomslot_maxcharas"] <- "キャラクター";
+dict_table["roomslot_maxfurnitures"] <- "家具";
+dict_table["roomslot_defaultname"] <- "----";
+dict_table["roomslot_defaultnum"] <- "----";
+
+dict_table["roomlist_using"] <- "のスロットで使用中です";
+
+dict_table["rewarddialog_get_specialmotion"] <- "新しいポーズを入手したよ";
+dict_table["rewarddialog_specialmotion"] <- "とくべつポーズ";
+dict_table["rewarddialog_slide_desc"] <- "横にスライドすると回転します";
+
+dict_table["costumerequest_chara"] <- "%sのおねがい";
+dict_table["costumerequest_tellchara"] <- "お部屋の%sから/nおはなしをきいてみましょう";
+dict_table["costumerequest_interval_now"] <- "今はおねがいがないみたいです";
+dict_table["costumerequest_nextrequest_made"] <- "次のおねがいまで";
+dict_table["costumerequest_timelimit_made"] <- "おねがいがなくなるまで";
+dict_table["costumerequest_cleared"] <- "おねがいにこたえてあげています";
+dict_table["costumerequest_reward"] <- "もらえるもの";
+
+dict_table["first_costume_title"] <- "最初のおともだちを選んでね！";
+dict_table["first_costume_text"] <- "他のキャラクターもあとからおともだちになれるよ！";
+
+dict_table["diary_complete_made"] <- "イベント発生まで";
+dict_table["diary_piece"] <- "イベントピース";
+dict_table["remain_not_clear"] <- "イベントピースあと%s個";
+dict_table["select_panelmission"] <- "このイベントを進める";
+dict_table["completed_diary"] <- "%sの日記を完成させたよ！";
+dict_table["add_new_panelmission"] <- "新しいイベントが追加されたよ！";
+dict_table["story"] <- "おはなし";
+dict_table["pmallclear_atroom"] <- "このお部屋のイベントは全部終わったよ！/n他のお部屋でも遊んでみてね！/n※画像を使うなどしてクオリティアップ";
+dict_table["pmallclear_dialog_goto_roomselct"] <- "他のお部屋に/nいく";
+dict_table["diary_numbering"] <- "〈%s〉"
+dict_table["diary_numbering_begin"] <- "はじまり"
+
+dict_table["can_not_use_AR"] <- "カメラへのアクセスが許可されていないか、AR機能が対応していない端末です。";
+dict_table["record_timeout"] <- "録画上限時間に達したため、録画を終了します。";
+dict_table["can_not_capture"] <- "写真を保存できませんでした。ストレージのアクセス許可を確認してださい。";
+dict_table["can_not_record"] <- "録画を開始できませんでした。ストレージのアクセス許可を確認してださい。";
+dict_table["record_completed"] <- "動画を保存しました。";
+dict_table["capture_completed"] <- "写真を保存しました。";
+dict_table["arpanel_plane_detect"] <- "地面をさがす";
+dict_table["arpanel_back_front"] <- "カメラきりかえ";
+dict_table["arpanel_chara"] <- "キャラクター変更";
+dict_table["recording"] <- "●REC";
+dict_table["arpanel_hint_detect"] <- "もう一度地面を探すことが出来ます";
+dict_table["arpanel_hint_capture"] <- "写真と動画を切り替えられます";
+dict_table["arpanel_hint_trans"] <- "ドラッグで移動します";
+dict_table["arpanel_hint_rotate"] <- "マルチドラッグで回転します";
+dict_table["arpanel_hint_scale"] <- "ピンチで拡縮します";
+dict_table["arpanel_lower_fps"] <- "この端末の処理速度が規定値に達していません。解像度を低くして再起動します。";
+dict_table["arpanel_remove_prop"] <- "外す";
+dict_table["arpanel_capture_limit"] <- "撮影可能な最大枚数に達しています。撮影した写真の整理をしてください。";
+
+dict_table["ar_move_panel"] <- "ARカメラで一緒に遊ぶおともだちを選びましょう";
+
+dict_table["ar_favorite_desc"] <- "お気に入りにモーションを登録してみましょう";
+dict_table["ar_motion_desc"] <- "所持しているモーションがありません";
+dict_table["ar_prop_desc"] <- "所持している小道具がありません";
+
+dict_table["ar_menu_favorite"] <- "お気に入り";
+dict_table["ar_menu_motion"] <- "ポーズ";
+dict_table["ar_menu_costume"] <- "お洋服";
+dict_table["ar_menu_prop"] <- "アイテム";
+
+dict_table["ar_shutter_chance_desc1"] <- "シャッターチャンスです！";
+dict_table["ar_shutter_chance_desc2"] <- "フレームが表示されているときに/n写真を撮るとハピネスがもらえます！";
+dict_table["ar_shutter_chance_result"] <- "Excellent";
+
+dict_table["ar_detecting"] <- "地面を探しています。/n/n端末をゆっくり動かしてください。";
+
+dict_table["captured"] <- "写真を撮りました！";
+dict_table["select_output"] <- "写真を保存する？投稿する？";
+dict_table["post_image"] <- "投稿する";
+dict_table["share_image"] <- "シェアする";
+dict_table["save_image"] <- "保存する";
+dict_table["do_not_save"] <- "保存しない";
+
+dict_table["captured_newpoze"] <- "新しいポーズの写真が撮れました";
+dict_table["captured_usefurniture"] <- "くつろいでいる写真が撮れました";
+
+dict_table["gallery_panel_title"] <- "撮影した写真とムービー";
+dict_table["gallery_panel_desc"] <- "写真またはムービーを選択すると、保存やシェアをすることができます";
+dict_table["gallery_panel_back_caution"] <- "保存されていない写真・ムービーは/n。このページを離れると消えてしまいます。";
+dict_table["gallery_panel_back_confirm"] <- "ARカメラに戻りますか？";
+dict_table["gallery_panel_back_confirm_room"] <- "お部屋に戻りますか？";
+dict_table["gallery_panel_saved"] <- "保存済み";
+
+dict_table["ad_video_remain"] <- "今日あと";
+
+dict_table["mail_has_not_item"] <- "プレゼントが含まれていない手紙です。"
+dict_table["mail_item_already_received"] <- "既にプレゼントを受け取っています。"
+dict_table["mail_has_not_any_item"] <- "受け取れるプレゼントがありませんでした。"
+dict_table["mail_some_item_received"] <- "プレゼントを受け取りました。"
+
+dict_table["mail_all_delete_alart"] <- "以下の手紙を削除します。よろしいですか？"
+dict_table["mail_all_delete_condition"] <- "・プレゼントが含まれていない既読の手紙"
+dict_table["mail_all_delete_falied"] <- "手紙の削除に失敗しました。"
+
+dict_table["mail_has_item_delete"] <- "受け取ってないプレゼントが含まれています。/n削除してもよろしいですか？"
+dict_table["mail_not_has_item_delete"] <- "この手紙を/n削除してもよろしいですか？"
+dict_table["mail"] <- "手紙"
+dict_table["notice"] <- "お知らせ"
+dict_table["all_get"] <- "プレゼント/n一括受け取り"
+dict_table["all_delete"] <- "一括削除"
+dict_table["only_slash"] <- "/"
+dict_table["recieved"] <- "受け取り済み";
+dict_table["open"] <- "開く"
+dict_table["mail_caution"] <- "ポスト内の手紙は受け取り期限が過ぎたら消失します。"
+dict_table["delete"] <- "削除"
+dict_table["recieve"] <- "受け取る"
+
+dict_table["mail_title0"] <- "%s";
+dict_table["mail_message0"] <- "%s";
+dict_table["mail_title1"] <- "文言テストメール";
+dict_table["mail_message1"] <- "%s テストメールです。不要になったら削除してください";
+dict_table["mail_item_limit"] <- "このメールのプレゼント受け取り期限 %s"
+
+dict_table["get_bonus_hapiness"] <- "なかよしハピネスゲット";
+
+dict_table["external_image1"] <- "お洋服似合ってるかな？ #トモトル #sanrio";
+dict_table["external_image2"] <- "すてきな写真が撮れたよ♪ #トモトル #sanrio";
+dict_table["external_image3"] <- "かわいい姿を激写！ #トモトル #sanrio";
+dict_table["external_image4"] <- "おともだちの写真、いい感じに撮れました！ #トモトル #sanrio";
+dict_table["external_image5"] <- "きみもトモトルで写真を撮ってみない？ #トモトル #sanrio";
+dict_table["external_movie1"] <- "すっごくかわいい…。動画で伝わったかな？ #トモトル #sanrio";
+dict_table["external_movie2"] <- "きみもトモトルで動画を撮ってみない？ #トモトル #sanrio";
+dict_table["external_movie3"] <- "すてきな動画が撮れたよ～！ #トモトル #sanrio";
+dict_table["external_movie4"] <- "おともだちの動画、いい感じに撮れました！ #トモトル #sanrio";
+
+dict_table["player_input_title"] <- "あなたのことおしえて？";
+dict_table["player_input_desc"] <- "※注意事項/n・なまえは2～8文字で入力してください。/n・ひらがな/カタカナ/英数字が使えます。";
+dict_table["name_input_invalid_length"] <- "なまえは2～8文字で入力してください。";
+dict_table["name_input_invalid_word"] <- "なまえに使用不可な文字が使われています。";
+dict_table["name_input_name"] <- "なまえ";
+
+dict_table["assumption"] <- "引き継ぎ";
+dict_table["assumption_info_title"] <- "引き継ぎ機能につきまして";
+dict_table["assumption_title"] <- "引き継ぎID入力";
+dict_table["assumption_info"] <- "この機能は/n携帯端末を機種変更した際などに/n他の端末へセーブデータを移動/nして引き継ぐ機能です。";
+dict_table["assumption_info_warning"] <- " /n◆警告◆/niOSとAndroid間で引き継ぎを行った場合、ショップで購入した有料の#rm1#共通ハピネスはリセットされます。/n未使用の#rm1#共通ハピネスがある場合はご注意ください。";
+dict_table["assumption_menu_desc"] <- "引き継ぎを行います。/n/nこの端末から引き継ぎする場合は/n「ID発行」を押してください。/n/n他の端末から/n引き継ぎしてくる場合は/n「ID入力」を押してください。";
+dict_table["assumption_ID_issue"] <- "ID発行";
+dict_table["assumption_issue_title"] <- "パスワード入力";
+dict_table["assumption_issue_desc"] <- "引き継ぎに使用するパスワードを設定してください。/n/nパスワードの設定後、引き継ぎIDが発行されます。/n（4～12文字,半角英数字のみ使用可能）";
+dict_table["assumption_issued_title"] <- "引き継ぎIDの発行";
+dict_table["assumption_issued_desc"] <- "下記の引き継ぎ情報をメモして、大切に保管してください。";
+dict_table["assumption_issued_warning"] <- "引き継ぎが処理完了した場合、/n";
+dict_table["assumption_issued_reset"] <- "パスワード再設定";
+dict_table["assumption_issued_id"] <- "引き継ぎID：%s";
+dict_table["assumption_ID_input"] <- "ID入力";
+dict_table["assumption_reset_message"] <- "パスワードを変更しました。";
+dict_table["assumption_completed_message"] <- "引き継ぎ処理が完了しました。/n引き継いだデータでプレイを再開します。";
+dict_table["assumption_warning"] <- "引き継ぎIDとパスワードを入力してください。/n /n◆警告◆/n引き継ぎを行うと、この端末でのプレイデータは/n失われます。/nまた、iOSとAndroid間で引き継ぎを行った場合、/nショップで購入した有料の#rm1#共通ハピネスはリセットされます。/n未使用の#rm1#共通ハピネスがある場合は/nご注意ください。"
+dict_table["assumption_password"] <- "パスワード";
+dict_table["assumption_id"] <- "引き継ぎID";
+dict_table["assumption_confirmation_password"] <- "パスワード確認入力";
+dict_table["assumption_unmatched"] <- "入力されたパスワードが一致しません。";
+dict_table["assumption_nodata"] <- "まだアカウントが作れらていないので/n発行できません";
+dict_table["assumption_mistake"] <- "引き継ぎID、もしくはパスワードが間違っています。";
+dict_table["assumption_not_enough"] <- "文字数が足りません。4文字以上で設定してください。";
+dict_table["assumption_invalid_value"] <- "入力されたパスワードが不正な値です。";
+dict_table["assumption_last_warning"] <- "◆警告◆/niOSとAndroid間で引き継ぎを行った場合、ショップで購入した有料の#rm1#共通ハピネスはリセットされます。引き継ぎを行いますか？";
+dict_table["assumption_invalid"] <- "入力されたパスワードに使用できない文字が含まれています。";
+
+dict_table["select_transe_title"] <- "言語選択";
+dict_table["select_transe_desc"] <- "使用する言語を選択してください。/n言語はあとからでも変更可能です。";
+dict_table["select_transe_list_jp"] <- "日本語";
+dict_table["select_transe_list_en"] <- "英語";
+dict_table["select_transe_confirmation"] <- "使用する言語を%sにします。/nよろしいですか？";
+
+dict_table["filter_dialog"] <- "フィルター";
+dict_table["filter_all"] <- "すべて";
+dict_table["filter_desc_room"] <- "部屋";
+dict_table["filter_room_this"] <- "この部屋";
+
+dict_table["filter_desc_has"] <- "所持状況";
+dict_table["filter_had"] <- "所持";
+dict_table["filter_no_had"] <- "未所持";
+dict_table["filter_installation"] <- "設置可";
+
+dict_table["get_letter"] <- "#l1#お手紙が届きました。";
+dict_table["get_new_letter"] <- "#l1#新しいお手紙が届きました。";
+dict_table["get_camera"] <- "ダニエルからふしぎなカメラが届きました！";
+dict_table["get_diary"] <- "ダニエルから日記帳が届きました！";
+
+dict_table["backlog"] <- "バックログ";
+
+dict_table["use_furniture_failuer"] <- "家具を使えませんでした。/n周りに壁や他の家具があると、/n使用できないことがあります。";
+
+dict_table["help"] <- "ヘルプ";
+dict_table["tokutei"] <- "特定商取引法および/n資金決済法に基づく表記";
+
+dict_table["review_confirm"] <- "「トモトル」をプレイしていただいて/nありがとうございます！/n/nお楽しみいただけていますか？";
+dict_table["review_confirm_yes"] <- "楽しい";
+dict_table["review_confirm_no"] <- "楽しくない";
+dict_table["review_request"] <- "評価・レビューのお願い";
+dict_table["review_request_ios"] <- "評価・レビューのお願い/n/nどうもありがとうございます。/nこれからの開発・運営の励みになります。/n/nもしよかったら、App Storeで/n評価・レビューにご協力お願いします！";
+dict_table["review_request_and"] <- "評価・レビューのお願い/n/nどうもありがとうございます。/nこれからの開発・運営の励みになります。/n/nもしよかったら、Google Play Storeで/n評価・レビューにご協力お願いします！";
+dict_table["review_thank"] <- "評価・レビューしていただきありがとうございます！";
+dict_table["review_yes"] <- "レビュー/nする";
+dict_table["review_no"] <- "今はしない";
+
+dict_table["feedback_request"] <- "フィードバックのお願い/n/n少しでもご満足いただけるように、/nこれからの開発・運営に励みます。/n/n改善すべき部分など、もしお気づきの点があれば、/nフォームからフィードバックをお願いいたします。";
+dict_table["feedback_thank"] <- "フィードバックしていただきありがとうございます！";
+dict_table["feedback_yes"] <- "フォームを/nひらく";
+dict_table["feedback_no"] <- "今はしない";

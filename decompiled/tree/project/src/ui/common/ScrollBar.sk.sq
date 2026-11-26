@@ -1,0 +1,177 @@
+class ScrollBarV {
+  scrollable = false;
+  area_bnd = null;
+
+  scroll_panel = null;
+
+  view = null;
+  knob = null;
+  min_knob_size = 0;
+
+  bar_length = 0;
+
+  mousey = null;
+  enable_movfunc = null;
+
+  constructor(view) {
+    this.knob = view.findChild("knob");
+    this.min_knob_size = this.knob.bnd.h;
+
+    this.bar_length = view.findChild("bar").bnd.h;
+    this.enable_movfunc = true;
+  }
+
+  function setup(scroll_panel, area_bnd, scrollable = false) {
+    this.scrollable = scrollable;
+    this.area_bnd = area_bnd;
+
+    if (this.scrollable) this.knob.addEventListener(MOUSE_EVENT, mouseevent_knob);
+
+    updatePanel(scroll_panel);
+  }
+
+  function setEnabledKnob(b) {
+    this.knob.setEnabled(b);
+  }
+
+  function update() {
+    local view_h = this.scroll_panel.view.bnd.h;
+    local area_h = this.area_bnd.h;
+    local rate = Math.clamp(area_h / view_h, 0.0, 1.0);
+
+    this.knob.bnd.h = int(Math.max(this.bar_length * rate, this.min_knob_size));
+    this.knob.updateLayout();
+    _updateKnobPos(this.scroll_panel);
+  }
+
+  function updatePanel(scroll_panel) {
+    if (!("movfunc" in scroll_panel)) return;
+
+    if (this.scroll_panel) this.scroll_panel.movfunc = null;
+    this.scroll_panel = scroll_panel;
+    this.scroll_panel.movfunc = _updateKnobPos.bindenv(this);
+    update();
+  }
+
+  function _updateKnobPos(scroll_panel) {
+    if (!this.enable_movfunc) return;
+
+    local py = -scroll_panel.view.pos.y;
+    local rate = Math.clamp(float(py) / (scroll_panel.view.bnd.h - area_bnd.h), 0.0, 1.0);
+    this.knob.pos.y = (bar_length - knob.bnd.h) * rate - knob.bnd.y;
+    this.knob.matdirty = true;
+  }
+
+  function mouseevent_knob(e) {
+    e.consume();
+    if (this.knob.bnd.h == this.bar_length) return;
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.mousey = e.y;
+      this.enable_movfunc = false;
+      break;
+    case MOUSE_DRAGGED:
+      local diff = (e.y - this.mousey) / ::getDisplayScale();
+      this.knob.pos.y += diff;
+      this.knob.pos.y = Math.clamp(this.knob.pos.y, 0, bar_length - this.knob.bnd.h);
+      local rate = (this.knob.bnd.y + this.knob.pos.y) / (bar_length - this.knob.bnd.h);
+      local newy = (this.scroll_panel.view.bnd.h - this.area_bnd.h) * rate;
+      this.scroll_panel.moveTo(0, -newy, 0);
+      this.mousey = e.y;
+      this.knob.matdirty = true;
+      break;
+    case MOUSE_RELEASED:
+      this.enable_movfunc = true;
+    }
+  }
+}
+
+class ScrollBarH {
+  scrollable = false;
+  area_bnd = null;
+
+  scroll_panel = null;
+
+  view = null;
+  knob = null;
+  min_knob_size = 0;
+
+  bar_length = 0;
+
+  mousex = null;
+  enable_movfunc = null;
+
+  constructor(view) {
+    this.knob = view.findChild("knob");
+    this.min_knob_size = this.knob.bnd.w;
+
+    this.bar_length = view.findChild("bar").bnd.w;
+    this.enable_movfunc = true;
+  }
+
+  function setup(scroll_panel, area_bnd, scrollable = false) {
+    this.scrollable = scrollable;
+    this.area_bnd = area_bnd;
+
+    if (this.scrollable) this.knob.addEventListener(MOUSE_EVENT, mouseevent_knob);
+
+    updatePanel(scroll_panel);
+  }
+
+  function setEnabledKnob(b) {
+    this.knob.setEnabled(b);
+  }
+
+  function update() {
+    local view_w = this.scroll_panel.view.bnd.w;
+    local area_w = this.area_bnd.w;
+    local rate = Math.clamp(area_w / view_w, 0.0, 1.0);
+    this.knob.bnd.w = int(Math.max(this.bar_length * rate, this.min_knob_size));
+    this.knob.updateLayout();
+
+    _updateKnobPos(this.scroll_panel);
+  }
+
+  function updatePanel(scroll_panel) {
+    if (!("movfunc" in scroll_panel)) return;
+
+    if (this.scroll_panel) this.scroll_panel.movfunc = null;
+    this.scroll_panel = scroll_panel;
+    this.scroll_panel.movfunc = _updateKnobPos.bindenv(this);
+    update();
+  }
+
+  function _updateKnobPos(scroll_panel) {
+    if (!this.enable_movfunc) return;
+
+    local px = -scroll_panel.view.pos.x;
+    local rate = Math.clamp(float(px) / (scroll_panel.view.bnd.w - area_bnd.w), 0.0, 1.0);
+    this.knob.pos.x = (bar_length - knob.bnd.w) * rate - knob.bnd.x;
+    this.knob.matdirty = true;
+  }
+
+  function mouseevent_knob(e) {
+    e.consume();
+    if (this.knob.bnd.w == this.bar_length) return;
+
+    switch (e.id) {
+    case MOUSE_PRESSED:
+      this.mousex = e.x;
+      this.enable_movfunc = false;
+      break;
+    case MOUSE_DRAGGED:
+      local diff = (e.x - this.mousex) / ::getDisplayScale();
+      this.knob.pos.x += diff;
+      this.knob.pos.x = Math.clamp(this.knob.pos.x, 0, bar_length - this.knob.bnd.w);
+
+      local rate = (this.knob.bnd.x + this.knob.pos.x) / (bar_length - this.knob.bnd.w);
+      local newx = (this.scroll_panel.view.bnd.w - this.area_bnd.w) * rate;
+      this.scroll_panel.moveTo(-newx, 0, 0);
+      this.mousex = e.x;
+      this.knob.matdirty = true;
+      break;
+    case MOUSE_RELEASED:
+      this.enable_movfunc = true;
+    }
+  }
+}

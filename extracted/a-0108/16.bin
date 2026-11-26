@@ -1,0 +1,33 @@
+// UIScript created by DiaryPanel.ui 
+
+
+
+function setupPanelMissionPanel() {
+	$img_line1.visible = false;
+	$img_line2.visible = false;
+	$img_line3.visible = false;
+//	$btn_R.visible = false;
+//	$btn_L.visible = false;
+	$pnl_nochallenge.visible = false;
+	$room_s.visible = false;
+	$lbl_room.visible = false;
+	$btn_select.visible = false;
+	$lbl_diarytitle.visible = false;
+	$lbl_diary.visible = false;
+}
+
+function setupDiaryPanel() {
+	$pnl_nochallenge.visible = false;
+	$room_s.visible = false;
+	$lbl_room.visible = false;
+	$btn_select.visible = false;
+	$pnl_mission_info.visible = false;
+	$pnl_remain.visible = false;
+}
+
+function completeDiary() {
+	generatePtd("/res/efx/ptd/diarymission_complete_kira.ptd", 640, 480, 0.2);
+	pass(200);
+	generatePtd("/res/efx/ptd/diarymission_complete_kira.ptd", 640, 480, 0.4);
+	pass(2000);
+}

@@ -1,0 +1,180 @@
+class SKResourceTreeAdaptor extends TreeAdaptor
+{
+  cellh = 20;
+  listfilterfunc = null;
+  iconmap = null;
+
+  listselect1 = null;
+  listselect2 = null;
+  listmouseon = null;
+
+  foldericon = null;
+  defaulticon = null;
+
+  static nulllist = [];
+
+  constructor(resroot) {
+    rootnode = resroot;
+    iconmap = {
+    };
+    foldericon = ::getSprite("/system/ui.silver/icon.clp#folder");
+    defaulticon = ::getSprite("/system/ui.silver/icon.clp#document");
+
+    listselect1 = ::getSprite("/system/ui.silver/ui.clp#listselect1");
+    listselect2 = ::getSprite("/system/ui.silver/ui.clp#listselect2");
+    listmouseon = ::getSprite("/system/ui.silver/ui.clp#listmouseon");
+  }
+
+  function makeList(node) {
+    if (!node.isdir) {
+      return nulllist;
+    }
+    if (listfilterfunc) {
+      local a = [];
+      foreach (v in node.getList()) {
+        if (listfilterfunc(node, v)) {
+          a + v;
+        }
+      }
+      return a;
+    } else {
+      return node.getList();
+    }
+  }
+
+  function getItemView(idx, convertv, parentv, stateonly) {
+    if (!(convertv instanceof ListItem)) {
+      convertv = ListItem();
+    }
+    local r = list[idx];
+    if (!stateonly) {
+      convertv.setResource(idx, r, getChildCount(r) > 0, parentv.expands[r.path] || false);
+    }
+    if (parentv.isSelected(idx)) {
+      if (parentv.focused) {
+        convertv.backsp = clone listselect2;
+      } else {
+        convertv.backsp = clone listselect1;
+      }
+    } else
+    if (parentv.isMouseon(idx)) {
+      convertv.backsp = clone listmouseon;
+    } else {
+      convertv.backsp = null;
+    }
+
+    convertv.setSize(getIndent(r), parentv.bnd.w, cellh)
+    return convertv;
+  }
+
+  function getItemFlags(idx) {
+    local visible = true;
+    local unlock = true;
+    local isdir = (list[idx]["isdir"]) ? true : false;
+    return (visible ? 1 : 0) | (unlock ? 2 : 0) | (isdir ? 128 : 0);
+  }
+
+  function getCellHeight() {
+    return cellh;
+  }
+
+  function getNodeKey(o) {
+    return o.path;
+  }
+
+  function getChildCount(o) {
+    return getChildren(o).len();
+  }
+
+  function getChildren(o) {
+
+    return makeList(o);
+  }
+
+  function getParent(o) {
+    return o == rootnode ? null : o.pres;
+  }
+
+  function getIndent(o) {
+    local l = -1;
+    while (o != rootnode) {
+      l++;
+      o = o.pres;
+    }
+    return l;
+  }
+}
+
+class SKResourceTreeAdaptor.ListItem extends SKView
+{
+  static deffontattr = FontAttribute(Fonts.ui, 12, 255, SK_FONT_BOLD);
+
+  idx = 0;
+  expandbtn = null;
+  backsp = null;
+  icon = null;
+  textbox = null;
+
+  sp = null;
+
+  constructor() {
+    expandbtn = SKExpandTriangleButton();
+    expandbtn.setRect(0, 0, 16, 16);
+    addChild(expandbtn);
+    textbox = TextBox(deffontattr);
+    textbox.align = 3;
+    textbox.colormask = 255;
+    pickable = false;
+    sp = Sprite();
+    sp.pos = Vector3D();
+    sp.blend = SK_MIX;
+  }
+
+  function setResource(i, r, xable, xed) {
+    idx = i;
+    local ic = ::getResourceIcon(r);
+    if (ic) {
+      icon = sp; sp.bnd = ic.bnd; sp.tex0 = ic.tex0; sp.uvmat0 = ic.uvmat0; sp.color0 = ic.color0;
+    } else {
+      icon = null;
+    }
+    textbox.setText(r.name);
+    if (xable) {
+      expandbtn.visible = true;
+      expandbtn.setExpanded(xed);
+    } else {
+      expandbtn.visible = false;
+      expandbtn.setExpanded(xed);
+    }
+  }
+
+  function setSize(indent, w, h) {
+
+    bnd.set(0.0, 0.0, w, h);
+    if (backsp) backsp.bnd.set(0.0, 0.0, w, h);
+    local iw = indent * 12;
+    expandbtn.pos.set(2 + iw, 2);
+    expandbtn.matdirty = true;
+    if (sp) {
+      sp.pos.x = iw + 28;
+      sp.pos.y = (h >> 1) + 0.0;
+    }
+    textbox.setRect(42 + iw, 0, w - 22 - iw, h);
+    matdirty = true;
+  }
+
+  function render() {
+    skDrawSprite(backsp);
+    skDrawSprite(icon);
+    skDrawTextBox(textbox);
+  }
+
+  function processEvent(e) {
+    if (e.id == ACTION_PERFORMED && e.src == expandbtn) {
+      e.consume();
+      postActionEvent(e.actioncmd);
+      return true;
+    } else
+    return super.processEvent(e);
+  }
+}

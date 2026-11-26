@@ -1,0 +1,29 @@
+with TalkRunner {
+  pause_scp <- false;
+
+  function run() {
+    running = true;
+    runningthread = currentthread();
+    while (running) {
+      while (pause_scp) {
+        suspend();
+      }
+
+      local c = scp.code[pc++];
+      try {
+        handling = true;
+        this[c.op](c);
+        handling = false;
+      } catch (ex) {
+        printf("TalkRunner error at line %d in %S\n", scp.getLine(pc - 1), scp.name);
+        printf("command : %S\n", encodeJSON(c));
+        printf("arg : %S\n", encodeJSON(api.args));
+        running = false;
+        runningthread = false;
+        sendException(ex, "error in talkrunner ....");
+        throw ex;
+      }
+    }
+    runningthread = false;
+  }
+}

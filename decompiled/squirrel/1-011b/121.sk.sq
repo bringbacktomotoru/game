@@ -1,0 +1,384 @@
+class PanelMissionManager {
+  get_new_piece = null;
+  current_data = null;
+  scene = null;
+
+  constructor(scene) {
+    this.get_new_piece = false;
+    this.scene = scene;
+  }
+
+  function chagnePanelMission(pmid) {
+    this.current_data = ::gamesession.getUserData().getPanelMissionData(pmid);
+    _checkClear();
+  }
+  function changePanelMissionByRoomId(rid) {
+    local _red = ::gamesession.getUserData().getRoomEditData(rid);
+    this.current_data = _red.getPanelMissionData();
+    _checkClear();
+  }
+
+  function _checkClear() {
+    local _newpiece = false;
+    local need_next_ids = [];
+
+    if (this.current_data) {
+      foreach (md in this.current_data.getMissionDataList()) {
+        switch (md.getMissionSetting().getType()) {
+        case ::MissionSetting.TYPE_HAS_COSTUME:
+        case ::MissionSetting.TYPE_GET_NEW_COSTUME:
+          _checkHasCostume(md);
+          break;
+        case ::MissionSetting.TYPE_HAS_FURNITURE:
+          _checkHasFurniture(md);
+          break;
+        case ::MissionSetting.TYPE_LAYOUT_FURNITURE_ID:
+          _checkLayoutFurnitureIDByMissionData(md);
+          break;
+        case ::MissionSetting.TYPE_LAYOUT_FURNITURE_TYPE:
+          _checkLayoutFurnitureTypeByMissionData(md);
+          break;
+        }
+
+        if (md.isCleared() && !md.isSetPiece()) _newpiece = true;
+        if (md.isCleared() && md.hasNext()) need_next_ids + md.getID();
+      }
+    }
+
+    _sendRequestNextMission(need_next_ids);
+
+    this.get_new_piece = _newpiece;
+    updateNoSetMissionClearNumAtHomeTop();
+  }
+
+  function isNewPiece() {
+    return this.get_new_piece;
+  }
+
+  function setNewPiece(b) {
+    this.get_new_piece = b;
+  }
+
+  function updateNoSetMissionClearNumAtHomeTop() {
+    local _cp = this.scene.getUI().getCurrentPanel();
+    local _num = 0;
+    if (this.current_data) {
+      foreach (md in this.current_data.getMissionDataList()) {
+        if (!md.isCleared()) continue;
+        if (md.hasNext()) continue;
+        if (md.isSetPiece()) continue;
+        _num++;
+      }
+    }
+    if (_cp instanceof ::HomeTopPanel) {
+
+      _cp.updateViewPanelMissionClearNum(_num);
+    }
+  }
+
+  function _process(type, val, targets, target_str = null) {
+    local need_api_mds = [];
+    local need_next_mids = [];
+    local _last = this.get_new_piece;
+
+    if (!this.current_data) return;
+    foreach (md in this.current_data.getMissionDataList()) {
+      if (md.isCleared()) continue;
+      if (!md.checkMissionType(type)) continue;
+      if (!md.checkTargetList(targets)) continue;
+      if (target_str && !md.checkTargetStr(target_str)) continue;
+
+      local _ret = md.updateProgress(val);
+      if (_ret) {
+        if (md.isCleared()) {
+          this.get_new_piece = true;
+          if (md.hasNext()) need_next_mids + md.getID();
+        }
+        if (md.needSendProgressAPI()) need_api_mds + md;
+      }
+    }
+
+    if (need_api_mds.len() > 0) {
+      local _mids = [];
+      local _progresses = [];
+      foreach (md in need_api_mds) {
+        _mids + md.getID();
+        _progresses + md.getProgress();
+      }
+
+      _sendMissionProgress(_mids, _progresses);
+    }
+
+    if (need_next_mids.len() > 0) {
+      _sendRequestNextMission(need_next_mids);
+    }
+
+    this.current_data.checkAllCleared();
+    updateNoSetMissionClearNumAtHomeTop();
+  }
+
+  function _sendMissionProgress(mids, progresses) {
+    newthread().start(function() {
+      ::gamesession.sendMissionProgress(mids, progresses);
+    }.bindenv(this), this);
+  }
+
+  function _sendRequestNextMission(mids) {
+    if (!this.current_data) return;
+
+    newthread().start(function() {
+
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof SanrioGameScene) {
+        local _pm_keeper = _scene.getProductionManager().time_keeper;
+        local _ret = _pm_keeper.processSendPoolTapRequest();
+        if (!_ret) {
+
+          while (_pm_keeper.getSendPoolThread()) {
+            sleep(500);
+            if (!(::gamesession.getCurrentScene() instanceof SanrioGameScene)) return;
+          }
+        }
+        else if (_ret.ret != ::ServletConstants.RESPONSE_SUCCEED) return;
+      }
+
+      local _ret = ::gamesession.sendSetPiece(this.current_data.getID(), mids);
+      if (_ret["ret"] == ::ServletConstants.RESPONSE_SUCCEED) {
+        foreach (mid in mids) {
+          foreach (md in this.current_data.getMissionDataList()) {
+            if (md.getID() != mid) continue;
+            this.current_data.changeNextMission(md.getID(), md.getNextMissionID());
+          }
+        }
+      }
+    }.bindenv(this), this);
+  }
+
+  function tapHeart(val, fid, cids) {
+    if (!this.current_data) return;
+
+    local _targets = [];
+    _targets.extend(_createTargetList(ITEM_TYPE_FURNITURE, fid));
+    foreach (cid in cids) {
+      _targets.extend(_createTargetList(ITEM_TYPE_COSTUME, cid));
+    }
+
+    _process(::MissionSetting.TYPE_NUMS_TAPHAPINESS, val, _targets);
+  }
+
+  function useFurniture(fid, cids) {
+    if (!this.current_data) return;
+
+    local _targets = [];
+    _targets.extend(_createTargetList(ITEM_TYPE_FURNITURE, fid));
+    foreach (cid in cids) {
+      _targets.extend(_createTargetList(ITEM_TYPE_COSTUME, cid));
+    }
+
+    _process(::MissionSetting.TYPE_NUMS_USEFURNITURE, 1, _targets);
+  }
+
+  function showTalkFurniture(fid, cids) {
+    if (!this.current_data) return;
+
+    local _targets = [];
+    _targets.extend(_createTargetList(ITEM_TYPE_FURNITURE, fid));
+    foreach (cid in cids) {
+      _targets.extend(_createTargetList(ITEM_TYPE_COSTUME, cid));
+    }
+
+    _process(::MissionSetting.TYPE_NUMS_TALKFURNITURE, 1, _targets);
+    _useBonusHapiness(cids, fid);
+  }
+
+  function showTalkChara(chara_id, sentence_id, cid) {
+    if (!this.current_data) return;
+
+    local _targets = [];
+    _targets.extend(_createTargetList(ITEM_TYPE_CHARA, chara_id));
+    _targets.extend(_createTargetList(ITEM_TYPE_CHARASENTENCE, sentence_id));
+
+    _process(::MissionSetting.TYPE_NUMS_TALKCHARA, 1, _targets);
+    _useBonusHapiness([cid]);
+  }
+
+  function _useBonusHapiness(cids, fid = -1) {
+    if (!this.current_data) return;
+
+    local _targets = [];
+    foreach (cid in cids) {
+      _targets.extend(_createTargetList(ITEM_TYPE_COSTUME, cid));
+    }
+    if (fid > 0) _targets.extend(_createTargetList(ITEM_TYPE_FURNITURE, fid));
+
+    _process(::MissionSetting.TYPE_NUMS_BONUSHAPINESS, 1, _targets);
+  }
+
+  function addGM(val) {
+    if (!this.current_data) return;
+    _process(::MissionSetting.TYPE_GET_GM, val, []);
+  }
+
+  function consumeGM(val) {
+    if (!this.current_data) return;
+    _process(::MissionSetting.TYPE_CONSUME_GM, val, []);
+  }
+
+  function getNewFurniture(fid) {
+    if (!this.current_data) return;
+
+    local _targets = [];
+    _targets.extend(_createTargetList(ITEM_TYPE_FURNITURE, fid));
+    _process(::MissionSetting.TYPE_GET_NEW_FURNITURE, 1, _targets);
+    checkHasFurniture(fid);
+  }
+
+  function getNewCostume(cid) {
+    if (!this.current_data) return;
+
+    local _targets = [];
+    _targets.extend(_createTargetList(ITEM_TYPE_COSTUME, cid));
+    _process(::MissionSetting.TYPE_GET_NEW_COSTUME, 1, _targets);
+  }
+
+  function showUniqueTalk(talkkey, charakey) {
+    if (!this.current_data) return;
+
+    local _targets = [];
+    local _scs = ::gamesetting.getSanrioCharaSettingByNameKey(charakey);
+    _targets.extend(_createTargetList(ITEM_TYPE_CHARA, _scs.getID()));
+
+    _process(::MissionSetting.TYPE_UNIQUE_TALKKEY, 1, _targets, talkkey);
+  }
+
+  function checkHasCostume(cid) {
+    if (!this.current_data) return;
+
+    local _ud = ::gamesession.getUserData();
+    local _val = _ud.hasCostume(cid) ? 1 : 0;
+    local _targets = [];
+    _targets.extend(_createTargetList(ITEM_TYPE_COSTUME, cid));
+
+    _process(::MissionSetting.TYPE_HAS_COSTUME, _val, _targets);
+  }
+  function _checkHasCostume(md) {
+    if (!this.current_data) return;
+
+    local _ud = ::gamesession.getUserData();
+    local _ms = md.getMissionSetting();
+    local _target_list = _ms.getTargetList();
+
+    local _ret = false;
+    local _isand = _ms.isTargetAnd();
+    foreach (t in _target_list) {
+      if (t.kind != ITEM_TYPE_COSTUME) continue;
+      _ret = _ud.hasCostume(t.id);
+      if (_isand && !_ret) break;
+      if (!_isand && _ret) break;
+    }
+
+    if (_ret) md.updateProgress(1);
+  }
+
+  function checkHasFurniture(fid) {
+    if (!this.current_data) return;
+
+    local _ud = ::gamesession.getUserData();
+    local _targets = [];
+    _targets.extend(_createTargetList(ITEM_TYPE_FURNITURE, fid));
+
+    _process(::MissionSetting.TYPE_HAS_FURNITURE, _ud.getFurnitureAmount(fid), _targets);
+  }
+  function _checkHasFurniture(md) {
+    if (!this.current_data) return;
+
+    local _ud = ::gamesession.getUserData();
+    local _ms = md.getMissionSetting();
+    local _target_list = _ms.getTargetList();
+
+    local _amount = 0;
+    foreach (t in _target_list) {
+      if (t.kind != ITEM_TYPE_FURNITURE) continue;
+      _amount += _ud.getFurnitureAmount(t.id);
+    }
+
+    md.updateProgress(_amount);
+  }
+
+  function checkLayoutFurnitureID(fid) {
+    if (!this.current_data) return;
+
+    local _ud = ::gamesession.getUserData();
+    local _targets = [];
+    _targets.extend(_createTargetList(ITEM_TYPE_FURNITURE, fid));
+
+    local _fad = _ud.getFurnitureAmountData(fid) || null;
+    if (!_fad) return;
+    _process(::MissionSetting.TYPE_LAYOUT_FURNITURE_ID, _fad.getLayoutAmount(), _targets);
+
+    local _fadt = _ud.getFurnitureAmountTable();
+    local _type = ::gamesetting.furniture_settings[fid].getType();
+    local _total = 0;
+    foreach (id, fad in _fadt) {
+      local _fs = ::gamesetting.furniture_settings[id];
+      if (_type != _fs.getType()) continue;
+      _total += fad.getLayoutAmount();
+    }
+    _process(::MissionSetting.TYPE_LAYOUT_FURNITURE_TYPE, _total, _targets);
+  }
+
+  function _checkLayoutFurnitureIDByMissionData(md) {
+    if (!this.current_data) return;
+
+    local _ms = md.getMissionSetting();
+    local _target_list = _ms.getTargetList();
+
+    foreach (t in _target_list) {
+      if (t.kind != ITEM_TYPE_FURNITURE) continue;
+      checkLayoutFurnitureID(t.id);
+      break;
+    }
+  }
+
+  function _checkLayoutFurnitureTypeByMissionData(md) {
+    local _ud = ::gamesession.getUserData();
+    local _fadt = _ud.getFurnitureAmountTable();
+
+    local _ms = md.getMissionSetting();
+    local _target_list = _ms.getTargetList();
+
+    foreach (t in _target_list) {
+      if (t.kind != ITEM_TYPE_FURNITURETYPE) continue;
+
+      local _targets = [];
+      _targets.extend(_createTargetList(ITEM_TYPE_FURNITURETYPE, t.id));
+      local _total = 0;
+      foreach (id, fad in _fadt) {
+        local _fs = ::gamesetting.furniture_settings[id];
+        if (t.id != _fs.getType()) continue;
+        _total += fad.getLayoutAmount();
+      }
+      _process(::MissionSetting.TYPE_LAYOUT_FURNITURE_TYPE, _total, _targets);
+      break;
+    }
+  }
+
+  function _createTargetList(kind, id) {
+    local _list = [];
+    _list + { kind = kind, id = id };
+
+    switch (kind) {
+    case ITEM_TYPE_FURNITURE:
+      local _fs = ::gamesetting.furniture_settings[id];
+      _list + { kind = ITEM_TYPE_FURNITURETYPE, id = _fs.getType() };
+
+      break;
+    case ITEM_TYPE_COSTUME:
+      local _cs = ::gamesetting.costume_settings[id];
+      _list + { kind = ITEM_TYPE_CHARA, id = _cs.getCharaID() };
+      break;
+    }
+
+    return _list;
+  }
+}

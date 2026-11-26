@@ -1,0 +1,60 @@
+bgm["BGM01"] <- {
+  name = "BGM01.ogg";
+  startpoint = 0;
+  endpoint = 8388084;
+  looppoint = 180369;
+  vol = 255;
+}
+
+bgm["BGM02"] <- {
+  name = "BGM02.ogg";
+  startpoint = 0;
+  endpoint = 6577735;
+  looppoint = 600862;
+  vol = 200;
+}
+
+bgm["BGM03"] <- {
+  name = "BGM03.ogg";
+  vol = 200;
+}
+
+bgm["BGM04"] <- {
+  name = "BGM04.ogg";
+}
+
+bgm["BGM05"] <- {
+  name = "BGM05.ogg";
+  vol = 200;
+}
+
+bgm["BGM06"] <- {
+  name = "BGM06.ogg";
+  vol = 200;
+}
+
+bgm["BGM07"] <- {
+  name = "BGM07.ogg";
+  vol = 200;
+}
+
+bgm["BGM08"] <- {
+  name = "BGM08.ogg";
+}
+
+bgm["BGM09"] <- {
+  name = "BGM09.ogg";
+}
+
+bgm["P-1"] <- {
+  name = "piano_kitty1.ogg";
+  vol = 200;
+}
+bgm["P-2"] <- {
+  name = "piano_kitty2.ogg";
+  vol = 200;
+}
+bgm["P-3"] <- {
+  name = "piano_kitty3.ogg";
+  vol = 255;
+}

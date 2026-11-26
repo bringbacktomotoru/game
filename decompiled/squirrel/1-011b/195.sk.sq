@@ -1,0 +1,7 @@
+foreach (f_name in [
+"globals.sk"
+
+"ServletConstants.sk"
+]) {
+  runsk("/src/globals/" + f_name);
+}

@@ -1,0 +1,17 @@
+return {
+  modeldata = "wall_FR.mdl"
+  bnd = [-14.092211, 4.396939, -10.086587, 2.154453, 4.3749, 2.154454]
+
+  material = [
+  {
+    name = "room_mt"
+    tec = "shading.basic"
+    Ka = 0xfffffffd
+    Kd = 0xffffffff
+    Ks = 0xdbdbdbff
+    Ke = 0
+    shiness = 20.0
+    texture0 = "/res/room/creamycafe/tex/creamycafe.png"
+  }
+  ]
+}

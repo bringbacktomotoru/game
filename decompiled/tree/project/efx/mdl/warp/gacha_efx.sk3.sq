@@ -1,0 +1,17 @@
+model =
+{
+  root = {
+    pm = "gacha.pm"
+  }
+}
+
+scriptclass = "SK3DScriptRunner"
+
+script =
+{
+  function start() {
+    uvscroll(-0.1, 0.8);
+
+  }
+
+}

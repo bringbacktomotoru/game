@@ -1,0 +1,19 @@
+return {
+  modeldata = "efxline.mdl"
+  bnd = [0.0, 0.0, -2.2, 1.278593, 1.278593, 2.61]
+
+  material = [
+  {
+    name = "efxline"
+    tec = "decal.def"
+    Ka = 0xffffff00
+    Kd = 0xccccccff
+    Ks = 0xffffff00
+    Ke = 0
+    shiness = 50.0
+    alphatest = 1
+    alpharef = 0.7
+    texture0 = "tex/efxline.png"
+  }
+  ]
+}

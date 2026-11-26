@@ -1,0 +1,38 @@
+;
+;----------- おでかけ行くとき -------------
+
+; ドア指定
+[focusdoor]
+
+; カメラ初期位置
+[movecamera type=1 z=-16.5 y=2.3 time=0]
+[rotatecamera pitch=0]
+
+; キャラ出現
+[popchara z=-5 angle=0 relative=true]
+
+[startanime time=1500 script=tefuri]
+[waitaction script=tefuri]
+
+[startanime time=1000 script=event_stand_smile]
+[waitaction script=event_stand_smile]
+
+; キャラ悩む
+[startanime time=5500 script=multipurpose_nayamu]
+[balloon time=5500]
+[talk talk_key = "quest_wark_start_1_1" index=3]
+[wait time=5500]
+[endballoon]
+[waitaction script=multipurpose_nayamu]
+[wait time=500]
+; キャラ思いつく
+[startanime time=5500 script=event_burabura]
+[balloon time=5500]
+[talk talk_key = "quest_wark_start_1_2" index=3]
+[wait time=5500]
+[endballoon]
+[waitaction script=event_burabura]
+
+[startanime time=800 script=event_unaduku]
+[waitaction script=event_unaduku]
+[wait time=800]

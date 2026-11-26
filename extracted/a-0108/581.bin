@@ -1,0 +1,1024 @@
+{
+  "ID": "7786b990-6c6c-430c-89b6-d6c419f55930",
+  "Version": "2.3.3.0",
+  "Name": "ShopFurniturePanel",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 318,
+        "Children": [
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 0.875
+            },
+            "TopMargin": 160.0,
+            "Tag": 254,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/menu_bg.jpg",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 500.0
+                },
+                "Scale": {
+                  "ScaleX": 0.57,
+                  "ScaleY": 1.38
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.4464
+                },
+                "PreSize": {
+                  "X": 1.7778,
+                  "Y": 0.6429
+                },
+                "LeftMargin": -280.0,
+                "RightMargin": -280.0,
+                "TopMargin": 260.0,
+                "BottomMargin": 140.0,
+                "Tag": 421,
+                "ActionTag": -1042235499,
+                "Size": {
+                  "X": 1280.0,
+                  "Y": 720.0
+                },
+                "Name": "bg",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FontSize": 48,
+                "LabelText": "家具購入",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/logotypejp_mp_b_1.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {},
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 1060.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.9464
+                },
+                "PreSize": {
+                  "X": 0.2708,
+                  "Y": 0.0446
+                },
+                "LeftMargin": 262.5,
+                "RightMargin": 262.5,
+                "TopMargin": 35.0,
+                "BottomMargin": 1035.0,
+                "Tag": 253,
+                "ActionTag": 1081587355,
+                "Size": {
+                  "X": 195.0,
+                  "Y": 50.0
+                },
+                "Name": "lbl_title",
+                "ctype": "TextObjectData"
+              },
+              {
+                "BackColorAlpha": 102,
+                "ComboBoxIndex": 1,
+                "SingleColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "FirstColor": {
+                  "R": 150,
+                  "G": 200
+                },
+                "EndColor": {},
+                "ColorVector": {
+                  "ScaleY": 1.0
+                },
+                "Scale9Width": 1,
+                "Scale9Height": 1,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 560.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.5
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 0.6429
+                },
+                "TopMargin": 200.0,
+                "BottomMargin": 200.0,
+                "Tag": 546,
+                "ActionTag": 2103091116,
+                "Size": {
+                  "X": 720.0,
+                  "Y": 720.0
+                },
+                "Name": "pnl_list",
+                "ctype": "PanelObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/btn_h3.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 340.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.3036
+                },
+                "PreSize": {
+                  "X": 0.25,
+                  "Y": 0.0696
+                },
+                "LeftMargin": 270.0,
+                "RightMargin": 270.0,
+                "TopMargin": 741.0,
+                "BottomMargin": 301.0,
+                "Tag": 772,
+                "Children": [
+                  {
+                    "FontSize": 34,
+                    "LabelText": "買う",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "OutlineSize": 4,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 90.0,
+                      "Y": 39.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.3556,
+                      "Y": 0.5385
+                    },
+                    "LeftMargin": 58.0,
+                    "RightMargin": 58.0,
+                    "TopMargin": 18.0,
+                    "BottomMargin": 18.0,
+                    "Tag": 773,
+                    "ActionTag": -1936123656,
+                    "Size": {
+                      "X": 64.0,
+                      "Y": 42.0
+                    },
+                    "Name": "label",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 621650073,
+                "Size": {
+                  "X": 180.0,
+                  "Y": 78.0
+                },
+                "Name": "btn_buy",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/btn/btn_menu_option.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 653.996,
+                  "Y": 338.0507
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.9083,
+                  "Y": 0.3018
+                },
+                "PreSize": {
+                  "X": 0.1819,
+                  "Y": 0.1179
+                },
+                "LeftMargin": 588.496,
+                "RightMargin": 0.504,
+                "TopMargin": 715.9493,
+                "BottomMargin": 272.0507,
+                "Tag": 305,
+                "Children": [
+                  {
+                    "FontSize": 28,
+                    "LabelText": "模様替え",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "OutlineSize": 4,
+                    "OutlineColor": {},
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 65.5,
+                      "Y": 66.0
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "IconVisible": false,
+                    "PositionPercentXEnabled": true,
+                    "PositionPercentYEnabled": true,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.5
+                    },
+                    "PreSize": {
+                      "X": 0.8473,
+                      "Y": 0.2727
+                    },
+                    "LeftMargin": 10.0,
+                    "RightMargin": 10.0,
+                    "TopMargin": 48.0,
+                    "BottomMargin": 48.0,
+                    "Tag": 306,
+                    "ActionTag": 1979126918,
+                    "Size": {
+                      "X": 111.0,
+                      "Y": 36.0
+                    },
+                    "Name": "label",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": -339189845,
+                "Size": {
+                  "X": 131.0,
+                  "Y": 132.0
+                },
+                "Name": "btn_editroom",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/btn_cs2.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 66.0,
+                  "Y": 210.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0917,
+                  "Y": 0.1875
+                },
+                "PreSize": {
+                  "X": 0.1819,
+                  "Y": 0.1179
+                },
+                "LeftMargin": 0.5,
+                "RightMargin": 588.5,
+                "TopMargin": 844.0,
+                "BottomMargin": 144.0,
+                "Tag": 774,
+                "Children": [
+                  {
+                    "IsCustomSize": true,
+                    "FontSize": 34,
+                    "LabelText": "壁紙",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "OutlineSize": 4,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 65.5,
+                      "Y": 65.5
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.4962
+                    },
+                    "PreSize": {
+                      "X": 0.5725,
+                      "Y": 0.3182
+                    },
+                    "LeftMargin": 28.0,
+                    "RightMargin": 28.0,
+                    "TopMargin": 45.5,
+                    "BottomMargin": 44.5,
+                    "Tag": 775,
+                    "ActionTag": -2020056025,
+                    "Size": {
+                      "X": 75.0,
+                      "Y": 42.0
+                    },
+                    "Name": "label",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": -1939693325,
+                "Size": {
+                  "X": 131.0,
+                  "Y": 132.0
+                },
+                "Name": "btn_wall",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/btn_cs2.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 196.0,
+                  "Y": 210.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.2722,
+                  "Y": 0.1875
+                },
+                "PreSize": {
+                  "X": 0.1819,
+                  "Y": 0.1179
+                },
+                "LeftMargin": 130.5,
+                "RightMargin": 458.5,
+                "TopMargin": 844.0,
+                "BottomMargin": 144.0,
+                "Tag": 41,
+                "Children": [
+                  {
+                    "IsCustomSize": true,
+                    "FontSize": 34,
+                    "LabelText": "床",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "OutlineSize": 4,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 65.5,
+                      "Y": 65.5
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.4962
+                    },
+                    "PreSize": {
+                      "X": 0.313,
+                      "Y": 0.3182
+                    },
+                    "LeftMargin": 45.0,
+                    "RightMargin": 45.0,
+                    "TopMargin": 45.5,
+                    "BottomMargin": 44.5,
+                    "Tag": 42,
+                    "ActionTag": 86878771,
+                    "Size": {
+                      "X": 41.0,
+                      "Y": 42.0
+                    },
+                    "Name": "label",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": -794821809,
+                "Size": {
+                  "X": 131.0,
+                  "Y": 132.0
+                },
+                "Name": "btn_floor",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/btn_cs2.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 320.0,
+                  "Y": 210.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.4444,
+                  "Y": 0.1875
+                },
+                "PreSize": {
+                  "X": 0.1819,
+                  "Y": 0.1179
+                },
+                "LeftMargin": 254.5,
+                "RightMargin": 334.5,
+                "TopMargin": 844.0,
+                "BottomMargin": 144.0,
+                "Tag": 43,
+                "Children": [
+                  {
+                    "IsCustomSize": true,
+                    "FontSize": 34,
+                    "LabelText": "壁掛け",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineSize": 4,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 65.5,
+                      "Y": 65.5
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.4962
+                    },
+                    "PreSize": {
+                      "X": 0.771,
+                      "Y": 0.6364
+                    },
+                    "LeftMargin": 15.0,
+                    "RightMargin": 15.0,
+                    "TopMargin": 24.5,
+                    "BottomMargin": 23.5,
+                    "Tag": 44,
+                    "ActionTag": -1209955136,
+                    "Size": {
+                      "X": 101.0,
+                      "Y": 84.0
+                    },
+                    "Name": "label",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": -1779269182,
+                "Size": {
+                  "X": 131.0,
+                  "Y": 132.0
+                },
+                "Name": "btn_funi_wall",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/btn_cs2.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 450.0,
+                  "Y": 210.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.625,
+                  "Y": 0.1875
+                },
+                "PreSize": {
+                  "X": 0.1819,
+                  "Y": 0.1179
+                },
+                "LeftMargin": 384.5,
+                "RightMargin": 204.5,
+                "TopMargin": 844.0,
+                "BottomMargin": 144.0,
+                "Tag": 45,
+                "Children": [
+                  {
+                    "IsCustomSize": true,
+                    "FontSize": 34,
+                    "LabelText": "置き物",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineSize": 4,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 65.5,
+                      "Y": 65.5
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.4962
+                    },
+                    "PreSize": {
+                      "X": 0.7634,
+                      "Y": 0.6364
+                    },
+                    "LeftMargin": 15.5,
+                    "RightMargin": 15.5,
+                    "TopMargin": 24.5,
+                    "BottomMargin": 23.5,
+                    "Tag": 46,
+                    "ActionTag": 577368302,
+                    "Size": {
+                      "X": 100.0,
+                      "Y": 84.0
+                    },
+                    "Name": "label",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 1189398875,
+                "Size": {
+                  "X": 131.0,
+                  "Y": 132.0
+                },
+                "Name": "btn_funi_floor",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "MarkedSubImage",
+                  "Path": "image/btn/btn_cs2.png",
+                  "Plist": "image/ss_btn.plist"
+                },
+                "BlendFunc": {
+                  "Src": 1,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 580.0,
+                  "Y": 210.0
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8056,
+                  "Y": 0.1875
+                },
+                "PreSize": {
+                  "X": 0.1819,
+                  "Y": 0.1179
+                },
+                "LeftMargin": 514.5,
+                "RightMargin": 74.5,
+                "TopMargin": 844.0,
+                "BottomMargin": 144.0,
+                "Tag": 47,
+                "Children": [
+                  {
+                    "IsCustomSize": true,
+                    "FontSize": 34,
+                    "LabelText": "天上",
+                    "FontResource": {
+                      "Type": "Normal",
+                      "Path": "font/logotypejp_mp_b_1.ttf",
+                      "Plist": ""
+                    },
+                    "HorizontalAlignmentType": "HT_Center",
+                    "VerticalAlignmentType": "VT_Center",
+                    "OutlineSize": 4,
+                    "OutlineColor": {
+                      "R": 0,
+                      "G": 0,
+                      "B": 0
+                    },
+                    "OutlineEnabled": true,
+                    "ShadowColor": {
+                      "R": 110,
+                      "G": 110,
+                      "B": 110
+                    },
+                    "ShadowOffsetX": 2.0,
+                    "ShadowOffsetY": -2.0,
+                    "AnchorPoint": {
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
+                    },
+                    "Position": {
+                      "X": 65.5,
+                      "Y": 65.5
+                    },
+                    "Scale": {
+                      "ScaleX": 1.0,
+                      "ScaleY": 1.0
+                    },
+                    "CColor": {},
+                    "IconVisible": false,
+                    "PrePosition": {
+                      "X": 0.5,
+                      "Y": 0.4962
+                    },
+                    "PreSize": {
+                      "X": 0.5649,
+                      "Y": 0.6364
+                    },
+                    "LeftMargin": 28.5,
+                    "RightMargin": 28.5,
+                    "TopMargin": 24.5,
+                    "BottomMargin": 23.5,
+                    "Tag": 48,
+                    "ActionTag": 1687775968,
+                    "Size": {
+                      "X": 74.0,
+                      "Y": 84.0
+                    },
+                    "Name": "label",
+                    "ctype": "TextObjectData"
+                  }
+                ],
+                "ActionTag": 1922873782,
+                "Size": {
+                  "X": 131.0,
+                  "Y": 132.0
+                },
+                "Name": "btn_funi_above",
+                "ctype": "SpriteObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "common/white.png",
+                  "Plist": ""
+                },
+                "BlendFunc": {
+                  "Src": 770,
+                  "Dst": 771
+                },
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 360.0,
+                  "Y": 80.0
+                },
+                "Scale": {
+                  "ScaleX": 46.0,
+                  "ScaleY": 10.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.0714
+                },
+                "PreSize": {
+                  "X": 0.0222,
+                  "Y": 0.0143
+                },
+                "LeftMargin": 352.0,
+                "RightMargin": 352.0,
+                "TopMargin": 1032.0,
+                "BottomMargin": 72.0,
+                "Tag": 425,
+                "ActionTag": 921662472,
+                "Size": {
+                  "X": 16.0,
+                  "Y": 16.0
+                },
+                "Name": "img_white",
+                "ctype": "SpriteObjectData"
+              }
+            ],
+            "ActionTag": -195839293,
+            "Size": {
+              "X": 720.0,
+              "Y": 1120.0
+            },
+            "Name": "base",
+            "ctype": "PanelObjectData"
+          }
+        ],
+        "Size": {
+          "X": 720.0,
+          "Y": 1280.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "common/white.png",
+        "font/logotypejp_mp_b_1.ttf",
+        "image/btn/btn_menu_option.png",
+        "image/menu_bg.jpg",
+        "image/ss_btn.plist",
+        "image/ss_btn.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

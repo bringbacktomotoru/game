@@ -1,0 +1,75 @@
+class FurnitureTypeSetting extends ::Setting {
+  id = null;
+  name = null;
+  place = null;
+  focus_hpb = null;
+  focus_pos = null;
+  can_use = false;
+
+  balloon_type = null;
+  balloon_offset = null;
+
+  function loadConfAtServer(t) {
+    local _setting = FurnitureTypeSetting();
+    foreach (k, v in t) {
+      switch (k) {
+      case "can_interrupt":
+        _setting[k] = v > 0 ? true : false;
+        break;
+      default:
+        _setting[k] = v;
+      }
+    }
+    return _setting;
+  }
+
+  function initialized() {
+
+    if (this.focus_hpb) {
+      this.focus_hpb[0] *= Math.DTOR;
+      this.focus_hpb[1] *= Math.DTOR;
+      this.focus_hpb[2] *= Math.DTOR;
+    }
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (name) trans + "name";
+    return trans;
+  }
+
+  function getID() {
+    return this.id;
+  }
+
+  function getFocusHPB() {
+    if (!this.focus_hpb) {
+      local _scene = ::gamesession.getCurrentScene();
+      if (_scene instanceof ::SanrioGameScene) {
+        local _cm = _scene.getStage().camera_work;
+        return _cm.hpb;
+      }
+      return [0, 0, 0];
+    }
+
+    return this.focus_hpb;
+  }
+
+  function getFocusPOS() {
+    return this.focus_pos;
+  }
+
+  function getBalloonType() {
+    return this.balloon_type;
+  }
+
+  function getBalloonOffset() {
+    return this.balloon_offset;
+  }
+
+  function canUse() {
+    return this.can_use;
+  }
+
+}

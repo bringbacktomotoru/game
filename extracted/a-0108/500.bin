@@ -1,0 +1,374 @@
+{
+  "ID": "f5c7b73f-0aed-40cf-95f2-9a97145a3f85",
+  "Version": "2.3.3.0",
+  "Name": "CharaCloseupPanel",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 47,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "HomeUI.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0004,
+              "Y": 1.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0008
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 0.0004,
+            "RightMargin": -0.0004,
+            "TopMargin": -1.0001,
+            "BottomMargin": 1.0001,
+            "Tag": 1127,
+            "ActionTag": 1114621523,
+            "Size": {
+              "X": 960.0,
+              "Y": 1280.0
+            },
+            "Alpha": 102,
+            "Name": "dummy_stagelayout",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "dummyDisplayFrame.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0008,
+              "Y": -0.0002
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 0.0008,
+            "RightMargin": -0.0008,
+            "TopMargin": 0.0002,
+            "BottomMargin": -0.0002,
+            "Tag": 299,
+            "ActionTag": -337211131,
+            "Size": {
+              "X": 960.0,
+              "Y": 1280.0
+            },
+            "Name": "dummy_Frame",
+            "ctype": "ProjectNodeObjectData"
+          },
+          {
+            "BackColorAlpha": 102,
+            "ComboBoxIndex": 1,
+            "SingleColor": {
+              "R": 150,
+              "G": 200
+            },
+            "FirstColor": {
+              "R": 150,
+              "G": 200
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "Scale9Width": 1,
+            "Scale9Height": 1,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.688
+            },
+            "Position": {
+              "X": 575.0001,
+              "Y": 856.9875
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.599,
+              "Y": 0.6695
+            },
+            "PreSize": {
+              "X": 0.5271,
+              "Y": 0.1453
+            },
+            "LeftMargin": 226.8721,
+            "RightMargin": 227.1279,
+            "TopMargin": 237.0125,
+            "BottomMargin": 856.9875,
+            "Tag": 337,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/game/talk_bg.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 26,
+                "Scale9OriginY": 26,
+                "Scale9Width": 454,
+                "Scale9Height": 134,
+                "AnchorPoint": {
+                  "ScaleX": 0.6856
+                },
+                "Position": {
+                  "X": 346.9249,
+                  "Y": -0.0098
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 238,
+                  "G": 238,
+                  "B": 238
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.6856,
+                  "Y": -0.0001
+                },
+                "PreSize": {
+                  "X": 1.0,
+                  "Y": 1.0
+                },
+                "LeftMargin": 0.0113,
+                "RightMargin": -0.0113,
+                "TopMargin": 0.0098,
+                "BottomMargin": -0.0098,
+                "Tag": 84,
+                "ActionTag": -563952681,
+                "Size": {
+                  "X": 506.0,
+                  "Y": 186.0
+                },
+                "Alpha": 229,
+                "Name": "img_balloon",
+                "ctype": "ImageViewObjectData"
+              },
+              {
+                "IsCustomSize": true,
+                "FontSize": 26,
+                "LabelText": "今日は何をしようかしら？",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/MPLUS-2M-MEDIUM.TTF",
+                  "Plist": ""
+                },
+                "VerticalAlignmentType": "VT_Center",
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 253.0,
+                  "Y": 106.02
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "IconVisible": false,
+                "PositionPercentXEnabled": true,
+                "PositionPercentYEnabled": true,
+                "PrePosition": {
+                  "X": 0.5,
+                  "Y": 0.57
+                },
+                "PreSize": {
+                  "X": 0.6917,
+                  "Y": 0.5376
+                },
+                "LeftMargin": 78.0,
+                "RightMargin": 78.0,
+                "TopMargin": 29.98,
+                "BottomMargin": 56.02,
+                "Tag": 40,
+                "ActionTag": 155187610,
+                "Size": {
+                  "X": 350.0,
+                  "Y": 100.0
+                },
+                "Name": "lbl_talk",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/icon/talk_next.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 28,
+                "Scale9Height": 28,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 450.0,
+                  "Y": 107.0001
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.8893,
+                  "Y": 0.5753
+                },
+                "PreSize": {
+                  "X": 0.0553,
+                  "Y": 0.1505
+                },
+                "LeftMargin": 436.0,
+                "RightMargin": 42.0,
+                "TopMargin": 64.9999,
+                "BottomMargin": 93.0001,
+                "Tag": 1183,
+                "ActionTag": -1419173109,
+                "Size": {
+                  "X": 28.0,
+                  "Y": 28.0
+                },
+                "Name": "img_tap",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": -1974418279,
+            "Size": {
+              "X": 506.0,
+              "Y": 186.0
+            },
+            "Name": "pnl_balloon",
+            "ctype": "PanelObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "image/home/button_chara_talk.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 1.0
+            },
+            "Position": {
+              "X": 229.9996,
+              "Y": 560.0001
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.2396,
+              "Y": 0.4375
+            },
+            "PreSize": {
+              "X": 0.1437,
+              "Y": 0.1273
+            },
+            "LeftMargin": 160.9996,
+            "RightMargin": 661.0004,
+            "TopMargin": 719.9999,
+            "BottomMargin": 397.0001,
+            "Tag": 1458,
+            "ActionTag": -799110026,
+            "Size": {
+              "X": 138.0,
+              "Y": 163.0
+            },
+            "Name": "btn_call",
+            "ctype": "SpriteObjectData"
+          }
+        ],
+        "Size": {
+          "X": 960.0,
+          "Y": 1280.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "dummyDisplayFrame.json",
+        "font/MPLUS-2M-MEDIUM.TTF",
+        "HomeUI.json",
+        "image/game/talk_bg.png",
+        "image/home/button_chara_talk.png",
+        "image/icon/talk_next.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

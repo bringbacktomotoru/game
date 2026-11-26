@@ -1,0 +1,2136 @@
+class SanrioTalkView extends TalkView {
+  static TEST_LOG = false;
+
+  stage = null;
+  camera_work = null;
+
+  current_point = null;
+  tmp_data = null;
+  current_costumes = null;
+
+  edit_scene = false;
+
+  branch_layer = null;
+
+  main_costume_id = null;
+  chara_motion_id = null;
+  diary_id = null;
+
+  selected_reply = null;
+
+  talkview_panel = null;
+  btn_skip = null;
+  mask_view = null;
+  mask_trans = null;
+  panel_mask = null;
+
+  room_id = null;
+  set_cur_room_id = -1;
+
+  balloon_offset = null;
+
+  tool_skip_speed = -1;
+  stop_updated = null;
+
+  constructor(s, stage = null) {
+    super(s);
+
+    this.tmp_data = { charas = [], furnitures = {} };
+    this.current_costumes = {};
+    this.current_point = ::HouseManager.Factory.getCharaOrigin(0, 0);
+
+    if (stage) {
+      setStage(stage);
+    }
+
+    selected_reply = {};
+
+    this.mask_view = SKView();
+    this.mask_view.setRect(0.0, 0.0, ::screenWidth, ::screenHeight, ::screenWidth / 2.0, ::screenHeight / 2.0);
+    this.mask_view.pickable = false;
+    addChild(this.mask_view);
+
+    this.panel_mask = null;
+
+    this.stop_updated = false;
+  }
+
+  function added() {
+    if (stage) {
+      this.room_id = ::gamesession.getUserData().getCurrentRoomEditData().getRoomID();
+      setRect(0, 0, this.parent.bnd.w, this.parent.bnd.h);
+      setUpdateFunc(update);
+    }
+    else {
+
+      this.tool_skip_speed = 1;
+      local ud = ::UserData();
+      ::gamesession.userdata = ud;
+      ::TitleScene.initTemp(true);
+      ud.setup();
+
+      local game_scene = ::SanrioGameScene();
+      local stage = game_scene.stage;
+      stage.setNextStageID("grassland");
+      ::gamesession.currentscene = game_scene;
+
+      stage.loadStageScene(true, false);
+      insertChild(0, stage.view);
+      stage.viewAdded();
+
+      setStage(stage, true);
+      stage.startStageScene();
+      setUpdateFunc(function(dt) {
+        if (this.isPause()) return null;
+
+        for (local i = 0; i < this.tool_skip_speed; i++) {
+          this.stage.updateScene(dt);
+          update(dt);
+        }
+      }.bindenv(this));
+    }
+    this.tmp_data.camera_param <- clone this.stage.camera_work.hpb;
+
+  }
+
+  function _releaseTemporaryData(stage) {
+    if (!stage) return;
+
+    if ("tmp_room_layout" in this.tmp_data) {
+      this.stage.loadStageScene();
+      delete this.tmp_data["tmp_room_layout"];
+    }
+
+    foreach (chara in this.tmp_data.charas) {
+      chara.release();
+    }
+    foreach (fm in this.tmp_data.furnitures) {
+      fm.release();
+    }
+
+    this.tmp_data.charas.clear();
+    this.tmp_data.furnitures = {};
+
+    foreach (name, cid in this.current_costumes) {
+      local _cm = _findChara(name);
+      if (!_cm) continue;
+      _cm.build(cid);
+    }
+    this.current_costumes = {};
+
+    foreach (chara in stage.charas) {
+      chara.startScript("end_common");
+      chara.initPos();
+      chara.setVisible(true);
+
+      chara.is_auto_action = true;
+
+      chara.clearAction();
+    }
+
+    local f_models = this.stage.house_manager.getFurnitureLayoutManager().getFurnitureModels();
+    foreach (f_model in f_models) {
+      f_model.setVisible(true);
+    }
+
+    ::gamesession.getCurrentScene().restartProductFurnitureAction();
+
+    if ("camera_param" in this.tmp_data) {
+      local hpb = this.tmp_data.camera_param;
+      stage.camera_work.activate(hpb[0], hpb[1], hpb[2]);
+
+      this.camera_work.deactivate();
+      stage.camera_work.setActive(true);
+      stage.setCameraDefault(true);
+    }
+  }
+
+  function stopscript() {
+    this.runner.stop();
+  }
+
+  function destructor() {
+    local _cur_rid = ::gamesession.getUserData().getCurrentRoomEditData().getRoomID();
+    if (this.room_id != _cur_rid) {
+      changeHouseModel(_cur_rid);
+    }
+    if (stage) stage.cameraUpdated(-1, true);
+
+    if (length(this.selected_reply) > 0) {
+
+      local _keys = [];
+      local _values = [];
+      foreach (key, textkey in this.selected_reply) {
+        _keys + key;
+        _values + textkey;
+      }
+      local _ret = ::gamesession.selectReplyKeyAtDiary(_keys, _values);
+      if (_ret && _ret.ret == ::ServletConstants.RESPONSE_SUCCEED) {
+        local _ud = ::gamesession.getUserData();
+        foreach (key, textkey in this.selected_reply) {
+          _ud.putReplyRecord(key, textkey);
+        }
+      }
+    }
+
+    _releaseTemporaryData(this.stage);
+
+    parent.removeChild(this);
+
+    if (::DEBUG) print("destructed (" + this + ")\n")
+  }
+
+  function update(dt) {
+    if (this.isPause()) {
+      if (!this.stop_updated) {
+        this.stage.setNeedUpdate(false);
+        runner.pause_scp = true;
+        this.stop_updated = true;
+      }
+      return;
+    }
+    if (this.stop_updated) {
+      runner.pause_scp = false;
+      this.stage.setNeedUpdate(true);
+      this.stop_updated = false;
+    }
+
+    foreach (c in this.tmp_data.charas) {
+      c.update(dt);
+    }
+  }
+
+  function updateLayout() {
+    super.updateLayout();
+
+    local w = bnd.w;
+    local h = bnd.h;
+
+    if (this.branch_layer) {
+      this.branch_layer.setRect(0, 0, w, h);
+    }
+
+    if (edit_scene) {
+
+      local sx = ::displayWidth / float(::screenWidth);
+      local sy = ::displayHeight / float(::screenHeight);
+      if (sx > 1.01 || sx < 0.99 || sy > 1.01 || sy < 0.99) {
+        local s = Math.min(sx, sy);
+        scale(s, s, s);
+      }
+    }
+  }
+
+  function setStage(stage, edit = false) {
+
+    _releaseTemporaryData(this.stage);
+    removeChild(this.stage);
+
+    this.stage = stage;
+    stage.camera_work.deactivate();
+
+    local f_models = this.stage.house_manager.getFurnitureLayoutManager().getFurnitureModels();
+    foreach (f_model in f_models) {
+      f_model.setVisible(false);
+
+      if (f_model.isRunningProductScript()) {
+        f_model.stopScript();
+      }
+    }
+
+    foreach (chara in stage.charas) {
+      chara.setVisible(false);
+
+      chara.is_auto_action = false;
+
+      chara.clearTasks();
+    }
+
+    local hpb = stage.camera_work.hpb;
+    this.camera_work = CameraWork(stage.renderer.cameraobj, hpb[0], hpb[1], hpb[2]);
+    this.camera_work.setStage(this.stage);
+    this.camera_work.setTalkView(this);
+    this.edit_scene = edit;
+  }
+
+  function setMainCostume(cos_id) {
+    this.main_costume_id = cos_id;
+  }
+  function setCharaMotionId(mid) {
+    this.chara_motion_id = mid;
+  }
+  function setDiaryId(id) {
+    this.diary_id = id;
+  }
+
+  function getTextsetRoomId(id) {
+    this.set_cur_room_id = id;
+  }
+
+  function getDiaryId() {
+    return this.diary_id;
+  }
+
+  function setPanelMask(mask) {
+    this.panel_mask = mask;
+  }
+
+  function setInvisibleModels() {
+
+    foreach (chara in stage.charas) {
+      chara.setVisible(false);
+
+      chara.is_auto_action = false;
+
+      chara.clearTasks();
+    }
+    local f_models = this.stage.house_manager.getFurnitureLayoutManager().getFurnitureModels();
+    foreach (f_model in f_models) {
+      f_model.setVisible(false);
+    }
+  }
+
+  function addReplyKey(key, talkkey) {
+    if (!this.selected_reply) this.selected_reply = {};
+    this.selected_reply[key] <- talkkey;
+  }
+
+  function isPause() {
+    return ::gamesession.isShowingBackLog();
+  }
+
+  function getViewPanel() {
+    return parent.parent.parent;
+  }
+
+  function setTalk(param) {
+    local talk_key = param["talk_key"];
+    local name = param["name"] || null;
+    local index = param["index"];
+
+    if (!name) {
+      local cos_setting = ::gamesetting.costume_settings[this.main_costume_id];
+      name = ::gamesetting.sanrio_chara_settings[cos_setting.getCharaID()].getNameKey();
+    }
+
+    local text_list = ::talk.get(talk_key, name);
+    if (index == -1) {
+      index = ::PUBLIC_RANDOM.nexti(text_list.len());
+    }
+    local text = text_list[index];
+    if (text == undefined) {
+      index = ::PUBLIC_RANDOM.nexti(text_list.len());
+      text = text_list[index];
+    }
+
+    currenttext = "msg." + name + ".message_layer";
+    putText(currenttext, { "text" = text });
+  }
+
+  function playVoice(param) {
+    local _voice_key = param["voice_key"];
+    if (!_voice_key) return;
+    local _name = param["name"] || null;
+
+    local _chara_setting;
+    if (!_name) {
+      _chara_setting = ::gamesetting.costume_settings[this.main_costume_id].getCharaSetting();
+    }
+    else {
+      _chara_setting = ::gamesetting.getSanrioCharaSettingByNameKey(_name);
+    }
+    if (!_chara_setting) return;
+
+    _chara_setting.playVoice(_voice_key);
+  }
+
+  function playSE(param) {
+    ::playSound(param.se);
+  }
+
+  function playBGM(param) {
+    ::playBGM(::gamesetting.bgm[param.bgm]);
+  }
+
+  function fadeoutBGM(param) {
+    ::fadeoutBGM(param.spd);
+  }
+
+  function startEventScene(param) {
+    if (this.panel_mask) this.panel_mask.rePerformanceEnd();
+  }
+
+  function _findChara(name, cos_id = -1) {
+
+    if (!stage) {
+      if (::DEBUG) print("null stage\n");
+      return null;
+    }
+
+    local chara = null;
+
+    foreach (c in this.tmp_data.charas) {
+      if (cos_id < 0) {
+        local _scs = c.getCharaSetting();
+        if (_scs.getNameKey() != name) continue;
+        chara = c;
+        break;
+      } else {
+        if (c.getCostumeID() != cos_id) continue;
+        chara = c;
+        break;
+      }
+    }
+
+    if (!chara) {
+      if (::DEBUG) print("chara not found : " + name + "\n")
+      return null;
+    }
+
+    return chara;
+  }
+
+  function _findFurniture(name) {
+    return this.tmp_data.furnitures[name] || null;
+  }
+
+  function popChara(param) {
+
+    local name = param["name"] || null;
+    local cid = param["costume"] || -1;
+    local relative = param["relative"] || null;
+    local x = (param["x"] || 0.0) + (relative ? this.current_point.x : 0.0);
+
+    local y = 0.5;
+    local z = (param["z"] || 0.0) + (relative ? this.current_point.z : 0.0);
+    local angle = param["angle"] || 0;
+
+    if (!stage) return;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+      if (!chara) {
+
+        local chara_id = -1;
+        local _cos_id = -1;
+        foreach (id, setting in ::gamesetting.sanrio_chara_settings) {
+          if (setting.name_key != name) continue;
+
+          chara_id = id;
+          _cos_id = setting.getDefaultCostumeID();
+          break;
+        }
+        if (chara_id == -1) {
+          if (::DEBUG) print("setting not found : " + name + "\n")
+          return null;
+        }
+
+        local _c = ::gamesession.getUserData().getCurrentRoomCharaCostumeID(chara_id);
+        if (_c != -1) _cos_id = _c;
+
+        chara = ::CharaModel(stage.scene, stage);
+        chara.build(_cos_id);
+        chara.startUpdate();
+        _addTempChara(chara);
+      }
+    } else if (cid > 0) {
+      local _cos_setting = ::gamesetting.costume_settings[cid] || null;
+      if (!_cos_setting) return;
+      chara = _findChara(null, cid);
+      if (!chara || chara.getCostumeID() != cid) {
+        chara = ::CharaModel(stage.scene, stage);
+        chara.build(cid);
+        chara.startUpdate();
+        _addTempChara(chara);
+      }
+    } else {
+      chara = ::gamesession.getCurrentScene().getStage().getChara(this.main_costume_id) || null;
+      if (!chara) {
+        chara = ::CharaModel(stage.scene, stage);
+        chara.build(this.main_costume_id);
+        chara.startUpdate();
+        _addTempChara(chara);
+      }
+    }
+
+    chara.is_auto_action = false;
+    chara.clearTasks();
+
+    chara.disablePhysicalBones();
+    chara.setPosXYZ(x, y, z);
+    chara.setAngle(angle);
+
+    chara.obj.sk3d.removeModifierOrder(101);
+    chara.obj.sk3d.matdirty = true;
+    chara.enablePhysicalBones();
+
+    chara.setVisible(true);
+  }
+
+  function _addTempChara(chara) {
+    _releaseTmpCharaOrSetInvisibleChara(chara);
+    this.tmp_data.charas + chara;
+  }
+
+  function _releaseTmpCharaOrSetInvisibleChara(chara) {
+    if (!chara) return;
+
+    foreach (cid, cm in this.stage.charas) {
+      if (cm.getCharaID() != chara.getCharaID()) continue;
+      chara.setVisible(false);
+      break;
+    }
+
+    foreach (idx, cm in this.tmp_data.charas) {
+      if (cm.getCharaID() != chara.getCharaID()) continue;
+      cm.release();
+      delete this.tmp_data.charas[idx];
+      break;
+    }
+  }
+
+  function popFirstChara(param) {
+    local chara_id = ::gamesession.getUserData().getSelectedFirstCharaID();
+    local setting = ::gamesetting.sanrio_chara_settings[chara_id];
+
+    param.name <- setting.getCharaKey();
+    popChara(param);
+  }
+
+  function moveChara(param) {
+    local name = param["name"] || null;
+    local relative = param["relative"] || null;
+    local type = param["type"] || 1;
+    local posx = param["x"] || 0.0;
+    local posy = param["y"] || 0.0;
+    local posz = param["z"] || 0.0;
+    local time = param["time"] || 0;
+    local script_name = param["script"] || null;
+    local script_args = param["script_args"] || null;
+    local neutral_name = param["neutral"] || null;
+    local neutral_args = param["neutral_args"] || null;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+    }
+
+    if (!chara) return;
+
+    local chara_pos = chara.getPos();
+    local px = relative ? this.current_point.x : chara_pos.x;
+    local py = relative ? this.current_point.y : chara_pos.y;
+    local pz = relative ? this.current_point.z : chara_pos.z;
+    switch (type) {
+    case 0:
+      px = posx;
+      py = posy;
+      pz = posz;
+      break;
+    case 2:
+      px += posx * time;
+      py += posy * time;
+      pz += posz * time;
+      break;
+    case 1:
+    default:
+      if (type != 1 && ::DEBUG) print("invalid chara move type(" + type + "), use type:1 move\n");
+      px += posx;
+      py += posy;
+      pz += posz;
+      break;
+    }
+
+    local t = time ? time : 1.0;
+
+    local distx = chara_pos.x - px;
+    local disty = chara_pos.y - py;
+    local distz = chara_pos.z - pz;
+    local speed = Math.sqrt(distx * distx + disty * disty + distz * distz) / t / DASHSPEED_SCALE;
+
+    local tasks = [];
+    tasks + ::ActionData(::charaActionListFactory.actions.move, script_name, script_args, Vector3D(px, py, pz), time);
+    if (neutral_name) {
+      tasks + ::ActionData(::charaActionListFactory.actions.script, neutral_name, neutral_args);
+    }
+    chara.setupTasks(tasks);
+
+    if (::DEBUG) print("move chara done\n")
+  }
+
+  function turnChara(param) {
+    local name = param["name"] || null;
+    local angle = param["angle"] || 0;
+    local time = param["time"] || 0;
+    local script_name = param["script"] || null;
+    local script_args = param["script_args"] || null;
+    local neutral_name = param["neutral"] || null;
+    local neutral_args = param["neutral_args"] || null;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+    }
+    if (!chara) return;
+
+    local tasks = [];
+    tasks + ::ActionData(::charaActionListFactory.actions.turn, script_name, script_args, angle * Math.DTOR, time || 0);
+    if (neutral_name) {
+      tasks + ::ActionData(::charaActionListFactory.actions.script, neutral, neutral_args);
+    }
+    chara.setupTasks(tasks);
+
+    if (::DEBUG) print("turn chara done\n")
+  }
+
+  function waitActionEnd(param) {
+    local name = param["name"] || null;
+    local script_name = param["script"] || null;
+    local mid = param["motion_id"] || this.chara_motion_id;
+
+    if (!script_name) {
+      script_name = ::gamesetting.costume_motion_settings[mid].getActionName();
+    }
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+    }
+    if (!chara) return;
+
+    while (script_name && chara.current_script_name == script_name && !chara.isActionEnd()) {
+      suspend();
+    }
+
+    if (::DEBUG) print("action ended\n")
+  }
+
+  function startCharaAnime(param) {
+    local name = param["name"] || null;
+    local time = param["time"] || 0;
+    local script_name = param["script"] || null;
+    local script_args = param["script_args"] || null;
+    local neutral_name = param["neutral"] || null;
+    local neutral_args = param["neutral_args"] || null;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+    }
+    if (!chara) return;
+
+    local tasks = [];
+    tasks + ::ActionData(::charaActionListFactory.actions.idle, script_name, script_args, null, time);
+    if (neutral_name) {
+      tasks + ::ActionData(::charaActionListFactory.actions.script, neutral_name, neutral_args);
+    }
+    chara.setupTasks(tasks, true);
+
+    if (::DEBUG) print("start anime done\n")
+  }
+
+  function startCharaAnimeByMotionID(param) {
+    local name = param["name"] || null;
+    local mid = param["motion_id"] || this.chara_motion_id;
+    local time = param["time"] || 0;
+    local script_args = param["script_args"] || null;
+    local neutral_name = param["neutral"] || null;
+    local neutral_args = param["neutral_args"] || null;
+
+    local script_name = ::gamesetting.costume_motion_settings[mid].getActionName();
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+    }
+    if (!chara) return;
+
+    local tasks = [];
+    tasks + ::ActionData(::charaActionListFactory.actions.idle, script_name, script_args, null, time);
+    if (neutral_name) {
+      tasks + ::ActionData(::charaActionListFactory.actions.script, neutral_name, neutral_args);
+    }
+    chara.setupTasks(tasks, true);
+
+    if (::DEBUG) print("start anime done\n")
+  }
+
+  function stopCharaAnime(param) {
+    local name = param["name"] || null;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+    }
+    if (!chara) return;
+
+    chara.stopAction();
+
+    if (::DEBUG) print("stop anime done\n")
+  }
+
+  function charaVisible(param) {
+    local name = param["name"] || null;
+    local v = param["visible"] || null;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+    }
+    if (!chara) return;
+
+    chara.setVisible(v);
+  }
+
+  function popFurniture(param) {
+    local id = param["id"] || -1;
+    local relative = param["relative"] || null;
+    local x = (param["x"] || 0.0) + (relative ? this.current_point.x : 0.0);
+    local y = 0.5;
+    local z = (param["z"] || 0.0) + (relative ? this.current_point.z : 0.0);
+    local angle = param["angle"] || 0;
+
+    local _num = length(this.tmp_data.furnitures);
+    local fname = param["fname"] || "furni" + _num;
+
+    if (tool_skip_speed != -1 && fname in this.tmp_data.furnitures) throw Exception("Not same fname !!!!!");
+
+    local _setting = ::gamesetting.furniture_settings[id] || null;
+    if (!_setting) {
+      println("[ERROR] id not found!! id = " + id);
+      return;
+    }
+
+    local _fm = ::FurnitureModel(stage.scene);
+    _fm.buildByID(id);
+    _fm.setPosXYZ(x, y, z);
+    _fm.setAngle(angle);
+
+    this.tmp_data.furnitures[fname] <- _fm;
+  }
+
+  function startUseFurniture(param) {
+    local name = param["name"] || null;
+    local script_name = param["script"] || null;
+    local bone = param["bone"] || null;
+    local fname = param["fname"] || "furni";
+    local script_args = param["script_args"] || null;
+    if (!script_name) return;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+    }
+    if (!chara) return;
+    local fm = _findFurniture(fname);
+    if (!fm) return;
+
+    fm.startUseFurnitureScriptAtEventScene(script_name, chara, bone, script_args);
+
+  }
+
+  function finishUseFurniture(param) {
+    local name = param["name"] || null;
+    local fname = param["fname"] || "furni";
+    local script_name = param["script"] || null;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+    }
+    if (!chara) return;
+
+    local fm = _findFurniture(fname);
+    if (!fm) return;
+
+    if (script_name) {
+      fm.startUseFurnitureScriptAtEventScene(script_name, chara);
+    } else {
+      fm.stopScript();
+      fm.startScript("start");
+      chara.startScript("end_common");
+    }
+  }
+
+  function furnitureVisible(param) {
+    local name = param["name"] || null;
+    local v = param["visible"] || null;
+
+    local _fm = null;
+    if (name) {
+      _fm = _findFurniture(name);
+    }
+    if (!_fm) return;
+
+    _fm.setVisible(v);
+  }
+
+  function showBalloon(param) {
+    local name = param["name"] || null;
+    local time = param["time"] || -1;
+    local _type = param["type"] || 0;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+      local setting = ::gamesetting.costume_settings[this.main_costume_id];
+      name = ::gamesetting.sanrio_chara_settings[setting.getCharaID()].getNameKey();
+    }
+
+    local balloon = null;
+    foreach (c in msg.children) {
+      if (c.name != name) continue;
+
+      balloon = c;
+      break;
+    }
+    if (!balloon) {
+      balloon = Balloon(chara, _type, this.balloon_offset, this);
+      balloon.name = name;
+    }
+
+    currenttext = "msg." + name + ".message_layer";
+    balloon.show(msg, time);
+
+    ::gamesession.setBackLogCharacter(chara.getCharaSetting());
+
+    if (::DEBUG) print("show balloon done\n")
+  }
+
+  function closeBalloon(param) {
+    local name = param["name"] || null;
+
+    local chara = null;
+    if (name) {
+      chara = _findChara(name);
+    } else {
+      chara = _findChara(null, this.main_costume_id);
+      local setting = ::gamesetting.costume_settings[this.main_costume_id];
+      name = ::gamesetting.sanrio_chara_settings[setting.getCharaID()].getNameKey();
+    }
+    if (!chara) return;
+
+    local balloon = null;
+    foreach (c in msg.children) {
+      if (c.name != name) continue;
+
+      balloon = c;
+      break;
+    }
+    if (balloon) {
+      currenttext = null;
+      balloon.close();
+    }
+
+    if (::DEBUG) print("close balloon done\n")
+  }
+
+  function setBalloonOffset(param) {
+    local _x = param["x"] || 0.0;
+    local _y = param["y"] || 0.0;
+    local _z = param["z"] || 0.0;
+    this.balloon_offset = Vector3D(_x, _y, _z);
+  }
+
+  function rotateCamera(param) {
+
+    local type = param["type"] || 0;
+    local head = param["head"] || 0;
+    local pitch = param["pitch"] || 0;
+    local time = param["time"] || 0;
+
+    if (!stage) {
+      if (::DEBUG) print("null stage\n");
+      return null;
+    }
+
+    switch (type) {
+    case 1:
+      this.camera_work.rotateCamera(head, pitch, undefined, time);
+      break;
+    case 2:
+      this.camera_work.rotateCameraAt(head, pitch, undefined, time);
+      break;
+    case 0:
+    default:
+      if (type != 0 && ::DEBUG) print("invalid camera rotate type(" + type + "), use type:0 rotate\n");
+      this.camera_work.rotateCameraTo(head, pitch, undefined, time);
+      break;
+    }
+
+  }
+
+  function moveCamera(param) {
+    local type = param["type"] || 0;
+    local x = param["x"] || 0.0;
+    local y = param["y"] || 0.0;
+    local z = param["z"] || 0.0;
+    local relative = param["relative"] || null;
+    local time = param["time"] || 0;
+
+    if (!stage) {
+      if (::DEBUG) print("null stage\n");
+      return null;
+    }
+
+    switch (type) {
+    case 1:
+      this.camera_work.moveCamera(x, y, z, time);
+      break;
+    case 2:
+      this.camera_work.moveCameraAt(x, y, z, time);
+      break;
+    case 0:
+    default:
+      if (type != 0 && ::DEBUG) print("invalid camera move type(" + type + "), use type:0 move\n");
+
+      if (relative) {
+        x += this.current_point.x;
+        y += this.current_point.y;
+        z += this.current_point.z;
+      }
+
+      this.camera_work.moveCameraTo(x, y, z, time);
+      break;
+    }
+  }
+
+  function focusRoom(param) {
+
+    local id = param["id"] || -1;
+    local address = param["address"] || null;
+
+    if (id != -1) {
+
+      local room_layout = ::gamesession.getUserData().getRoomLayout();
+      address = ::HouseManager.Getter.getRoomAddress(room_layout, id);
+    }
+
+    if (!address) return;
+
+    local origin = ::HouseManager.Factory.getCharaOrigin(address[0], address[1]);
+    this.current_point.set(origin.x, origin.y, 0.0);
+    this.camera_work.moveCameraTo(origin.x, origin.y + 3.0, -15.0, 0);
+  }
+
+  function focusDoor(param) {
+    local door_pos = this.stage.getHouseManager().getCurrentRoomDoorPosition();
+
+    this.current_point.set(door_pos.x, door_pos.y, door_pos.z);
+    this.camera_work.moveCameraTo(current_point.x, current_point.y, current_point.z, 0);
+  }
+
+  function createBranch(param) {
+    local target = param["target"];
+    local text = param["text"];
+
+    if (!this.branch_layer) {
+      this.branch_layer = BranchLayer(this);
+      addChild(this.branch_layer);
+    }
+
+    text = ::replacePlayerName(text);
+
+    this.branch_layer.addBranch(target, text);
+
+    if (::DEBUG) print("create branch done\n")
+  }
+  function branchDiary(param) {
+    if (this.diary_id < 0) {
+      return;
+    }
+
+    local _ds = ::gamesetting.diary_settings[this.diary_id];
+    local _replykey = _ds.getReplyKey();
+    local _textkeys = _ds.getReplyTextKeys();
+
+    local _ud = ::gamesession.getUserData();
+
+    if (!this.branch_layer) {
+      this.branch_layer = BranchLayer(this);
+      addChild(this.branch_layer);
+    }
+
+    this.branch_layer.addDiaryBranch("*branch1", _replykey, _textkeys[0]);
+    this.branch_layer.addDiaryBranch("*branch2", _replykey, _textkeys[1]);
+  }
+
+  function popDialog(param) {
+    if (!getViewPanel()) return;
+
+    local target = param["target"];
+    local dlg = _createDialog(target);
+
+    getViewPanel().enabled = false;
+    dlg.setFunc(endDialog.bindenv(this));
+    dlg.show();
+  }
+  function _createDialog(target) {
+    local dlg = null;
+
+    switch (target) {
+    case "InputPlayerInfo":
+      dlg = ::InputPlayerInfoDialog();
+      break;
+    case "Dialog":
+      dlg = ::Dialog(::loadCocos("/ui/dialog/SimpleDialog.json"));
+      break;
+    }
+
+    return dlg;
+  }
+
+  function endDialog(ret) {
+    getViewPanel().enabled = true;
+  }
+
+  function enableTutorialView(param) {
+    local _enable = param["enable"];
+    getViewPanel().setEnabled(_enable);
+  }
+
+  function enableButton(param) {
+    local _enable = param["enable"];
+    local target_list = param["target"];
+    local type = param["type"];
+
+    local panel = null;
+
+    panel = getViewPanel().getScenePanel();
+    foreach (target in target_list) {
+      if (target in getclass(panel)) {
+        panel[target].setEnabled(_enable);
+      }
+    }
+  }
+  function enableAllButton(param) {
+    local _enable = param["enable"];
+
+    local panel = getViewPanel().getScenePanel();
+    foreach (ins, val in getclass(panel)) {
+      if (!_isButton(panel[ins])) continue;
+      local i = ins.indexOf("btn_");
+      if (i != -1) panel[ins].setEnabled(_enable);
+    }
+
+    local home_ui = panel.getHomeUI();
+    foreach (ins, val in getclass(home_ui)) {
+      if (!_isButton(panel[ins])) continue;
+      local i = ins.indexOf("btn_");
+      if (i != -1) panel[ins].setEnabled(_enable);
+    }
+
+  }
+
+  function _enableBtnfromLayout(layout, _enable, target = null) {
+    foreach (ins, val in getclass(layout)) {
+      if (!(layout[ins] instanceof ::HomeUI.Layout.Layer)) continue;
+
+      local layer = layout[ins];
+      foreach (layer_ins, _ in getclass(layer)) {
+        if (!(layer[layer_ins] instanceof ::HomeUI.Layout.Component)) continue;
+        local _views = layer[layer_ins].views;
+
+        foreach (view, _ in _views) {
+          println("" + view.name);
+
+          local i = view.name.indexOf("btn_");
+          if (i != -1 && (!target || target.equals(view.name))) view.setEnabled(_enable);
+        }
+
+      }
+    }
+  }
+
+  function _isButton(ins) {
+    if (ins instanceof SKImageView) return true;
+    if (ins instanceof SKCocosPanel) return true;
+    if (ins instanceof SKGroupView) return true;
+
+    return false;
+  }
+
+  function focusin(param) {
+    local x = param["x"];
+    local y = param["y"];
+    local sx = param["sx"];
+    local sy = param["sy"];
+    local time = param["time"] || 300;
+
+    local off_x = (float)(this.bnd.w - ::screenWidth) / 2;
+    local off_y = (float)(this.bnd.h - ::screenHeight) / 2;
+
+    local c = {
+      "id" = "bg.focus",
+      "class" = "CircleMaskView",
+      "visible" = true,
+    };
+
+    createObject(c["id"], c);
+
+    local v = findChild("bg.focus");
+    v.focusin(x + off_x, y + off_y, sx, sy, time);
+  }
+
+  function focusout(param) {
+    local time = param["time"] || 300;
+
+    local v = findChild("bg.focus");
+    if (v) {
+      v.focusout(time);
+      sleep(time);
+      deleteObject("bg.focus");
+    }
+  }
+
+  function waitActionEvent(param) {
+    ::rootview.wait_action_event = true;
+    while (::rootview.wait_action_event) {
+      suspend();
+    }
+  }
+
+  function setShutterStart(param) {
+    local _texture = ::getTexture("/image/black.jpg");
+    this.mask_trans = MaskPanelTransition(_texture, ::getTexture("/image/black.jpg"), 5.0, 80);
+    local _late = ::screenWidth / _texture.width;
+
+    this.mask_view.setRect(0, 0, _texture.width * _late, _texture.height * _late);
+    this.mask_trans.rePerformanceStart(null, this.mask_view);
+  }
+  function setShutterEnd(param) {
+    this.mask_trans.rePerformanceEnd(null, this.mask_view);
+  }
+
+  function changeHouseModel(param) {
+    local _rid = param["id"] || param;
+    if (this.room_id == _rid) return;
+    this.room_id = _rid;
+
+    local _stage;
+    if (stage) _stage = stage;
+    else _stage = ::gamesession.currentscene.stage;
+    _stage.setRoomModel(this.room_id);
+    local hpb = this.camera_work.hpb;
+    if (_stage.getHouseManager()) stage.getHouseManager().getCurrentRoomModel().updateVisibleWall(hpb[0]);
+  }
+
+  function showText(param) {
+    local _text = param["text"];
+    local _time = param["time"] || 2000;
+    local _pos = param["pos"] || 4;
+
+    newthread().start(_showText, { text = _text, time = _time, pos = _pos, layer = ::gamesession.getTutorialLayer() });
+  }
+  function _showText() {
+    layer.showText(text, pos, false)
+    sleep(time);
+    layer.hideText();
+  }
+
+  function _wait(time) {
+    local _cnt = 0;
+    while (_cnt < time) {
+      sleep(10);
+      if (isPause()) continue;
+      _cnt += 10;
+    }
+  }
+
+  function handleTag(c, runner) {
+    if (this.tool_skip_speed > 0 && c["time"]) c["time"] /= this.tool_skip_speed;
+
+    switch (c["command"]) {
+    case "startscene":
+      startEventScene(c);
+      break;
+    case "popchara":
+      popChara(c);
+      break;
+    case "popfirstchara":
+      popFirstChara(c);
+      break;
+    case "movechara":
+      moveChara(c);
+      break;
+    case "turnchara":
+      turnChara(c);
+      break;
+    case "popfurniture":
+      popFurniture(c);
+      break;
+    case "furniturevisible":
+      furnitureVisible(c);
+      break;
+    case "usefurniture":
+      startUseFurniture(c);
+      break;
+    case "endusefurniture":
+      finishUseFurniture(c);
+      break;
+    case "waitaction":
+      waitActionEnd(c);
+      break;
+    case "startanime":
+      startCharaAnime(c);
+      break;
+    case "startanime_bymotionid":
+      startCharaAnimeByMotionID(c);
+      break;
+    case "stopanime":
+      stopCharaAnime(c);
+      break;
+    case "balloon":
+      showBalloon(c);
+      break;
+    case "endballoon":
+      closeBalloon(c);
+      break;
+    case "balloonoffset":
+      setBalloonOffset(c);
+      break;
+    case "systemballoon":
+      break;
+    case "endsystemballoon":
+      break;
+    case "rotatecamera":
+      rotateCamera(c);
+      break;
+    case "movecamera":
+      moveCamera(c);
+      break;
+    case "charavisible":
+      charaVisible(c);
+      break;
+    case "focusroom":
+      focusRoom(c);
+      break;
+    case "focusdoor":
+      focusDoor(c);
+      break;
+    case "branch":
+      createBranch(c);
+      break;
+    case "diarybranch":
+      branchDiary(c);
+      break;
+    case "popdialog":
+      popDialog(c);
+      break;
+    case "enablebutton":
+      enableButton(c);
+      break;
+    case "enablebuttonall":
+      enableAllButton(c);
+      break;
+    case "enable":
+      enableTutorialView(c);
+      break;
+    case "focusin":
+      focusin(c);
+      break;
+    case "focusout":
+      focusout(c);
+      break;
+    case "waitactionevent":
+      waitActionEvent(c);
+      break;
+    case "talk":
+      setTalk(c);
+      break;
+    case "voice":
+      playVoice(c);
+      break;
+    case "shutterstart":
+      setShutterStart(c);
+      break;
+    case "shutterend":
+      setShutterEnd(c);
+      break;
+    case "changeroom":
+      changeHouseModel(c);
+      break;
+    case "showtext":
+      showText(c);
+      break;
+    case "wait":
+      _wait(c["time"]);
+      break;
+    case "testskip":
+      if (this.tool_skip_speed < 0) break;
+      this.tool_skip_speed = c["speed"] || 1;
+      if (this.tool_skip_speed < 1) this.tool_skip_speed = 1;
+      else if (this.tool_skip_speed > 10) this.tool_skip_speed = 10;
+      break;
+
+    default:
+      super.handleTag(c, runner);
+      break;
+    }
+  }
+
+  function setObjectProperties(id, prop) {
+    local v = findChild(id);
+
+    if (!v) {
+      local i = id.lastIndexOf(".");
+      if (i < 0) throw Exception("cant find top-level DisplayObject : " + id);
+      local parent = findChild(id.substring(0, i));
+      if (!parent) throw Exception("cant find parent DisplayObject : " + id);
+      local name = id.substring(i + 1);
+
+      local data = null;
+      try {
+        if (prop["label"]) {
+          data = SKLabelView("");
+          data.textbox.wrapmode = 1;
+        } else
+        if (prop["data"]) {
+          data = prop.data;
+        } else
+        if (prop["storage"]) {
+          data = sys.getView(prop["storage"]);
+          if (!data && prop["alt"]) {
+            data = sys.getView(prop["alt"]);
+          }
+          if (!data) {
+            throw Exception("invalid storage : " + prop["storage"]);
+          }
+        } else
+        if (prop["class"]) {
+          data = getroottable()[prop["class"]]();
+        } else {
+          data = SKView();
+        }
+      } catch (e) {
+        printexception(e);
+        sendException(ex, "error in talkview ....");
+        return null;
+      }
+      if (data instanceof SKView) {
+        v = data;
+      } else
+      if (data instanceof Sprite) {
+        local w = data.tex0.width, h = data.tex0.height;
+        local imgview = SKImageView(data);
+        imgview.sp.blend = SK_MIX;
+
+        local a = prop["align"] || 0
+        switch (a % 3) {
+        case 1: imgview.bnd.x = -w / 2; break;
+        case 2: imgview.bnd.x = -w; break;
+        }
+        switch (a / 3) {
+        case 1: imgview.bnd.y = -h / 2; break;
+        case 2: imgview.bnd.y = -h; break;
+        }
+        v = imgview;
+      }
+      if (!v) {
+        throw Exception("invalid view. id:" + id + " prop:" + encodeJSON(prop));
+      }
+      v.name = name;
+
+      if (prop["order"] == undefined) {
+        parent.addChild(v);
+      } else {
+        if (typeof(prop.order) == SS_INTEGER) {
+          local i = Math.clamp(prop.order, 0, length(parent.children));
+          parent.insertChild(i, v);
+        } else
+        switch (prop.order) {
+        case "front":
+          parent.addChild(v);
+          break;
+        case "back":
+          parent.insertChild(0, v);
+          break;
+        }
+      }
+    }
+    local mc = null;
+    local tf = (v instanceof SKLabelView) ? v : null;
+    local fa = tf ? tf.fontattr : null;
+    local matdirty = v.matdirty;
+    foreach (p, val in prop) {
+      switch (p) {
+      case "x":
+        local offset = (this.bnd.w - ::screenWidth) / 2;
+        v.pos.x = val + offset;
+        matdirty = true;
+        break;
+      case "y":
+        local offset = (this.bnd.h - ::screenHeight) / 2;
+        v.pos.y = val;
+        matdirty = true;
+        break;
+      case "w":
+        v.bnd.w = val;
+        break;
+      case "h":
+        v.bnd.h = val;
+        break;
+      case "pivx":
+        v.bnd.x = val;
+        break;
+      case "pivy":
+        v.bnd.y = val;
+        break;
+      case "sx":
+        v.scale.x = val;
+        matdirty = true;
+        break;
+      case "sy":
+        v.scale.y = val;
+        matdirty = true;
+        break;
+      case "rot":
+
+        matdirty = true;
+        break;
+      case "text":
+        if (tf) tf.setText(val);
+        break;
+      case "font":
+
+        break;
+      case "matrix":
+
+        break;
+      case "colortrans":
+
+        break;
+      case "color":
+        v.setColor(val);
+        break;
+      case "link":
+        v.userdata = val;
+        v.addEventListener(MOUSE_EVENT, linkclickevent);
+        break;
+      case "visible":
+        v.visible = val ? 1 : 0;
+        break;
+      case "enabled":
+        v.enabled = val ? 1 : 0;
+        break;
+      case "fontsize":
+        if (fa) {
+          fa.size = val;
+        }
+        break;
+      }
+    }
+    if (fa) {
+      tf.setFontAttribute(fa);
+    }
+    v.matdirty = matdirty;
+    v.updateLayout();
+
+    return v;
+  }
+}
+
+class SanrioTalkView.Balloon extends SKView {
+  static SCALE_TIME = 120;
+
+  chara = null;
+
+  timer = 0;
+  show_id = -1;
+  wait_id = -1;
+  close_id = -1;
+
+  message_layer = null;
+  talkview = null;
+
+  baseview = null;
+  img_balloon = null;
+
+  v_1 = Vector3D();
+  offset = null;
+
+  type = 0;
+
+  constructor(chara, type = 0, offs = null, talkview = null) {
+    this.chara = chara;
+    this.offset = offs;
+    this.type = type;
+    this.talkview = talkview;
+  }
+
+  function added() {
+
+    this.baseview = ::loadSKView("/ui/common/TalkBalloon.ui");
+    addChild(this.baseview);
+    setRect(0, 0, this.baseview.bnd.w, this.baseview.bnd.h);
+
+    this.baseview.centerize(0.5, 0.5);
+    this.img_balloon = this.baseview.findChild("img_balloon");
+
+    local _img_balloon_bg = this.baseview.findChild("img_balloon_bg");
+
+    local _path = "/ui/image/dialog/" + "img_balloon_bg" + this.type + ".png";
+    local _sp = ::getSprite(_path);
+    if (!_sp) _sp = ::getSprite("/ui/image/dialog/" + "img_balloon_bg0.png");
+    _sp.blend = SK_MIX;
+
+    _img_balloon_bg.setSprite(_sp);
+    _img_balloon_bg.updateLayout();
+
+    this.message_layer = MessageLayer(this.baseview.findChild("txt_talk"));
+    addChild(message_layer);
+
+    setUpdateFunc(update);
+  }
+
+  function removed() {
+    removeChild(this.baseview);
+
+    this.baseview = null;
+    this.img_balloon = null;
+    removeChild(this.message_layer);
+    this.message_layer = null;
+  }
+
+  function show(base, time = -1) {
+
+    if (this.wait_id != -1) {
+      clearInterval(this.wait_id);
+      this.wait_id = -1;
+    }
+
+    if (!parent) {
+      base.addChild(this);
+
+      _setShowAnime();
+    }
+
+    this.message_layer.setText("");
+    if (time >= 0) {
+      _setWaitAnime(time);
+    }
+  }
+
+  function close() {
+    if (this.show_id != -1) {
+      clearInterval(this.show_id);
+      this.show_id = -1;
+
+    }
+    if (this.wait_id != -1) {
+      clearInterval(this.wait_id);
+      this.wait_id = -1;
+    }
+
+    if (this.close_id != -1) {
+
+      clearInterval(this.close_id);
+      this.close_id = -1;
+    }
+
+    if (!parent) return;
+
+    _setCloseAnime();
+  }
+
+  function update(dt) {
+
+    if (chara) {
+      local stage = chara.stage;
+
+      this.v_1.set(0, 0, 0);
+      local sk3d = chara.obj.sk3d;
+      if (sk3d.parent) {
+        local bone = sk3d.parentbone;
+        local p0 = bone.parts.bindpose;
+        v_1.set(p0[12], 0, p0[14]).transform0(sk3d.parent.gmat);
+        v_1.add(sk3d.parent.pos);
+      }
+      this.v_1.add(chara.getPos());
+
+      local _vec = Vector3D(0.0, 2.8, 0.0).add(this.v_1);
+      if (this.offset) _vec.add(this.offset);
+      local v = stage.renderer.camera.project(_vec);
+      local x = (this.parent.bnd.w - ::screenWidth) / 2.0 + ::screenWidth * v.x - this.baseview.pos.x;
+      local y = (this.parent.bnd.h - ::screenHeight) / 2.0 + ::screenHeight * v.y - this.baseview.pos.y;
+      this.setPosition(x, y);
+      this.matdirty = true;
+      this.repaint();
+    }
+
+    _adjustPos();
+  }
+
+  function _adjustPos() {
+
+    local msg_layer = getMessageLayer();
+
+    local left = this.pos.x + this.baseview.bnd.x;
+    local right = left + this.baseview.bnd.w;
+
+    local _sl = (msg_layer.bnd.w - ::screenWidth) / 2.0;
+    local _sr = _sl + ::screenWidth;
+    if (left < _sl) {
+      this.pos.x -= (left - _sl);
+      this.matdirty = true;
+    }
+    else if (right > msg_layer.bnd.w) {
+      this.pos.x -= (right - _sr);
+      this.matdirty = true;
+    }
+
+    local top = this.pos.y + this.baseview.bnd.y;
+    local bottom = top + this.baseview.bnd.h;
+
+    local _st = (msg_layer.bnd.h - ::screenHeight) / 2.0;
+    local _sb = _st + ::screenHeight;
+
+    if (top < _st) {
+      this.pos.y -= (top - _st);
+      this.matdirty = true;
+    }
+    else if (bottom > _sb) {
+      this.pos.y -= (bottom - _sb);
+      this.matdirty = true;
+    }
+
+    if (this.matdirty) {
+      repaint();
+    }
+  }
+
+  function getMessageLayer() {
+    return this.parent;
+  }
+
+  function _setShowAnime() {
+
+    if (this.baseview) this.baseview.startMethod("show");
+  }
+
+  function _setWaitAnime(time) {
+    local wait = SCALE_TIME - timer + time;
+    this.wait_id = setInterval(function(dt) {
+      if (self.talkview && self.talkview.isPause()) {
+        return null;
+      }
+      timer += dt;
+      if (timer < wait) return null;
+
+      self.wait_id = -1;
+      self.close();
+      return undefined;
+    }.bindenv({
+      self = this,
+      wait = wait,
+      timer = 0,
+    }), 1);
+  }
+
+  function _setCloseAnime() {
+
+    if (this.baseview) this.baseview.startMethod("hide");
+    waitForMethod();
+    parent.removeChild(this);
+  }
+}
+
+class SanrioTalkView.Balloon.MessageLayer extends SKView {
+  static INTERVAL_TIME = 60;
+  static ANIME_TIME = 0;
+
+  view = null;
+  all_text = "";
+  stack_text = "";
+
+  labels = null;
+
+  interval_id = -1;
+  anime_interval = -1;
+
+  constructor(view) {
+    this.name = "message_layer";
+
+    this.labels = {};
+    this.view = view;
+    if (!::READ_TRANS_FILE.equals("JP")) this.view.fontattr.size = 32;
+  }
+
+  function added() {
+
+  }
+
+  function removed() {
+    if (anime_interval != -1) {
+      clearInterval(anime_interval);
+    }
+    foreach (l, b in this.labels) {
+      this.view.removeChild(l);
+    }
+    this.labels = null;
+  }
+
+  function getText() {
+    return this.all_text;
+  }
+
+  function setText(s) {
+    s = ::replacePlayerName(s);
+
+    this.all_text = s;
+    this.stack_text = s;
+
+  }
+
+  function appendText(s) {
+    s = ::replacePlayerName(s);
+
+    this.all_text = this.all_text + s;
+    this.stack_text = this.stack_text + s;
+    this.view.setText(s);
+    ::gamesession.addBackLog(s);
+  }
+
+  function _tofunc() { this.interval_id = -1; }
+  function update(dt) {
+    if (this.interval_id != -1 || length(this.stack_text) == 0) return;
+    this.interval_id = setTimeout(_tofunc.bindenv(this), INTERVAL_TIME);
+
+    local char = this.stack_text.slice(0, 1);
+
+    this.stack_text = this.stack_text.slice(1);
+    if (char == "#") {
+      local _slice_num = 0;
+      if (this.stack_text.startsWith("#C")) {
+        _slice_num = 4;
+      } else {
+
+        local _idx = this.stack_text.indexOf("#");
+        if (_idx != -1) _slice_num = _idx + 1;
+      }
+
+      char = char + this.stack_text.slice(0, _slice_num);
+      this.stack_text = this.stack_text.slice(_slice_num);
+    }
+    if (char == "/") {
+      char = char + this.stack_text.slice(0, 1);
+      this.stack_text = this.stack_text.slice(1);
+    }
+
+    local label = _findEmptyLabel();
+    if (!label) {
+      label = _createLabelInstance();
+      this.view.addChild(label);
+    }
+
+    label.setText(char);
+    local last_char = this.view.textbox[length(this.view.getText()) - 1];
+    if (last_char) label.pos.set(last_char.x, last_char.y, 0.0);
+    else label.pos.set(0.0, 0.0, 0.0);
+    this.labels[label] <- true;
+
+    this.anime_interval = setInterval(_animebody.bindenv({
+      self = this,
+      timer = 0;
+      label = label
+      char = char
+    }), 1);
+  }
+
+  function _animebody(dt) {
+    this.timer += dt;
+
+    if (timer < self.ANIME_TIME) {
+      local s = 0.5 + 1.0 * timer / self.ANIME_TIME;
+      this.label.scale << s;
+      this.label.matdirty = true;
+      this.label.repaint();
+      return null;
+    }
+
+    self.view.appendText(this.char);
+
+    this.label.scale << 1.0;
+    this.label.setText("");
+    self.labels[this.label] <- false;
+    return undefined;
+  }
+
+  function _findEmptyLabel() {
+    foreach (l, b in this.labels) {
+      if (!b) return l;
+    }
+    return null;
+  }
+
+  function _createLabelInstance() {
+    local label = SKLabelView();
+    label.setFontAttribute(this.view.fontattr);
+    label.visible = false;
+    return label;
+  }
+}
+
+class SanrioTalkView.BranchLayer extends SKView {
+  static SPACE = 130;
+
+  talk_view = null;
+  branches = null;
+
+  constructor(talk_view) {
+    super();
+
+    this.branches = [];
+    this.name = "branch";
+
+    this.talk_view = talk_view;
+  }
+
+  function added() {
+    super.added();
+    setRect(0, 0, this.parent.bnd.w, this.parent.bnd.h);
+  }
+
+  function addBranch(target, text) {
+    local branch = BranchView();
+    branch.build(target, text);
+    ::TapButton(branch.btn).view.addEventListener(ACTION_EVENT, actionevent_branch);
+    addChild(branch);
+    this.branches + branch;
+
+    _updateBranchPos();
+  }
+
+  function addDiaryBranch(target, reply_key, reply_textkey) {
+    local branch = BranchDiaryView();
+
+    local _ds = ::gamesetting.diary_settings[this.talk_view.getDiaryId()];
+    local _idx = _ds.getIndexReplyTextKey(reply_textkey);
+    local _chara_id = _ds.getDiaryWriterID(_idx);
+
+    branch.build(target, reply_key, reply_textkey, _chara_id);
+    ::TapButton(branch.btn).view.addEventListener(ACTION_EVENT, actionevent_branch);
+    addChild(branch);
+    this.branches + branch;
+    _updateBranchPos();
+  }
+
+  function _updateBranchPos() {
+    local _cx = this.bnd.w / 2.0;
+    local _cy = this.bnd.h / 2.0;
+    local posy = this.bnd.h / 2.0;
+    foreach (idx, b in this.branches) {
+
+      b.pos.x = _cx;
+      if (idx % 2 == 0) {
+        b.pos.y = _cy - SPACE;
+      } else {
+        b.pos.y = _cy + SPACE;
+      }
+
+      b.matdirty = true;
+      b.repaint();
+
+    }
+  }
+
+  function actionevent_branch(e) {
+    e.consume();
+    if (!this.parent) return;
+
+    local _branch = e.src.parent.parent;
+    if (_branch instanceof BranchDiaryView) {
+
+      this.talk_view.addReplyKey(_branch.getReplyKey(), _branch.getReplyTextKey());
+    }
+
+    local target = _branch.target;
+    this.talk_view.jumpscript(null, target, false);
+
+    this.parent.removeChild(this);
+  }
+}
+
+class SanrioTalkView.BranchLayer.BranchView extends SKView {
+  target = null;
+
+  btn = null;
+
+  function build(target, text) {
+    this.target = target;
+
+    _view = ::loadSKView("/ui/common/TalkBranch.ui");
+    setRect(0, 0, _view.bnd.w, _view.bnd.h);
+    addChild(_view);
+
+    this.btn = _view.findChild("btn");
+    this.btn.findChild("lbl").setText(text);
+
+    this.btn.findChild("img_icon").setVisible(false);
+  }
+}
+class SanrioTalkView.BranchLayer.BranchDiaryView extends SKView {
+  target = null;
+  key = null;
+  textkey = null;
+
+  btn = null;
+
+  function build(target, reply_key, reply_textkey, chara_id) {
+    this.target = target;
+    this.key = reply_key;
+    this.textkey = reply_textkey;
+
+    local _view = ::loadSKView("/ui/common/TalkBranch.ui");
+    setRect(0, 0, _view.bnd.w, _view.bnd.h, _view.bnd.w / 2.0, _view.bnd.h / 2.0);
+    addChild(_view);
+
+    local _text = ::gamesetting.reply_texts[reply_textkey];
+    this.btn = _view.findChild("btn");
+    this.btn.findChild("lbl").setText(_text);
+
+    local _scs = ::gamesetting.sanrio_chara_settings[chara_id];
+    local _sp = _scs.getIconSpriteTalkBranch();
+    local _icon = this.btn.findChild("img_icon");
+    if (!_sp) _icon.setVisible(false);
+    _icon.setSprite(_sp);
+    _icon.updateLayout();
+  }
+
+  function getReplyKey() {
+    return key;
+  }
+  function getReplyTextKey() {
+    return textkey;
+  }
+}
+
+class SanrioTalkView.CameraWork extends ::CameraWork {
+  move_interval_id = -1;
+  rotate_interval_id = -1;
+  stage = null;
+  talkview = null;
+
+  function setStage(s) {
+    this.stage = s;
+  }
+
+  function setTalkView(v) {
+    this.talkview = v;
+  }
+
+  function deactivate() {
+    if (!this.active) return;
+
+    super.deactivate();
+
+    if (this.move_interval_id != -1) {
+      clearInterval(this.move_interval_id);
+      this.move_interval_id = -1;
+    }
+    if (this.rotate_interval_id != -1) {
+      clearInterval(this.rotate_interval_id);
+      this.rotate_interval_id = -1;
+    }
+  }
+
+  function _moveCamera(x, y, z, time) {
+    if (!this.active) return;
+
+    if (this.move_interval_id != -1) {
+      clearInterval(this.move_interval_id);
+      this.move_interval_id = -1;
+    }
+
+    if (time <= 0) {
+      _mv(x, y, z);
+      return;
+    }
+
+    this.move_interval_id = setInterval(function(dt) {
+      if (self.talkview.isPause()) return null;
+
+      timer += dt;
+      if (timer < param.time) {
+        local dx = (param.x - camera.pos.x) / (param.time - timer) * dt;
+        local dy = (param.y - camera.pos.y) / (param.time - timer) * dt;
+        local dz = (param.z - camera.pos.z) / (param.time - timer) * dt;
+        _mv(camera.pos.x + dx, camera.pos.y + dy, camera.pos.z + dz);
+        if (::SanrioTalkView.TEST_LOG) println("[x]" + (camera.pos.x + dx) + " [y]" + (camera.pos.y + dy) + " [z]" + (camera.pos.z + dz));
+        return null;
+      }
+
+      _mv(param.x, param.y, param.z);
+      if (::SanrioTalkView.TEST_LOG) println("[x]" + param.x + " [y]" + param.y + " [z]" + param.z);
+      return undefined;
+    }.bindenv({
+      timer = 0,
+      camera = camera,
+      _mv = _mv.bindenv(this),
+      param = { x = x, y = y, z = z, time = time },
+      self = this,
+    }), 1);
+  }
+
+  function moveCamera(x, y, z, time) {
+
+    x = camera.pos.x + x;
+    y = camera.pos.y + y;
+    z = camera.pos.z + z;
+    _moveCamera(x, y, z, time);
+  }
+
+  function moveCameraTo(x, y, z, time) {
+
+    _moveCamera(x, y, z, time);
+  }
+
+  function moveCameraAt(x, y, z, time) {
+
+    x = camera.pos.x + x * time;
+    y = camera.pos.y + y * time;
+    z = camera.pos.z + z * time;
+    _moveCamera(x, y, z, time);
+  }
+
+  function _rotateCamera(h, p, b, time) {
+    if (!this.active) return;
+
+    if (this.rotate_interval_id != -1) {
+      clearInterval(this.rotate_interval_id);
+      this.rotate_interval_id = -1;
+    }
+
+    if (time <= 0) {
+      _rt(h, p, b);
+      if (stage.getHouseManager()) stage.getHouseManager().getCurrentRoomModel().updateVisibleWall(hpb[0]);
+      _updateEnvLights(stage, hpb[0]);
+      return;
+    }
+
+    this.rotate_interval_id = setInterval(function(dt) {
+      if (self.talkview.isPause()) return null;
+
+      timer += dt;
+      if (timer < param.time) {
+
+        local dh = (param.h - hpb[0]) / (param.time - timer) * dt;
+        local dp = (param.p - hpb[1]) / (param.time - timer) * dt;
+        local db = (param.b - hpb[2]) / (param.time - timer) * dt;
+
+        if (::SanrioTalkView.TEST_LOG) println("[pitch]" + (hpb[0] * Math.RTOD) + " [head]" + (hpb[1] * Math.RTOD));
+        if (((hpb[0] + dh) * Math.RTOD) < 0) {
+          param.h = 360 + (param.h * Math.RTOD);
+          param.h = (param.h * Math.DTOR);
+          dh = ((float(360) + ((hpb[0] + dh) * Math.RTOD)) * Math.DTOR);
+          _rt(dh, hpb[1] + dp, hpb[2] + db);
+        } else if (((hpb[0] + dh) * Math.RTOD) > 360) {
+          param.h = (param.h * Math.RTOD) - (float(360));
+          param.h = (param.h * Math.DTOR);
+          dh = ((((hpb[0] + dh) * Math.RTOD) - float(360)) * Math.DTOR);
+          _rt(dh, hpb[1] + dp, hpb[2] + db);
+        } else {
+          _rt(hpb[0] + dh, hpb[1] + dp, hpb[2] + db);
+        }
+        if (stage) {
+
+          if (stage.getHouseManager()) stage.getHouseManager().getCurrentRoomModel().updateVisibleWall(hpb[0]);
+          _updateEnvLights(stage, hpb[0]);
+        }
+        return null;
+      }
+
+      _rt(param.h, param.p, param.b);
+      if (stage) {
+
+        if (stage.getHouseManager()) stage.getHouseManager().getCurrentRoomModel().updateVisibleWall(hpb[0]);
+        _updateEnvLights(stage, param.h);
+      }
+      return undefined;
+    }.bindenv({
+      timer = 0,
+      _rt = _rt.bindenv(this),
+      hpb = hpb,
+      pos = camera.pos,
+      param = { h = h, p = p, b = b, time = time },
+      stage = this.stage,
+      _updateEnvLights = _updateEnvLights,
+      self = this,
+    }), 1);
+  }
+
+  function rotateCamera(h, p, b, time) {
+
+    h = hpb[0] + (h || 0.0) / 180.0 * Math.PI;
+    p = hpb[1] + (p || 0.0) / 180.0 * Math.PI;
+    b = hpb[2] + (b || 0.0) / 180.0 * Math.PI;
+    _rotateCamera(h, p, b, time);
+  }
+
+  function rotateCameraTo(h, p, b, time) {
+    h = (h || hpb[0]) / 180.0 * Math.PI;
+    p = (p || hpb[1]) / 180.0 * Math.PI;
+    b = (b || hpb[2]) / 180.0 * Math.PI;
+    _rotateCamera(h, p, b, time);
+  }
+
+  function rotateCameraAt(h, p, b, time) {
+    h = hpb[0] + (h || 0.0) / 180.0 * Math.PI * time;
+    p = hpb[1] + (p || 0.0) / 180.0 * Math.PI * time;
+    b = hpb[2] + (b || 0.0) / 180.0 * Math.PI * time;
+    _rotateCamera(h, p, b, time);
+  }
+
+  function _updateEnvLights(ss, h) {
+    if (!ss) return;
+    local _scene = ss.getScene();
+    local _lights = _scene.env.envlights;
+    if (!_lights || _lights.len() == 0) return;
+
+    local _cam_h = int(h * Math.RTOD);
+    _cam_h = _cam_h % 360;
+    _cam_h = _cam_h > 180 ? _cam_h - 360 : _cam_h;
+
+    foreach (li in _lights) {
+      local _li_h = (li.hpb[0] < -180 ? li.hpb[0] + 360 : li.hpb[0]) % 360;
+      _li_h = _li_h > 180 ? _li_h - 360 : _li_h;
+      local _dif = (_cam_h - _li_h) % 360;
+
+      if (_dif > 180) {
+        _dif -= 360;
+      } else if (_dif < -180) {
+        _dif += 360;
+      }
+
+      if (_dif == 0) {
+        li.enabled = false;
+        continue;
+      }
+
+      li.enabled = Math.abs(_dif) <= 45 ? true : false;
+    }
+  }
+}
+
+::TalkView = ::SanrioTalkView;

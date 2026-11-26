@@ -1,0 +1,53 @@
+panel_mission_condition_settings[1] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [101]
+  };
+});
+
+panel_mission_condition_settings[2] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [201]
+  };
+});
+
+panel_mission_condition_settings[3] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [202]
+  };
+});
+
+panel_mission_condition_settings[4] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [301]
+  };
+});
+
+panel_mission_condition_settings[5] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [302]
+  };
+});
+
+panel_mission_condition_settings[6] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [401]
+  };
+});
+
+panel_mission_condition_settings[7] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [402]
+  };
+});
+
+panel_mission_condition_settings[8] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [501]
+  };
+});
+
+panel_mission_condition_settings[9] <- ConditionSetting({
+  condition = {
+    "end_panelmission_event" = [502]
+  };
+});

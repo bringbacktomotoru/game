@@ -1,0 +1,27 @@
+return {
+  modeldata = "table_mv.mdl"
+  bnd = [0.004994, 0.894289, 7e-06, 2.119941, 0.896951, 1.408015]
+
+  material = [
+  {
+    name = "table_set"
+    tec = "shading.basic"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 2139062271
+    Ke = 0
+    shiness = 20.0
+    texture0 = "tex/table_set.png"
+  }
+  {
+    name = "table_1_mt"
+    tec = "shading.basic"
+    Ka = 0xffffffff
+    Kd = 0xffffffff
+    Ks = 2139062271
+    Ke = 0
+    shiness = 20.0
+    texture0 = "tex/table_1.png"
+  }
+  ]
+}

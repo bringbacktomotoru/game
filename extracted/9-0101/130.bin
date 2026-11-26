@@ -1,0 +1,28 @@
+;
+;----------- おでかけ行くとき -------------
+
+; ドア指定
+[focusdoor]
+
+; カメラ初期位置
+[movecamera type=1 z=-16.5 y=2.3 time=0]
+[rotatecamera pitch=0]
+; キャラ出現
+[popchara z=-5 angle=0 relative=true]
+; キャラ前に向かって移動
+[wait time=1200]
+; キャラ手振り
+[startanime time=2000 script=tefuri]
+[balloon time=3000]
+[talk talk_key = "going_1_3"]
+[wait time=2000]
+[endballoon]
+[waitaction script=tefuri]
+; キャラくるくる
+[startanime time=3000 script=kurukuru]
+[waitaction script=kurukuru]
+
+[turnchara angle=180 time=1000 script=turn_r]
+[waitaction script=turn_r]
+[movechara type=1 z=3.0 script=movie_walk neutral=stand time=2000]
+[wait time=2000]

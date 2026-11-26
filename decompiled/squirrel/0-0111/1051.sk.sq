@@ -1,0 +1,20 @@
+ending_go_to_job <- [
+
+{ scp = "walk" },
+"",
+]
+
+ending_go_home <- [
+"ただいまー",
+{ scp = "tefuri" },
+]
+
+ending_success <- [
+{ scp = "tefuri" },
+"お仕事頑張ったよ！",
+]
+
+ending_failed <- [
+{ scp = "tefuri" },
+"お仕事全然出来なかった！",
+]

@@ -1,0 +1,216 @@
+{
+  "ID": "b54f7628-5d9f-4670-9232-a24d6937a4a8",
+  "Version": "2.3.3.0",
+  "Name": "EquipOn",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 6,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "stage/weapon_b1.png",
+              "Plist": "stage/ss_stage.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 72.0,
+              "Y": 72.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.8889,
+              "Y": 0.8889
+            },
+            "LeftMargin": 8.0,
+            "RightMargin": 8.0,
+            "TopMargin": 8.0,
+            "BottomMargin": 8.0,
+            "Tag": 7,
+            "ActionTag": -1937324514,
+            "Size": {
+              "X": 128.0,
+              "Y": 128.0
+            },
+            "Name": "b1",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "stage/weapon_b2.png",
+              "Plist": "stage/ss_stage.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 72.0001,
+              "Y": 72.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.7083,
+              "Y": 0.7083
+            },
+            "LeftMargin": 21.0001,
+            "RightMargin": 20.9999,
+            "TopMargin": 21.0,
+            "BottomMargin": 21.0,
+            "Tag": 10,
+            "ActionTag": -1738917644,
+            "Size": {
+              "X": 102.0,
+              "Y": 102.0
+            },
+            "VisibleForFrame": false,
+            "Name": "b2",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "stage/weapon_c.png",
+              "Plist": "stage/ss_stage.plist"
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 72.0001,
+              "Y": 72.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.4167,
+              "Y": 0.4167
+            },
+            "LeftMargin": 42.0001,
+            "RightMargin": 41.9999,
+            "TopMargin": 42.0,
+            "BottomMargin": 42.0,
+            "Tag": 8,
+            "ActionTag": -508974008,
+            "Size": {
+              "X": 60.0,
+              "Y": 60.0
+            },
+            "Name": "c",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/ImageFile.png",
+              "Plist": ""
+            },
+            "Scale9Width": 46,
+            "Scale9Height": 46,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 72.0,
+              "Y": 72.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 0.4444,
+              "Y": 0.4444
+            },
+            "LeftMargin": 40.0,
+            "RightMargin": 40.0,
+            "TopMargin": 40.0,
+            "BottomMargin": 40.0,
+            "Tag": 9,
+            "ActionTag": 341559410,
+            "Size": {
+              "X": 64.0,
+              "Y": 64.0
+            },
+            "Name": "icon",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 144.0,
+          "Y": 144.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../Default/ImageFile.png",
+        "ss_stage.plist",
+        "ss_stage.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

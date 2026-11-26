@@ -1,0 +1,24 @@
+class ProducerModel extends Model {
+
+  copied_product_data = null;
+
+  function getProductState() {
+    if (!this.copied_product_data) return ::ProductData.STATE_NONE;
+    return this.copied_product_data.getState();
+  }
+
+  function getProductReward() {
+    return -1;
+  }
+
+  function getProductData() {
+
+  }
+
+  function hasProductData() {
+  }
+
+  function getProductState() {
+
+  }
+}

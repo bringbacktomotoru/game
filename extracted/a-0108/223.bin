@@ -1,0 +1,116 @@
+{
+  "ID": "07b6d75e-f77a-42fc-8a2a-39f3cd3d45f4",
+  "Version": "2.3.3.0",
+  "Name": "RotateButton45minus",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 12,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "image/btn/btn_h1.png",
+              "Plist": "image/ss_btn.plist"
+            },
+            "Scale9Width": 180,
+            "Scale9Height": 77,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 13,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "image/base/icon_rotate.png",
+                  "Plist": ""
+                },
+                "Scale9Width": 64,
+                "Scale9Height": 64,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 31.001,
+                  "Y": 31.0006
+                },
+                "Scale": {
+                  "ScaleX": -1.0,
+                  "ScaleY": 1.0
+                },
+                "RotationSkewX": 0.2261,
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.5082,
+                  "Y": 0.5082
+                },
+                "PreSize": {
+                  "X": 0.8197,
+                  "Y": 0.8197
+                },
+                "LeftMargin": 6.001,
+                "RightMargin": 4.999,
+                "TopMargin": 4.9994,
+                "BottomMargin": 6.0006,
+                "Tag": 14,
+                "ActionTag": 1855987582,
+                "Size": {
+                  "X": 50.0,
+                  "Y": 50.0
+                },
+                "Name": "img_rotate",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 1337468493,
+            "Size": {
+              "X": 61.0,
+              "Y": 61.0
+            },
+            "Name": "btn",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 61.0,
+          "Y": 61.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../image/base/icon_rotate.png",
+        "../image/ss_btn.plist",
+        "../image/ss_btn.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

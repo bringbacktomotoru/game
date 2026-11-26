@@ -1,0 +1,62 @@
+parentcoord <- false
+currentgroup <- 0
+groups <- [
+with ParticleGroupData() {
+  name = "1"
+  enabled = true
+  aimtype = 1
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 3
+    start = 0, start_spr = 2000
+    life = 2000, life_spr = 0
+    posx = 0.0, posy = 0.5, posz = 0.0
+    pos_sprx = 2.0, pos_spry = 1.0, pos_sprz = 0.5
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.698132, dir_sprz = 0.698132
+    linearbits = 0
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.3, "h": 0.3 }
+  texture = "onpu_piano_renfu.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = true
+  mod = [
+  { "vel": 1.28, "classid": "ptcmod_vel", "vel_spr": 0.0 },
+  { "axisid": 1, "classid": "ptcmod_acc", "acc": -0.016, "coord": 1, "acc_spr": 0.0 },
+  { "color": [-256, -1, -1, -1, -1, -1, -1, -256], "classid": "ptcmod_color" },
+  { "xyz": 7, "scale": [1.0, 1.192308, 1.038462, 1.192308, 0.961538], "classid": "ptcmod_scale" },
+  { "axisid": 2, "classid": "ptcmod_rot", "rot": [-1.0, -0.576923, -1.0, -0.576923, -1.0, -0.615385], "scale": 0.349066 },
+  ] },
+with ParticleGroupData() {
+  name = "2"
+  enabled = true
+  aimtype = 1
+  localcoord = true
+  emitter = with ParticleEmitter() {
+    num = 3
+    start = 0, start_spr = 2000
+    life = 2000, life_spr = 0
+    posx = 0.0, posy = 0.5, posz = 0.0
+    pos_sprx = 2.0, pos_spry = 1.0, pos_sprz = 0.5
+    dirx = 0.0, diry = 0.0, dirz = 0.0
+    dir_sprx = 0.0, dir_spry = 0.698132, dir_sprz = 0.698132
+    linearbits = 0
+  },
+  shapetype = 0
+  shapedata = { "axis": 0, "w": 0.3, "h": 0.3 }
+  texture = "onpu_piano_hatibu.png"
+  color = 0xffffffff
+  blend = 1
+  tec = null
+  overlay = true
+  mod = [
+  { "vel": 1.28, "classid": "ptcmod_vel", "vel_spr": 0.0 },
+  { "axisid": 1, "classid": "ptcmod_acc", "acc": -0.016, "coord": 1, "acc_spr": 0.0 },
+  { "color": [-256, -1, -1, -1, -1, -1, -1, -256], "classid": "ptcmod_color" },
+  { "xyz": 7, "scale": [1.0, 1.192308, 1.038462, 1.192308, 0.961538], "classid": "ptcmod_scale" },
+  { "axisid": 2, "classid": "ptcmod_rot", "rot": [-1.0, -0.576923, -1.0, -0.576923, -1.0, -0.615385], "scale": 1.029744 },
+  ] },
+]

@@ -1,0 +1,63 @@
+class ItemSetting extends ::Setting {
+
+  static SLOT_NONE = -1;
+  static SLOT_WORK = 0;
+  static SLOT_PRODUCT = 1;
+  static SLOT_MAX = 2;
+
+  static NONE = -1;
+  static SHORTEN_TIME = 1;
+  static ADD = 2;
+  static BOOST = 3;
+  static REWARD_PLUS = 4;
+
+  static TYPE_NONE = -1;
+  static TYPE_ONCE = 1;
+  static TYPE_PERIOD = 2;
+  static TYPE_COUNT = 3;
+
+  id = null;
+  name = null;
+  desc = null;
+  path = null;
+
+  slot = null;
+  kind = null;
+  type = null;
+  targets = null;
+  value = null;
+  time = null;
+
+  function loadConfAtServer(t) {
+    local setting = ItemSetting();
+
+    foreach (k, v in t) {
+      switch (k) {
+      case "targets":
+        setting[k] = decodeJSON(v);
+        break;
+      default:
+        setting[k] = v;
+      }
+    }
+
+    return setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (name) trans + "name";
+    if (desc) trans + "desc";
+
+    return trans;
+  }
+
+  function getIconPath() {
+    return "/image/icon/item/" + this.path;
+  }
+
+  function getTimeSec() {
+    return value * 60;
+  }
+}

@@ -1,0 +1,71 @@
+declare texgen;
+
+//	一般的なスプライト描画
+//	def : 普通に描画
+//	mosaic : モザイクを掛けながら描画 (miscmat[0].x)
+//	replace : 置換マッピング (miscmat[0].xy)
+//	shadow1 : ソリッド影描画
+//	shadow2 : ボケ影描画
+//	strokefont : ストローク付きのフォント
+//	
+
+param common
+{
+	attribute mediump vec4 in_pos <ID=POSITION>;
+	attribute mediump vec4 in_uv <id=UV1>;
+	
+	uniform sampler2D coltex1 <id=COLORTEX1>;
+	uniform sampler2D coltex2 <id=COLORTEX2>;
+	uniform sampler2D coltex3 <id=COLORTEX3>;
+	uniform sampler2D coltex4 <id=COLORTEX4>;
+	
+	uniform mediump mat4 p0 <id=MISC1MAT>;
+	uniform mediump mat4 p1 <id=MISC2MAT>;
+	uniform mediump mat4 p2 <id=MISC3MAT>;
+	uniform mediump mat4 p3 <id=MISC4MAT>;
+	uniform mediump mat4 p4 <id=UVMAT>;
+	uniform mediump mat4 p5 <id=COLORMAT>;
+	
+	varying mediump vec4 v_uv;
+}
+
+vs def
+{
+	void main(){
+		gl_Position = in_pos;
+		v_uv = in_uv;
+	}
+}
+
+fs builtin
+{
+	lowp vec4 _mix( lowp vec4 a, lowp vec4 b){ return mix(a,b,b.w); }
+	
+	lowp vec4 unpackcolor( highp float f)
+	{
+		const highp vec4 bitSh = vec4(256.0*256.0*256.0, 256.0*256.0, 256.0, 1.0);
+		const highp vec4 bitMsk = vec4(0.0, 1.0/256.0, 1.0/256.0, 1.0/256.0);
+		highp vec4 res = fract( f * bitSh);
+		return res - res.xxyz * bitMsk;
+	}
+	
+	highp float packcolor( lowp vec4 c)
+	{
+		const highp vec4 bitSh = vec4(1.0/(256.0*256.0*256.0), 1.0/(256.0*256.0), 1.0/256.0, 1.0);
+		return( dot( c, bitSh));
+	}
+}
+
+//	texgen shader
+
+technique def
+{
+	pass {
+		using builtin;
+		CULLFACE = OFF;
+		
+		param = common;
+		vs = def;
+		fs = texgen;
+	}
+}

@@ -1,0 +1,192 @@
+class RoomShopPanel extends ::HomeUI.Panel {
+  static ITEM_SPACE_Y = 20;
+
+  items = null;
+
+  scroll_panel = null;
+  reclist = null;
+  scroll_bar = null;
+
+  pnl_item_list = null;
+
+  constructor() {
+    this.items = [];
+
+    this.reclist = SKMaskView();
+    this.scroll_panel = ScrollPanel(reclist, true);
+    this.scroll_panel.dxscale = 0.0;
+  }
+
+  function create() {
+    return ::loadSKView("/ui/ItemListPanel.ui", ::RoomShopPanel);
+  }
+
+  function loadFinished() {
+    this.pnl_item_list = findChild("pnl_item_list");
+    this.pnl_item_list.setBuffer(true);
+    this.pnl_item_list.addChild(this.reclist);
+
+    this.scroll_bar = ::ScrollBarV(findChild("pnl_scroll_bar"));
+    this.scroll_bar.setup(this.scroll_panel, this.pnl_item_list.bnd, false);
+
+    ::TapButton(findChild("btn_back")).view.addEventListener(ACTION_EVENT, actionevent_back);
+    ::TapButton(findChild("btn_sort")).view.addEventListener(ACTION_EVENT, actionevent_sort);
+    ::TapButton(findChild("btn_performance")).view.addEventListener(ACTION_EVENT, actionevent_performance);
+
+    local list_width = this.pnl_item_list.bnd.w;
+    this.scroll_panel.block = [list_width, 300 + ITEM_SPACE_Y];
+    buildItems();
+    updatePosition();
+  }
+
+  function buildItems() {
+    this.items.clear();
+
+    local shop_settings = ::gamesetting.shop_settings;
+    foreach (setting in shop_settings) {
+      if (setting.type != SHOP_ITEM_TYPE_ROOM) continue;
+
+      local item = Item.create();
+      item.setup(setting);
+      this.items + item;
+    }
+  }
+
+  function updatePosition() {
+    this.reclist.clearChildren();
+
+    local pos_y = 0;
+    local reclist = this.reclist;
+    foreach (item in this.items) {
+      item.pos.y = pos_y;
+      reclist.addChild(item);
+
+      pos_y += item.bnd.h + ITEM_SPACE_Y;
+    }
+
+    reclist.setRect(0, 0, pnl_item_list.bnd.w, pos_y - ITEM_SPACE_Y);
+    reclist.repaint();
+    this.scroll_panel.setScrollRect(reclist.bnd);
+    this.scroll_bar.update();
+  }
+
+  function actionevent_back(e) {
+    e.consume();
+
+    getHomeUI().backTapped();
+  }
+  function actionevent_sort(e) {
+    e.consume();
+  }
+  function actionevent_performance(e) {
+    e.consume();
+  }
+}
+
+class RoomShopPanel.Item extends SKView {
+  shop_id = -1;
+
+  room_detail_dialog = null;
+
+  pnl_room = null;
+  img_gm = null;
+  img_rm = null;
+  lbl_price_value = null;
+
+  lbl_test_room_name = null;
+  lbl_test_num = null;
+
+  function create() {
+    return ::loadSKView("/ui/common/RoomShopItem.ui", ::RoomShopPanel.Item);
+  }
+  function loadFinished() {
+    Button(this, false);
+
+    this.pnl_room = findChild("pnl_room");
+    this.img_gm = findChild("img_gm");
+    this.img_rm = findChild("img_rm");
+    this.lbl_price_value = findChild("lbl_price_value");
+
+    this.lbl_test_room_name = findChild("lbl_test_room_name");
+    this.lbl_test_num = findChild("lbl_test_num");
+
+    ::TapButton(findChild("btn_detail")).view.addEventListener(ACTION_EVENT, actionevent_detail);
+  }
+
+  function setup(shop_setting) {
+    this.shop_id = shop_setting.id;
+
+    local price_type_gm = shop_setting.isPriceTypeGM();
+    this.img_gm.setVisible(price_type_gm);
+    this.img_rm.setVisible(!price_type_gm);
+    this.lbl_price_value.setText(shop_setting.price);
+
+    this.lbl_test_room_name.setText(shop_setting.name);
+    local ud = ::gamesession.getUserData();
+    local res = ud.getRemainingPurchaseNum(this.shop_id);
+    if (res.limit) {
+      this.lbl_test_num.setText(::dict.get("purchase_limit", [Math.max(res.num, 0)]));
+    }
+    else {
+      this.lbl_test_num.setText("");
+    }
+  }
+
+  function update() {
+    setup(::gamesetting.shop_settings[this.shop_id]);
+  }
+
+  function tapped() {
+    local num = 1;
+
+    local ud = ::gamesession.getUserData();
+    local ret = ud.checkPurchasable(this.shop_id, num);
+    if (!ret.result) {
+      local dlg = SimpleDialog();
+      dlg.lbl_msg.setText(ret.log);
+      dlg.show();
+
+      return;
+    }
+
+    local dlg = SimpleDialog2();
+    dlg.lbl_msg.setText(::dict.get("is_purchase_room"));
+    dlg.lbl_caution.setText("");
+    dlg.show();
+    if (dlg.ret == 0) {
+      return;
+    }
+
+    local res = ud.purchaseRoom(this.shop_id, num);
+    if (res) {
+      local dlg = SimpleDialog();
+      dlg.lbl_msg.setText(::dict.get("purchase_room"));
+      dlg.show();
+
+      update();
+    }
+    else {
+      local dlg = SimpleDialog();
+      dlg.lbl_msg.setText(::dict.get("failed_purchase_room"));
+      dlg.show();
+    }
+  }
+
+  function actionevent_detail(e) {
+    e.consume();
+
+    if (!this.room_detail_dialog) {
+      this.room_detail_dialog = ::RoomShopDetailDialog();
+    }
+    this.room_detail_dialog.setup(this.shop_id);
+    this.room_detail_dialog.show();
+  }
+}
+
+class RoomShopPanel.Item.Button extends ::TapButton {
+
+  function pushanime() {}
+  function pullanime() {}
+  function clickanime() { this.view.tapped(); }
+
+}

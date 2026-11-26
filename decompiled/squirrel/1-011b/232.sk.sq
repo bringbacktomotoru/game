@@ -1,0 +1,299 @@
+class RoomSetting extends ::Setting {
+  id = -1;
+
+  name = null;
+  size_text = null;
+  floor_path = null;
+  wall_settings = null;
+  pillar_paths = null;
+  room_rects = null;
+  desc = null;
+  series = 0;
+
+  bg_image_path = null;
+
+  exp_table_index = -1;
+  parameter_id = -1;
+
+  sell_price = 0;
+  sell_enable = 0;
+
+  chara_ids = null;
+  release_chara_conditions = null;
+  release_chara_condition_texts = null;
+  init_furnitures = null;
+
+  first_diary_id = null;
+
+  door_path = null;
+
+  function initialized() {
+
+    local dir = "/res/room";
+    this.floor_path = dir + this.floor_path;
+    foreach (idx, path in this.pillar_paths) {
+      if (path && path != "null") this.pillar_paths[idx] = dir + path;
+      else this.pillar_paths[idx] = null;
+    }
+
+    local rects = this.room_rects;
+    foreach (idx, rect in rects) {
+      this.room_rects[idx] = Rect2D(rect[0], rect[1], rect[2], rect[3]);
+    }
+
+    foreach (i, t in this.wall_settings) {
+      if (t) this.wall_settings[i] = ::RoomSetting.WallSetting(t);
+      else this.wall_settings[i] = null;
+    }
+
+    if (!this.bg_image_path) this.bg_image_path = "/ui/image/bg.png";
+  }
+
+  function loadConfAtServer(t) {
+
+    local _setting = RoomSetting();
+    foreach (k, v in t) {
+      switch (k) {
+      case "wall_settings":
+      case "pillar_paths":
+      case "chara_ids":
+      case "release_chara_condition_texts":
+        _setting[k] = decodeJSON(v);
+        break;
+      case "room_rects":
+      case "release_chara_conditions":
+      case "init_furnitures":
+        local str_list = decodeJSON(v);
+        local list = [];
+        foreach (idx, str in str_list) {
+          list + decodeJSON(str);
+        }
+        _setting[k] = list;
+        break;
+      default:
+        _setting[k] = v;
+      }
+    }
+    _setting.initialized();
+
+    return _setting;
+  }
+
+  function getTranslateTarget() {
+    local trans = [];
+
+    if (name) trans + "name";
+    if (desc) trans + "desc";
+    if (size_text) trans + "size_text";
+    if (release_chara_condition_texts) trans + "release_chara_condition_texts";
+
+    return trans;
+  }
+
+  function getID() {
+    return this.id;
+  }
+
+  function getName() {
+    return this.name;
+  }
+
+  function getSizeText() {
+    return this.size_text;
+  }
+
+  function getDesc() {
+    return this.desc;
+  }
+
+  function getSeries() {
+    return this.series;
+  }
+
+  function getSeriesSetting() {
+    return ::gamesetting.series_settings[this.series];
+  }
+
+  function getFloorPath() {
+    return this.floor_path;
+  }
+
+  function getDoorPath() {
+    return this.door_path;
+  }
+
+  function getWallSettings() {
+    return this.wall_settings;
+  }
+
+  function getPillarPaths() {
+    return this.pillar_paths;
+  }
+
+  function getRoomRects() {
+    return this.room_rects;
+  }
+
+  function getRoomTotalRect() {
+    local left, right, front, back;
+
+    foreach (rect in this.room_rects) {
+      local _l = rect.x - rect.w / 2;
+      local _r = rect.x + rect.w / 2;
+      local _f = rect.y - rect.h / 2;
+      local _b = rect.y + rect.h / 2;
+
+      left = Math.min(left, _l);
+      right = Math.max(right, _r);
+      front = Math.min(front, _f);
+      back = Math.max(back, _b);
+    }
+
+    local w = right - left;
+    local h = back - front;
+    local total_rect = Rect2D(left + w / 2, front + h / 2, w, h);
+    return total_rect;
+  }
+
+  function getNextExp(lv) {
+    return ::gamesetting.room_exp_table[this.exp_table_index][lv - 1];
+  }
+
+  function getMaxLevel() {
+    return length(::gamesetting.room_exp_table[this.exp_table_index]) + 1;
+  }
+
+  function getParameterSetting() {
+    return ::gamesetting.room_parameter_settings[this.parameter_id];
+  }
+
+  function getParameters(lv) {
+    return getParameterSetting().getParameters(lv);
+  }
+
+  function getMaxParameters() {
+    return getParameters(getMaxLevel());
+  }
+  function getResideMaxNums() {
+    return getParameterSetting().getCharaParam(getMaxLevel());
+  }
+  function getResideNums(lv) {
+    return getParameterSetting().getCharaParam(lv);
+  }
+
+  function getSellPrice() {
+    if (!this.sell_enable) return 0;
+    return this.sell_price;
+  }
+
+  function hasFirstDiaryID() {
+    return this.first_diary_id > 0 ? true : false;
+  }
+  function getFirstDiaryID() {
+    return this.first_diary_id;
+  }
+
+  function isInRoom(x, y) {
+    local wh, hh;
+    local left, right, bottom, top;
+    foreach (rect in this.room_rects) {
+      wh = rect.w / 2.0;
+      hh = rect.h / 2.0;
+      left = rect.x - wh;
+      right = rect.x + wh;
+      bottom = rect.y - hh;
+      top = rect.y + hh;
+
+      if (x >= left && x <= right && y >= bottom && y <= top) return true;
+    }
+
+    return false;
+  }
+
+  function getIconSpriteUnacquired() {
+    local _path = "/image/icon/room/room/" + this.id + ".png";
+    local _sp = ::getSprite(_path);
+    if (!_sp) _sp = ::getSprite("/image/icon/room/room/999.png");
+    _sp.blend = SK_MIX;
+    return _sp;
+  }
+
+  function canSell() {
+    return this.sell_enable;
+  }
+
+  function getBGImagePath() {
+    if (!this.bg_image_path) return "";
+    return "/ui/image/bg/" + this.bg_image_path + ".png";
+  }
+  function getMissionPanelBGImagePath() {
+    if (!this.bg_image_path) return "";
+    return "/ui/image/bg/" + this.bg_image_path + "_panelmission.png";
+  }
+
+  function getCharaIDs() {
+    return this.chara_ids
+  }
+  function getReleaseCharaConditions() {
+    return this.release_chara_conditions;
+  }
+  function getReleaseCharaConditionText(idx) {
+    if (!this.release_chara_condition_texts || this.release_chara_condition_texts.len() <= idx) return "";
+    return this.release_chara_condition_texts[idx];
+  }
+
+  function checkCharaReleaseCondition(chara_id) {
+    local _idx = -1;
+    foreach (idx, id in this.chara_ids) {
+      if (chara_id != id) continue;
+      _idx = idx;
+      break;
+    }
+    if (_idx < 0) return false;
+
+    local _conditions = this.release_chara_conditions[_idx];
+    return ::checkCondition(_conditions, ::gamesetting.room_conditions);
+  }
+}
+
+class RoomSetting.WallSetting extends ::Setting {
+  path = null;
+  visible_start_angle = 0;
+  visible_end_angle = 0;
+
+  constructor(t = null) {
+    foreach (i, v in t) {
+      switch (i) {
+      case "visible_start_angle":
+      case "visible_end_angle":
+        this[i] = (int)(v);
+        break;
+      case "path":
+        this[i] = v != "null" ? v : null;
+        break;
+      default:
+        this[i] = v;
+      }
+
+    }
+    initialized();
+  }
+
+  function initialized() {
+
+    local dir = "/res/room";
+    if (this.path) this.path = dir + this.path;
+  }
+
+  function getPath() {
+    return this.path;
+  }
+
+  function getVisibleStartAngle() {
+    return this.visible_start_angle;
+  }
+
+  function getVisibleEndAngle() {
+    return this.visible_end_angle;
+  }
+}

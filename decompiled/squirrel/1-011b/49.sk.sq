@@ -1,0 +1,24 @@
+room_settings[1].name = "First Room"
+room_settings[1].desc = "A warm, inviting Country Room with inlaid wooden hearts. Cozy and rustic, yet somehow invigorating."
+room_settings[1].size_text = ""
+room_settings[1].release_chara_condition_texts = ["", "Complete/nRoom Monitor (2)"]
+
+room_settings[2].name = "Melody's Room"
+room_settings[2].desc = "A warm, inviting Country Room with inlaid wooden hearts. Cozy and rustic, yet somehow invigorating."
+room_settings[2].size_text = ""
+room_settings[2].release_chara_condition_texts = ["", "Clear/nMelody's Managerial Mission #eq# (1)", "Clear/nMelody's Managerial Mission #eq# (2)"]
+
+room_settings[3].name = "Cinnamon's Room"
+room_settings[3].desc = "A cozy, cafe style room as soft as a floating cloud. It has the gentle scent of coffee."
+room_settings[3].size_text = ""
+room_settings[3].release_chara_condition_texts = ["", "", "Complete/nLet's Open a Cafe (1)"]
+
+room_settings[4].name = "Kitty's Room"
+room_settings[4].desc = "An endearing Hello Kitty room with inlaid antique flowers. The smell of roses fills the air."
+room_settings[4].size_text = ""
+room_settings[4].release_chara_condition_texts = ["", "Complete/nKitty's 3 Wishes (1)", "Complete/nKitty's 3 Wishes (1)"]
+
+room_settings[5].name = "Mysterious Room"
+room_settings[5].desc = "(TEMPORARY) 5th, slightly larger room."
+room_settings[5].size_text = ""
+room_settings[5].release_chara_condition_texts = ["", "", "Complete/nLeave it to Detective Melody (1)", "Complete/nLeave it to Detective Melody (2)", "Complete/nLeave it to Detective Melody (3)"]

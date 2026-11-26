@@ -1,0 +1,82 @@
+with ParticleGroupData {
+
+  function createParticleGroup() {
+    local pg = ParticleGroup();
+    local pm = null;
+    local iscustom = false;
+    pg.aimtype = aimtype;
+    println("emittier:" + getclass(emitter));
+    pg.emitter = emitter;
+    switch (shapetype) {
+    case 0:
+      {
+        pg.ptcw = shapedata.w;
+        pg.ptch = shapedata.h;
+        pg.ptcaxis = shapedata.axis;
+        break;
+      }
+    case 1:
+      {
+        pm = ::PrimitiveMeshes.createBox(shapedata.w, shapedata.h, shapedata.d);
+        break;
+      }
+    case 2:
+      {
+        pm = ::PrimitiveMeshes.createSphere(shapedata.r, shapedata.segw, shapedata.segh);
+        break;
+      }
+      break;
+    case 3:
+      {
+        pm = ::PrimitiveMeshes.createCylinder(shapedata.topr, shapedata.btmr, shapedata.h, shapedata.segw, shapedata.closemask);
+        break;
+      }
+      break;
+    case 4:
+      {
+        local r = res.getResource(shapedata.path);
+        if (r) pm = ::getPolygonMesh(r);
+        if (!pm) {
+          pm = ::PrimitiveMeshes.createBox(0.1, 0.1, 0.1);
+        } else {
+          iscustom = true;
+        }
+        pg.ptcw = shapedata["w"] || 0.1;
+        pg.ptch = shapedata["h"] || 0.1;
+        pg.ptcd = shapedata["d"] || 0.1;
+        break;
+      }
+    }
+    local m = null;
+    if (pm) {
+      pg.vtx = pm.vtx;
+      pg.idx = pm.face[0].idx;
+      pg.mode = pm.face[0].mode;
+      m = pg.m = pm.face[0].m;
+    } else {
+      m = pg.m = Material();
+      m.cullface = SK_OFF;
+      m.tec = skFXFindTechnique("decal.def");
+    }
+    m.Kd = color;
+    m.blend = blend;
+    if (blend) {
+      m.depthmask = 0;
+    }
+    if (blend == SK_MIX) m.blend = SK_PMASRCMIX;
+    local tex = ::getTexture(res.getResource(texture));
+    if (tex) m.tex0 = tex;
+    if (tec) {
+      local t = skFXFindTechnique(tec);
+      if (t) m.tec = t;
+    }
+    if (overlay) {
+      m.depthtest = SK_ALWAYS;
+
+    }
+    pg.lmat = tf ? tf.toMatrix() : null;
+    if (mod) pg.mods = ParticleModifiers(mod);
+    pg.localcoord = localcoord;
+    return pg;
+  }
+}

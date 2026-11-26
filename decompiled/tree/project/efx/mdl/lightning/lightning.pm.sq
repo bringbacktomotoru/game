@@ -1,0 +1,17 @@
+return {
+  modeldata = "lightning.mdl"
+  bnd = [0.066806, 3.36, 0.008083, 0.771505, 3.37, 0.882968]
+
+  material = [
+  {
+    name = "lightning"
+    tec = "decal.def"
+    Ka = 0xffffff00
+    Kd = 0xccccccff
+    Ks = 0xffffff00
+    Ke = 0
+    shiness = 25.0
+    texture0 = "tex/lightning.png"
+  }
+  ]
+}

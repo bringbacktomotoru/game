@@ -1,0 +1,1278 @@
+import SKViewPropertyID;
+
+class TalkView extends SKView
+{
+
+  sys = null;
+  api = null;
+  macro = null;
+
+  runner = null;
+  currentobj = null;
+  currenttext = null;
+
+  props = null;
+  skipanime = false;
+
+  bg = null;
+  img = null;
+  msg = null;
+  fg = null;
+  info = null;
+  sel = null;
+  overlay = null;
+
+  buttons = null;
+
+  animetable = null;
+  idtable = null;
+  waitclick = null;
+
+  constructor(s)
+  {
+    sys = s;
+    api = s.api;
+    macro = s.macro;
+    runner = TalkRunner();
+    runner.setHandlers(this, api);
+
+    props = {};
+    animetable = {};
+
+    name = "base";
+
+    bg = SKView(); bg.name = "bg"; bg.pickable = 0;
+    img = SKView(); img.name = "img"; img.pickable = 0;
+    msg = SKView(); msg.name = "msg"; msg.pickable = 0;
+    fg = SKView(); fg.name = "fg"; fg.pickable = 0;
+    info = SKView(); info.name = "info"; info.pickable = 0;
+    sel = SKView(); sel.name = "sel"; sel.pickable = 0;
+    overlay = SKView(); overlay.name = "overlay"; overlay.pickable = 0;
+
+    pickable = 0;
+
+    addChild(bg);
+    addChild(img);
+    addChild(msg);
+    addChild(fg);
+    addChild(sel);
+
+  }
+
+  function updateLayout() {
+    local w = bnd.w, h = bnd.h;
+    local hx = w * 0.5, hy = h * 0.5;
+    bg.setRect(0, 0, w, h, hx, hy);
+    img.setRect(0, 0, w, h, hx, hy);
+    msg.setRect(0, 0, w, h, hx, hy);
+    fg.setRect(0, 0, w, h, hx, hy);
+    sel.setRect(0, 0, w, h, hx, hy);
+    info.setRect(0, 0, w, h, hx, hy);
+    overlay.setRect(0, 0, w, h, hx, hy);
+  }
+
+  function jumpscript(storage, target, pushstack) {
+    if (!storage && !target) throw Exception("stroage==null && target==null");
+    if (storage) {
+
+      local scp = sys.getScript(storage);
+      runner.jump(scp, target, {}, pushstack);
+
+    } else {
+      runner.jump(null, target, {}, pushstack);
+
+    }
+  }
+
+  function runscript() {
+    runner.run();
+  }
+
+  function skipscript() {
+    bg.removeFromParent();
+    img.removeFromParent();
+    msg.removeFromParent();
+    fg.removeFromParent();
+    sel.removeFromParent();
+    runner.stop();
+  }
+
+  function buildid(a) {
+    local o = {};
+    for (local l = length(a) - 1; l >= 0; l--) o[a[l]] <- a[l];
+    return o;
+  }
+
+  function deleteObject(id) {
+    if (props[id]) delete props[id];
+    local v = findChild(id);
+    if (!v) {
+      return;
+    }
+    v.name = null;
+    if (animetable[v]) {
+      newthread().start(function() {
+        waitForAnimeFor(v);
+        if (v.parent) v.parent.removeChild(v);
+      }, this);
+    } else {
+      if (v.parent) v.parent.removeChild(v);
+    }
+  }
+
+  function createObject(id, param) {
+    local old = findChild(id);
+    if (old) {
+      old.parent.removeChild(old);
+    }
+
+    setObjectProperties(id, param);
+
+    if (!param["effect"]) {
+      props[id] <- decodeJSON(encodeJSON(param));
+    }
+  }
+
+  function modifyObject(id, param) {
+    local v = findChild(id);
+    if (!v) return;
+    setObjectProperties(id, param);
+
+    local p = props[id];
+    if (!p) p = (props[id] <- {});
+    foreach (i, v in param) {
+      p[i] <- v;
+    }
+  }
+
+  function freezeObject(id, target) {
+    local v = findIDObject(id);
+    local bnd = v.bnd();
+
+    local tgt = setObjectProperties(target, param);
+  }
+
+  function renameObject(fromid, toid) {
+    local v = findChild(fromid);
+    if (!v) return;
+    local v2 = findChild(toid);
+    if (v2) return;
+
+    props[toid] <- props[fromid]
+    delete props[fromid];
+    local i = toid.lastIndexOf(".");
+    v.name = toid.substring(i + 1);
+  }
+
+  function copyObject(fromid, toid) {
+    local v = findChild(fromid);
+    if (!v) return;
+    local v2 = findChild(toid);
+    if (!v2) return;
+    local prop = props[fromid];
+    setObjectProperties(toid, props[fromid]);
+
+    if (!prop["effect"]) {
+      props[toid] <- decodeJSON(encodeJSON(prop));
+    }
+  }
+
+  function readdObject(id, param) {
+    local v = findChild(id);
+    if (!v) return;
+    v.parent.removeChild(v);
+
+    local i = id.lastIndexOf(".");
+    if (i < 0) throw Exception("cant find top-level DisplayObject : " + id);
+    local parent = findChild(id.substring(0, i));
+    if (!parent) throw Exception("cant find parent DisplayObject : " + id);
+
+    if (param["order"] == undefined) {
+      parent.addChild(v);
+    } else {
+      if (typeof(param.order) == SS_INTEGER) {
+        local i = Math.clamp(param.order, 0, length(parent.children));
+        parent.insertChild(i, v);
+      } else
+      switch (param.order) {
+      case "front":
+        parent.addChild(v);
+        break;
+      case "back":
+        parent.insertChild(0, v);
+        break;
+      }
+    }
+
+    local p = props[id];
+    if (!p) p = (props[id] <- {});
+    foreach (i, v in param) {
+      p[i] <- v;
+    }
+  }
+
+  function clearText(id) {
+    local tf = findChild(id);
+    if (!tf) {
+      return;
+    }
+    tf.setText("");
+    if (!props[id]) { props[id] <- {}; }
+    props[id].text <- tf.getText();
+  }
+
+  function putText(id, param) {
+    local tf = findChild(id);
+    if (!tf) {
+      return;
+    }
+    tf.appendText(param.text);
+    if (!props[id]) { props[id] <- {}; }
+    props[id].text <- tf.getText();
+    props[id].align <- tf.getParam(TEXTALIGN);
+  }
+
+  function newLine(id) {
+    local tf = findChild(id);
+    if (!tf) {
+      return;
+    }
+    tf.appendText("\n")
+    if (!props[id]) { props[id] <- {}; }
+    props[id].text <- tf.getText();
+  }
+
+  function setFont(id, param) {
+    local tf = findChild(id);
+    if (!tf) {
+      return;
+    }
+    if (param["size"]) tf.fontattr.size = param.size;
+    if (param["color"]) tf.fontattr.color = param.color;
+    tf.setFontAttribute(tf.fontattr);
+    if (!props[id]) { props[id] <- {}; }
+    props[id].font <- tf.fontattr;
+
+    if (param["align"]) {
+      tf.textbox.align = param.align;
+      props[id].align <- param.align;
+    }
+  }
+
+  function setLink(id, link) {
+    local v = findChild(id);
+    if (!v) {
+      return;
+    }
+    if (link) {
+      link = decodeJSON(encodeJSON(link));
+      if (props[id]) {
+        props[id].link <- link;
+      } else {
+        props[id] <- { link = link };
+      }
+      v.userdata = link;
+      v.addEventListener(MOUSE_EVENT, linkclickevent);
+    } else {
+      delete props[id].link;
+      v.userdata = null;
+      v.removeEventListener(MOUSE_EVENT, linkclickevent);
+    }
+  }
+
+  function addLinkListener(d, link) {
+    d.addEventListener(MOUSE_EVENT, linkclickevent);
+  }
+
+  function removeLinkListener(d) {
+    d.removeEventListener(MOUSE_EVENT, linkclickevent);
+  }
+
+  function linkclickevent(e) {
+    if (e.id != MOUSE_PRESSED) return;
+    foreach (i in animetable) {
+      return;
+    }
+    local v = e.src;
+    while (v && !v.userdata) {
+      v = v.parent;
+    }
+    if (v && v.userdata) {
+      linkClicked(v.name, v.userdata);
+      e.consume();
+    }
+  }
+
+  function write() {
+    local t = {};
+    t.skipanime <- skipanime;
+
+    local p = decodeJSON(encodeJSON(props));
+    foreach (id, t in p) {
+      local v = findChild(id);
+      if (!v) continue;
+      writesingle(v, t);
+    }
+    t.props <- p;
+    return t;
+  }
+
+  function writesingle(v, t) {
+
+    t.index <- v.parent.childIndexOf(v);
+    t.x <- v.pos.x;
+    t.y <- v.pos.y;
+    t.sx <- v.scale.x;
+    t.sy <- v.scale.y;
+
+    t.visible <- v.visible;
+
+    delete t.id;
+    delete t.order;
+    delete t.command;
+    return t;
+  }
+
+  function read(t) {
+    skipanime = t.skipanime;
+    local a = [];
+    foreach (id, v in t.props) {
+      local p = t.props[id];
+      local c = 0;
+      local i = 0;
+      for (;;) {
+        local i2 = id.indexOf(".", i);
+        if (i2 < 0) break;
+        ++c;
+        i = i2 + 1;
+      }
+      a + ([c * 1000 + (p.index || 0), id, p]);
+    }
+
+    a.sort(function(a, b) {
+      return a[0] < b[0] ? -1 : 1;
+    });
+    for (local l = 0; l < length(a); l++) {
+      setObjectProperties(a[l][1], a[l][2]);
+    }
+    props = t.props;
+  }
+
+  function loadObject(prop) {
+    local o;
+    if (prop["label"]) {
+      o = SKLabelView("");
+      o.textbox.wrapmode = 1;
+    } else
+    if (prop["data"]) {
+      o = prop.data;
+    } else
+    if (prop["storage"]) {
+      o = sys.getView(prop["storage"]);
+      if (!o && prop["alt"]) {
+        o = sys.getView(prop["alt"]);
+      }
+      if (!o) {
+        throw Exception("invalid storage : " + prop["storage"]);
+      }
+    } else
+    if (prop["class"]) {
+      o = getroottable()[prop["class"]]();
+    } else {
+      o = SKView();
+    }
+    return o;
+  }
+
+  function setObjectProperties(id, prop) {
+    local v = findChild(id);
+
+    if (!v) {
+      local i = id.lastIndexOf(".");
+      if (i < 0) throw Exception("cant find top-level DisplayObject : " + id);
+      local parent = findChild(id.substring(0, i));
+      if (!parent) throw Exception("cant find parent DisplayObject : " + id);
+      local name = id.substring(i + 1);
+
+      local data = null;
+      try {
+        data = loadObject(prop);
+      } catch (e) {
+        printexception(e);
+        return null;
+      }
+      if (data instanceof SKView) {
+        v = data;
+      } else
+      if (data instanceof Sprite) {
+        local w = data.tex0.width, h = data.tex0.height;
+        local imgview = SKImageView(data);
+        imgview.sp.blend = SK_MIX;
+
+        local a = prop["align"] || 0
+        switch (a % 3) {
+        case 1: imgview.bnd.x = -w / 2; break;
+        case 2: imgview.bnd.x = -w; break;
+        }
+        switch (a / 3) {
+        case 1: imgview.bnd.y = -h / 2; break;
+        case 2: imgview.bnd.y = -h; break;
+        }
+        v = imgview;
+      }
+      if (!v) {
+        throw Exception("invalid view. id:" + id + " prop:" + encodeJSON(prop));
+      }
+      v.name = name;
+
+      if (prop["order"] == undefined) {
+        parent.addChild(v);
+      } else {
+        if (typeof(prop.order) == SS_INTEGER) {
+          local i = Math.clamp(prop.order, 0, length(parent.children));
+          parent.insertChild(i, v);
+        } else
+        switch (prop.order) {
+        case "front":
+          parent.addChild(v);
+          break;
+        case "back":
+          parent.insertChild(0, v);
+          break;
+        }
+      }
+    }
+    local mc = null;
+    local tf = (v instanceof SKLabelView) ? v : null;
+    local fa = tf ? tf.fontattr : null;
+    local matdirty = v.matdirty;
+    local color = null;
+    local alpha = null;
+    foreach (p, val in prop) {
+      switch (p) {
+      case "x":
+        v.pos.x = val;
+        matdirty = true;
+        break;
+      case "y":
+        v.pos.y = val;
+        matdirty = true;
+        break;
+      case "w":
+        v.bnd.w = val;
+        break;
+      case "h":
+        v.bnd.h = val;
+        break;
+      case "pivx":
+        v.bnd.x = val;
+        break;
+      case "pivy":
+        v.bnd.y = val;
+        break;
+      case "sx":
+        v.scale.x = val;
+        matdirty = true;
+        break;
+      case "childrensx":
+        foreach (idx, c in v.children) {
+          if (c instanceof SK3DView) continue;
+          c["turnx"] = val;
+        }
+        break;
+      case "sy":
+        v.scale.y = val;
+        matdirty = true;
+        break;
+      case "rot":
+
+        matdirty = true;
+        break;
+      case "text":
+        if (tf) tf.setText(val);
+        break;
+      case "align":
+        if (tf) tf.setParam(TEXTALIGN, val);
+        break;
+      case "font":
+        fa = val;
+        break;
+      case "matrix":
+
+        break;
+      case "colortrans":
+
+        break;
+      case "color":
+        color = val;
+        if (alpha != null) val = (val & 0xffffff00) | alpha;
+        v.setColor(val);
+        break;
+      case "alpha":
+        alpha = (Math.saturate(val) * 255.0) | 0;
+        v.setColor(((color == null ? -1 : color) & 0xffffff00) | alpha);
+        break;
+      case "link":
+        v.userdata = val;
+        v.addEventListener(MOUSE_EVENT, linkclickevent);
+        break;
+      case "visible":
+        v.visible = val ? 1 : 0;
+        break;
+      case "enabled":
+        v.enabled = val ? 1 : 0;
+        break;
+      case "fontsize":
+        if (fa) {
+          fa.size = val;
+        }
+        break;
+      }
+    }
+    if (fa) {
+      tf.setFontAttribute(fa);
+    }
+    v.matdirty = matdirty;
+    v.updateLayout();
+
+    return v;
+  }
+
+  function anime(id, param) {
+    local v = findChild(id);
+    if (v) {
+      startAnime(v, param);
+    }
+  }
+
+  function startAnime(v, param) {
+
+    local skip = skipanime && (!param["force"]);
+    local mc = v;
+
+    switch (param.type) {
+    case "move":
+      moveanime(v, param);
+      break;
+    case "goto":
+      if (mc) mc.gotoAndStop(param.frame);
+      break;
+    case "play":
+      if (mc) {
+        if (param["method"]) {
+          if (param["args"]) {
+            mc.startMethod(param.method, param.args);
+          } else {
+            mc.startMethod(param.method);
+          }
+          _addanime(v);
+          local self = this;
+          local func = function(dt) {
+            if (!v.isMethodRunning()) {
+              self._remanime(v);
+              return undefined;
+            }
+          }
+          setInterval(func, 1);
+        }
+      }
+      break;
+    case "play2":
+      if (mc) {
+        if (param["method"]) {
+          mc.startMethod(param.method);
+          local self = this;
+          local id = param["id"];
+          local func = function(dt) {
+            if (!v.isMethodRunning()) {
+              self.deleteObject(id);
+              return undefined;
+            }
+          }
+          setInterval(func, 1);
+        }
+      }
+      break;
+    case "playface":
+
+      if (mc) {
+        if (param["method"]) {
+          if (!v.isMethodRunning()) {
+            mc.stopMethod();
+          }
+          mc.startMethod(param.method);
+        }
+      }
+      break;
+    case "fadealpha":
+      fadealpha(v, param.alpha * 255.0, param.time || 100, param["onlyfade"] || null);
+      break;
+    case "fademask":
+      fademask(v, param.rule, param.time || 300);
+      break;
+    case "move":
+      break;
+    case "pop":
+      popanime(v);
+      break;
+    case "spin":
+      break;
+    case "popon":
+      poponanime(v);
+      break;
+    case "popoff":
+      popoffanime(v);
+      break;
+    case "fadeblack":
+      local c = ((param.v * 255.0) << 24) | ((param.v * 255.0) << 16) | ((param.v * 255.0) << 8) | 255.0;
+      fadecolor(v, c, param.time || 100, param["onlyfade"] || null);
+      break;
+    case "fadewhite":
+      local c = 1.0 - param.v;
+      fadewhite(v, c, param.time || 100, param["onlyfade"] || null);
+      break;
+    case "vibe":
+      vibeanime(v, param);
+      break;
+    }
+  }
+
+  function _addanime(v) {
+    if (animetable[v]) {
+      animetable[v] = animetable[v] + 1;
+    } else {
+      animetable[v] <- 1;
+    }
+  }
+
+  function _remanime(v) {
+    if ((animetable[v] = animetable[v] - 1) <= 0) {
+      delete animetable[v];
+    }
+  }
+
+  function waitForAnime(id = null) {
+    if (id) {
+      local v = findChild(id);
+      if (v) {
+        waitForAnimeFor(id);
+      }
+      return;
+    }
+
+    while (length(animetable) > 0) {
+      suspend();
+    }
+  }
+
+  function waitForAnimeFor(v) {
+    while (animetable[v]) {
+      suspend();
+    }
+  }
+
+  function moveanime(v, param) {
+    local dx = ("x" in param ? (param.x - v.pos.x) : (param["dx"] || 0.0)) + 0.0;
+    local dy = ("y" in param ? (param.y - v.pos.y) : (param["dy"] || 0.0)) + 0.0;
+    local x0 = v.pos.x + dx;
+    local y0 = v.pos.y + dy;
+    local sx0 = v.scale.x;
+    local sy0 = v.scale.y;
+    local sx = ("ssx" in param) ? param.ssx : (param["sx"] || 1.0) * sx0;
+    local sy = ("ssy" in param) ? param.ssy : (param["sy"] || 1.0) * sy0;
+    local time;
+    if (param["speed"]) {
+      time = Math.sqrt(dx * dx + dy * dy) * 1000.0 / param.speed;
+    } else {
+      time = param.time;
+    }
+    dx /= time;
+    dy /= time;
+    local self = this;
+    local rest = [time];
+    _addanime(v);
+    local func = function(dt) {
+      v.matdirty = true;
+      v.repaint();
+      if ((rest[0] -= dt) <= 0) {
+        v.pos.x = x0;
+        v.pos.y = y0;
+        v.scale.x = sx;
+        v.scale.y = sy;
+        self._remanime(v);
+        return undefined;
+      } else {
+        v.pos.x = (x0 - dx * rest[0]);
+        v.pos.y = (y0 - dy * rest[0]);
+        local w = (time - rest[0]) / time;
+        v.scale.x = (sx0 + (sx - sx0) * w);
+        v.scale.y = (sy0 + (sy - sy0) * w);
+      }
+    }
+    setInterval(func, 0);
+  }
+
+  function fadealpha(v, a2, time, onlyfade = null) {
+    local self = this;
+
+    local image = [v];
+
+    if (v instanceof ::SKGroupView) {
+      if (onlyfade) {
+        image[0] = v.findChild(onlyfade);
+      } else {
+        image[0] = v.findChild("stand");
+        image.extend(v.findChild("FACE").children);
+      }
+    }
+    local a1 = (image[0].getColor() & 255);
+    local c = image[0].getColor() & 0xffffff00;
+    local da = (a2 - a1) * 1.0 / time;
+    local rest = [time];
+    _addanime(v);
+    local func = function(dt) {
+      foreach (idx, f in image) {
+        f.repaint();
+      }
+      if ((rest[0] -= dt) <= 0) {
+        foreach (idx, f in image) {
+          f.setColor(c | a2);
+        }
+        self._remanime(v);
+        return undefined;
+      } else {
+        foreach (idx, f in image) {
+          f.setColor(c | (a2 - da * rest[0]));
+        }
+      }
+    }
+    setInterval(func, 0);
+  }
+
+  function fadecolor(v, a2, time, onlyfade = null) {
+    local self = this;
+    local rest = [time];
+    local image = [v];
+    if (v instanceof ::SKGroupView) {
+      if (onlyfade) {
+        image[0] = v.findChild(onlyfade);
+      } else {
+        image[0] = v.findChild("stand");
+        image.extend(v.findChild("FACE").children);
+      }
+    }
+    local a1 = image[0].getColor();
+    local c = [0];
+    _addanime(v);
+    local func = function(dt) {
+      c[0] += dt;
+      local w = Math.min(1.0, c[0] * 1.0 / time);
+      w = Math.pow(w, 0.5);
+      foreach (idx, f in image) {
+        f.repaint();
+      }
+      if (c[0] >= time) {
+        foreach (idx, f in image) {
+          f.setColor(a2);
+        }
+        self._remanime(v);
+        return undefined;
+      } else {
+        foreach (idx, f in image) {
+          f.setColor(Math.lerpcolor(a1, a2, w));
+        }
+      }
+    }
+    setInterval(func, 0);
+  }
+
+  function fadewhite(v, a2, time, onlyfade = null) {
+    local self = this;
+    local rest = [time];
+    local image = [v];
+    if (v instanceof ::SKGroupView) {
+      if (onlyfade) {
+        image[0] = v.findChild(onlyfade);
+      } else {
+        image[0] = v.findChild("stand");
+        image.extend(v.findChild("FACE").children);
+      }
+    }
+    local a1 = Matrix();
+    local c = [0];
+    local basecolor = image[0]["sp"]["colormat"] ? image[0].sp.colormat[12] : 0;
+    local a3 = a2 - basecolor;
+    _addanime(v);
+    local func = function(dt) {
+      c[0] += dt;
+      local w = Math.min(1.0, c[0] * 1.0 / time);
+      w = Math.pow(w, 0.5);
+      foreach (idx, f in image) {
+        f.matdirty = true;
+        f.repaint();
+      }
+      if (c[0] >= time) {
+        foreach (idx, f in image) {
+          a1[12] = a1[13] = a1[14] = a2;
+          f.sp.colormat = a1;
+        }
+        self._remanime(v);
+        return undefined;
+      } else {
+        foreach (idx, f in image) {
+          a1[12] = a1[13] = a1[14] = basecolor + a3 * w;
+          f.sp.colormat = a1;
+        }
+      }
+    }
+    setInterval(func, 0);
+  }
+
+  function fademask(v, rule, glow, time) {
+    local masktex = ::getTexture("/transrule/" + rule + ".png");
+    local self = this;
+    _addanime(v);
+    local sw = v.bnd.w / masktex.width;
+    local sh = v.bnd.h / masktex.width;
+
+    local oldbuf = v.buf;
+    v.buf = null;
+    v.setBuffer(true);
+    v.buf.blend = SK_PMAMIX;
+    v.buf.shadersrc = skFindTecnique("sprite_sp.unitrans")[0];
+    v.buf.tex1 = masktex;
+    v.buf.uvmat2 = Matrix.fromScale(sw, sh, 1.0);
+    local rest = [time];
+    local func = function(dt) {
+      if ((rest[0] -= dt) <= 0) {
+        if (oldbuf) {
+          v.buf = oldbuf;
+        } else {
+          v.setBuffer(false);
+        }
+        v.visible = false;
+        self._remanime(v);
+      } else {
+        v.buf.fafafa = rest[0] * 1.0 / time;
+      }
+    };
+    tr.start(frames);
+  }
+
+  function vibeanime(v, param) {
+    local dt = param["dt"] || 30;
+    local mag = param["mag"] || 10;
+    local time = param["time"] || 300;
+    local xv = param["xv"];
+    local yv = param["yv"];
+    local random = param["random"];
+    local freq = param["freq"] || 10;
+    _addanime(v);
+    local self = this;
+    local p0 = clone v.pos;
+    local rnd = Random(skGetTime());
+    local rest = [time];
+    local _v = Vector3D();
+    local func = function(dt) {
+      v.matdirty = 1;
+      v.repaint();
+      if ((rest[0] -= dt) <= 0) {
+        v.pos << p0;
+        self._remanime(v);
+        return undefined;
+      } else {
+        if (random) {
+          v.pos << p0 + _v(xv ? rnd.nextf(-mag, mag) : 0.0, yv ? rnd.nextf(-mag, mag) : 0.0, 0.0);
+        } else {
+          local w = Math.sin(rest[0] * 0.001 * freq) * mag;
+          v.pos << p0 + _v(xv ? w : 0.0, yv ? w : 0.0, 0.0);
+        }
+      }
+    }
+    setInterval(func, dt);
+  }
+
+  function popanime(v) {
+    local i = 0;
+    local ct = Matrix.fromIdentity();
+    local T = 6;
+    local HT = 3;
+    local self = this;
+    local t = [0];
+    _addanime(v);
+    local func = function(dt) {
+      local i = (t[0] += dt) / 25.0;
+      if (i >= T) {
+        self._remanime(v);
+        return undefined;
+      } else
+      if (i >= HT) {
+        ct[5] = ct[9] = (i - HT) / 5.0 * 0.5 + 0.5;
+        v.sp.colormat = ct;
+        v.scale.x = v.scale.y = (i - HT) * 0.2 / HT + 0.8;
+      } else {
+        ct[12] = ct[13] = ct[14] = (HT - i) * 255.0 / HT;
+        ct[5] = ct[9] = (HT - i) * 0.5 / HT + 0.5;
+        v.sp.colormat = ct;
+        v.scale.x = v.scale.y = (HT - i) * 0.2 / HT + 0.8;
+      }
+    };
+    setInterval(func, 1);
+  }
+
+  function poponanime(v) {
+
+    v.scale.x = v.scale.y = 0.0;
+    v.matdirty = 1;
+
+    v.visible = 1;
+    local self = this;
+    local n = 8;
+    local t = [0];
+    _addanime(v);
+    local func = function(dt) {
+      local c = (t[0] += dt) / 25.0;
+      if (c >= n) {
+
+        v.scale.x = v.scale.y = 1.0;
+        v.matdirty = 1;
+        self._remanime(v);
+        return undefined;
+      } else {
+        local w = c / n;
+
+        v.scale.x = v.scale.y = w * w;
+        v.matdirty = 1;
+      }
+    }
+    setInterval(func, 1);
+  }
+
+  function popoffanime(v) {
+
+    v.visible = 1;
+    local self = this;
+    local n = 8;
+    local t = [0];
+    _addanime(v);
+    local func = function(dt) {
+      local c = (t[0] += dt) / 25.0;
+      if (c >= n) {
+
+        v.visible = 0;
+        self._remanime(v);
+        return undefined;
+      } else {
+        local w = (n - c) / n;
+        v.alpha = w; v.scale.x = v.scale.y = w * w;
+      }
+    }
+    setInterval(func, 1);
+  }
+
+  function playSE(param) {
+    ::playSound(param);
+  }
+
+  function stopSE(param) {
+
+  }
+
+  function playBGM(param) {
+    ::playBGM(::gamesetting.bgm[param["storage"] || param.varg[0]]);
+  }
+
+  function fadeoutBGM(param) {
+    ::fadeoutBGM();
+  }
+
+  function stopBGM(param) {
+    ::stopBGM();
+  }
+
+  function waitForSE(param) {
+
+  }
+
+  function waitForBGM(param) {
+
+  }
+
+  function handleTag(c, runner) {
+    switch (c["command"]) {
+
+    case "current":
+      if (c["obj"]) currentobj = c["obj"];
+      if (c["text"]) currenttext = c["text"];
+      break;
+
+    case "create":
+      {
+        createObject(c["id"] || currentobj, c);
+        if (c["id"]) currentobj = c["id"];
+        break;
+      }
+    case "replace":
+      {
+        local id = c["id"] || currentobj;
+        local v = findChild(id);
+        local _c;
+        if (props[id]) {
+          _c = writesingle(v, decodeJSON(encodeJSON(props[id])));
+        } else {
+          local prop = {};
+          _c = writesingle(v, prop);
+        }
+        foreach (i, v in c) _c[i] <- v;
+        if (v && v.parent) v.parent.removeChild(v);
+        createObject(id, _c);
+        if (c["id"]) currentobj = c["id"];
+        break;
+      }
+    case "set":
+      {
+        modifyObject(c["id"] || currentobj, c);
+        if (c["id"]) currentobj = c["id"];
+        break;
+      }
+    case "freeze":
+      {
+        freezeObject(c["id"], c["target"]);
+        break;
+      }
+    case "rename":
+      {
+        renameObject(c["id"] || currentobj, c["to"]);
+        break;
+      }
+    case "copy":
+      {
+        copyObject(c["id"] || currentobj, c["to"]);
+        break;
+      }
+    case "readd":
+      {
+        readdObject(c["id"] || currentobj, c);
+        if (c["id"]) currentobj = c["id"];
+        break;
+      }
+    case "load":
+      try {
+        loadObject(c);
+      } catch (ex) {
+        printexception(ex);
+      }
+      break;
+
+    case "message":
+
+      putText(c["id"] || currenttext, c);
+      break;
+    case "ct":
+      clearText(c["id"] || currenttext);
+      break;
+    case "r":
+      newLine(c["id"] || currenttext);
+      break;
+    case "font":
+      setFont(c["id"] || currenttext, c);
+      break;
+    case "p":
+      showPage(c["id"] || currenttext);
+      break;
+    case "waitclick":
+      waitClick();
+      break;
+
+    case "macro":
+      macro[c["name"]] <- runner.newmacro(c["name"]);
+      break;
+
+    case "anime":
+      anime(c["id"] || currentobj, c);
+      if (c["id"]) currentobj = c["id"];
+      break;
+    case "delete":
+      deleteObject(c["id"] || currentobj);
+      break;
+    case "link":
+      {
+        setLink(c["id"] || currentobj, c);
+        break;
+      }
+    case "freelink":
+      {
+        setLink(c["id"] || currentobj, null);
+        break;
+      }
+    case "wl":
+
+      break;
+    case "wf":
+    case "wa":
+      waitForAnime(c["id"] || null);
+      break;
+    case "ws":
+      waitForSE(c);
+      break;
+    case "wb":
+      waitForBGM(c);
+      break;
+    case "playse":
+      playSE(c);
+      break;
+    case "stopse":
+      stopSE(c);
+      break;
+    case "fadeoutbgm":
+      fadeoutBGM(c);
+      break;
+    case "playbgm":
+      playBGM(c);
+      break;
+    case "stopbgm":
+      stopBGM(c);
+      break;
+
+    case "wait":
+      {
+        sleep(c["time"]);
+        break;
+      }
+    case "waituntil":
+      sleep(c["time"]);
+      break;
+
+    case "s":
+      runner.pause(true);
+      while (runner.paused) {
+        suspend();
+      }
+      break;
+    case "call":
+      jumpscript(c["storage"] || null, c["target"] || null, true);
+      break;
+    case "jump":
+      jumpscript(c["storage"] || null, c["target"] || null, false);
+      break;
+    case "return":
+      return runner.doreturn();
+    case "trace":
+      trace("[TRACE] " + c["text"]);
+      break;
+    case "case":
+    case "default":
+      local swichcase = api.tf["switchcase"];
+      if (swichcase) {
+        if (c.command == "default" && swichcase != "XXXXX") {
+
+        } else
+        if (c.varg[0] == api.tf["switchcase"]) {
+          api.tf["switchcase"] = "XXXXX";
+        } else {
+
+          for (;;) {
+            local _c = runner.scp.code[runner.pc];
+            if (_c["command"] == "case" || _c["command"] == "default") {
+              break;
+            } else
+            if (_c["command"] == "endswitch") {
+              swichcase = "XXXXX";
+              break;
+            }
+            ++runner.pc;
+          }
+        }
+      }
+      break;
+    case "endswitch":
+      break;
+    case "scriptdirs":
+      if (c["path"]) {
+        local r = ::getResource(c["path"]);
+        if (sys.scriptdirs) {
+          if (sys.scriptdirs.indexOf(r) < 0) sys.scriptdirs + r;
+        } else {
+          sys.scriptdirs = [r];
+        }
+      }
+      break;
+    case "imagedirs":
+      if (c["path"]) {
+        local r = ::getResource(c["path"]);
+        if (sys.viewdirs) {
+          if (sys.viewdirs.indexOf(r) < 0) sys.viewdirs + r;
+        } else {
+          sys.viewdirs = [r];
+        }
+      }
+      break;
+
+    default:
+      local m = macro[c["command"]];
+      if (m) {
+        runner.jump(m, null, c, true);
+      } else {
+        throw Exception("unhandled tag '" + c["command"] + "'");
+      }
+      break;
+    }
+    return true;
+  }
+
+  function linkClicked(id, link) {
+    api["tf"]["link"] <- link;
+    if (link["method"]) {
+      link["method"]();
+    }
+    if (link["storage"] || link["target"]) {
+      jumpscript(link["storage"], link["target"], false);
+    } else
+    if (link["pc"]) {
+      local ref = int(link["pc"]);
+      runner.jumppc(ref);
+    } else
+    if (link["resume"]) {
+      runner.pause(false);
+    }
+  }
+
+  function waitClick() {
+    waitClickStart();
+    while (waitclick) {
+      suspend();
+    }
+  }
+
+  function waitClickStart() {
+    if (waitclick) throw Exception("double waitClick!!");
+    waitclick = SKView();
+    waitclick.setRect(0, 0, bnd.w, bnd.h);
+    addChild(waitclick);
+
+    local self = this;
+    waitclick.addEventListener(MOUSE_EVENT,
+    function(e) {
+      switch (e.id) {
+      case MOUSE_PRESSED:
+        self.waitClickEnd();
+        break;
+      }
+    }
+    );
+  }
+
+  function waitClickCheck() {
+    if (waitclick) {
+      suspend();
+    }
+    return !!waitclick;
+  }
+
+  function waitClickEnd() {
+    if (waitclick) {
+      waitclick.removeFromParent();
+      waitclick = null;
+    }
+  }
+}

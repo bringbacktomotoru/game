@@ -1,0 +1,518 @@
+;
+;----------- 初期登場 -------------
+[playbgm bgm="BGM01"]
+[changeroom id=4]
+
+;使用する家具
+
+;ノスタルジックカントリーランプ
+[popfurniture fname=obj1 id=5712 x=2 y=0 z=-7.5 angle=180]
+;ノスタルジックカントリーランプ
+[popfurniture fname=obj2 id=5712 x=-2 y=0 z=-7.5 angle=180]
+;フラワリーアンティークベッド
+[popfurniture fname=bed1 id=1507 x=-4 y=0 z=-5 angle=180]
+;フラワリーアンティークベッド
+[popfurniture fname=bed2 id=1507 x=0 y=0 z=-5 angle=180]
+;フラワリーアンティークベッド
+[popfurniture fname=bed3 id=1507 x=4 y=0 z=-5 angle=180]
+;イエロードットラグ
+[popfurniture fname=obj3 id=1714 x=-4 y=0 z=-5 angle=180]
+;イエロードットラグ
+[popfurniture fname=obj4 id=1714 x=0 y=0 z=-5 angle=180]
+;イエロードットラグ
+[popfurniture fname=obj5 id=1714 x=4 y=0 z=-5 angle=180]
+;フラワリーアンティーククロック
+[popfurniture fname=obj6 id=1504 x=-7.5 y=0 z=-5.5 angle=225]
+;フラワリーアンティークストーブ
+[popfurniture fname=obj7 id=1508 x=8 y=0 z=-3.5 angle=125]
+
+;↓↓↓↓↓↓;;;;;;;;;;;;;;;;;;;
+
+[focusdoor]
+
+; カメラ初期位置
+[movecamera type=0 z=15 y=3 x=0.5 time=0]
+[rotatecamera pitch=3 head=180]
+
+;キャラ出現 家具が見える範囲だと見栄えが良いかも
+;キティ
+[popchara costume=1308001 x=3 z=-7 angle=180 relative=true]
+;メロディ
+[popchara costume=1308002 x=5.5 z=-7 angle=160 relative=true]
+;プリン
+[popchara costume=1306101 x=0.5 z=-7 angle=200 relative=true]
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[startscene]
+
+;カメラ指定-----------
+;キティにフォーカス
+;--------------------
+	
+; キティアクション
+[startanime name=kitty time=2000 script=sentence_kurukuru script_args={[{loop_num = 1, face=["kya", "kya"]}]}]
+[balloonoffset y=0.5]
+[balloon name=kitty time=4000]
+The third thing/n
+I'd like to do is.../n
+A sleepover#e1#
+[wait time=4000]
+[endballoon name=kitty]
+[waitaction name=kitty script=sentence_kurukuru]
+
+; キティアクション
+[startanime name=kitty time=2000 script=tabetai_set script_args={[3,"kirasmile","kirasmile"]}]
+[balloon name=kitty time=3000]
+Melody, Purin,/n
+and #playername.
+[startanime name=mymelo time=2000 script=sentence_ketsui2 
+ script_args={[{loop_num = 3, face=["smile"]}]}]
+[startanime name=purin time=2000 script=munehari script_args={["kiri",3]}]
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=tabetai_set]
+
+;カメラ指定-----------
+;メロディとプリン順番に映す
+;最終的に全員画面に映るように
+;--------------------
+
+; キティアクション
+[startanime name=kitty time=2000 script=pyonpyon_set script_args={[3,"smile2","smile2"]}]
+[voice name=kitty voice_key="e13_1"]
+[balloon name=kitty time=3000]
+Let's have a/n
+sleepover tonight#e1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=pyonpyon_set]
+
+; キティアクション
+[startanime name=kitty time=2000 script=cos_bishi]
+[balloon name=kitty time=3000]
+I've already made/n
+beds for everyone#e1#
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["def"]}]
+[startanime name=purin time=2000 script=stand_end2 script_args={["def"]}]
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=cos_bishi]
+
+; マイメロアクション
+[startanime name=mymelo time=2000 script=kubikashige script_args={[3,"smile"]}]
+[voice name=mymelo voice_key="e8"]
+[balloon name=mymelo time=4000]
+Melody brought her/n
+toothbrush set#h1#
+[wait time=4000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=kubikashige]
+
+;プリンアクション
+[startanime name=purin time=2000 script=tefuri_set2 script_args={[3,"kya","kya"]}]
+[voice name=purin voice_key="e13"]
+[balloon name=purin time=4000]
+I brought my favorite/n
+night cap#s1#
+[startanime name=mymelo time=2000 script=stand_end2 script_args={["def"]}]
+[wait time=4000]
+[endballoon name=purin]
+[waitaction name=purin script=tefuri_set2]
+
+; キティアクション
+[startanime name=kitty time=2000 script=kubikashige script_args={[3,"smile2"]}]
+[balloon name=kitty time=3000]
+I'm glad to see we/n
+all came prepared#e1#
+[wait time=1500]
+[startanime name=mymelo time=2000 script=bou_unaduku_face script_args={[2,"smile"]}]
+[startanime name=purin time=2000 script=cos_bishi]
+[wait time=1500]
+[endballoon name=kitty]
+[waitaction name=kitty script=kubikashige]
+
+; キティアクション
+[startanime name=kitty time=2000 script=banzai]
+[voice name=kitty voice_key="e8"]
+[balloon name=kitty time=4000]
+Let's get ready for bed#e1#
+[wait time=1500]
+[startanime name=mymelo time=2000 script=event_onegai2 script_args={["warau"]}]
+[startanime name=purin time=2000 script=event_onegai2 script_args={["ooi"]}]
+[wait time=1500]
+[endballoon name=kitty]
+[waitaction name=kitty script=banzai]
+
+;場面転換
+[shutterstart]
+
+;----確認用カメラ----------------------
+[movecamera type=0 x=-4 y=18 z=-1.5 time=0]
+[rotatecamera pitch=75 head=180]
+;-------------------------------------	
+
+;ベッドにコネクト
+[usefurniture name=kitty fname=bed2 bone=chara1 script=event_start
+ script_args={{face="meisou", num=3}}]
+[usefurniture name=mymelo fname=bed3 bone=chara1 script=event_start
+ script_args={{face="meisou", num=3}}]
+[usefurniture name=purin fname=bed1 bone=chara1 script=event_start
+ script_args={{face="meisou", num=3}}]
+
+[wait time=1000]
+
+;キャラアクション
+[startanime name=kitty time=2000 script=bed_mune script_args={[100,"meisou"]}]
+[startanime name=mymelo time=2000 script=bed_mune script_args={[100,"meisou"]}]
+[startanime name=purin time=2000 script=bed_dainoji script_args={[500,"meisou"]}]
+
+;場面転換終了
+[shutterend]
+
+; カメラ指定----------------------
+;プリン側からメロディの方向にカメラ移動
+;最終的にキティとマイメロにフォーカス
+;------------------------------
+[movecamera type=1 x=5.5 y=0 z=0 time=5000]
+[wait time=5000]
+	
+; キティアクション
+[startanime name=kitty time=2000 script=bed_mune script_args={[10,"meisou"]}]
+
+[balloonoffset x=0.8 y=7]
+[balloon name=kitty time=3000]
+...
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=bed_mune]
+
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_nobi script_args={["akubi"]}]
+[wait time=3000]
+[waitaction name=mymelo script=bed_mune]
+
+[balloonoffset x=-1.2 y=7]
+
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_mune script_args={[10,"bonyari"]}]
+[balloon name=mymelo time=3000]
+Kitty, are you asleep#q1#
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=bed_mune]
+
+[balloonoffset x=0.8 y=7]
+
+; キティアクション
+[startanime name=kitty time=2000 script=bed_mune script_args={[10,"bonyari"]}]
+[balloon name=kitty time=3000]
+Not yet.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=bed_mune]
+
+; カメラ指定----------------------
+;キティにフォーカス
+;------------------------------
+
+; キティアクション
+[startanime name=kitty time=2000 script=bed_mune script_args={[10,"meisou_cheek"]}]
+[balloonoffset x=0.8 y=7]
+[balloon name=kitty time=3000]
+I'm still so excited/n
+from all the fun/n
+we had earlier.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=bed_mune]
+
+; キティアクション
+[startanime name=kitty time=2000 script=bed_dainoji script_args={[10,"smile2"]}]
+[voice name=kitty voice_key="e7"]
+[balloon name=kitty time=3000]
+Thanks for coming over today.
+[startanime name=purin time=2000 script=bed_yoko2 script_args={[50,"meisou"]}]
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=bed_mune]
+
+[balloonoffset x=-1.2 y=7]
+	
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_dainoji script_args={[10,"smile2"]}]
+[voice name=mymelo voice_key="e76_1"]
+[balloon name=mymelo time=3000]
+Melody had a lot/n
+of fun today too.
+[startanime name=kitty time=2000 script=bed_mune script_args={[10,"smile2"]}]
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=bed_mune]
+
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_mune script_args={[10,"meisou_cheek"]}]
+[balloon name=mymelo time=3000]
+Do invite us/n
+again Kitty.
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=bed_mune]
+
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_mune script_args={[10,"sagasu"]}]
+[balloon name=mymelo time=3000]
+...
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=bed_mune]
+
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_yoko_l_set2 script_args={[10,"sad2"]}]
+[voice name=mymelo voice_key="e70_1"]
+[balloon name=mymelo time=3000]
+Huh#q1#/n
+Purin#q1#
+[wait time=1500]
+[startanime name=kitty time=2000 script=bed_yoko_l_set2 script_args={[10,"def"]}]
+[wait time=1500]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=bed_mune]
+
+; カメラ指定----------------------
+;プリンに向かってカメラ移動
+;------------------------------
+[balloonoffset y=7]
+
+[movecamera type=1 x=-5.5 y=0 z=0 time=2000]	
+[wait time=2000]
+
+;プリンアクション
+[startanime name=purin time=2000 script=bed_dainoji script_args={[10,"meisou"]}]
+[balloon name=purin time=3000]
+Zzz...
+[wait time=3000]
+[endballoon name=purin]
+[waitaction name=purin script=pyonpyon_set]
+
+; カメラ指定----------------------
+;プリンフォーカス前にカメラ位置を戻す
+;------------------------------
+[movecamera type=1 x=5.5 y=0 z=0 time=2000]	
+[wait time=2000]	
+
+[balloonoffset x=0.8 y=7]
+
+; キティアクション
+[startanime name=kitty time=2000 script=bed_dainoji script_args={[10,"smile2"]}]
+[voice name=kitty voice_key="e80_1"]
+[balloon name=kitty time=3000]
+Heehee/n
+Purin's already/n
+fast asleep.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=bed_mune]
+
+[balloonoffset x=-1.2 y=7]
+
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_nobi script_args={["akubi"]}]
+[balloon name=mymelo time=3000]
+Yaaawn/n
+Melody's getting sleepy...
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=bed_mune]
+
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_mune script_args={[10,"meisou_cheek"]}]
+[voice name=mymelo voice_key="e28_2"]
+[balloon name=mymelo time=3000]
+Zzz
+[wait time=1500]
+[startanime name=kitty time=2000 script=bed_mune script_args={[10,"bonyari"]}]
+[wait time=1500]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=bed_mune]
+
+;----確認用カメラ----------------------
+[movecamera type=0 z=10 y=3 x=0 time=0]
+[rotatecamera pitch=3 head=180]
+;-------------------------------
+[balloonoffset y=7]
+	
+; キティアクション（起き上がる）
+[startanime name=kitty time=2000 script=bed_dainoji script_args={[10,"def"]}]
+[wait time=1500]
+[startanime name=kitty time=2000 script=bed_dainoji_sit_set script_args={["smile"]}]
+[wait time=1500]	
+
+; カメラ指定----------------------
+;キティにフォーカス
+;------------------------------
+[movecamera type=1 x=0 y=0.3 z=-5 time=3000]
+[wait time=3500]
+
+; キティアクション
+[startanime name=kitty time=2000 script=chair_kubikashige_set script_args={[10,"meisou"]}]
+[voice name=kitty voice_key="e8"]
+[balloon name=kitty time=3000]
+#playername,/n
+thanks for your help.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=bed_mune]
+
+; キティアクション
+[startanime name=kitty time=2000 script=tv_watching_yure_set script_args={[10,"smile2"]}]
+[balloon name=kitty time=3000]
+This wouldn't have/n
+happened without you,/n
+#playername
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=bed_mune]
+
+;分岐
+[diarybranch]
+[wait time=3000];
+[s]
+
+;分岐1
+*branch1
+; キティアクション
+[startanime name=kitty time=2000 script=chair_unaduku_set script_args={[1,"smile"]}]
+[voice name=kitty voice_key="e7"]
+[balloon name=kitty time=3000]
+Thank you so much.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=chair_unaduku_set]
+
+; キティアクション
+[startanime name=kitty time=2000 script=chair_tere_2 script_args={[3,"tere"]}]
+[balloon name=kitty time=3000]
+I had so much fun,/n
+I don't feel tired at all#h1#
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=chair_tere_2]
+[testskip speed=1]
+;----確認用----------------------
+[movecamera type=0 x=4 y=10 z=-3 time=0]
+[rotatecamera pitch=75 head=180]
+;-------------------------------
+;カメラ指定---------
+;メロディにフォーカス
+;-------------------
+
+[balloonoffset x=-0.5 y=7]
+	
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_munyamunya_set script_args={[4]}]
+[wait time=1000]
+[voice name=mymelo voice_key="e28_2"]
+[balloon name=mymelo time=3000 type=2]
+Mmm.../n
+Melody...going to.../n
+play the piano...too.
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=bed_munyamunya_set]
+
+; メロディアクション
+[startanime name=mymelo time=2000 script=bed_dainoji script_args={[3,"meisou_cheek"]}]
+[voice name=mymelo voice_key="e27_2"]
+[balloon name=mymelo time=3000 type=2]
+Zzz...
+[wait time=3000]
+[endballoon name=mymelo]
+[waitaction name=mymelo script=bed_munyamunya_set]
+
+[jump target={"*branch_end"}]
+
+;分岐2
+*branch2
+; キティアクション
+[startanime name=kitty time=2000 script=chair_unaduku_set script_args={[1,"smile"]}]
+[voice name=kitty voice_key="e8"]
+[balloon name=kitty time=3000]
+You're right,/n
+we should get some sleep.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=chair_unaduku_set]
+
+; キティアクション
+[startanime name=kitty time=2000 script=chair_tere_2 script_args={[3,"meisou_cheek"]}]
+[balloon name=kitty time=3000]
+Maybe we'll all meet up/n
+again in our dreams.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=chair_tere_2]
+
+[movecamera type=0 x=-4 y=10 z=-3 time=0]
+[rotatecamera pitch=75 head=180]
+
+;カメラ指定---------
+;プリンにフォーカス
+;-------------------
+[balloonoffset x=-0.5 y=7]
+;プリンアクション
+[startanime name=purin time=2000 script=bed_munyamunya_set script_args={[4]}]
+[wait time=1000]
+[voice name=purin voice_key="e80_1"]
+[balloon name=purin time=4000 type=2]
+Mmm.../n
+Another Apple Pie.../n
+please...
+[wait time=4000]
+[endballoon name=purin]
+[waitaction name=purin script=bed_munyamunya_set]
+
+;プリンアクション
+[startanime name=purin time=2000 script=bed_dainoji script_args={[3,"meisou_cheek"]}]
+[voice name=purin voice_key="e27_2"]
+[balloon name=purin time=4000 type=2]
+Zzz...
+[wait time=4000]
+[endballoon name=purin]
+[waitaction name=purin script=bed_dainoji]
+
+[jump target={"*branch_end"}]
+
+;分岐共通
+*branch_end
+
+[movecamera type=0 z=10 y=3.5 x=0 time=0]
+[rotatecamera pitch=3 head=180]
+
+;カメラ指定---------
+;キティにフォーカス
+;-------------------
+
+[balloonoffset y=5]
+
+; キャラ共通 手揚げ
+[startanime name=kitty time=3000 script=chair_kubikashige_set script_args={[3,"smile"]}]
+[balloon name=kitty time=3000]
+Teehee/n
+Goodnight, everybody.
+[wait time=3000]
+[endballoon name=kitty]
+[waitaction name=kitty script=event_onegai2]
+[startanime name=kitty time=1000 script=chair_nobi]
+[wait time=4000]
+[waitaction name=kitty script=chair_nobi]
+[startanime name=kitty time=1000 script=bed_sit_dainoji_set script_args={["smile2"]}]
+
+[wait time=1000]
+
+[jump target={"*end"}]
+
+
+*end
+[fadeoutbgm spd=12]
+[wait time=2300]

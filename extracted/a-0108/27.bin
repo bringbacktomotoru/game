@@ -1,0 +1,5 @@
+// UIScript created by ItemListPanelNoTab.ui 
+
+function show() {
+	$pnl_item_list.anime(5, 10, 20);
+}

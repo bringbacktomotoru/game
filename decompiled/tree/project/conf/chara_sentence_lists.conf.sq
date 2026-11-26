@@ -1,0 +1,3194 @@
+chara_sentence_list_settings[1] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "今日はクッキーでも/n焼こうかしら#q1#",
+      motion = "sentence_uun", args = { face = ["def"], loop_num = 1 }, voice = "1"
+    },
+    { sentence = "わたしクッキーを/n作るのが得意なの#h1#",
+      motion = "sentence_munehari", args = { face = ["tere"], loop_num = 4 }
+    },
+    { sentence = "#playernameにも/n食べてもらいたいな#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "smile"], loop_num = 6 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "きょうは メロディが/nおやつ つくってあげる#o1#",
+      motion = "sentence_uun", args = { face = ["smile"], loop_num = 4 }, voice = "1"
+    },
+    { sentence = "アーモンドパウンドケーキ/nを やこうかなあ#o1#",
+      motion = "sentence_clock_nayamu", args = { face = ["meisou"], loop_num = 1 }
+    },
+    { sentence = "じょうずにつくれたら/nい～っぱいほめてね#h1#",
+      motion = "sentence_kurukuru", args = { face = ["smile", "tere"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "えへへ～#h1#/n今日のおやつ/n楽しみだなぁ#o1#",
+      motion = "sentence_yokopatapata", args = { face = ["kya"], loop_num = 2 }, voice = "1"
+    },
+    { sentence = "今日の/n#playernameの/nおやつはなぁに#q1#",
+      motion = "sentence_uun", args = { face = ["smile"], loop_num = 5 }
+    },
+    { sentence = "ぼくはね、ロールケーキ#e1#/nぼくのしっぽに似てるんだ#o1#",
+      motion = "sentence_hyahho", args = { face = ["tere", "smile3_cheek"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "う～、/n今日のおやつは/nなんだろう#q1#",
+      motion = "sentence_yokopatapata", args = { face = ["mogu2"], loop_num = 2 }
+    },
+    { sentence = "ぼくもう、/nおなかぺこぺこだよ～#e1#",
+      motion = "sentence_gakkari", args = { face = ["sad2"], loop_num = 3 }, voice = "1"
+    },
+    { sentence = "ケーキかなっ#q1#/nクッキーかなっ#q1#/n和菓子もいいなぁ～#h1#",
+      motion = "sentence_hyahho", args = { face = ["tere", "smile3_cheek"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "おいしいおやつが/n食べたいな#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "あ#e1#ねぇねぇ、/nぼくといっしょに/nおやつ作ろうよ#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["warau"], loop_num = 3 }, voice = "1"
+    },
+    { sentence = "ぼく、ドーナッツが/n食べたいなー#e1#",
+      motion = "sentence_banzai3", args = { face = ["mogu2", "tehepero"], loop_num = 1 }
+    },
+    { sentence = "#playernameは/n何食べたい#q1#",
+      motion = "sentence_uun", args = { face = ["kyomi"], loop_num = 1 }
+    },
+    ],
+
+  };
+});
+
+chara_sentence_list_settings[2] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "～#o1#～#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }, voice = "2_1"
+    },
+    { sentence = "歌ってとっても/n幸せになるのよ#o1#",
+      motion = "sentence_clock_nayamu", args = { face = ["smile", "smile"], loop_num = 3 }
+    },
+    { sentence = "#playernameも/n一緒に歌いましょ#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["wink_l"], loop_num = 2 }, voice = "2_2"
+    },
+    { sentence = "きっと/nとっても楽しいわ#h1#",
+      motion = "sentence_tabetai", args = { loop_num = 4 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "きのうはみんなで/nおうたをうたったの#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile"], loop_num = 2 }
+    },
+    { sentence = "メロディおうたが/nじょうずってみんなに/nほめられたのよ#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }, voice = "2_1"
+    },
+    { sentence = "ら～らら～#o1#/nららら～#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    { sentence = "うふふ#o1#/nど～う#q1#じょうずだった#q1#",
+      motion = "sentence_hatena2", args = { face = ["smile3_cheek", "def"], loop_num = 1 }, voice = "2_2"
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "イエーイ#o1#ウォウー#o1#/nウォーーー#o1#",
+      motion = "sentence_banzai3", args = { face = ["kya", "kya"], loop_num = 3 }
+    },
+    { sentence = "えへへ#o1#/nお友達とカラオケで/n遊んだんだよ#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["warau"], loop_num = 2 }, voice = "2_1"
+    },
+    { sentence = "みんなでいーっぱい/n歌っちゃった#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    { sentence = "今度は踊りながら/n歌っちゃおうかな#e1#",
+      motion = "sentence_pyonpyon2", args = { face = ["kya", "kya"], loop_num = 4 }, voice = "2_2"
+    },
+    ],
+    "purin" = [
+    { sentence = "らららら～ん#o1#/nらららら～ん#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    { sentence = "あ、どうどう#q1#/nぼくの歌声#e1#/n上手でしょ#e1#",
+      motion = "sentence_uun", args = { face = ["smile"], loop_num = 5 }, voice = "2_1"
+    },
+    { sentence = "今度、/n歌のコンテストで/n発表するんだぁ～#o1#",
+      motion = "sentence_munehari", args = { face = ["kiri2"], loop_num = 3 }
+    },
+    { sentence = "#playernameも/n絶対見に来てね～#e1#",
+      motion = "sentence_hyahho", args = { face = ["tere", "smile3_cheek"], loop_num = 3 }, voice = "2_2"
+    },
+    ],
+    "keroppi" = [
+    { sentence = "いぇいいぇいー#o1#/nるるるーーー#o1#",
+      motion = "sentence_yokopatapata", args = { face = ["smile3"], loop_num = 3 }
+    },
+    { sentence = "ぼく、歌うの/nだいすきなんだ#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "2_1"
+    },
+    { sentence = "#playernameも/n一緒に歌おうよ#q1#/nきっと楽しいよ#o1#",
+      motion = "sentence_banzai3", args = { face = ["smile", "smile2"], loop_num = 1 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[3] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_kokeru";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "きゃっ/nびっくりした～",
+      motion = "sentence_gakkari", args = { face = ["beso"], loop_num = 2 }, voice = "3"
+    },
+    { sentence = "心配してくれてありがとう#e1#/nとってもうれしい#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["namida_smile"], loop_num = 2 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "いたぁ～い…",
+      motion = "sentence_gakkari", args = { face = ["beso"], loop_num = 2 }, voice = "3"
+    },
+    { sentence = "うん…/nメロディもうだいじょうぶなの#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["namida_smile"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "いたたぁ…",
+      motion = "sentence_gakkari", args = { face = ["yaba"], loop_num = 2 }, voice = "3"
+    },
+    { sentence = "大丈夫#e1#/nぼく男の子だもん/n泣かないよ#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri2"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "いたたた…",
+      motion = "sentence_gakkari", args = { face = ["yaba"], loop_num = 2 }, voice = "3"
+    },
+    { sentence = "…大丈夫#e1#/nおとこのコだからねっ#e1#/nへっちゃらだよ#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri"], loop_num = 2 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "いてて…/nびっくりしたぁ…#e1#",
+      motion = "sentence_kokeru", args = { face = ["biku", "ita"], loop_num = 1 }, voice = "3"
+    },
+    { sentence = "足もと、気をつけないとね#e1#",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[4] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "う～ん/n今日はどっちのリボンを/nつけようかな#q1#",
+      motion = "sentence_hatena2", args = { face = ["meisou", "meisou"], loop_num = 2 }, voice = "4"
+    },
+    { sentence = "ピンクも赤もかわいいくて/n迷っちゃう#o1#",
+      motion = "sentence_tere_2", args = { face = ["kya", "kya"], loop_num = 3 }
+    },
+    { sentence = "今日のお洋服にあわせて/n選んでみようかな#o1#",
+      motion = "sentence_uun", args = { face = ["smile2"], loop_num = 2 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディのずきんはね～#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }, voice = "4"
+    },
+    { sentence = "いーっぱい/nしゅるいがあるのよ#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["tere", "tere"], loop_num = 5 }
+    },
+    { sentence = "#playernameも/nずきんかぶってみる#q1#",
+      motion = "sentence_kubikashige", args = { face = ["nikawink"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "みてみてー#e1#/n今日のぼくはちょっと/n違うんだよ#e1#",
+      motion = "sentence_pyonpyon2", args = { face = ["kya", "kya"], loop_num = 4 }, voice = "4"
+    },
+    { sentence = "どこかわかるかなあ#q1#/nえへへ",
+      motion = "sentence_munehari", args = { face = ["kiri2"], loop_num = 3 }
+    },
+    { sentence = "正解は～#e1#",
+      motion = "sentence_kurukuru", args = { face = ["smile2", "smile2"], loop_num = 2 }
+    },
+    { sentence = "ブラッシングしたばっかり/nなんだよ#o1#",
+      motion = "sentence_ketsui2", args = { face = ["nikawink"], loop_num = 3 }, voice = "4_2"
+    },
+    ],
+    "purin" = [
+    { sentence = "じゃーん#e1#/nどう#q1#",
+      motion = "sentence_ketsui2", args = { face = ["smile3_cheek"], loop_num = 3 }
+    },
+    { sentence = "えっ#q1#/nどうしたの#q1#って#q1#",
+      motion = "sentence_uun", args = { face = ["biku"], loop_num = 5 }, voice = "4"
+    },
+    { sentence = "ふふ～ん#o1#/nわかんない～#q1#",
+      motion = "sentence_yokopatapata", args = { face = ["kya"], loop_num = 2 }
+    },
+    { sentence = "あのね、散髪したんだよ#e1#/nえへへ#o1#/nさっぱりしたでしょ#o1#",
+      motion = "sentence_hyahho", args = { face = ["kirasmile", "kiraniko"], loop_num = 2 }, voice = "4_2"
+    },
+    ],
+    "keroppi" = [
+    { sentence = "今日つける蝶ネクタイ、/nどれにしようか/n迷うなぁ～",
+      motion = "sentence_kubikashige", args = { face = ["kyomi"], loop_num = 3 }
+    },
+    { sentence = "ぼく、いろんな蝶ネクタイ/n持ってるんだ#e1#",
+      motion = "sentence_hatena2", args = { face = ["smile", "wink_r"], loop_num = 2 }, voice = "4"
+    },
+    { sentence = "えへへ#o1#/nおしゃれさんでしょ#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri2"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[5] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+
+    { sentence = "チャーミーは/n真っ白なペルシャ猫なの",
+      motion = "sentence_kurukuru", args = { face = ["smile", "smile"], loop_num = 2 }, voice = "5"
+    },
+    { sentence = "とってもかわいい/nわたしの家族なのよ#o1#",
+      motion = "sentence_ketsui2", args = { face = ["nikawink"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "しあわせそうな/nネコさんがいたの#h1#",
+      motion = "sentence_hatena2", args = { face = ["warau"], loop_num = 2 }, voice = "5"
+    },
+    { sentence = "とってもたいせつに/nされてるのがわかったのよ#o1#",
+      motion = "sentence_uun", args = { face = ["smile"], loop_num = 3 }
+    },
+    { sentence = "うふふ#o1#/nペットはたいせつな/nかぞくのいちいんだよね#h1#",
+      motion = "sentence_pyonpyon", args = { face = ["tere", "tere"], loop_num = 4 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "シロ太郎どこかなぁ#q1#",
+      motion = "sentence_mitsuketa", args = { face = ["sad2", "sad2"] }, voice = "5"
+    },
+    { sentence = "シロ太郎はねー#e1#/nとってもかわいい/nネコさんなんだ#o1#",
+      motion = "sentence_ketsui2", args = { face = ["warau"], loop_num = 2 }
+    },
+    { sentence = "一緒にお昼寝した/nかったんだけどなぁ…",
+      motion = "sentence_gakkari", args = { face = ["yaba"], loop_num = 1 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ネコさんかわいいな～#o1#",
+      motion = "sentence_souzou", args = { face = ["meisou"], loop_num = 3 }, voice = "5"
+    },
+    { sentence = "キティちゃんの/nチャーミーキティちゃんに/n会ったんだ～#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "ぼくもふわふわで/nかわいいネコさん/n飼ってみたくなっちゃった#s1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "この前、ともだちと湖に/n泳ぎに行ったんだ#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["smile3"], loop_num = 3 }, voice = "5"
+    },
+    { sentence = "きれいなお魚さんが/nいーっぱいいたよ#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "ぼく、お魚さんと/nなかよくなりたいなぁ～…#e1#",
+      motion = "sentence_banzai3", args = { face = ["smile", "smile2"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[6] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "ミミィは/nどうしてるかしら#q1#",
+      motion = "sentence_uun", args = { face = ["def"], loop_num = 3 }, voice = "6_1"
+    },
+    { sentence = "双子のミミィは/nとっても器用なの#o1#",
+      motion = "sentence_munehari", args = { face = ["smile2"], loop_num = 3 }
+    },
+    { sentence = "刺繍も上手に/nできるのよ#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["kirasmile", "kirasmile"], loop_num = 4 }, voice = "6_2"
+    },
+    { sentence = "今度わたしも刺繍を/n教えてもらおうかしら#q1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou_cheek"], loop_num = 1 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "はとこのめろぉくんのずきんはね～",
+      motion = "sentence_tere_2", args = { face = ["smile", "smile"], loop_num = 4 }, voice = "6_1"
+    },
+    { sentence = "メロディとおそろいなの#h1#",
+      motion = "sentence_munehari", args = { face = ["wink_l"], loop_num = 3 }
+    },
+    { sentence = "うふふ#o1#/nおどろいた#q1#",
+      motion = "sentence_kubikashige", args = { face = ["smile2"], loop_num = 3 }, voice = "6_2"
+    },
+    { sentence = "こんどおそろいの/nずきんでおでかけ/nしたいなぁ#h1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "みるくがね#e1#/nぼくみたいにお空を/n飛びたいんだって#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "smile"], loop_num = 4 }, voice = "6_1"
+    },
+    { sentence = "みるくはまだ飛べないから",
+      motion = "sentence_uun", args = { face = ["meisou"], loop_num = 3 }
+    },
+    { sentence = "雲の兄弟とお空の散歩に/n連れて行ってあげるんだ#e1#",
+      motion = "sentence_munehari", args = { face = ["nikawink"], loop_num = 4 }, voice = "6_2"
+    },
+    { sentence = "いつか一緒に/n飛べたらいいなぁー#e1#",
+      motion = "sentence_kubikashige", args = { face = ["tere"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "るんるる～ん#o1#/n えへへ#o1#/nぼく、ごきげんなんだ～#o1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "smile2"], loop_num = 3 }, voice = "6_1"
+    },
+    { sentence = "あのね、マカロンちゃんが焼いてくれたホットケーキを食べたんだ#o1#",
+      motion = "sentence_uun", args = { face = ["meisou_cheek"], loop_num = 5 }
+    },
+    { sentence = "マカロンちゃんの/n作るおやつはどれも/nとってもおいしいんだよ#h1#",
+      motion = "sentence_teage", args = { face = ["wink_r"], loop_num = 1 }, voice = "6_2"
+    },
+    { sentence = "#playernameも/nマカロンちゃんのおやつの/nファンになっちゃうよ#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "ともだちのけろりーぬちゃん/nっておしゃれが/n大好きなんだよ#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["smile3"], loop_num = 4 }
+    },
+    { sentence = "おしゃれって楽しそう#e1#/nぼくもしてみたいな～#e1#",
+      motion = "sentence_hatena2", args = { face = ["smile", "namida_smile"], loop_num = 2 }, voice = "6_1"
+    },
+    { sentence = "けろりーぬちゃんに/n相談したら、おしゃれにして/nもらえるかな#q1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[7] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "聞いて#e1#新しい写真を/nもらったのよ#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "smile"], loop_num = 4 }, voice = "7"
+    },
+
+    { sentence = "大切にしているアルバムに/n貼らなくちゃ",
+      motion = "sentence_ketsui2", args = { face = ["kirasmile"], loop_num = 3 }
+    },
+    { sentence = "宝物がまた一つ増えたわ#h1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "tere"], loop_num = 4 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "リズムくんがね/nおはなをくれたの#h1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "tere"], loop_num = 4 }, voice = "7"
+    },
+    { sentence = "うふふ#o1#/nだいじにしなくっちゃ#h1#",
+      motion = "sentence_hatena2", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    { sentence = "とってもいいにおいだから/nぽぷりをつくろうかな#h1#",
+      motion = "sentence_kubikashige", args = { face = ["smile2"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "お友達のメルちゃんから/nプレゼントをもらったんだ",
+      motion = "sentence_pyonpyon", args = { face = ["ohohoho2", "ohohoho2"], loop_num = 4 }, voice = "7"
+    },
+    { sentence = "メルメルドールっていう/nメルちゃんそっくりの/n人形なんだ#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["kirasmile"], loop_num = 5 }
+    },
+    { sentence = "えへへ～/n宝物が増えちゃった#o1#",
+      motion = "sentence_hyahho", args = { face = ["tere", "tere"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "マフィンたちが、/nぼくの似顔絵をプレゼント/nしてくれたんだ～#e1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }, voice = "7"
+    },
+    { sentence = "すっごく似てるんだよ～#e1#/nきっと一生懸命/n描いてくれたんだね#e1#",
+      motion = "sentence_uun", args = { face = ["smile"], loop_num = 5 }
+    },
+    { sentence = "えへへ#o1#/n宝物がまたひとつ/n増えちゃった～#h1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "冒険に行くとね、/nいろんな物を見つけるんだ",
+      motion = "sentence_pyonpyon", args = { face = ["kiri", "kiri2"], loop_num = 4 }
+    },
+    { sentence = "見つけた物は、宝箱に/nしまってるんだよ",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "7", time = 2600
+    },
+    { sentence = "え#q1#宝箱はどこに/nしまってるのって#q1#",
+      motion = "sentence_kubikashige", args = { face = ["biku"], loop_num = 3 }
+    },
+    { sentence = "…えへへ#o1#ないしょだよ#e1#",
+      motion = "sentence_kurukuru", args = { face = ["ohohoho", "ohohoho"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[8] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "お腹がすいちゃったな～",
+      motion = "sentence_uun", args = { face = ["kya"], loop_num = 3 }, voice = "8"
+    },
+    { sentence = "ハンバーガーショップの/nおにいさんの手作りバーガー/nが食べたいな#h1#",
+      motion = "sentence_tere_2", args = { face = ["meisou", "meisou"], loop_num = 3 }
+    },
+    { sentence = "お兄さんが作る/nハンバーガーは絶品なのよ#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディあまーいものが/nたべたいきぶんなの#h1#",
+      motion = "sentence_uun", args = { face = ["kya"], loop_num = 3 }, voice = "8"
+    },
+    { sentence = "そういえば、まえにいった/nカフェのチーズケーキ/nおいしかったのよ#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "こんどは/n#playernameとも/nいきたいなぁ#h1#",
+      motion = "sentence_burabura_loop", args = { face = ["meisou_cheek"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "お腹がすいちゃったぁ…",
+      motion = "sentence_uun", args = { face = ["sad"], loop_num = 3 }, voice = "8"
+    },
+    { sentence = "サンドウィッチを/nつくろうかなぁ#o1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 3 }
+    },
+    { sentence = "そうだ#e1#ぼくが焼いた/nパンを使って作ろうかな#o1#",
+      motion = "sentence_mitsuketa", args = { face = ["smile", "kiraniko"] }
+    },
+    { sentence = "#playernameも/nおなかすいてない#q1#/n一緒に食べようよ#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ぐぅ～",
+      motion = "sentence_souzou", args = { face = ["biku"], loop_num = 3 }
+    },
+    { sentence = "えへへ、/nお腹空いちゃったぁ～",
+      motion = "sentence_uun", args = { face = ["nukui"], loop_num = 5 }, voice = "8"
+    },
+    { sentence = "実はまだごはん/n食べてないんだ～",
+      motion = "sentence_gakkari", args = { face = ["ita"], loop_num = 2 }
+    },
+    { sentence = "#playernameは/nもう食べた#q1#/nまだなら一緒にたべよ～#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["smile2"], loop_num = 2 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "お腹すいたなー#e1#/n何か食べようかな#q1#",
+      motion = "sentence_burabura_loop", args = { face = ["tehepero_cheek"], loop_num = 3 }, voice = "8"
+    },
+    { sentence = "ケーキを食べようかな#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "あ#e1#/nやっぱりドーナツに/nしようかな～#e1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 3 }
+    },
+    { sentence = "う～ん…やっぱりケーキ…/n迷っちゃうよ～#e1#",
+      motion = "sentence_banzai3", args = { face = ["tere", "tere"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[9] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "明日のお天気は/nどうなるかしら…#q1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 3 }, voice = "9"
+    },
+    { sentence = "おでかけするから/n晴れてほしいな～",
+      motion = "sentence_yokopatapata", args = { face = ["smile"], loop_num = 2 }
+    },
+    { sentence = "いいお天気になりますよ～に#o1#",
+      motion = "sentence_tere_2", args = { face = ["smile3_cheek", "smile3_cheek"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "あしたは あめが/nふらないかしら#q1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 3 }, voice = "9"
+    },
+    { sentence = "おきにいりの かさをさして/nおでかけしたいの#o1#",
+      motion = "sentence_yokopatapata", args = { face = ["warau"], loop_num = 2 }
+    },
+    { sentence = "たまには あめの ひの/nおでかけもすてきよね#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile3_cheek", "smile3_cheek"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "明日のお天気はどうだろう#q1#",
+      motion = "sentence_kubikashige", args = { face = ["kyomi"], loop_num = 3 }, voice = "9"
+    },
+    { sentence = "いざという時/n折り畳み傘が/nあると安心だよね#e1#",
+      motion = "sentence_munehari", args = { face = ["kiri2"], loop_num = 2 }
+    },
+    { sentence = "#playernameも/nおでかけする時は/n忘れずにね#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["nikawink"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "明日、晴れてほしいな～#o1#",
+      motion = "sentence_souzou", args = { face = ["meisou"], loop_num = 3 }
+    },
+    { sentence = "そうだ#e1#/nてるてる坊主を作ろう#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kirasmile"], loop_num = 2 }
+    },
+    { sentence = "気持ちをこめて/nいーっぱい作ったら/nきっと晴れるよね#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "yaa"], loop_num = 3 }, voice = "9"
+    },
+    ],
+    "keroppi" = [
+    { sentence = "ねぇねぇ#e1#/n明日の天気、気になる#q1#",
+      motion = "sentence_clock_nayamu", args = { face = ["kyomi"], loop_num = 3 }, voice = "9"
+    },
+    { sentence = "うーん、ぼくに/n天気予報、できればなぁ…",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 3 }
+    },
+    { sentence = "ともだちのてるてるは/n天気をあてることが/nできるんだよ#e1#",
+      motion = "sentence_hyahho", args = { face = ["smile", "smile"], loop_num = 3 }
+    },
+    { sentence = "ドーナツ池の天気だけ/nなんだけど、すごいよね#o1#",
+      motion = "sentence_banzai3", args = { face = ["kirasmile", "kirasmile"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[10] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "ねぇねぇ/nごはんはもう食べた#q1#",
+      motion = "sentence_kubikashige", args = { face = ["yaa"], loop_num = 3 }, voice = "10"
+    },
+    { sentence = "わたしはね/nふわふわのオムライスを/n食べたの#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 4 }
+    },
+    { sentence = "ふふふ#o1# /n明日は一緒に食べましょ#q1#",
+      motion = "sentence_hatena2", args = { face = ["smile2"], loop_num = 2 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "ねぇねぇ/nもうごはんはたべた#q1#",
+      motion = "sentence_kubikashige", args = { face = ["kyomi"], loop_num = 3 }, voice = "10"
+    },
+    { sentence = "#playernameが/nみあたらなくて/nメロディもうたべちゃった#e1#",
+      motion = "sentence_hatena2", args = { face = ["sad2"], loop_num = 3 }
+    },
+    { sentence = "あしたは いっしょに/nたべようね#h1#",
+      motion = "sentence_pyonpyon", args = { face = ["tere", "tere"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "う～ん、おなかいっぱい～#o1#",
+      motion = "sentence_gakkari", args = { face = ["yaba"], loop_num = 2 }, voice = "10"
+    },
+    { sentence = "えへへ/nおっきなハンバーグを/n食べたんだ#e1#",
+      motion = "sentence_munehari", args = { face = ["tehepero_wink"], loop_num = 3 }
+    },
+    { sentence = "ぼくの顔くらい/n大きかったかも…#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri2"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "あのね、/nさっきオムライスを/n食べたんだ～#o1#",
+      motion = "sentence_kurukuru", args = { face = ["mogu3", "mogu3"], loop_num = 3 }, voice = "10"
+    },
+    { sentence = "オムライスってぼくと/n色が似てるよね#o1#だから…",
+      motion = "sentence_uun", args = { face = ["meisou"], loop_num = 5 }
+    },
+    { sentence = "ケチャップで僕の顔/n描いてみたら、ぼくに/nそっくりになったんだよ～#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "えへへ#o1#/n#playernameも/nやってみてね#e1#",
+      motion = "sentence_teage", args = { face = ["nikawink"], loop_num = 2 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "ねぇねぇ、/nもうご飯食べた#q1#",
+      motion = "sentence_clock_nayamu", args = { face = ["kyomi"], loop_num = 3 }, voice = "10"
+    },
+    { sentence = "まだなら、ぼくと一緒に/nごはん食べない#q1#",
+      motion = "sentence_tere_2", args = { face = ["tehepero_cheek", "tehepero_cheek"], loop_num = 2 }
+    },
+    { sentence = "ぼくもう、/nお腹ペコペコ～#e1#",
+      motion = "sentence_tere_2", args = { face = ["meisou_cheek", "meisou_cheek"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[11] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "おなかがいっぱいで/nちょっぴりねむたいわ…",
+      motion = "sentence_souzou", args = { face = ["sagasu"], loop_num = 3 }, voice = "11"
+    },
+    { sentence = "ふわぁ…",
+      motion = "sentence_nobi", args = { face = ["sagasu", "akubi"] }
+    },
+    { sentence = "はっ…#e1#だめだめ#e1#/nこのあとおともだちと/n遊ぶ約束をしてるの#e1#",
+      motion = "sentence_kubifuri", args = { face = ["yaba"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "きのう よふかししたせいで/nちょっぴりねむたいの#o1#",
+      motion = "sentence_souzou", args = { face = ["bonyari"], loop_num = 3 }, voice = "11"
+    },
+    { sentence = "ふわぁ…",
+      motion = "sentence_nobi", args = { face = ["meisou", "akubi"] }
+    },
+    { sentence = "メロディといっしょに/nおひるねする#q1#",
+      motion = "sentence_kubikashige", args = { face = ["smile2"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "お部屋があったかくて/nちょっぴりうとうと/nしちゃうね～…",
+      motion = "sentence_souzou", args = { face = ["bonyari"], loop_num = 3 }, voice = "11"
+    },
+    { sentence = "ふわぁあぁ…",
+      motion = "sentence_nobi", args = { face = ["sagasu", "akubi"] }
+    },
+    { sentence = "#playernameは/n#q1#",
+      motion = "sentence_kubikashige", args = { face = ["kyomi"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ふわぁあぁ…",
+      motion = "sentence_nobi", args = { face = ["sagasu", "akubi"] }
+    },
+    { sentence = "あくびが止まらないや～",
+      motion = "sentence_souzou", args = { face = ["bonyari"], loop_num = 3 }, voice = "11"
+    },
+    { sentence = "昨日の夜、遅くまで/nテレビみてたからかなぁ…",
+      motion = "sentence_kubifuri", args = { face = ["yaba"], loop_num = 3 }
+    },
+    { sentence = "#playernameは/n眠たくない#q1#/nいっしょにお昼寝/nしない～#q1#",
+      motion = "sentence_uun", args = { face = ["bonyari"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "ふわぁあぁあぁ…",
+      motion = "sentence_nobi", args = { face = ["bonyari", "akubi"] }, voice = "11"
+    },
+    { sentence = "えへへ#o1#/nおっきなあくびがでちゃった#e1#",
+      motion = "sentence_tere_2", args = { face = ["tere", "tere"], loop_num = 3 }, voice = "11"
+    },
+    { sentence = "たくさん/n遊んだからかな#o1#",
+      motion = "sentence_kubikashige", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[12] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "旅行中は/nたくさん写真を撮りたいの#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["def", "smile"], loop_num = 4 }
+    },
+    { sentence = "一緒に写真を撮って/nたくさん思い出を/nつくりましょ#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile"], loop_num = 2 }, voice = "12"
+    },
+    { sentence = "#playernameと/n一緒なら、きっとステキな/n旅行になると思うわ…#s1#",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "りょこうちゅうは たくさん/nしゃしん とりたいな#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile"], loop_num = 2 }, voice = "12"
+    },
+    { sentence = "メロディ/n#playernameを/nしゃしんにとるから",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "#playernameは/nメロディのこと/nたくさん とってね#h1#",
+      motion = "sentence_tere_2", args = { face = ["kya", "tere"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "旅行中は/nたくさん写真を撮りたいね#e1#",
+      motion = "sentence_hyahho", args = { face = ["kya", "def"], loop_num = 3 }, voice = "12"
+    },
+    { sentence = "ぼく、/n#playernameの/n写真いっぱい撮るよ#e1#",
+      motion = "sentence_teage", args = { face = ["kirasmile"], loop_num = 3 }
+    },
+    { sentence = "えへへ#o1#/nでもぼくはいっぱい/n撮られると照れちゃうなぁ",
+      motion = "sentence_yokopatapata2", args = { face = ["tere"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "旅行に行ったら/n写真いっぱい撮ろうね#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["kya"], loop_num = 3 }, voice = "12"
+    },
+    { sentence = "帰ってきたら、/nその写真を整理するのも/n楽しいよね#e1#",
+      motion = "sentence_uun", args = { face = ["smile4_cheek"], loop_num = 3 }
+    },
+    { sentence = "一緒に/nアルバムつくろうね#o1#",
+      motion = "sentence_hyahho", args = { face = ["kya", "def"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "旅行に行ったら、/n#playernameと/n写真を撮りたいな#e1#",
+      motion = "sentence_kubikashige", args = { face = ["kya"], loop_num = 3 }, voice = "12"
+    },
+    { sentence = "かっこよく写れるように/n練習しておくよ#e1#",
+      motion = "sentence_munehari", args = { face = ["wink_r"], loop_num = 3 }
+    },
+    { sentence = "…キリッ#e1#/n…どう#q1#かっこいい#q1#",
+      motion = "sentence_cos_keirei", args = { face = ["kiri", "kiri2"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[13] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "どこか遠くに/n旅行したいわ#e1#",
+      motion = "sentence_teage", args = { face = ["wink_r"], loop_num = 1 }, voice = "13"
+    },
+    { sentence = "キレイなビーチがある/n場所がいいな…#o1#",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    { sentence = "わたし、はりきって/n新しい水着用意しちゃう#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディ、おはながたくさん/nさいてる ところに/nりょこう してみたいの#e1#",
+      motion = "sentence_hyahho", args = { face = ["kirasmile", "kiraniko"], loop_num = 2 }, voice = "13"
+    },
+    { sentence = "どこにいても/nおはなのいいかおり…#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    { sentence = "はなかんむり/nたくさんつくろうね#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "ぼく、雪がたくさん/nふっている所に/n旅行したいんだ#e1#",
+      motion = "sentence_banzai3", args = { face = ["kya", "kya"], loop_num = 2 }, voice = "13"
+    },
+    { sentence = "雪ってふわふわで/n雲みたいでしょ#q1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile3"], loop_num = 2 }
+    },
+    { sentence = "だから/nそこにジャンプしたら/nきっと気持ちいいよ#e1#",
+      motion = "sentence_hyahho", args = { face = ["kirasmile", "kiraniko"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "暑くなったら南の島に/nバカンスに行きたいね～#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile2"], loop_num = 3 }, voice = "13"
+    },
+    { sentence = "ヤシの木の下で/nトロピカルなジュースを/n飲みたいな#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "日焼けしないように/n注意しなくちゃね#h1#",
+      motion = "sentence_kubikashige", args = { face = ["tere"], loop_num = 3 } },
+    ],
+    "keroppi" = [
+    { sentence = "ぼくは、旅行にいくなら/n南の島かなー#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile3"], loop_num = 3 }
+    },
+    { sentence = "キレイな海でいーっぱい/n泳いでみたいな#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["kiraniko", "kirasmile"], loop_num = 4 }, voice = "13"
+    },
+    { sentence = "一緒に競争しようよ#e1#/n負けないぞ～#e1#",
+      motion = "sentence_teage", args = { face = ["kiri2"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[14] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "お部屋をお花で/nいっぱいにしたら/nきっとステキね#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile4_cheek"], loop_num = 2 }, voice = "14"
+    },
+    { sentence = "パンジーにチューリップに/nマーガレットにひまわりに…",
+      motion = "sentence_mitsuketa", args = { face = ["kirasmile", "kirasmile"] }
+    },
+    { sentence = "うふふ#o1#/nなにを飾ろうか/n迷っちゃう#e1#",
+      motion = "sentence_kubikashige", args = { face = ["smile"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "おへやに たくさん/nおはなを かざりたいの#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "yaa"], loop_num = 3 }, voice = "14"
+    },
+    { sentence = "いっぱいの おはな/nきっと いいかおり…#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    { sentence = "かざるとき/nおてつだいしてね#o1#",
+      motion = "sentence_ketsui2", args = { face = ["kiraniko"], loop_num = 1 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "えへへ/nいつかひまわり畑を/n作りたいんだ～#o1#",
+      motion = "sentence_picture_kansou1", args = { face = ["tere"], loop_num = 3 }, voice = "14"
+    },
+    { sentence = "夏になれば/nいっぱいひまわりが/n咲くんだよ#e1#",
+      motion = "sentence_hyahho", args = { face = ["yaa", "smile"], loop_num = 3 }
+    },
+    { sentence = "それって/nなんだか/nどきどきするよね#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "いっぱいのお花でブーケを/n作ったらマカロンちゃん/n喜んでくれるかな～#q1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile3_cheek"], loop_num = 3 }, voice = "14"
+    },
+    { sentence = "どんなお花を使うか/n悩んじゃうね～#o1#",
+      motion = "sentence_tere_2", args = { face = ["kya", "tere"], loop_num = 3 }
+    },
+    { sentence = "きみはどのお花が/nいいとおもう～#q1#",
+      motion = "sentence_kubikashige", args = { face = ["smile"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "この前、探検に行った時/nキレイなお花を/n見つけたんだ#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["kya"], loop_num = 3 }
+    },
+    { sentence = "お母さんにあげたら/nとっても喜んでくれたよ#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["warau", "warau"], loop_num = 3 }, voice = "14"
+    },
+    { sentence = "今度、/n#playernameにも/n摘んできてあげるね#e1#",
+      motion = "sentence_kubikashige", args = { face = ["nikawink"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[15] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "この前おともだちと/nおそろいのお洋服で/nおでかけしたの#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "yaa"], loop_num = 3 }, voice = "15"
+    },
+    { sentence = "仲良くおそろいで/n双子みたいねって/n言われたのよ#e1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    { sentence = "#playernameも/n一緒におそろいの服で/nおでかけしましょ#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile4_cheek"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "おそろいの/nおようふくで おでかけ/nいいなぁ#h1#",
+      motion = "sentence_souzou", args = { face = ["kando"], loop_num = 3 }, voice = "15"
+    },
+    { sentence = "メロディ/n#playernameと/nおそろい きたいな#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["meisou_cheek"], loop_num = 2 }
+    },
+    { sentence = "こんど、おようふく/nいっしょにえらぼ#h1#",
+      motion = "sentence_clock_nayamu", args = { face = ["nikawink"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "この前、エスプレッソと/nおそろいの/nお洋服買ったんだ～#e1#",
+      motion = "sentence_hyahho", args = { face = ["yaa", "smile"], loop_num = 3 }, voice = "15"
+    },
+    { sentence = "エスプレッソが/n選んでくれたんだ#e1#/nすごいいい感じなんだよ#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["kirasmile", "kirasmile"] }
+    },
+    { sentence = "今度/n#playernameにも/n見てほしいな～#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile3_cheek"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "あのね、/nチームプリンでおそろいの/nTシャツを作ったんだ～#o1#",
+      motion = "sentence_hyahho", args = { face = ["kirasmile", "smile3"], loop_num = 3 }, voice = "15", time = 2300
+    },
+    { sentence = "ふふ～ん#o1#/nみんなとっても/n似合ってるんだぁ～#o1#",
+      motion = "sentence_kurukuru", args = { face = ["kya", "tere"], loop_num = 1 }
+    },
+    { sentence = "もちろん/n#playernameにも/nあげる#e1#",
+      motion = "sentence_munehari", args = { face = ["meisou_cheek"], loop_num = 1 }
+    },
+    { sentence = "#playernameも/nチームプリンだからね～#o1#",
+      motion = "sentence_teage", args = { face = ["wink_l"], loop_num = 1 }
+    }
+    ],
+    "keroppi" = [
+    { sentence = "ぼくと、弟のころっぴは/nそっくりなんだ",
+      motion = "sentence_pyonpyon", args = { face = ["smile2", "smile2"], loop_num = 4 }, voice = "15"
+    },
+    { sentence = "おそろいの格好すると/n見分けがつかないって/nよく言われるよ",
+      motion = "sentence_nobi", args = { face = ["kya", "kya"] }
+    },
+    { sentence = "#playernameは/nどっちがどっちか/n当てられるかな～#q1#",
+      motion = "sentence_yokopatapata", args = { face = ["smile2"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[16] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "ぬいぐるみってだいすき#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile3", "yaa"], loop_num = 3 }, voice = "16"
+    },
+    { sentence = "いつでも一緒の/n大切なおともだち#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    { sentence = "#playernameは/nおともだちの/nぬいぐるみはいる#q1#",
+      motion = "sentence_kubikashige", args = { face = ["smile"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "ねるときは/nおきにいりの ぬいぐるみと/nいっしょなの#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile2"], loop_num = 2 }, voice = "16"
+    },
+    { sentence = "ふわふわで/nとっても かわいいのよ#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    { sentence = "いっしょだと/nぐっすり ねむれるのよ…#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "ぬいぐるみと一緒に/n寝たことはある#q1#",
+      motion = "sentence_kubikashige", args = { face = ["kyomi"], loop_num = 3 }, voice = "16"
+    },
+    { sentence = "ぼくはね/nくまのぬいぐるみと/n一緒に寝るんだ#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["warau"], loop_num = 2 }
+    },
+    { sentence = "おすすめだよ～#e1#/nぐっすり眠れて/nいい夢もみれちゃう#e1#",
+      motion = "sentence_teage", args = { face = ["wink_r"], loop_num = 1 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ぬいぐるみを/nぎゅ～ってして寝ると、/nぐっすり眠れるよ#o1#",
+      motion = "sentence_hatena2", args = { face = ["kya", "kya"], loop_num = 3 }, voice = "16"
+    },
+    { sentence = "もこもこあったかくて/n安心するからかなぁ#q1#",
+      motion = "sentence_uun", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    { sentence = "#playernameも/n試してみて#o1#/nきっといい夢が/nみられるよ～#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "ぼく、いつもお魚の枕を/nだっこして寝てるよ",
+      motion = "sentence_uun", args = { face = ["smile2"], loop_num = 3 }
+    },
+    { sentence = "そうするとなんだか/n安心して眠れるんだ#e1#",
+      motion = "sentence_picture_kansou1", args = { face = ["manzoku"], loop_num = 3 }, voice = "16"
+    },
+    { sentence = "それに、いい夢も/nみれるんだよ#o1#",
+      motion = "sentence_banzai3", args = { face = ["tere", "tere"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[17] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "わたし/n毎日、日記をつけているの#e1#",
+      motion = "sentence_kubikashige", args = { face = ["wink_l"], loop_num = 3 }, voice = "17"
+    },
+    { sentence = "今日あったことも/n忘れずに/n書いておかなくちゃ#o1#",
+      motion = "sentence_souzou", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    { sentence = "うふふ#o1#/n#playername/nとの事も書いてるのよ#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディ/nまいにち/nにっきをつけているの#e1#",
+      motion = "sentence_teage", args = { face = ["yaa"], loop_num = 2 }, voice = "17"
+    },
+    { sentence = "クロミちゃんが/nまいにち かいてたから/nまねっこ#o1#",
+      motion = "sentence_kubikashige", args = { face = ["tehepero_wink"], loop_num = 3 }
+    },
+    { sentence = "メロディも/nクロミちゃんみたいに/nたくさん かいちゃう#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile3", "yaa"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "ぼく/n日記つけようかなって/n思ってるんだ#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri2"], loop_num = 2 }, voice = "17"
+    },
+    { sentence = "毎日忘れずにかけるかなぁ#q1#",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }
+    },
+    { sentence = "もしぼくが/n書くのを忘れてたら/n教えてね#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["waa", "waa"] }
+    },
+    ],
+    "purin" = [
+    { sentence = "ぼく、/n日記つけよっかなぁ～#q1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile"], loop_num = 2 }, voice = "17"
+    },
+    { sentence = "え#q1#/nちゃんと/n毎日かけるか心配#q1#",
+      motion = "sentence_kubikashige", args = { face = ["biku"], loop_num = 1 }
+    },
+    { sentence = "…だっ、大丈夫だよ#e1#/nちゃんと書くも～ん#o1#",
+      motion = "sentence_munehari", args = { face = ["kiri2"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "ぼく、日記つけようかな#q1#",
+      motion = "sentence_uun", args = { face = ["kyomi"], loop_num = 3 }
+    },
+    { sentence = "その名も/n「けろっぴの冒険日記」#e1#",
+      motion = "sentence_banzai3", args = { face = ["kya", "kya"], loop_num = 2 }, time = 2800
+    },
+    { sentence = "えへへ#o1# どうかな、/nおもしろそう#q1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "tere"], loop_num = 2 }, voice = "17"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[18] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "甘いものを食べると/nにっこりしあわせに/nなっちゃう#o1#",
+      motion = "sentence_tere_2", args = { face = ["kya", "smile"], loop_num = 3 }, voice = "18"
+    },
+    { sentence = "わたしのおすすめは/nアップルパイよ#o1#",
+      motion = "sentence_teage", args = { face = ["tehepero_wink"], loop_num = 3 }
+    },
+    { sentence = "う～ん#o1#/n想像するだけで/n笑顔になっちゃう#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["tere"], loop_num = 2 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディ/nあまいもの/nたべたいきぶん#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["kiraniko", "kirasmile"], loop_num = 3 }, voice = "18"
+    },
+    { sentence = "ふわふわの ぱんけーき…/nおっきな しゅーくりーむ…",
+      motion = "sentence_picture_kansou1", args = { face = ["mogu3"], loop_num = 1 }
+    },
+    { sentence = "なににするか/nまよっちゃう～#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "今日のおやつは/n甘いものがいいな～#o1#",
+      motion = "sentence_picture_kansou1", args = { face = ["mogu3"], loop_num = 1 }, voice = "18"
+    },
+    { sentence = "甘いものを食べると/nしあわせで思わず/n笑顔になっちゃうよね#e1#",
+      motion = "sentence_hyahho", args = { face = ["kirasmile", "kiraniko"], loop_num = 3 }
+    },
+    { sentence = "#playernameも/nぼくといっしょに食べる～#q1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile2"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "甘いものっておいしいよね#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "18"
+    },
+    { sentence = "食べるとほっぺが/nゆるゆるになっちゃう#o1#",
+      motion = "sentence_tere_2", args = { face = ["kya", "tere"], loop_num = 3 }
+    },
+    { sentence = "でも、食べた後は/n歯磨きを忘れずにしないと…",
+      motion = "sentence_souzou", args = { face = ["nimaime2"], loop_num = 3 }
+    },
+    { sentence = "虫歯になっちゃうよ～#e1#/n歯が痛いのはいやだなぁ～",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 1 }, voice = "18_2"
+    },
+    ],
+    "keroppi" = [
+    { sentence = "と～っても甘い/nドーナツが食べた～い#e1#",
+      motion = "sentence_banzai3", args = { face = ["tehepero_cheek", "tehepero_cheek"], loop_num = 2 }, voice = "18", time = 2800
+    },
+    { sentence = "ねぇねぇ、今から/n一緒に作ろうよ#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["kirasmile"], loop_num = 2 }
+    },
+    { sentence = "お砂糖とか、チョコレートを/nい～っぱいつけてさ…#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["kya", "nikawink"], loop_num = 3 }
+    },
+    { sentence = "きっと、ひとくち食べれば/nとっても幸せだよ～#e1#",
+      motion = "sentence_tere_2", args = { face = ["meisou_cheek", "meisou_cheek"], loop_num = 3 }, voice = "18_2"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[19] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "くしゅん#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["biku", "biku"] }
+    },
+    { sentence = "ちょっと/n風邪ひいちゃったのかな#q1#",
+      motion = "sentence_kubifuri", args = { face = ["yaba"], loop_num = 3 }, voice = "19"
+    },
+    { sentence = "それとも誰か/nわたしのこと おはなし/nしているのかな～#q1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 1 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "くちゅん#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["ita", "ita"] }
+    },
+    { sentence = "くしゃみ でちゃった…",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }, voice = "19"
+    },
+    { sentence = "だれか メロディの/nおはなし してるのかなぁ#o1#",
+      motion = "sentence_kubikashige", args = { face = ["kyomi"], loop_num = 1 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "くしゅん#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["ita", "ita"] }
+    },
+    { sentence = "昨日おなか出して/n寝ちゃったからかな…#q1#",
+      motion = "sentence_souzou", args = { face = ["fuman"], loop_num = 3 }, voice = "19"
+    },
+    { sentence = "風邪ひかないように/nしないとね#e1#",
+      motion = "sentence_ketsui2", args = { face = ["yaba"], loop_num = 1 }
+    },
+    ],
+    "purin" = [
+    { sentence = "くしゅん#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["ita", "ita"] }
+    },
+    { sentence = "えへへ#o1#/nきっとぼくのうわさを/nしてるコがいるんだよ#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["kirasmile"], loop_num = 5 }, voice = "19"
+    },
+    { sentence = "ふふふ#o1#/n人気ものは/nたいへ～ん#s1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "tere"], loop_num = 4 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "へっくしゅん#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["ita", "ita"] }
+    },
+    { sentence = "う～…おっきなくしゃみが/nでちゃった…",
+      motion = "sentence_tere_2", args = { face = ["sad", "sad"], loop_num = 2 }, voice = "19"
+    },
+    { sentence = "朝起きたとき、布団が/nはだけてたから、/n風邪ひいちゃったかも…#q1#",
+      motion = "sentence_gakkari", args = { face = ["sad2"], loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[20] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "今日はお掃除デーに/nしようかしら#q1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 1 }, voice = "20"
+    },
+    { sentence = "お部屋ぜーんぶ/nぴかぴかにするの#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["kiraniko", "kirasmile"], loop_num = 3 }
+    },
+    { sentence = "きっと/nとっても気持ちがいいわよ#o1#",
+      motion = "sentence_teage", args = { face = ["tehepero_wink"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "さいきん おへやが/nちらかってるかも…#q1#",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }, voice = "20"
+    },
+    { sentence = "よぉし#e1#いまから/nおへやの せいりするの#e1#",
+      motion = "sentence_ketsui2", args = { face = ["mu3"], loop_num = 1 }
+    },
+    { sentence = "…あとでメロディの/nおてつだいしてほしいな#h1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "今から/nお部屋のお掃除するか/n悩んでいるんだ#e1#",
+      motion = "sentence_kubikashige", args = { face = ["yaba"], loop_num = 2 }, voice = "20"
+    },
+    { sentence = "お部屋がキレイだと/nきもちがいいよね#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["warau"], loop_num = 2 }
+    },
+    { sentence = "よ～し#e1#お掃除するぞ～#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri2"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "えっとね/n今からお掃除しなきゃ/nなんだけど…",
+      motion = "sentence_souzou", args = { face = ["mu2"], loop_num = 3 }
+    },
+    { sentence = "やる気が出ないよ～/nお昼寝してからでも/nいいかなぁ#q1#",
+      motion = "sentence_kubifuri", args = { face = ["sad2"], loop_num = 3 }, voice = "20"
+    },
+    { sentence = "え～っ#q1#/n今すぐしたほうがいい#q1#",
+      motion = "sentence_mitsuketa", args = { face = ["biku", "biku"] }, voice = "20_2"
+    },
+    { sentence = "…#playernameが/nそう言うなら/nそうしようかな～#e1#",
+      motion = "sentence_uun", args = { face = ["nikawink"], loop_num = 1 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "お掃除って大変だよね…/nぼく苦手だよ～",
+      motion = "sentence_gakkari", args = { face = ["sad2"], loop_num = 3 }, voice = "20"
+    },
+    { sentence = "ともだちのノーベルンなら/n便利なお掃除道具、/n発明できるかも#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["bikkuri", "bikkuri"] }
+    },
+    { sentence = "今度、頼んでみようかな～",
+      motion = "sentence_pyonpyon", args = { face = ["smile3", "smile3"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[21] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "#playernameは/n朝スッキリ起きられる#q1#",
+      motion = "sentence_kubikashige", args = { face = ["def"], loop_num = 1 }, voice = "21_1"
+    },
+    { sentence = "わたしはね…",
+      motion = "sentence_souzou", args = { face = ["meisou"], loop_num = 3 }
+    },
+    { sentence = "すぐにカーテンをあけて/n太陽さんに、おはよう#e1#/nって言うようにしているの#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["wink_l"], loop_num = 2 }, voice = "21_2"
+    },
+    { sentence = "そうすると/nすっきり目が覚めるのよ#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディ/nなかなか あさ/nおきられないの…",
+      motion = "sentence_kubifuri", args = { face = ["yaba"], loop_num = 3 }
+    },
+    { sentence = "ふわふわしちゃって/nつい もういっかい/nねちゃうの…",
+      motion = "sentence_kubikashige", args = { face = ["nukui"], loop_num = 1 }, voice = "21_1"
+    },
+    { sentence = "すっきり おきられる/nほうほう ないかなぁ#q1#",
+      motion = "sentence_burabura_loop", args = { face = ["kyomi"], loop_num = 2 }
+    },
+    { sentence = "いいほうほう あったら/nおしえてほしいな#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile3", "yaa"], loop_num = 3 }, voice = "21_2"
+    }
+    ],
+    "cinnamon" = [
+    { sentence = "ぼく、朝起きるの/nちょっぴり苦手～…",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }, voice = "21_1"
+    },
+    { sentence = "だから/nいつも小鳥さんが/n起こしに来てくれるんだ#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile"], loop_num = 2 }
+    },
+    { sentence = "…実はね、/n小鳥さんは/nシフト制なんだよ…#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["kya", "kya"] }, voice = "21_2"
+    },
+    { sentence = "ぼくが朝起きられるのは/n小鳥さんたちの/nおかげなんだ～#e1#",
+      motion = "sentence_hyahho", args = { face = ["yaa", "smile"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ぼく、毎朝起きたら/nプリン体操してるんだ～#o1#",
+      motion = "sentence_hyahho", args = { face = ["tere", "smile3_cheek"], loop_num = 3 }, voice = "21_1", time = 2400
+    },
+    { sentence = "眠くても、体操すると/nすっきり起きられるよ～#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri"], loop_num = 1 }
+    },
+    { sentence = "#playernameも/nしてみない#q1#/n教えてあげるよ～#e1#",
+      motion = "sentence_kubikashige", args = { face = ["nikawink"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "毎日、朝起きたら/nラジオ体操してるんだ#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["warau", "warau"], loop_num = 3 }, voice = "21_1"
+    },
+    { sentence = "体を動かすと、すっきり#e1#/nすぐに目がさめるんだよ#e1#",
+      motion = "sentence_munehari", args = { face = ["kiraniko"], loop_num = 3 }
+    },
+    { sentence = "たまに眠くて/nさぼっちゃうことも/nあるけど…えへへ…",
+      motion = "sentence_tere_2", args = { face = ["smile3", "tere"], loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[22] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "とってもかわいいお花が/nお外に咲いていたの#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "yaa"], loop_num = 3 }, voice = "22"
+    },
+    { sentence = "あのお花は/nなんて名前だったのかしら#q1#",
+      motion = "sentence_picture_kansou1", args = { face = ["tere"], loop_num = 3 }
+    },
+    { sentence = "#playernameにも/n見せたかったわ#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile4_cheek"], loop_num = 2 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "おでかけしたとき/nおはなが とっても/nきれいだったの#h1#",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou_cheek"], loop_num = 3 }, voice = "22"
+    },
+    { sentence = "はなかざりを つくったら/nきっとかわいいわ#h1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "yaa"], loop_num = 3 }
+    },
+    { sentence = "あのおはな、また/nみつけられたら いいな",
+      motion = "sentence_burabura_loop", args = { face = ["tere"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "きいてきいてー#e1#/nおでかけしたら/nお花畑が満開だったんだ#e1#",
+      motion = "sentence_hyahho", args = { face = ["yaa", "smile"], loop_num = 3 }, voice = "22"
+    },
+    { sentence = "今度おやつを持って/nお友達と遊びに行きたいな～",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    { sentence = "えへへ#o1#/n君も一緒に来る#q1#",
+      motion = "sentence_teage", args = { face = ["yaa"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "このまえお散歩に行った時/nとーってもきれいな/nお花畑みつけたんだぁ～#e1#",
+      motion = "sentence_hyahho", args = { face = ["smile", "warau"], loop_num = 3 }, voice = "22"
+    },
+    { sentence = "今度、おやつもって/n一緒に行こうよ～#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile3"], loop_num = 2 }
+    },
+    { sentence = "ふふふ～#o1#/nなんのおやつ/nもっていこっかな～#h1#",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "けろりーぬちゃんに/n花かんむりの作り方を/n教えてもらったんだ#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "22"
+    },
+    { sentence = "いっぱい練習したから/n上手になってきたよ#e1#",
+      motion = "sentence_tere_2", args = { face = ["smile3_cheek", "smile3_cheek"], loop_num = 3 }
+    },
+    { sentence = "今度作ってあげるよ#e1#/n何色の花がいい#q1#",
+      motion = "sentence_uun", args = { face = ["yaa"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[23] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "うふふ#o1#/n見てちょうだい#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile3_cheek"], loop_num = 2 }, voice = "23"
+    },
+    { sentence = "いつもよりリボンが/n上手に結べたのよ#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "どう#q1#かわいいかな#q1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディのずきん どーお#q1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }, voice = "23"
+    },
+    { sentence = "うふふ#h1#/nかわいいでしょ#q1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    { sentence = "おきにいりの ずきんなの#h1#",
+      motion = "sentence_pyonpyon", args = { face = ["kiraniko", "kirasmile"], loop_num = 3 }
+
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "今日のぼくどう思う#q1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 2 }, voice = "23"
+    },
+    { sentence = "えへへ～#o1#/nキリッとしてるでしょ#q1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri2"], loop_num = 2 }
+    },
+    { sentence = "ちょっとイメチェン/nしてみたんだ#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ねぇねぇ、どうかなっ#e1#",
+      motion = "sentence_teage", args = { face = ["yaa"], loop_num = 2 }, voice = "23"
+    },
+    { sentence = "えっ#q1#/nわかんない～#q1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile4_cheek"], loop_num = 2 }
+    },
+    { sentence = "ふふふ～ん#o1#/nしゅっとしたでしょ/nぼく#e1#",
+      motion = "sentence_munehari", args = { face = ["kiri2"], loop_num = 2 }
+    },
+    { sentence = "エクササイズしたんだ～#o1#/n大変身でしょ#e1#",
+      motion = "sentence_hyahho", args = { face = ["yaa", "smile"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "お気に入りの蝶ネクタイを/nつけるとうきうきするよ#o1#",
+      motion = "sentence_hyahho", args = { face = ["smile2", "smile2"], loop_num = 3 }, voice = "23", time = 2700
+    },
+    { sentence = "#playernameも/n蝶ネクタイ/nつけてみたい#q1#",
+      motion = "sentence_kubikashige", args = { face = ["kyomi"], loop_num = 2 }
+    },
+    { sentence = "じゃあ、ぼくが/n選んであげるよ#e1#",
+      motion = "sentence_teage", args = { face = ["smile3"], loop_num = 2 }
+    },
+    { sentence = "ぼくに任せればバッチリだよ/nどんなのがいいかな～#o1#",
+      motion = "sentence_kubikashige", args = { face = ["kya"], loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[24] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "～#o1#～#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["warau"], loop_num = 2 }, voice = "24_1"
+    },
+    { sentence = "とっても良い事があったのよ#o1#/nなんだと思う#q1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "うふふ#o1#/nヒミツ#h1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "smile2"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "ふふふ#o1#",
+      motion = "sentence_tere_2", args = { face = ["kya", "smile"], loop_num = 3 }, voice = "24_1"
+    },
+    { sentence = "たのしいことが あると/nニコニコしちゃうの#o1#",
+      motion = "sentence_kurukuru", args = { face = ["smile3_cheek", "smile2"], loop_num = 3 }
+    },
+    { sentence = "なにが あったかは/nひ・み・つ・なの#o1#",
+      motion = "sentence_clock_nayamu", args = { face = ["meisou_cheek"], loop_num = 1 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "えへへ～#o1#/n今すっごくうれしいんだぁ#o1#",
+      motion = "sentence_banzai3", args = { face = ["kya", "kya"], loop_num = 2 }, voice = "24_1"
+    },
+    { sentence = "何があったか気になる#q1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile4_cheek"], loop_num = 2 }
+    },
+    { sentence = "でも内緒なんだ#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ふんふんふ～ん#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    { sentence = "えへへ#o1#/nあのね",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "#playernameと/nおしゃべりできて/nすごく楽しいんだ#o1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "smile2"], loop_num = 3 }, voice = "24_1"
+    },
+    { sentence = "ふふ#o1#/nいつもおしゃべりしてくれて/nありがとう#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "えへへへへ#o1#",
+      motion = "sentence_tere_2", args = { face = ["smile3", "smile3"], loop_num = 2 }, voice = "24_1"
+    },
+    { sentence = "あ#e1#やっほー#e1#",
+      motion = "sentence_teage", args = { face = ["ooi"], loop_num = 2 }
+    },
+    { sentence = "あのね、さっき/nとってもいいことが/nあったんだー#e1#",
+      motion = "sentence_hyahho", args = { face = ["tere", "tere"], loop_num = 2 }
+    },
+    { sentence = "ふふ#o1# 何があったかは/nナ・イ・ショ、だよ#o1#",
+      motion = "sentence_mitsuketa", args = { face = ["nikawink", "nikawink"] }, voice = "24_2"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[25] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "お出かけ先で素敵なお店を/n見つけて写真を撮ったの#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }, voice = "25"
+    },
+    { sentence = "とっても素敵に撮れたわ#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["tere", "tere"], loop_num = 3 }
+    },
+    { sentence = "かわいい物があるとつい/n写真を撮っちゃうの#h1#",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "#playernameは/nしゃしん とるのすき#q1#",
+      motion = "sentence_kubikashige", args = { face = ["nikawink"], loop_num = 4 }, voice = "25"
+    },
+    { sentence = "メロディはね、すき#h1#",
+      motion = "sentence_pyonpyon", args = { face = ["tere", "tere"], loop_num = 4 }
+    },
+    { sentence = "ふぉとじぇにっくな/nしゃしんがとれると/nうれしいの#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "かわいいパンを/n作ろうと思うんだ#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["warau"], loop_num = 2 }, voice = "25"
+    },
+    { sentence = "フォトジェニックな/nパンにしたいんだ～#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "モカちゃんに/n喜んでもらえるかな#o1#",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "みてみて#e1#/nはいチーズ#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "warau"], loop_num = 1 }
+    },
+    { sentence = "・・・・・・",
+      motion = "sentence_cos_keirei", args = { face = ["kiri", "kiri"], loop_num = 3 }, voice = "25"
+    },
+    { sentence = "写真撮れた～#q1#/nフォトジェニックな/nポーズでしょ#h1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "あれ#q1#フォトジェニックって/nこういうことじゃないの#q1#",
+      motion = "sentence_kubikashige", args = { face = ["sad"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "この前、冒険に行った時/nとってもキレイな/n景色の場所を見つけたんだ#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["tere", "smile"], loop_num = 4 }, voice = "25"
+    },
+    { sentence = "きっといい写真が/n撮れると思うんだ#o1#",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "今度案内するから、/n一緒に行ってみようよ#e1#",
+      motion = "sentence_teage", args = { face = ["warau"], loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[26] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "#playernameは/nクッキーは好き#q1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "26"
+    },
+    { sentence = "わたしね#e1#/nクッキーを焼くのが/n得意なのよ#o1#",
+      motion = "sentence_teage", args = { face = ["yaa"], loop_num = 2 }
+    },
+    { sentence = "今度焼いたら/n一緒にお茶をしましょ#o1#",
+      motion = "sentence_uun", args = { face = ["smile4_cheek"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディ おりょうり/nけっこう とくいなの#h1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "smile2"], loop_num = 3 }, voice = "26"
+    },
+    { sentence = "ふぇすで からあげのおみせ/nしたこもあるんだよ#o1#",
+      motion = "sentence_munehari", args = { face = ["wink_r"], loop_num = 2 }
+    },
+    { sentence = "こんど つくってあげるね#h1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "ぼくねー#o1#/nすごい特技があるんだ#o1#",
+      motion = "sentence_banzai3", args = { face = ["kya", "kya"], loop_num = 2 }, voice = "26", time = 2500
+    },
+    { sentence = "この耳でね#e1#/nお空を飛べちゃうんだよ#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["kya", "warau"], loop_num = 5 }
+    },
+    { sentence = "えへへ#o1#/n雲まで飛べちゃうんだ#o1#",
+      motion = "sentence_munehari", args = { face = ["kirasmile"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ふわぁあ～/nえへへ#o1#/nあくびがでちゃった#o1#",
+      motion = "sentence_nobi", args = { face = ["sagasu", "akubi"] }, voice = "26"
+    },
+    { sentence = "ぼく/nどこでも眠れるのが/n特技なんだぁ～#o1#",
+      motion = "sentence_souzou", args = { face = ["bonyari"], loop_num = 3 }
+    },
+    { sentence = "いつでも/n#playernameと/nお昼寝できるからね#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile3"], loop_num = 2 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "ぼく、泳ぐの大好き#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 2 }, voice = "26"
+    },
+    { sentence = "クロールなら、誰にも/n絶対負けないよ#e1#",
+      motion = "sentence_hyahho", args = { face = ["kiri2", "kiri2"], loop_num = 3 }
+    },
+    { sentence = "ぼくの得意なクロール/n#playernameに/n見てほしいな#e1#",
+      motion = "sentence_tere_2", args = { face = ["manzoku", "meisou_cheek"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[27] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "#playernameの/n出身はどこかしら#q1#",
+      motion = "sentence_kubikashige", args = { face = ["def"], loop_num = 3 }, voice = "27"
+    },
+    { sentence = "わたしはイギリスの/nロンドン郊外出身なの#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["warau"], loop_num = 2 }
+    },
+    { sentence = "素敵なガーデンが/nいっぱいあるのよ#h1#",
+      motion = "sentence_clock_nayamu", args = { face = ["wink_l", "wink_l"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディの おうちはね/nマリーランドのうさぎの/nいるおかに あるんだよ#o1#",
+      motion = "sentence_teage", args = { face = ["smile"], loop_num = 2 }, voice = "27"
+    },
+    { sentence = "メロディはそこで/nうまれたの#h1#",
+      motion = "sentence_mitsuketa", args = { face = ["kya", "kya"], loop_num = 3 }
+    },
+    { sentence = "こんど おうちに/nあそびに きてほしいな#h1#",
+      motion = "sentence_hyahho", args = { face = ["yaa", "kya"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "ぼくね#e1#/n遠いお空の雲の上で/n生まれたんだ#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }, voice = "27"
+    },
+    { sentence = "雲の上はとっても/nきれいなんだよ#e1#",
+      motion = "sentence_hyahho", args = { face = ["kya", "def"], loop_num = 3 }, time = 2500
+    },
+    { sentence = "いつか/n#playernameにも/n見せたいなぁ…",
+      motion = "sentence_uun", args = { face = ["smile4_cheek"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ぼくね/nぼく専用の/nお家があるんだよ#o1#",
+      motion = "sentence_hyahho", args = { face = ["kirasmile", "kiraniko"], loop_num = 3 }, voice = "27"
+    },
+    { sentence = "飼い主のお姉さんがね/nぼくにバスケットを用意して/nくれたんだ～#e1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "smile2"], loop_num = 3 }
+    },
+    { sentence = "お姉さんのお家の/n玄関にあるんだよ#e1#/nとっても気に入ってるんだ#o1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile3"], loop_num = 2 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "ぼく、ドーナツ池の島にある/nけろけろハウスに/n住んでるんだ#o1#",
+      motion = "sentence_teage", args = { face = ["smile"], loop_num = 3 }
+    },
+    { sentence = "ドーナツ池はね、/nまるでドーナツみたいに/nまんまるなんだよ#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kyomi"], loop_num = 3 }
+    },
+    { sentence = "今度、来てほしいな/nドーナツ池で/n一緒に遊ぼうよ#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["yaa"], loop_num = 2 }, voice = "27"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[28] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "#playernameには/n兄妹はいる#q1#",
+      motion = "sentence_yokopatapata2", args = { face = ["def"], loop_num = 5 }, voice = "28"
+    },
+    { sentence = "わたしには妹の/nミミィがいるのよ#o1#",
+      motion = "sentence_teage", args = { face = ["wink_l"], loop_num = 1 }
+    },
+    { sentence = "双子だから/nわたしたちそっくりなの#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "メロディはね/nおねえさんなの#h1#",
+      motion = "sentence_munehari", args = { face = ["kiri2"], loop_num = 2 }, voice = "28"
+    },
+    { sentence = "うふふ#o1#/nおどろいた#q1#",
+      motion = "sentence_uun", args = { face = ["smile4_cheek"], loop_num = 3 }
+    },
+    { sentence = "おとうとの リズムくん/nすごくなかよしなの#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "ぼくはね/nカフェのおねえさんと/n暮らしているんだ",
+      motion = "sentence_pyonpyon", args = { face = ["smile3_cheek", "tere"], loop_num = 4 }, voice = "28"
+    },
+    { sentence = "おねえさんがつくる/nシナモンロールは/nとってもおいしいんだよ#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "えへへ#o1#匂いにさそわれて/nカフェまで降りて/nきちゃったんだ#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["kya"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "ぼくのママのごはんは/nとってもおいしいんだ～#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "28"
+    },
+    { sentence = "おにぎりも/n卵焼きもハンバーグも/nおいしいんだよ…ごくり…",
+      motion = "sentence_souzou", args = { face = ["meisou_cheek"], loop_num = 3 }
+    },
+    { sentence = "今度一緒にピクニックに/n行く時はママに頼んで/nお弁当作ってもらおうよ～#e1#",
+      motion = "sentence_tere_2", args = { face = ["tehepero", "tehepero"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "あのね、実はぼく/n三つ子なんだー#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["wink_l"], loop_num = 3 }, voice = "28"
+    },
+    { sentence = "お姉さんと/n弟がいるんだよ#o1#",
+      motion = "sentence_banzai3", args = { face = ["smile2", "smile2"], loop_num = 2 }, time = 2700
+    },
+    { sentence = "弟のころっぴとぼくは/nそっくりなんだ#o1#",
+      motion = "sentence_mitsuketa", args = { face = ["smile3_cheek", "smile3_cheek"] }
+    },
+    { sentence = "いつか/n#playernameにも/n紹介するね#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "smile"], loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[29] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "このまえ道を歩いてたらね…",
+      motion = "sentence_souzou", args = { face = ["kyomi"], loop_num = 3 }, voice = "29_1"
+    },
+    { sentence = "誰かがついてきている/n気がしたのに/n振り返っても誰もいないの…",
+      motion = "sentence_kubifuri", args = { face = ["beso"], loop_num = 3 }
+    },
+    { sentence = "そして足もとをみたら…#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["fuman", "fuman"] }
+    },
+    { sentence = "チャーミィキティだったの#h1#",
+      motion = "sentence_ketsui2", args = { face = ["biku"], loop_num = 2 }, voice = "29_2"
+    },
+    ],
+    "mymelo" = [
+    { sentence = "このまえ あさおきたらね…",
+      motion = "sentence_souzou", args = { face = ["mu2"], loop_num = 3 }, voice = "29_1"
+    },
+    { sentence = "ことりさんの こえは/nきこえるのに/nまっくらだったの…#e1#",
+      motion = "sentence_gakkari", args = { face = ["ita"], loop_num = 2 }
+    },
+    { sentence = "こわくなって/nかおを おおったら…",
+      motion = "sentence_kubifuri", args = { face = ["sad2"], loop_num = 4 }, voice = "29_2"
+    },
+    { sentence = "ずきんが めもとまで/nずれちゃってたの",
+      motion = "sentence_kubikashige", args = { face = ["tehepero_cheek"], loop_num = 1 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "この前お昼寝してたらね…",
+      motion = "sentence_uun", args = { face = ["mu2"], loop_num = 3 }, voice = "29_1"
+    },
+    { sentence = "急に体が/n動かなくなったんだ…#e1#",
+      motion = "sentence_kubifuri", args = { face = ["biku"], loop_num = 3 }
+    },
+    { sentence = "怖かったけど/n勇気を振り絞って/n目を開けたら…",
+      motion = "sentence_mitsuketa", args = { face = ["ita", "ita"] }, voice = "29_2"
+    },
+    { sentence = "みるくとシロ太郎が/nぼくを枕にして寝てたんだ",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "夜、寝てたら/nカサッカサッって/n音で目が覚めたんだ…",
+      motion = "sentence_uun", args = { face = ["mu2"], loop_num = 3 }, voice = "29_1"
+    },
+    { sentence = "ドキドキしながら/n音のする部屋を/n見に行くと…",
+      motion = "sentence_yokopatapata", args = { face = ["ita"], loop_num = 3 }
+    },
+    { sentence = "…なんと#e1#/nマフィンが/nつまみ食いしてたんだよ#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["biku", "biku"] }, voice = "29_2"
+    },
+    { sentence = "ずる～い#e1#/nぼくも食べた～い#e1#/n…じゃなかった#e1#びっくり#e1#",
+      motion = "sentence_kubifuri", args = { face = ["yaba"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "ある夜、ひとりで寝てたら/n急に、顔を冷たい何かに/n触られたんだ…#e1#",
+      motion = "sentence_picture_kansou1", args = { face = ["yaba"], loop_num = 3 }, voice = "29_1"
+    },
+    { sentence = "おそるおそる/n目を開けたら…",
+      motion = "sentence_souzou", args = { face = ["sad2"], loop_num = 3 }
+    },
+    { sentence = "なんとデンデンが顔の横に#e1#/nねぞうが悪かったみたい#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["bikkuri", "bikkuri"] }
+    },
+    { sentence = "こわくて/nひっくりカエルかと/n思ったよ…",
+      motion = "sentence_gakkari", args = { face = ["fuman"], loop_num = 2 }, voice = "29_2"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[30] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "このまえ…ママにすてきな/n赤い風船をもらったの",
+      motion = "sentence_uun", args = { face = ["smile"], loop_num = 3 }
+    },
+    { sentence = "うっかり手を離したら",
+      motion = "sentence_souzou", args = { face = ["mu2"], loop_num = 3 }
+    },
+    { sentence = "お空にむかって飛んで/n行ってしまったの…",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }, voice = "30"
+    },
+    ],
+    "mymelo" = [
+    { sentence = "おへやに かざってた/nかわいい おはなさんがね…",
+      motion = "sentence_souzou", args = { face = ["sad"], loop_num = 3 }
+    },
+    { sentence = "あさ おきたら/nげんきがなくなってたの…",
+      motion = "sentence_gakkari", args = { face = ["beso"], loop_num = 2 }, voice = "30"
+    },
+    { sentence = "もっと さいていて/nほしかったの…/nしょんぼりなの…",
+      motion = "sentence_uun", args = { face = ["sad2"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "このまえ/nお空へ散歩に行ったんだ#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["smile"], loop_num = 2 }
+    },
+    { sentence = "そしたら急に雨が降ってきて/nしょんぼりしながら/n帰ったんだ…",
+      motion = "sentence_gakkari", args = { face = ["ita"], loop_num = 2 }, voice = "30"
+    },
+    { sentence = "今度は天気がいい日に/nお空に行きたいなぁ#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "あのね、プリンを冷蔵庫に/n冷やしてたんだぁ～",
+      motion = "sentence_uun", args = { face = ["mu2"], loop_num = 3 }
+    },
+    { sentence = "けど、さあ食べようと思って/n冷蔵庫みたら/nプリンがなくって…",
+      motion = "sentence_mitsuketa", args = { face = ["ita", "ita"] }
+    },
+    { sentence = "マフィンが間違えて/n食べちゃってたの…/nぼくしょんぼりしちゃった…",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }, voice = "30"
+    },
+    ],
+    "keroppi" = [
+    { sentence = "この前、/n花火をしようと思って/n準備してたんだー",
+      motion = "sentence_burabura_loop", args = { face = ["yaa"], loop_num = 3 }
+    },
+    { sentence = "そしたら夕方になって/n雨が急に降ってきて…",
+      motion = "sentence_teage", args = { face = ["yaba"], loop_num = 2 }
+    },
+    { sentence = "雨は嫌いじゃないけど/nしょんぼりしちゃった…",
+      motion = "sentence_gakkari", args = { face = ["sad3"], loop_num = 3 }, voice = "30"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[31] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "このまえ/n雨音を聞きながら/n詩を書こうと思って",
+      motion = "sentence_burabura_loop", args = { face = ["smile"], loop_num = 2 }, voice = "31"
+    },
+    { sentence = "窓を開けたら/nノートも濡れちゃったの",
+      motion = "sentence_kubifuri", args = { face = ["biku"], loop_num = 3 }
+    },
+    { sentence = "同じ失敗は/nしないようにしなくちゃ…#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri"], loop_num = 2 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "ずきんにアイロン/nかけるの/nしっぱいしちゃった…",
+      motion = "sentence_mitsuketa", args = { face = ["ita", "ita"] }, voice = "31"
+    },
+    { sentence = "その ずきんね/nおきにいり だったの…",
+      motion = "sentence_souzou", args = { face = ["sad"], loop_num = 3 }
+    },
+    { sentence = "もっと アイロン/nじょうずに なりたいの…",
+      motion = "sentence_gakkari", args = { face = ["beso"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "このまえ/n初めて作るパンを/n焼こうとしたらね…",
+      motion = "sentence_uun", args = { face = ["mu2"], loop_num = 3 }
+    },
+    { sentence = "焦がしちゃったんだ…/n上手に焼けると/n思ったんだけどなぁ…",
+      motion = "sentence_gakkari", args = { face = ["ita"], loop_num = 3 }, voice = "31"
+    },
+    { sentence = "パンを焼くのは/nむずかしいね#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["fuman", "fuman"] }
+    },
+    ],
+    "purin" = [
+    { sentence = "今日の朝も/n起きてすぐに/nプリン体操してたんだ～#e1#",
+      motion = "sentence_hyahho", args = { face = ["yaa", "smile"], loop_num = 2 }, voice = "31"
+    },
+    { sentence = "そしたら/n寝ぼけて手と足が/nこんがらがっちゃって…",
+      motion = "sentence_picture_kansou1", args = { face = ["mu2"], loop_num = 4 }
+    },
+    { sentence = "転んじゃった#e1#/nえへへ#o1# しっぱいしっぱい",
+      motion = "sentence_kubikashige", args = { face = ["tehepero_wink"], loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "この前、ともだちの/nノーベルンの真似して、/n発明をしてみたら…",
+      motion = "sentence_burabura_loop", args = { face = ["kyomi"], loop_num = 4 }
+    },
+    { sentence = "煙がもくもく…#e1#/n失敗しちゃった#e1#",
+      motion = "sentence_gakkari", args = { face = ["sad3"], loop_num = 3 }, voice = "31"
+    },
+    { sentence = "でも失敗は成功のもと#e1#/nだよね#o1#",
+      motion = "sentence_teage", args = { face = ["smile2"], loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[32] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "このまえ、ダニエルから/n電話がかかってきて/nお話していたの#o1#",
+      motion = "sentence_tere_2", args = { face = ["kya", "tere"], loop_num = 3 }, voice = "32_1"
+    },
+    { sentence = "でね、電話し終わって/nすこししたら/nチャイムがなったのよ#e1#",
+      motion = "sentence_uun", args = { face = ["meisou"], loop_num = 3 }
+    },
+    { sentence = "誰かしら#q1#/nと思ってドアをあけたら/nなんとダニエルがいたの#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["biku", "biku"] }, voice = "32_2"
+    },
+    { sentence = "わたし、びっくりしちゃった#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile"], loop_num = 2 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "あのね、このまえ/nおっきな けーきを/nつくったの#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["kya", "warau"], loop_num = 4 }, voice = "32_1"
+    },
+    { sentence = "どうぞ、ってプリンくんに/nわたしたら ひとりで/nぜーんぶ たべちゃった#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["biku", "biku"] }
+    },
+    { sentence = "あんなに おおきなけーき/nひとりで たべられるなんて/nびっくり～#e1#",
+      motion = "sentence_uun", args = { face = ["warau"], loop_num = 3 }, voice = "32_2"
+    },
+    { sentence = "メロディなら ちょっとで/nおなかいっぱいに/nなっちゃうかも#h1#",
+      motion = "sentence_burabura_loop", args = { face = ["manzoku"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "朝、鏡の前で準備してたら/n誰かが急に/n鏡にうつりこんだんだ#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["sad2", "sad2"] }, voice = "32_1"
+    },
+    { sentence = "びっくりして/n振り向いたら/n誰もいなくって…",
+      motion = "sentence_kubifuri", args = { face = ["ita"], loop_num = 3 }
+    },
+    { sentence = "もう一度きちんと鏡をみたら/nなんと…/nベリーだったんだ#e1#",
+      motion = "sentence_ketsui2", args = { face = ["biku"], loop_num = 2 }, voice = "32_2"
+    },
+    { sentence = "ベリーも/n寝ぼけていたのかな#q1#",
+      motion = "sentence_uun", args = { face = ["kya"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "このまえ、/nはらっぱでごろごろ/nひなたぼっこしてたんだ～#o1#",
+      motion = "sentence_burabura_loop", args = { face = ["smile"], loop_num = 2 }, voice = "32_1"
+    },
+    { sentence = "ごろーんってうつぶせに/nなったらね、なんと目の前に/n四葉のクローバー#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["kiraniko", "kiraniko"] }
+    },
+    { sentence = "ぼく、びっくり/nしちゃったよ～#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["tere"], loop_num = 2 }
+    },
+    { sentence = "きっと、しあわせを届けに/n来てくれたんだって/n思ったんだ#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "yaa"], loop_num = 3 }, voice = "32_2"
+    },
+    ],
+    "keroppi" = [
+    { sentence = "さっき外で遊んでたら、/n雨が降ってきたんだ#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["kyomi"], loop_num = 4 }
+    },
+    { sentence = "そうしたら突然の雷#e1#/n大きな音がして/nびっくりしちゃった#e1#",
+      motion = "sentence_hatena2", args = { face = ["yaba", "yaba"], loop_num = 3 }, voice = "32_1"
+    },
+    { sentence = "ひっくりカエルかと/n思ったよ…#e1#",
+      motion = "sentence_banzai3", args = { face = ["bikkuri", "bikkuri"], loop_num = 1 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[33] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "ステキ#e1#/nとってもハッピーに/nあふれているわ#e1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "smile2"], loop_num = 3 }, voice = "33"
+    },
+    { sentence = "あなたに起こった/nステキな出来事/n後でわたしにも教えてね#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "きょうの/n#playernameの/nうんせいは…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "すごぉい#h1#/nと～っても/nハッピーデー だよ#h1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "33"
+    },
+    { sentence = "#playernameが/nハッピーだと、メロディも/nとっても はっぴー#h1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile3", "yaa"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "やったね#e1#すっごく/nハッピーな１日になるよ#e1#",
+      motion = "sentence_hyahho", args = { face = ["kirasmile", "kiraniko"], loop_num = 3 }, voice = "33"
+    },
+    { sentence = "いいなぁ#e1#どんな/n良いことがあったか/nあとでぼくにも教えてね#o1#",
+      motion = "sentence_tere_2", args = { face = ["smile2", "tere"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "わぁ#e1#/nとってもハッピーな/n１日になるよ～#o1#",
+      motion = "sentence_hyahho", args = { face = ["kya", "kya"], loop_num = 3 }, voice = "33"
+    },
+    { sentence = "いいな～#o1# ぼくにも/n#playernameの/nハッピーわけてわけて～#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_hatena2", args = { face = ["nimaime", "nimaime"], loop_num = 2 }
+    },
+    { sentence = "びっくりして/nひっくりカエルくらい/nいい感じ#e1#",
+      motion = "sentence_banzai3", args = { face = ["bikkuri", "bikkuri"], loop_num = 1 }, voice = "33"
+    },
+    { sentence = "きっと冒険したら/nすっごい宝物だって/n見つけちゃうよ#e1#",
+      motion = "sentence_munehari", args = { face = ["wink_r"], loop_num = 3 }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[34] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "ふつう、ね#e1#",
+      motion = "sentence_uun", args = { face = ["wink_l"], loop_num = 3 }, voice = "34"
+    },
+    { sentence = "のんびりすごしましょ#o1#",
+      motion = "sentence_teage", args = { face = ["smile"], loop_num = 1 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "きょうの/n#playernameの/nうんせいは…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "ふ・つ・う#o1#",
+      motion = "sentence_teage", args = { face = ["smile"], loop_num = 1 }, voice = "34"
+    },
+    { sentence = "でもメロディと/nいっしょなら/nきっとよくなるよ#o1#",
+      motion = "sentence_ketsui2", args = { face = ["kya"], loop_num = 2 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "う～む…/n可もなく不可もなく…",
+      motion = "sentence_souzou", args = { face = ["def"], loop_num = 3 }, voice = "34"
+    },
+    { sentence = "ぼくと一緒に/nステキな１日にしようよ#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile3", "yaa"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "むむむむ…/n…ふつうかなっ#q1#",
+      motion = "sentence_souzou", args = { face = ["kiri2"], loop_num = 3 }
+    },
+    { sentence = "のんびりした1日も/nきっとステキだよ#o1#",
+      motion = "sentence_teage", args = { face = ["smile"], loop_num = 1 }, voice = "34"
+    },
+    ],
+    "keroppi" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_hatena2", args = { face = ["nimaime", "nimaime"], loop_num = 2 }
+    },
+    { sentence = "うーん、/nふつう、かな#q1#",
+      motion = "sentence_kubikashige", args = { face = ["smile4"], loop_num = 3 }
+    },
+    { sentence = "きっといつも通り、/nステキな1日になるよ#e1#",
+      motion = "sentence_munehari", args = { face = ["wink_r"], loop_num = 3 }, voice = "34"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[35] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "アンハッピー…",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }, voice = "35"
+    },
+    { sentence = "ラッキーアイテムは/nわたしの焼いたクッキーよ#e1#/n一緒に食べましょう#o1#",
+      motion = "sentence_teage", args = { face = ["smile"], loop_num = 1 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "きょうの/n#playernameの/nうんせいは…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "あんまりよくないみたい…",
+      motion = "sentence_kubifuri", args = { face = ["sad"], loop_num = 3 }, voice = "35"
+    },
+    { sentence = "おちこまないで#q1#/nメロディがそばにいるよ#h1#",
+      motion = "sentence_uun", args = { face = ["wink_l"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "あんまりよくないみたい…",
+      motion = "sentence_mitsuketa", args = { face = ["sad", "sad"] }, voice = "35"
+    },
+    { sentence = "でも大丈夫#e1#/nぼくが一緒にいるよ#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kya"], loop_num = 2 }
+    },
+    ],
+    "purin" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "う～ん…/nアンハッピー…",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }, voice = "35"
+    },
+    { sentence = "しかたないなぁ～…/n今日はぼくがずっと/n一緒にいてあげるっ#e1#",
+      motion = "sentence_munehari", args = { face = ["kiri"], loop_num = 1 }
+    },
+    ],
+    "keroppi" = [
+    { sentence = "今日の/n#playernameの/n運勢は…",
+      motion = "sentence_hatena2", args = { face = ["nimaime", "nimaime"], loop_num = 2 }
+    },
+    { sentence = "あんまり/nよくないみたい…#e1#",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 3 }, voice = "35"
+    },
+    { sentence = "でも大丈夫#e1#",
+      motion = "sentence_munehari", args = { face = ["kiri"], loop_num = 3 }
+    },
+    { sentence = "何かあっても、ぼくが/n#playernameの/nこと守るよ#e1#",
+      motion = "sentence_teage", args = { face = ["wink_l"], loop_num = 1 }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[36] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "今日のわたしの運勢は…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "とってもハッピー#e1#",
+      motion = "sentence_hyahho", args = { face = ["kirasmile", "kiraniko"], loop_num = 3 }, voice = "36"
+    },
+    { sentence = "うふふ#o1#/nなんでもできそうな/n気がするわ#o1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "smile2"], loop_num = 3 }
+    },
+    ],
+    "mymelo" = [
+    { sentence = "きょうの メロディの/nうんせいは…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "はっぴーでいっぱい#h1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "smile2"], loop_num = 3 }, voice = "36"
+    },
+    { sentence = "メロディのはっぴー、/n#playernameにも/nおすそわけ するね#o1#",
+      motion = "sentence_tere_2", args = { face = ["kya", "smile"], loop_num = 3 }
+    },
+    ],
+    "cinnamon" = [
+    { sentence = "今日のぼくのうんせいは…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "とってもハッピー#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile3", "yaa"], loop_num = 3 }, voice = "36"
+    },
+    { sentence = "えへへ#o1#/n#playernameにも/nいっしょだからかなぁ#o1#",
+      motion = "sentence_picture_kansou1", args = { face = ["tere"], loop_num = 3 }
+    },
+    ],
+    "purin" = [
+    { sentence = "今日のぼくのうんせいは…",
+      motion = "sentence_burabura_loop", args = { face = ["meisou"], loop_num = 2 }
+    },
+    { sentence = "わぁい#e1#/nとってもさいこーっ#e1#",
+      motion = "sentence_kurukuru", args = { face = ["tere", "tere"], loop_num = 3 }
+    },
+    { sentence = "ふふふ～#o1#/nきっといいこと/nいっぱいの１日だね～#o1#",
+      motion = "sentence_hyahho", args = { face = ["yaa", "yaa"], loop_num = 3 }, voice = "36"
+    },
+    ],
+    "keroppi" = [
+    { sentence = "今日のぼくの運勢は…",
+      motion = "sentence_hatena2", args = { face = ["nimaime", "nimaime"], loop_num = 2 }
+    },
+    { sentence = "やったー#e1#/nとってもサイコー#e1#",
+      motion = "sentence_hyahho", args = { face = ["kya", "kya"], loop_num = 3 }, time = 2800
+    },
+    { sentence = "えへへ#o1#/n今日のぼくは無敵だよ#e1#",
+      motion = "sentence_munehari", args = { face = ["kiri"], loop_num = 3 }, voice = "36"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10000] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "ねぇ、そういえば/n#playernameは/nなにか用事があって来たの#q1#",
+      motion = "sentence_kubikashige", args = { face = ["def"], loop_num = 1, wait_motion = 1 }, time = 3500
+    },
+    { sentence = "え#q1#/nお部屋の管理人さんを/n頼まれたの#q1#",
+      motion = "sentence_souzou", args = { face = ["biku"], loop_num = 3 }
+    },
+    { sentence = "わー、なんだか楽しそう#e1#/nわたしにもお手伝いさせて#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["kya", "kya"], loop_num = 2 }, voice = "event_1_3"
+    },
+    { sentence = "うーん、でも/n管理人さんって/n何をしたらいいのかな",
+      motion = "sentence_hatena2", args = { face = ["meisou", "meisou"], loop_num = 3 }, voice = "event_1_2"
+    },
+    {
+      motion = "sentence_souzou", args = { face = ["def"], loop_num = 1 }
+      time = 300
+    },
+    { sentence = "お留守番にお掃除…/nですって#q1#",
+      motion = "sentence_uun", args = { face = ["sad"], loop_num = 3 }
+    },
+    { sentence = "えー#e1#/nそれだけじゃ/n楽しくないわよ",
+      motion = "sentence_tere_2", args = { face = ["kya", "kya"], loop_num = 3 }
+    },
+    { sentence = "ここはすてきなお部屋だけど/n家具が何もなくて/nさびしいと思わない#q1#",
+      motion = "sentence_picture_kansou1", args = { face = ["sad"], loop_num = 5 }
+    },
+    { sentence = "管理人さんのお仕事って/nきっと",
+      motion = "sentence_tabetai", args = { loop_num = 5 }
+    },
+    { sentence = "お部屋をかわいくすること/nだと思うの#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile3_cheek", "smile3_cheek"], loop_num = 4 }, voice = "event_1_3"
+    },
+
+    ]
+  };
+});
+
+chara_sentence_list_settings[10100] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10100];
+  disable_skip = true;
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "かわいいランプのある/nお部屋ってステキよね#h1#",
+      motion = "sentence_hatena2", args = { face = ["smile3", "smile3_cheek"], loop_num = 1 }, voice = "10100"
+    },
+    { sentence = "このお部屋なら/n木製のちょっとレトロな/nランプが似合いそうね#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 2 }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10101] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10101];
+  disable_skip = true;
+
+  sentence_table = {
+    "mymelo" = [
+    { sentence = "えっと…/nなにをじゅんび/nしたらいいかしら#q1#",
+      motion = "sentence_uun", args = { face = ["yaa"], loop_num = 1 }, voice = "10101_01"
+    },
+    { sentence = "そうだわ#e1#/nおかしのじゅんび#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["biku", "bikkuri"], loop_num = 3 }
+    },
+    { sentence = "いそいでクッキーを/nやかなくっちゃ#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["tere"], loop_num = 2 }, voice = "10101_02"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10102] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10102];
+  disable_skip = true;
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "メロディとクッキーを/n作る前に材料を/n確認しておきたいわ",
+      motion = "sentence_teage", args = { face = ["smile"], loop_num = 1 }
+    },
+    { sentence = "お菓子の本が/n本棚にあるのね#e1#",
+      motion = "sentence_uun", args = { face = ["yaa"], loop_num = 1 }, voice = "10102"
+    },
+    { sentence = "ありがとう、みてみるね#o1#",
+      motion = "sentence_banzai3", args = { face = ["kya", "tere"], loop_num = 1 }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10103] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10103];
+  disable_skip = true;
+
+  sentence_table = {
+    "mymelo" = [
+    { sentence = "かわいいおへやになってきたよね#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "10103_01"
+    },
+    { sentence = "あと、おへやにほしいのは…",
+      motion = "sentence_uun", args = { face = ["kyomi"], loop_num = 1 }
+    },
+    { sentence = "てんまくのベットね#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["smile", "smile2"], loop_num = 3 }
+    },
+    { sentence = "おひめさまのおへやには/nぜったいひつようだわ#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile3_cheek", "smile3_cheek"], loop_num = 1 }, voice = "10103_02"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10104] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10104];
+  disable_skip = true;
+
+  sentence_table = {
+    "purin" = [
+    { sentence = "カフェの準備/n楽しいな～#o1#",
+      motion = "sentence_hyahho", args = { face = ["kya", "tere"], loop_num = 3 }, voice = "10104"
+    },
+    { sentence = "素敵なカフェに/nしなくっちゃね#h1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "一緒に/nテーブルと椅子を/n並べようよ～#e1#",
+      motion = "sentence_teage", args = { face = ["wink_l"], loop_num = 1 }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10105] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10105];
+  disable_skip = true;
+
+  sentence_table = {
+    "keroppi" = [
+    { sentence = "あ",
+      motion = "sentence_mitsuketa", args = { face = ["biku", "biku"] }
+    },
+    { sentence = "シナモンくんとプリンくん、/n動きやすそうな/n格好をしてる#e1#",
+      motion = "sentence_yokopatapata2", args = { face = ["kya"], loop_num = 2 }, voice = "10105_01"
+    },
+    { sentence = "いいなぁ～#e1#",
+      motion = "sentence_banzai3", args = { face = ["smile3", "smile3_cheek"], loop_num = 1 }
+    },
+    { sentence = "カフェの準備に、/nぼくも動きやすい/n服が着たいな#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "10105_02"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10106] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10106];
+  disable_skip = true;
+
+  sentence_table = {
+    "cinnamon" = [
+    { sentence = "カフェの準備/nけっこう進んだよね",
+      motion = "sentence_banzai3", args = { face = ["smile3", "smile3"], loop_num = 1 }, voice = "10106_01"
+    },
+    { sentence = "そろそろ、/nカフェの制服の/n用意もしたいんだ#e1#",
+      motion = "sentence_teage", args = { face = ["wink_l"], loop_num = 1 }
+    },
+    { sentence = " みんなでおそろいの制服を/n着たいな#o1#",
+      motion = "sentence_yokopatapata", args = { face = ["tere"], loop_num = 1 }, voice = "10106_02"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10107] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10107];
+  disable_skip = true;
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "ピンクのテーブル、/nピッタリの大きさね#e1#",
+      motion = "sentence_teage", args = { face = ["smile"], loop_num = 1 }
+    },
+    { sentence = "ここにティーセットと/nおやつを置いて…",
+      motion = "sentence_kubikashige", args = { face = ["meisou_cheek"], loop_num = 1 }
+    },
+    { sentence = "うふふ、とっても楽しみ…#o1#",
+      motion = "sentence_kubikashige", args = { face = ["tere"], loop_num = 4 }, voice = "10107"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10108] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10108];
+  disable_skip = true;
+
+  sentence_table = {
+    "purin" = [
+    { sentence = "キティちゃんが焼いた/nアップルパイ#o1#/nおいしかったな～#h1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "10108_01"
+    },
+    { sentence = "#playernameも/n一緒にティーパーティーの/n準備をしたんだよね#e1#",
+      motion = "sentence_uun", args = { face = ["kyomi"], loop_num = 1 }
+    },
+    { sentence = "ありがとう#e1#/nと～っても楽しかったよ#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["tere", "tere"], loop_num = 1 }, voice = "10108_02"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10109] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10109];
+  disable_skip = true;
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "う～ん…/n夜はお部屋が/n寒いかしら#q1#",
+      motion = "sentence_souzou", args = { face = ["kyomi"], loop_num = 3 }, voice = "10109_01"
+    },
+    { sentence = "部屋を暖めるのに/nストーブがあると/nいいのだけど…",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 1 }
+    },
+    { sentence = "用意できないかしら#q1#",
+      motion = "sentence_kubikashige", args = { face = ["sad2"], loop_num = 1 }, voice = "10109_02"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10110] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10110];
+  disable_skip = true;
+
+  sentence_table = {
+    "mymelo" = [
+    { sentence = "めいたんてい には/nぜったい ひつような/nものがあるの#e1#",
+      motion = "sentence_teage", args = { face = ["smile3_cheek"], loop_num = 1 }
+    },
+    { sentence = "それは…たんていに/nふさわしい おようふく#e1#",
+      motion = "sentence_munehari", args = { face = ["kiri"], loop_num = 1 }, voice = "10110_01"
+    },
+    { sentence = "めいたんていメロディに/nぴったりの おようふくが/n ほしいわ#h1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10111] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10111];
+  disable_skip = true;
+
+  sentence_table = {
+    "cinnamon" = [
+    { sentence = "ぼく、メロディちゃんに/n伝えたいことがあるんだけど/n言えてないんだ",
+      motion = "sentence_kubikashige", args = { face = ["kyomi"], loop_num = 1 }
+    },
+    { sentence = "困ったな、どうしよう～#e1#",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 1 }, voice = "10111_01"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10112] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10112];
+  disable_skip = true;
+
+  sentence_table = {
+    "mymelo" = [
+    { sentence = "しんじつはときに/nざんこくなこともあるの…",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }, voice = "10112_01"
+    },
+    { sentence = "でも、みてみぬふりは/nできないわ#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["kyomi", "kyomi"] }
+    },
+    { sentence = "たとえ、はんにんが/nだれであっても…かいけつ/nしないといけないわ#e1#",
+      motion = "sentence_teage", args = { face = ["kiri"], loop_num = 1 }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10113] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10113];
+  disable_skip = true;
+
+  sentence_table = {
+    "cinnamon" = [
+    { sentence = "探偵の助手って、/n何をしたらいいのかな#q1#",
+      motion = "sentence_kubikashige", args = { face = ["kyomi"], loop_num = 1 }, voice = "10113_01"
+    },
+    { sentence = "かっこいいキメ台詞とか/n考えたほうがいいかな#q1#",
+      motion = "sentence_tabetai", args = { loop_num = 2 }
+    },
+    { sentence = "って、そんな場合じゃ/nないよね#e1#けろっぴくん/nどうなっちゃうの#e1##q1#",
+      motion = "sentence_yokopatapata", args = { face = ["yaba"], loop_num = 1 }
+    }
+    ]
+  };
+});
+
+chara_sentence_list_settings[10114] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10114];
+  disable_skip = true;
+
+  sentence_table = {
+    "keroppi" = [
+    { sentence = "もしかしてぼく、/n大変なことになっちゃった#q1#",
+      motion = "sentence_mitsuketa", args = { face = ["biku", "biku"] }
+    },
+    { sentence = "どうしよう#e1##e1#",
+      motion = "sentence_yokopatapata", args = { face = ["yaba"], loop_num = 3 }
+    },
+    { sentence = "プリンくんと遊ぼうと/n思って来ただけなのに～#e1#",
+      motion = "sentence_gakkari", args = { face = ["sad"], loop_num = 2 }, voice = "10114_01"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10115] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10115];
+  disable_skip = true;
+
+  sentence_table = {
+    "mymelo" = [
+    { sentence = "キティちゃん、/nメロディより はやく/nなぞがとけるなんて…",
+      motion = "sentence_mitsuketa", args = { face = ["waa", "waa"] }
+    },
+    { sentence = "さすが、/nめいたんていメロディの/nライバルだわ#e1#",
+      motion = "sentence_teage", args = { face = ["wink_l"], loop_num = 1 }, voice = "10115_01"
+    },
+    { sentence = "ライバルたんてい/nキティちゃんのすいり、/nおてなみ はいけんね#e1#",
+      motion = "sentence_uun", args = { face = ["kyomi"], loop_num = 1 }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10116] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10116];
+  disable_skip = true;
+
+  sentence_table = {
+    "cinnamon" = [
+    { sentence = "キティちゃんは/n謎が解けたって/n言ってたけど…",
+      motion = "sentence_uun", args = { face = ["kyomi"], loop_num = 1 }, voice = "10116_01"
+    },
+    { sentence = "これから、/nどうなっちゃうのかな…#q1#",
+      motion = "sentence_yokopatapata", args = { face = ["sad"], loop_num = 2 }
+    },
+    { sentence = "う～ん、心配で/nドキドキするよ～",
+      motion = "sentence_tere_2", args = { face = ["yaba", "yaba"], loop_num = 1 }, voice = "10116_02"
+    },
+    { sentence = "誰かぼくの話を聞いて～#e1#",
+      motion = "sentence_pyonpyon", args = { face = ["waa", "waa"], loop_num = 1 }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10117] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10117];
+  disable_skip = true;
+
+  sentence_table = {
+    "keroppi" = [
+    { sentence = "誤解がとけてよかった#e1#/nぼく、犯人じゃ/nないからね#e1#",
+      motion = "sentence_banzai3", args = { face = ["smile2", "smile3_cheek"], loop_num = 1 }, voice = "10117_01"
+    },
+    { sentence = "でも、今度は/nシナモンくんが/n疑われちゃった#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["yaba"], loop_num = 2 }
+    },
+    { sentence = "キティちゃんは/n何かわかったみたい/nだったよね#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["wink_l", "wink_l"] }
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[10118] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_HIGHEST;
+  conditions = [10118];
+  disable_skip = true;
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "事件解決の前に、わたし/n欲しいものがあるの",
+      motion = "sentence_tere_2", args = { face = ["smile", "smile2"], loop_num = 1 }
+    },
+    { sentence = "探偵さんのお洋服が/n欲しいな#h1#",
+      motion = "sentence_uun", args = { face = ["meisou"], loop_num = 1 }
+    },
+    { sentence = "うふふ#o1#/nかわいい探偵さんに/n変身して事件解決よ#e1#",
+      motion = "sentence_teage", args = { face = ["wink_r"], loop_num = 1 }, voice = "10118_01"
+    },
+    ]
+  };
+});
+
+chara_sentence_list_settings[1509001] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [1509001];
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "ねえねえ/nわたしのお願い/n聞いてくれる#q1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "1509001_01"
+    },
+    { sentence = "わたし/n『ローズチェリードール』の/nドレスがほしいの#o1#",
+      motion = "sentence_kurukuru", args = { face = ["smile3_cheek", "smile2"], loop_num = 3 }
+    },
+    { sentence = "バラいっぱいの/nこのお部屋に/nピッタリだと思うの#e1#",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou_cheek"], loop_num = 2 }, voice = "1509001_02"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[1512002] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [1512002];
+
+  sentence_table = {
+
+    "mymelo" = [
+    { sentence = "あのね メロディ#o1#/nおにんぎょうさん みたいな/nおようふくが きたいの#h1#",
+      motion = "sentence_hatena2", args = { face = ["kirasmile", "kirasmile"], loop_num = 3 }, voice = "1512002_01"
+    },
+    { sentence = "『ベルベットリボン/nドルチェ』が/nとっても かわいい#h1#",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou_cheek"], loop_num = 2 }
+    },
+    { sentence = "うふふ#h1#/nあなたも/nかわいいと おもう#q1#",
+      motion = "sentence_yokopatapata", args = { face = ["kya"], loop_num = 3 }, voice = "1512002_02"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[1509102] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [1509102];
+
+  sentence_table = {
+
+    "cinnamon" = [
+    { sentence = "ぼく、気になってる/nお洋服があるんだ～",
+      motion = "sentence_yokopatapata", args = { face = ["kya"], loop_num = 2 }, voice = "1509102_01"
+    },
+    { sentence = "『ローズチェリードール』/nって言う服なんだけど",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 1 }
+    },
+    { sentence = "赤いシルクハットが/nすっごく/nかっこいいんだよ#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "あれを着たら/n紳士になれちゃうかも#o1#",
+      motion = "sentence_hyahho", args = { face = ["tere", "smile3_cheek"], loop_num = 3 }, voice = "1509102_02"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[1005001] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [1005001];
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "お料理をするのに/nかわいいエプロンが/nほしいの#o1#",
+      motion = "sentence_yokopatapata", args = { face = ["smile"], loop_num = 3 }
+    },
+    { sentence = "『フラワーアイボリー/nコック』なんて素敵よね…",
+      motion = "sentence_picture_kansou1", args = { face = ["meisou_cheek"], loop_num = 2 }, voice = "1005001_01"
+    },
+    { sentence = "あのエプロンなら/nきっと、素敵な気持ちで/nお料理できるわ#h1#",
+
+      motion = "sentence_hyahho", args = { face = ["kirasmile", "smile"], loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[1809002] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [1809002];
+
+  sentence_table = {
+
+    "mymelo" = [
+    { sentence = "かわいい/nへやぎが ほしいな…",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 3 }, voice = "1809002_01"
+    },
+    { sentence = "そういえば、このまえ/nメロディの おかおの/nTシャツを みかけたの#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["nikawink"], loop_num = 3 }
+    },
+    { sentence = "『マイメロディ/nフェイスTシャツ』って/nなまえの おようふく",
+      motion = "sentence_pyonpyon", args = { face = ["smile4", "kya"], loop_num = 5 }, voice = "1809002_02"
+    },
+    { sentence = "みかけたら/nかってきて ほしいな#h1#",
+      motion = "sentence_hatena2", args = { face = ["kirasmile", "kirasmile"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[207102] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [207102];
+
+  sentence_table = {
+
+    "cinnamon" = [
+    { sentence = "お友達のシフォンと/n運動するんだ#e1#",
+      motion = "sentence_hyahho", args = { face = ["smile3", "yaa"], loop_num = 3 }, voice = "207102_01"
+    },
+    { sentence = "運動しやすい服が/nほしいなぁ～#o1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 1 }
+    },
+    { sentence = "『トゥインクルラベンダー』/nが、良さそうだよね#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["kirasmile"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[1708001] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [1708001];
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "動きやすくて/nかわいい服がほしいな…",
+      motion = "sentence_kurukuru", args = { face = ["def", "smile"], loop_num = 1 }, voice = "1708001_01"
+    },
+    { sentence = "そういえば、ミミィが/nかわいいTシャツを見た/nって言っていたの#e1#",
+      motion = "sentence_mitsuketa", args = { face = ["kando", "kando"] }
+    },
+    { sentence = "たしか、『ハローキティ/nフェイスTシャツ』/nって名前だったわ",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 1 }, voice = "1708001_02"
+    },
+    { sentence = "見かけたら教えてね#e1#",
+      motion = "sentence_teage", args = { face = ["wink_l"], loop_num = 1 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[508002] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [508002];
+
+  sentence_table = {
+    "mymelo" = [
+    { sentence = "カフェに いったらね/nウェイトレスさんが/nとっても すてきだったの#h1#",
+      motion = "sentence_pyonpyon", args = { face = ["kando", "kando"], loop_num = 2 }
+    },
+    { sentence = "『ガーリッシュネオン』を/nきたらメロディも/nウェイトレスさんになれる#q1#",
+      motion = "sentence_picture_kansou1", args = { face = ["smile4_cheek"], loop_num = 2 }
+    },
+    { sentence = "あこがれちゃうわ#o1#/nとってもきてみたいの#h1#",
+      motion = "sentence_tere_2", args = { face = ["smile4_cheek", "smile3_cheek"], loop_num = 3 }, voice = "508002_01"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[2006102] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [2006102];
+
+  sentence_table = {
+    "cinnamon" = [
+    { sentence = "お部屋でのんびり/n過ごせる服がほしいな…",
+      motion = "sentence_souzou", args = { face = ["kyomi"], loop_num = 3 }
+    },
+    { sentence = "そう言えば#e1#僕の顔が/n描いてあるTシャツが/n売られてるんだって#e1#",
+      motion = "sentence_ketsui2", args = { face = ["kiri"], loop_num = 1 }, voice = "2006102_01"
+    },
+    { sentence = "『シナモロールフェイス/nTシャツ』って/nいうらしいんだけど",
+      motion = "sentence_yokopatapata", args = { face = ["smile"], loop_num = 3 }
+    },
+    { sentence = "どんな服なのか/n気になっちゃうよ～#e1#/n見かけたら教えてね#o1#",
+      motion = "sentence_tere_2", args = { face = ["smile4", "kya"], loop_num = 3 }, voice = "2006102_02"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[706001] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [706001];
+
+  sentence_table = {
+
+    "kitty" = [
+    { sentence = "海に遊びに/nいくのにぴったりな/nお洋服がほしいわ#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }, voice = "706001_01"
+    },
+    { sentence = "海をたくさん/n感じられる/nお洋服はあるかしら…#q1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 3 }
+    },
+    { sentence = "『リトルマリン』を着れば/n海の音がきこえるかも…",
+      motion = "sentence_picture_kansou1", args = { face = ["smile2"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[706002] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [706002];
+
+  sentence_table = {
+
+    "mymelo" = [
+    { sentence = "きれいなみなとまちに/nおでかけにいきたいな#o1#",
+      motion = "sentence_yokopatapata", args = { face = ["kya"], loop_num = 3 }, voice = "706002_01"
+    },
+    { sentence = "おでかけにいくのに/nぴったりなおようふく…",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 3 }
+    },
+    { sentence = "『リトルマリン』なら/nぴったりかも…#o1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[706102] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [706102];
+
+  sentence_table = {
+
+    "cinnamon" = [
+    { sentence = "いつか船にのって/n旅行してみたいね#e1#",
+      motion = "sentence_kurukuru", args = { face = ["kya", "kya"], loop_num = 3 }, voice = "706102_01"
+    },
+    { sentence = "どんなお洋服を/n着ていこうかなぁ#q1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 3 }
+    },
+    { sentence = "『リトルマリン』っていう/nお洋服ならぴったりかも…#e1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    ],
+
+  };
+});
+
+chara_sentence_list_settings[1012002] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [1012002];
+
+  sentence_table = {
+    "mymelo" = [
+    { sentence = "メロディね#o1#/nぱてぃしえさん みたいな/nおようふくが ほしいの#o1#",
+      motion = "sentence_kubikashige", args = { face = ["meisou"], loop_num = 3 }, voice = "1012002_01"
+    },
+    { sentence = "えっとね、/n『アロマティックエプロン』/nがいいな#h1#",
+      motion = "sentence_tabetai", args = { loop_num = 3 }
+    },
+    { sentence = "きっと おかしをつくるの/nもっと たのしくなるわ#h1#",
+      motion = "sentence_kurukuru", args = { face = ["kya", "tere"], loop_num = 1 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[202001] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [202001];
+
+  sentence_table = {
+    "kitty" = [
+    { sentence = "ワンツーワンツー#e1#/nダンスの練習をしたいの#o1#",
+      motion = "sentence_hyahho", args = { face = ["def", "kya"], loop_num = 3 }
+    },
+    { sentence = "『モノクロームスター』は/nダンスに/nピッタリの服よね#o1#",
+      motion = "sentence_ketsui2", args = { face = ["kiraniko"], loop_num = 2 }, voice = "202001_01"
+    },
+    { sentence = "着たら練習も/nはかどっちゃう/nかもしれないわね#o1#",
+      motion = "sentence_pyonpyon", args = { face = ["tere", "smile2"], loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[904002] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [904002];
+
+  sentence_table = {
+    "mymelo" = [
+    { sentence = "おやつに つくった/nクッキーが なくなったの…",
+      motion = "sentence_gakkari", args = { face = ["sad3"], loop_num = 3 }, voice = "904002_01"
+    },
+    { sentence = "じけんかも#e1#/n『ミステリーリボン』をきて/nそうさしなくちゃ#e1#",
+      motion = "sentence_kubifuri", args = { face = ["fuman"], loop_num = 3 }
+    },
+    { sentence = "メロディが たんてい で/nあなたは メロディの/nじょしゅ よ#h1#",
+      motion = "sentence_ketsui2", args = { face = ["yaa"], loop_num = 2 }, voice = "904002_02"
+    },
+    { sentence = "まずは おようふくを/nかいに いかないとね#h1#",
+      motion = "sentence_uun", args = { face = ["wink_l"], loop_num = 3 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[906102] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [906102];
+
+  sentence_table = {
+    "cinnamon" = [
+    { sentence = "探偵の本を読んだんだ/nあこがれちゃうな～",
+      motion = "sentence_tere_2", args = { face = ["smile", "yaa"], loop_num = 3 }
+    },
+    { sentence = "探偵服ってカッコいいよね#e1#/nぼくもほしいなぁ…",
+      motion = "sentence_uun", args = { face = ["meisou_cheek"], loop_num = 2 }, voice = "906102_01"
+    },
+    { sentence = "『カーミィリドル』を着て/n事件を解決したいな～#e1#",
+      motion = "sentence_yokopatapata", args = { face = ["kirasmile"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[506102] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [506102];
+
+  sentence_table = {
+    "cinnamon" = [
+    { sentence = "いつもカフェのお手伝いを/nしてるんだけど/nお店で着る服がほしいんだ",
+      motion = "sentence_souzou", args = { face = ["meisou"], loop_num = 3 }, voice = "506102_01"
+    },
+    { sentence = "『ビンテージ/nクリームソーダ』/nだったら使えるかな#q1#",
+      motion = "sentence_yokopatapata", args = { face = ["yaa"], loop_num = 1 }
+    },
+    { sentence = "あれを着て料理を運んだら/nカッコいいだろうな#o1#",
+      motion = "sentence_cos_obongirl", args = { face = ["nikawink"], loop_num = 2 }
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[1409001] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+  priority = CharaSentenceListSetting.PRIORITY_SPECIAL;
+  conditions = [1409001];
+
+  sentence_table = {
+    "purin" = [
+    { sentence = "わぁ#o1#/nラベンダーカラー、/n大人っぽいね～#o1#",
+      motion = "sentence_banzai3", args = { face = ["smile", "smile2"], loop_num = 1 }
+    },
+    { sentence = "ぼく、いつもより/n大人っぽくみえるかな～#h1#",
+      motion = "sentence_teage", args = { face = ["kyomi"], loop_num = 1 }, voice = "607101_1"
+    },
+    ],
+  };
+});
+
+chara_sentence_list_settings[1509105] <- ::CharaSentenceListSetting({
+  prev_action = "previewaction_tefuri";
+
+  sentence_table = {
+    "keroppi" = [
+    { sentence = "ぼく、お人形さんに/nなっちゃた#e1##q1#",
+      motion = "sentence_hyahho", args = { face = ["smile4", "smile3"], loop_num = 1 }, voice = "1509105_1"
+    },
+    { sentence = "赤いリボンが/nステキなお洋服だね#e1#",
+      motion = "sentence_burabura_loop", args = { face = ["kya"], loop_num = 2 }
+    },
+    { sentence = "えへへ#o1#/nぼくをぎゅーって/nしていいよ#o1#",
+      motion = "sentence_hatena2", args = { face = ["meisou", "meisou"], loop_num = 1 }
+    },
+    ],
+  };
+});

@@ -1,0 +1,33 @@
+// UIScript created by RoomDetailItemLine.ui 
+
+function setupText() {
+	$lbl_text_mini.visible = false;
+	$img_chara_bg.visible = false;
+	$img_shop_items_bg.visible = false;
+	$img_icon_label_bg.visible = false;
+}
+
+function setupMiniText() {
+	$lbl_text.visible = false;
+	$img_chara_bg.visible = false;
+	$img_shop_items_bg.visible = false;
+	$img_icon_label_bg.visible = false;
+}
+
+function setupCharaText() {
+	$lbl_text_mini.visible = false;
+	$img_shop_items_bg.visible = false;
+	$img_icon_label_bg.visible = false;
+}
+
+function setupShopItemsText() {
+	$lbl_text_mini.visible = false;
+	$img_chara_bg.visible = false;
+	$img_icon_label_bg.visible = false;
+}
+
+function setupIconLabelText() {
+	$lbl_text_mini.visible = false;
+	$img_chara_bg.visible = false;
+	$img_shop_items_bg.visible = false;
+}

@@ -1,0 +1,367 @@
+class TalkRunner
+{
+
+  handler = null;
+  api = null;
+
+  handling = false;
+  running = false;
+  runningthread = null;
+
+  scp = null;
+  pc = 0;
+  arg = null;
+  stk = null;
+  callstack = null;
+  paused = false;
+
+  constructor() {
+    stk = [];
+    callstack = [];
+  }
+
+  function setHandlers(h, a) {
+    handler = h;
+    api = a;
+  }
+
+  function jump(scp, target, args, pushstack) {
+
+    if (pushstack && this.scp) {
+      local cs = TalkCallStack();
+      cs.scp = this.scp;
+      cs.pc = this.pc;
+      cs.stk = this.stk;
+      cs.arg = this.arg;
+      callstack + cs;
+    }
+    if (scp) this.scp = scp;
+    this.pc = 0;
+    this.arg = args;
+    api.args = args;
+    this.stk = [];
+    switch (typeof(target)) {
+    case SS_STRING:
+      this.pc = this.scp.getTargetPC(target);
+      break;
+    case SS_INTEGER:
+      this.pc = target;
+      break;
+    }
+    pause(false);
+  }
+
+  function jumppc(jpc) {
+    pc = jpc;
+  }
+
+  function run() {
+    running = true;
+    runningthread = currentthread();
+    while (running) {
+      local c = scp.code[pc++];
+      try {
+        handling = true;
+        this[c.op](c);
+        handling = false;
+      } catch (ex) {
+        running = false;
+        runningthread = null;
+        if (ex == "interrupted.") {
+          break;
+        } else {
+          printf("TalkRunner error at line %d in %S\n", scp.getLine(pc - 1), scp.name);
+          printf("command : %S\n", encodeJSON(c));
+          printf("arg : %S\n", encodeJSON(api.args));
+          throw ex;
+        }
+      }
+    }
+    runningthread = null;
+  }
+
+  function pause(b) {
+    paused = b;
+  }
+
+  function stop() {
+    running = false;
+    if (runningthread) {
+      runningthread.wakeupThrow("interrupted.");
+    }
+  }
+
+  function rjump(jr) {
+    stk + ({ pc = pc, pause = paused });
+    pc = jr;
+  }
+
+  function op_tag(c) {
+    handler.handleTag(c, this);
+  }
+
+  function op_func(c) {
+    api.ctx = handler;
+    api.runner = this;
+    stk + api.call(c.func);
+  }
+
+  function op_setattr(c) {
+    c["target"][c["name"]] <- stk.last(); stk.pop();
+  }
+
+  function op_dup(c) {
+    stk + (stk.last());
+  }
+
+  function op_ifjrz(c) {
+    if (!c["exp"]) pc += c["jr"];
+  }
+
+  function op_jrz(c) {
+    if (!stk.last()) pc += c["jr"];
+    stk.pop();
+  }
+
+  function op_jrnz(c) {
+    if (stk.last()) pc += c["jr"];
+    stk.pop();
+  }
+
+  function op_jr(c) {
+    pc += c["jr"];
+  }
+
+  function op_pushroot(c) {
+    stk + (api);
+  }
+
+  function op_push(c) {
+    stk + (c["val"]);
+  }
+
+  function op_pop(c) {
+    stk.pop();
+  }
+
+  function op_assign(c) {
+    local n = length(stk); stk[n - 3] = (stk[n - 3][stk[n - 2]] = stk[n - 1]); stk.pop(); stk.pop();
+  }
+
+  function op_plusassign(c) {
+    local n = length(stk); stk[n - 3] = (stk[n - 3][stk[n - 2]] += stk[n - 1]); stk.pop(); stk.pop();
+  }
+
+  function op_minusassign(c) {
+    local n = length(stk); stk[n - 3] = (stk[n - 3][stk[n - 2]] -= stk[n - 1]); stk.pop(); stk.pop();
+  }
+
+  function op_mulassign(c) {
+    local n = length(stk); stk[n - 3] = (stk[n - 3][stk[n - 2]] *= stk[n - 1]); stk.pop(); stk.pop();
+  }
+
+  function op_divassign(c) {
+    local n = length(stk); stk[n - 3] = (stk[n - 3][stk[n - 2]] /= stk[n - 1]); stk.pop(); stk.pop();
+  }
+
+  function op_eq(c) {
+    local n = length(stk); stk[n - 2] = (stk[n - 2] == stk[n - 1]); stk.pop();
+  }
+
+  function op_g(c) {
+    local n = length(stk); stk[n - 2] = (stk[n - 2] > stk[n - 1]); stk.pop();
+  }
+
+  function op_l(c) {
+    local n = length(stk); stk[n - 2] = (stk[n - 2] < stk[n - 1]); stk.pop();
+  }
+
+  function op_ge(c) {
+    local n = length(stk); stk[n - 2] = (stk[n - 2] >= stk[n - 1]); stk.pop();
+  }
+
+  function op_le(c) {
+    local n = length(stk); stk[n - 2] = (stk[n - 2] <= stk[n - 1]); stk.pop();
+  }
+
+  function op_ne(c) {
+    local n = length(stk); stk[n - 2] = (stk[n - 2] != stk[n - 1]); stk.pop();
+  }
+
+  function op_plus(c) {
+    local n = length(stk); stk[n - 2] += stk[n - 1]; stk.pop();
+  }
+
+  function op_minus(c) {
+    local n = length(stk); stk[n - 2] -= stk[n - 1]; stk.pop();
+  }
+
+  function op_mul(c) {
+    local n = length(stk); stk[n - 2] *= stk[n - 1]; stk.pop();
+  }
+
+  function op_div(c) {
+    local n = length(stk); stk[n - 2] /= stk[n - 1]; stk.pop();
+  }
+
+  function op_mod(c) {
+    local n = length(stk); stk[n - 2] %= stk[n - 1]; stk.pop();
+  }
+
+  function op_get(c) {
+    local n = length(stk);
+    stk[n - 2] = stk[n - 2][stk[n - 1]]; stk.pop();
+  }
+
+  function op_vdec(c) {
+    local n = length(stk); stk[n - 2] = stk[n - 2][stk[n - 1]]--; stk.pop();
+  }
+
+  function op_decv(c) {
+    local n = length(stk); stk[n - 2] =--stk[n - 2][stk[n - 1]]; stk.pop();
+  }
+
+  function op_vinc(c) {
+    local n = length(stk);
+    local t = stk[n - 2];
+    stk[n - 2] = stk[n - 2][stk[n - 1]]++;
+    stk.pop();
+  }
+
+  function op_incv(c) {
+    local n = length(stk); stk[n - 2] =++stk[n - 2][stk[n - 1]]; stk.pop();
+  }
+
+  function op_inv(c) {
+    local n = length(stk); stk[n - 1] = -stk[n - 1];
+  }
+
+  function op_not(c) {
+    local n = length(stk); stk[n - 1] = !stk[n - 1];
+  }
+
+  function op_pushpc(c) {
+    stk + ({ pc = pc + int(c["offs"]) });
+  }
+
+  function op_ret(c) {
+    local n = length(stk) - 1;
+    pc = int(stk[n]["pc"]);
+    stk.pop();
+  }
+
+  function debugtrace(c) {
+    local msg = string(c["msg"]);
+    local n = length(stk) - 1;
+
+  }
+
+  function doreturn() {
+    local clen = length(callstack);
+    if (clen < 1) {
+      scp = null;
+      running = false;
+
+      return false;
+    }
+    local cs = callstack.last(); callstack.pop();
+    scp = cs.scp;
+    pc = cs.pc;
+    stk = cs.stk;
+    arg = cs.arg;
+    api.args = arg;
+    if (!scp) {
+      running = false;
+
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function newmacro(name) {
+
+    local orgscp = scp;
+    local orgpc = pc;
+    local newpc = pc;
+    local scpelems = scp.code;
+    local scplen = length(scpelems);
+
+    local code = [];
+    local labels = clone scp.labels;
+    local lineinfo = [];
+    local lastline = 0;
+    local cline;
+    local inmacro = true;
+
+    foreach (i, v in labels) {
+      labels[i] = v - newpc;
+    }
+
+    do {
+      if (newpc >= scplen) throw Exception("encounted EOF during macro");
+      cline = orgscp.getLine(newpc);
+      local e = scpelems[newpc];
+      newpc++;
+      switch (e["command"]) {
+      case "endmacro":
+        inmacro = false;
+        break;
+      case "macro":
+
+        for (local l = 0; l < length(scp.code); l++) { printf("%3d : %S\n", l, encodeJSON(scp.code[l])); }
+
+        throw Exception("duplicated macro definition .. " + encodeJSON(e));
+      default:
+        if (lastline != cline) {
+          lineinfo + length(code) + cline;
+          lastline = cline;
+        }
+        code + (e);
+        break;
+      }
+    } while (inmacro);
+    pc = newpc;
+
+    local retc = { op = "op_tag", command = "return" };
+    code + (retc);
+
+    local newscp = TalkScript();
+    newscp.macro = true;
+    newscp.name = name;
+    newscp.code = code;
+    newscp.labels = labels;
+    newscp.lineinfo = lineinfo;
+    return newscp;
+  }
+
+  function writeCallStack() {
+    local a = [];
+    foreach (c in callstack) {
+      a + ({ macro = c.scp.macro, pc = c.pc, name = c.scp.name, arg = c.arg, stk = c.stk });
+    }
+    a + ({ macro = scp.macro, pc = pc, name = scp.name, arg = arg, stk = stk });
+    return a;
+  }
+
+  function loadCallStack(a) {
+    callstack = [];
+    foreach (v in a) {
+      local c = CallStack();
+      c.scp = v["scp"];
+      c.pc = v["pc"];
+      c.arg = v["arg"];
+      c.stk = v["stk"];
+      callstack + (c);
+    }
+    callstack.pop();
+  }
+}
+
+class TalkRunner.TalkCallStack
+{
+  scp = null;
+  pc = 0;
+  arg = null;
+  stk = null;
+}

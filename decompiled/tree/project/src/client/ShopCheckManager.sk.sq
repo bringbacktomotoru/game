@@ -1,0 +1,293 @@
+class ShopCheckManager {
+
+  home_ui = null;
+  master_price_table = null;
+  price_table = null;
+  marked_table = null;
+  all_table = null;
+
+  constructor(ui) {
+    this.home_ui = ui;
+    this.master_price_table = {};
+
+    return;
+
+    local _ud = ::gamesession.getUserData();
+    local _shop_settings = ::gamesetting.shop_settings;
+
+    foreach (ss in _shop_settings) {
+      if (!ss) continue;
+      local _type = ss.getType();
+
+      if (_type == SHOP_ITEM_TYPE_MOTION) continue;
+      if (_type == SHOP_ITEM_TYPE_RM) continue;
+      if (_type == SHOP_ITEM_TYPE_ROOM) continue;
+
+      local _rid = ss.getRoomID();
+
+      if (_type == SHOP_ITEM_TYPE_FURNITURE) {
+        if (_rid >= 0 && _ud.hasItemByShopSetting(ss, _rid)) continue;
+      }
+      else if (_type == SHOP_ITEM_TYPE_COSTUME) {
+        if (_ud.hasItemByShopSetting(ss, _rid)) continue;
+      }
+
+      local _table = this.master_price_table[_rid];
+      if (!_table) {
+        _table = {};
+        this.master_price_table[_rid] <- _table;
+      }
+
+      local _ids = _table[_type];
+      if (!_ids) {
+        _ids = [ss.getID()];
+        _table[_type] <- _ids;
+      }
+      else {
+        sortPrice(_ids, ss);
+      }
+    }
+
+    local _ml_cos_gl = getMasterList(SHOP_ITEM_TYPE_COSTUME, -1);
+    local _ml_fur_gl = getMasterList(SHOP_ITEM_TYPE_FURNITURE, -1);
+    foreach (_i, _ in ::gamesetting.room_settings) {
+
+      local _ml_cos = getMasterList(SHOP_ITEM_TYPE_COSTUME, _i);
+      local _ss;
+      foreach (sid in _ml_cos_gl) {
+        _ss = _shop_settings[sid];
+        sortPrice(_ml_cos, _ss);
+
+      }
+
+      local _mli = getMasterList(SHOP_ITEM_TYPE_FURNITURE, _i);
+      foreach (id in _ml_fur_gl) {
+        _ss = _shop_settings[id];
+        if (_ud.hasItemByShopSetting(_ss, _i)) continue;
+
+        sortPrice(_mli, _ss);
+      }
+    }
+
+    delete this.master_price_table[-1];
+
+  }
+
+  function setupShopCheckManager() {
+    local _ud = ::gamesession.getUserData();
+    local _room_id = _ud.getCurrentRoomUID();
+
+    this.price_table = {};
+    this.price_table[SHOP_ITEM_TYPE_FURNITURE] <- [];
+    this.price_table[SHOP_ITEM_TYPE_COSTUME] <- [];
+    this.marked_table = {};
+    this.marked_table[SHOP_ITEM_TYPE_FURNITURE] <- [];
+    this.marked_table[SHOP_ITEM_TYPE_COSTUME] <- [];
+
+    _createPriceTable(SHOP_ITEM_TYPE_FURNITURE, _room_id);
+
+    if (::tutorial_manager.isUnlockShopCostume()) _createPriceTable(SHOP_ITEM_TYPE_COSTUME, _room_id);
+
+    checkMark(true);
+  }
+
+  function _createPriceTable(kind, roomid) {
+    local _ml = getMasterList(kind, roomid);
+    this.price_table[kind] = clone _ml;
+  }
+
+  function checkMark(add_money) {
+
+    if (!add_money) {
+      local _temp = [];
+
+      _returnPriceTabele(SHOP_ITEM_TYPE_FURNITURE);
+      _returnPriceTabele(SHOP_ITEM_TYPE_COSTUME);
+    }
+
+    _processCheckTable(SHOP_ITEM_TYPE_FURNITURE);
+    _processCheckTable(SHOP_ITEM_TYPE_COSTUME);
+    this.home_ui.updateNewItemMark(checkShopMarkedAny());
+  }
+
+  function _processCheckTable(kind) {
+    local _shop_settings = ::gamesetting.shop_settings;
+    local _temp = [];
+    local _pl = getPriceList(kind);
+    local _mal = getMarkedList(kind);
+    local _c_setting = ::gamesetting.costume_settings;
+    local _chara_list = [];
+    if (kind == SHOP_ITEM_TYPE_COSTUME) {
+      local _ud = ::gamesession.getUserData();
+      local _udl = ::gamesession.getUserDataLocal();
+      local _curr_charas = _ud.getResideCharas(_udl.getRoomIndex());
+      foreach (costume_id in _curr_charas) {
+        _chara_list + _c_setting[costume_id].getCharaID();
+      }
+    }
+    foreach (k, sid in _pl) {
+      local _ss = _shop_settings[sid];
+      if (kind == SHOP_ITEM_TYPE_COSTUME) {
+        local _chara_id = _c_setting[_ss.getItemID()].getCharaID();
+        if (_chara_list.indexOf(_chara_id) < 0) {
+          _temp + sid;
+          continue;
+        }
+      }
+
+      local _buy_state = _ss.getBuyState();
+      if (_buy_state == ::ShopSetting.BUY_STATE_OK) {
+
+        sortPrice(_mal, _ss);
+      }
+      else if (_buy_state == ::ShopSetting.BUY_STATE_NO_MONEY) {
+
+        local n;
+        for (n = k; n < _pl.len(); n++) {
+          _temp + _pl[n];
+        }
+        break;
+      }
+      else {
+        _temp + sid;
+      }
+    }
+    this.price_table[kind] = _temp;
+    local _ud = ::gamesession.getUserData();
+    local _udl = ::gamesession.getUserDataLocal();
+    local _curr_charas = _ud.getResideCharas(_udl.getRoomIndex());
+    foreach (costume_id in _curr_charas) {
+      _chara_list + _c_setting[costume_id].getCharaID();
+    }
+  }
+
+  function _returnPriceTabele(kind) {
+    local _temp = [];
+    local _mal = getMarkedList(kind);
+    local _tp = getPriceList(kind);
+    foreach (key, sid in _mal) {
+      local _shop_settings = ::gamesetting.shop_settings;
+      local _ss = _shop_settings[sid];
+
+      local _buy_state = _ss.getBuyState();
+      if (_buy_state == ::ShopSetting.BUY_STATE_OK) {
+        _temp + sid;
+      }
+      else if (_buy_state == ::ShopSetting.BUY_STATE_NO_MONEY) {
+
+        local n;
+        for (n = key; n < _mal.len(); n++) {
+          _ss = _shop_settings[_mal[n]];
+          sortPrice(_tp, _ss);
+        }
+        break;
+      }
+      else {
+        sortPrice(_tp, _ss);
+      }
+    }
+    this.marked_table[kind] = _temp;
+  }
+
+  function writeToCheckedShopIdTable(id) {
+    local _ss = ::gamesetting.shop_settings[id];
+    local _ss_type = _ss.getType();
+    local _mark_table = getMarkedList(_ss_type);
+    local _ml_idx = _mark_table.indexOf(id);
+    if (_ml_idx < 0) return;
+    local _room_id = _ss.getRoomID();
+    if (_room_id == -1) {
+      local _ud = ::gamesession.getUserData();
+      _room_id = _ud.getCurrentRoomUID();
+    }
+    local _idx;
+    if (_ss_type == SHOP_ITEM_TYPE_COSTUME && (_room_id == -1)) {
+      foreach (room in this.master_price_table) {
+        local _t = room[_ss_type];
+        _idx = _t.indexOf(id);
+        if (_idx >= 0) delete _t[_idx];
+      }
+    }
+    else {
+      local _ml = getMasterList(_ss_type, _room_id);
+      _idx = _ml.indexOf(id);
+      if (_idx >= 0) delete _ml[_idx];
+    }
+    delete _mark_table[_ml_idx];
+    this.home_ui.updateNewItemMark(checkShopMarkedAny());
+  }
+
+  function checkShopMarked(kind) {
+    local _ml = getMarkedList(kind);
+    return this.marked_table[kind] && this.marked_table[kind].len() > 0;
+  }
+
+  function checkShopMarkedAny() {
+    local _cond_a = checkShopMarked(SHOP_ITEM_TYPE_FURNITURE);
+    if (_cond_a) return true;
+    return checkShopMarked(SHOP_ITEM_TYPE_COSTUME);
+  }
+
+  function isMarkedSetting(ss) {
+    local _ids = getMarkedList(ss.getType());
+    if (!_ids) return false;
+    return _ids.indexOf(ss.getID()) >= 0 ? true : false;
+  }
+
+  function getMasterList(kind, roomid) {
+    local _t = this.master_price_table;
+    if (!_t) _t = {};
+    if (!_t[roomid]) _t[roomid] <- {};
+    local _list = _t[roomid][kind];
+
+    if (!_list) {
+      _list = [];
+      _t[roomid][kind] <- _list;
+    }
+    return _list;
+  }
+
+  function getPriceList(kind) {
+    local _t = this.price_table;
+    if (!_t) {
+      _t = {};
+      this.price_table = _t;
+    }
+    local _list = _t[kind];
+    if (!_list) {
+      _list = [];
+      _t[kind] <- _list;
+    }
+    return _list;
+  }
+
+  function getMarkedList(kind) {
+    local _t = this.marked_table;
+    if (!_t) {
+      _t = {};
+      this.marked_table = _t;
+    }
+    local _list = _t[kind];
+    if (!_list) {
+      _list = [];
+      _t[kind] <- _list;
+    }
+    return _list;
+  }
+
+  function sortPrice(list, ss) {
+    local _in = false;
+    local _shop_settings = ::gamesetting.shop_settings;
+
+    foreach (k, v in list) {
+      local _lss = _shop_settings[v];
+      if (_lss.getPrice() > ss.getPrice()) {
+        list[k] <- ss.getID();
+        _in = true;
+        break;
+      }
+    }
+    if (!_in) list + ss.getID();
+  }
+
+}

@@ -1,0 +1,27 @@
+runsk("/res/goods/goods_base.sk")
+
+with model {
+  body <- {
+    pm = "wateringcan_efxwater.pm"
+  }
+
+}
+
+with script {
+
+  function start() {
+    fadeColor(255, 0);
+    setBlend(SK_ADD);
+    uvscroll(0, 3);
+    pass(100);
+    fadeColor(0xffffffff, 300);
+  }
+
+  function end() {
+    setBlend(SK_ADD);
+    uvscroll(0, 3);
+    fadeColor(255, 300);
+    pass(300);
+  }
+
+}

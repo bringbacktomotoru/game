@@ -1,0 +1,434 @@
+{
+  "ID": "0afe65b8-ae32-49a0-94d0-3852cafd3726",
+  "Version": "2.3.3.0",
+  "Name": "@GlobalNaviView",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 12,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/Sprite.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 639.9992,
+              "Y": 48.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.48
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -0.0008,
+            "RightMargin": 0.0007,
+            "TopMargin": -0.5,
+            "BottomMargin": -4.5,
+            "Tag": 23,
+            "ActionTag": 412439006,
+            "Size": {
+              "X": 46.0,
+              "Y": 46.0
+            },
+            "Name": "navi_background_8",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/Sprite.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 566.0006,
+              "Y": 51.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4422,
+              "Y": 0.51
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 505.5006,
+            "RightMargin": 653.4994,
+            "TopMargin": 4.5,
+            "BottomMargin": 6.5,
+            "Tag": 16,
+            "ActionTag": 239808393,
+            "Size": {
+              "X": 121.0,
+              "Y": 89.0
+            },
+            "Name": "navi_team",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/Sprite.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 694.0007,
+              "Y": 51.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5422,
+              "Y": 0.51
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 633.5007,
+            "RightMargin": 525.4993,
+            "TopMargin": 4.5,
+            "BottomMargin": 6.5,
+            "Tag": 17,
+            "ActionTag": 1575455345,
+            "Size": {
+              "X": 121.0,
+              "Y": 89.0
+            },
+            "Name": "navi_sushi",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/Sprite.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 1078.0004,
+              "Y": 51.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.8422,
+              "Y": 0.51
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 1017.5004,
+            "RightMargin": 141.4996,
+            "TopMargin": 4.5,
+            "BottomMargin": 6.5,
+            "Tag": 18,
+            "ActionTag": -2028337122,
+            "Size": {
+              "X": 121.0,
+              "Y": 89.0
+            },
+            "Name": "navi_shop",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/Sprite.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 438.0002,
+              "Y": 51.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.3422,
+              "Y": 0.51
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 376.0002,
+            "RightMargin": 779.9998,
+            "TopMargin": 3.0,
+            "BottomMargin": 5.0,
+            "Tag": 19,
+            "ActionTag": -465689242,
+            "Size": {
+              "X": 124.0,
+              "Y": 92.0
+            },
+            "Name": "navi_home",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/Sprite.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 1206.0006,
+              "Y": 51.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.9422,
+              "Y": 0.51
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 1145.5006,
+            "RightMargin": 13.4994,
+            "TopMargin": 4.5,
+            "BottomMargin": 6.5,
+            "Tag": 20,
+            "ActionTag": -565346517,
+            "Size": {
+              "X": 121.0,
+              "Y": 89.0
+            },
+            "Name": "navi_other",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/Sprite.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 950.0007,
+              "Y": 51.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7422,
+              "Y": 0.51
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 889.5007,
+            "RightMargin": 269.4993,
+            "TopMargin": 4.5,
+            "BottomMargin": 6.5,
+            "Tag": 21,
+            "ActionTag": -1233998513,
+            "Size": {
+              "X": 121.0,
+              "Y": 89.0
+            },
+            "Name": "navi_friend",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Default",
+              "Path": "Default/Sprite.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 822.0015,
+              "Y": 51.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.6422,
+              "Y": 0.51
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 761.5015,
+            "RightMargin": 397.4985,
+            "TopMargin": 4.5,
+            "BottomMargin": 6.5,
+            "Tag": 22,
+            "ActionTag": -1247027867,
+            "Size": {
+              "X": 121.0,
+              "Y": 89.0
+            },
+            "Name": "navi_gacha",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/@GlobalPlayerInfoView.json",
+              "Plist": ""
+            },
+            "StretchWidthEnable": false,
+            "StretchHeightEnable": false,
+            "InnerActionSpeed": 1.0,
+            "AnchorPoint": {},
+            "Position": {
+              "X": 1.6072,
+              "Y": -0.3044
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0013,
+              "Y": -0.003
+            },
+            "PreSize": {
+              "X": 0.375,
+              "Y": 1.0
+            },
+            "LeftMargin": 1.6072,
+            "RightMargin": 798.3928,
+            "TopMargin": 0.3044,
+            "BottomMargin": -0.3044,
+            "Tag": 34,
+            "ActionTag": 1535807922,
+            "Size": {
+              "X": 480.0,
+              "Y": 100.0
+            },
+            "Name": "info",
+            "ctype": "ProjectNodeObjectData"
+          }
+        ],
+        "Size": {
+          "X": 1280.0,
+          "Y": 100.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "../Default/Sprite.png",
+        "@GlobalPlayerInfoView.json"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

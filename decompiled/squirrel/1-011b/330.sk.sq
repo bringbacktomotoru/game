@@ -1,0 +1,168 @@
+class Dialog
+{
+  view = null;
+  need_modal = true;
+  need_moneylayer = false;
+  need_btn_close = true;
+
+  btn_ok = null;
+  btn_cancel = null;
+  btn_close = null;
+
+  ret = 0;
+  func = null;
+
+  sound = ::SoundConstants.SOUND_DIALOG;
+  sound_vol = 1.0;
+
+  is_closing = false;
+
+  tapbutton_ok = null;
+  tapbutton_cancel = null;
+
+  jingle_wait_time = 0;
+  is_fade = true;
+
+  constructor(v, modal = true) {
+    this.view = v;
+    this.need_modal = modal;
+    v.centerize();
+    btn_ok = v.findChild("btn_ok");
+    btn_cancel = v.findChild("btn_cancel");
+    btn_close = v.findChild("btn_close");
+
+    if (btn_ok) {
+      tapbutton_ok = TapButton(btn_ok);
+      tapbutton_ok.setTappedSE(::SoundConstants.SOUND_DECIDE);
+    }
+    if (btn_cancel) {
+      tapbutton_cancel = TapButton(btn_cancel);
+      tapbutton_cancel.setTappedSE(::SoundConstants.SOUND_CANCEL);
+    }
+    if (btn_close) TapButton(btn_close);
+
+    v.addEventListener(ACTION_EVENT, actionevent);
+
+    func = null;
+    this.sound_vol = 1.0;
+  }
+
+  function show(f = true, delay = 0) {
+    this.is_closing = false;
+    if (jingle_wait_time) {
+      ::playJingle(sound, jingle_wait_time);
+    } else {
+      ::playSound(sound, false, this.sound_vol);
+    }
+
+    this.is_fade = f;
+    _scaleup(f, delay);
+    if (this.need_modal) view.startModal();
+  }
+
+  function showed() {
+  }
+
+  function _scaleup(fade, delay) {
+    local layer = ::gamesession.dialoglayer;
+    view.pos(layer.bnd.w * 0.5, layer.bnd.h * 0.5, 0);
+    view.scale(0.1, 0.1, 0.1);
+
+    local _stopper = SKView();
+    _stopper.name = "stopper";
+    _stopper.enabled = _stopper.pickable = true;
+    _stopper.setRect(0, 0, layer.bnd.w, layer.bnd.h);
+    layer.addChild(_stopper);
+
+    layer.showDialog(this, fade, delay);
+
+    for (local l = 0; l < 12; l++) {
+      local w = Math.pow(l / 11.0, 2.0);
+      local s = Math.lerp(0.1, 1.0, w);
+      view.scale(s, s, s);
+      view.matdirty = true;
+      view.repaint();
+      sleep(16);
+    }
+
+    showed();
+
+    layer.removeChild(_stopper);
+  }
+
+  function close() {
+    if (is_closing) return;
+    this.is_closing = true;
+
+    ::gamesession.messagelayer.closeAllMessage();
+
+    local layer = ::gamesession.dialoglayer;
+    local _stopper = SKView();
+    _stopper.name = "stopper";
+    _stopper.enabled = _stopper.pickable = true;
+    _stopper.setRect(0, 0, layer.bnd.w, layer.bnd.h);
+    layer.addChild(_stopper);
+
+    for (local l = 0; l < 12; l++) {
+      local w = Math.pow(l / 11.0, 0.5);
+      local s = Math.lerp(1.0, 0.1, w);
+      view.scale(s, s, s);
+      view.matdirty = true;
+      view.repaint();
+      sleep(16);
+    }
+
+    layer.closeDialog(this);
+
+    _closed();
+
+    layer.removeChild(_stopper);
+  }
+
+  function isClosing() {
+    return this.is_closing;
+  }
+
+  function _closed() {}
+
+  function setShowSE(snd) {
+    this.sound = snd;
+  }
+  function setSEVolume(vol) {
+    this.sound_vol = vol;
+  }
+
+  function setShowJingle(snd, wait) {
+    this.sound = snd;
+    this.jingle_wait_time = wait;
+  }
+
+  function setFunc(_func) {
+    this.func = _func;
+  }
+
+  function actionevent(e) {
+    switch (e.src) {
+    case btn_ok: ret = 1; close(); break;
+    case btn_cancel:
+    case btn_close: ret = 0; close(); break;
+    }
+
+    if (func) func(ret);
+  }
+
+  function isFade() {
+    return this.is_fade;
+  }
+
+  function getButtonClose() {
+    return this.btn_close;
+  }
+  function getButtonCancel() {
+    return this.btn_cancel;
+  }
+  function getButtonOK() {
+    return this.btn_ok;
+  }
+
+}

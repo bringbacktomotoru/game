@@ -1,0 +1,327 @@
+mission_settings[1].desc = "1ハピネス集めよう（デバッグ用）"
+
+mission_settings[2].desc = "1ハピネス集めよう（デバッグ用）"
+
+mission_settings[3].desc = "1ハピネス集めよう（デバッグ用）"
+
+mission_settings[10].desc = "Water the plant"
+mission_settings[10].detail_desc = "If you have a plant in your room,/ndon\"t forget to water it#e1#"
+
+mission_settings[20].desc = "#u2#Tap for Happiness 100 times"
+
+mission_settings[30].desc = "Place the \"Orange Country Bed\" in your room"
+mission_settings[30].detail_desc = "You can buy the/n\"Orange Country Bed\" from the Shop#e1#"
+
+mission_settings[40].desc = "Place the \"Orange Country Table\" in your room"
+mission_settings[40].detail_desc = "You can buy the/n\"Orange Country Table\" from the Shop#e1#"
+
+mission_settings[110].desc = "#u2#Tap for Happiness 100 times"
+
+mission_settings[120].desc = "Get 5,000 Happiness"
+
+mission_settings[130].desc = "Read a difficult book"
+mission_settings[130].detail_desc = "There was a \"difficult book\"/non the book shelf, right...#q1#"
+
+mission_settings[140].desc = "Buy the \"Hello Kitty Face Tee\" outfit"
+
+mission_settings[150].desc = "Place the \"Brown Wood Hearth\" in your room"
+mission_settings[150].detail_desc = "You can buy the/n\"Brown Wood Hearth\" from the Shop#e1#"
+
+mission_settings[160].desc = "Place the \"Orange Country Cupboard\" in your room"
+mission_settings[160].detail_desc = "You can buy the/n\"Orange Country Cupboard\" from the Shop#e1#"
+
+mission_settings[170].desc = "Place furniture Kitty wants in your room"
+mission_settings[170].detail_desc = "There\"s some furniture Kitty wants to use./nTalk to her and see what it is#o1#"
+
+mission_settings[171].desc = "Place furniture Kitty wants in your room"
+mission_settings[171].detail_desc = "Hello Kitty wants to see/na retro wood lamp/nin the room#o1#"
+
+mission_settings[180].desc = "Place the \"Orange Country Rocking Chair\" in your room"
+mission_settings[180].detail_desc = "You can buy the/n\"Orange Country Rocking Chair\" from the Shop#e1#"
+
+mission_settings[190].desc = "#u1#Use 3 Friendship"
+
+mission_settings[210].desc = "#u2#Tap for 50 Happiness"
+
+mission_settings[220].desc = "Get 3,000 Happiness"
+
+mission_settings[230].desc = "Use furniture 2 times"
+
+mission_settings[240].desc = "Place the \"Cherry Doll Lamp\" in your room"
+mission_settings[240].detail_desc = "You can buy the/n\"Cherry Doll Lamp\" from the Shop#e1#"
+
+mission_settings[250].desc = "Buy the \"Pink Wood Bookcase\" furniture"
+
+mission_settings[260].desc = "Place the \"Pink Low Picnic Table\" in your room"
+mission_settings[260].detail_desc = "You can buy the/n\"Pink Low Picnic Table\" from the Shop#e1#"
+
+mission_settings[270].desc = "Sit in a chair"
+
+mission_settings[280].desc = "Talk to Melody"
+
+mission_settings[290].desc = "Read a book"
+
+mission_settings[310].desc = "#u2#Tap for 200 Happiness"
+
+mission_settings[320].desc = "Get 12,000 Happiness"
+
+mission_settings[330].desc = "Buy the \"Pink Princess Chair furniture"
+
+mission_settings[340].desc = "Place the \" Country Rose Bed\" in your room"
+mission_settings[340].detail_desc = "You can buy the/n\"Country Rose Bed\" from the Shop#e1#"
+
+mission_settings[350].desc = "Place the \"Rose Princess Bodyform\" in your room"
+mission_settings[350].detail_desc = "You can buy the/n\"Rose Princess Bodyform\" from the Shop#e1#"
+
+mission_settings[360].desc = "Place the \"Rose Princess Rug\" in your room"
+mission_settings[360].detail_desc = "You can buy the/n\"Rose Princess Rug\" from the Shop#e1#"
+
+mission_settings[370].desc = "Help Kitty with her search"
+mission_settings[370].detail_desc = "Kitty seems to be looking for something./nTalk to her to see what it is#o1#"
+
+mission_settings[371].desc = "Help Kitty with her search"
+mission_settings[371].detail_desc = "Kitty wants to read a sweets cookbook./nIs there one on the bookshelf#q1#"
+
+mission_settings[380].desc = "Buy the \"Aromatic Apron\" outfit for Melody"
+
+mission_settings[390].desc = "Buy the \"Ivory Flower Chef\" outfit for Kitty"
+
+mission_settings[410].desc = "#u2#Tap for Happiness 300 times"
+
+mission_settings[420].desc = "Collect 20,000 Happiness"
+
+mission_settings[430].desc = "Buy the \"Pink Princess Chair\" furniture"
+
+mission_settings[440].desc = "Place furniture Melody wants in your room"
+mission_settings[440].detail_desc = "There\"s some furniture Melody wants to use./nTalk to her and see what it is#o1#"
+
+mission_settings[441].desc = "Place furniture Melody wants in your room"
+mission_settings[441].detail_desc = "Melody wants to see/na canopy bed fit for a princess/nin the room#o1#"
+
+mission_settings[450].desc = "Place the \"Coral Rabbit Dresser\" in your room"
+mission_settings[450].detail_desc = "You can buy the/n\"Coral Rabbit Dresser\" from the Shop#e1#"
+
+mission_settings[460].desc = "Use the dresser"
+
+mission_settings[470].desc = "Play on the Rocking Rabbit"
+
+mission_settings[480].desc = "Talk to Cinnamon"
+
+mission_settings[490].desc = "Talk to Kitty"
+
+mission_settings[510].desc = "#u2#Tap for Happiness 100 times"
+
+mission_settings[520].desc = "Collect 5,000 Happiness"
+
+mission_settings[530].desc = "Use furniture 3 times"
+
+mission_settings[540].desc = "Talk to Purin"
+
+mission_settings[550].desc = "Buy the \"Blue Cafe Chair\" furniture"
+
+mission_settings[560].desc = "Buy 2 of the \"Pink Cafe Chair\" furniture"
+
+mission_settings[570].desc = "Place 2 \"Mint Cafe Tables\" in your room"
+mission_settings[570].detail_desc = "You can buy the/n\"Mint Cafe Table\" from the Shop#e1#"
+
+mission_settings[580].desc = "Buy the \"Twinkle Lavender\" outfit for Cinnamon"
+
+mission_settings[590].desc = "Buy the \"Scatter Brownie\" outfit for Purin"
+
+mission_settings[610].desc = "#u2#Tap for Happiness 150 times"
+
+mission_settings[620].desc = "Collect 10,000 Happiness"
+
+mission_settings[630].desc = "Talk to your friends 2 times"
+
+mission_settings[640].desc = "Use furniture 3 times"
+
+mission_settings[650].desc = "Read a book about cafes!"
+mission_settings[650].detail_desc = "On the \"Mint Latte Bookshelf\",/nthere\"s a book about cafes#o1#/nYou should read it before opening your cafe#e1#"
+
+mission_settings[660].desc = "Buy 2 \"Mint Latte Bookshelfs\""
+
+mission_settings[670].desc = "Place the \"Mint Latte Low Table\" in your room"
+mission_settings[670].detail_desc = "You can buy the/n\"Mint Latte Low Table\" from the Shop#e1#"
+
+mission_settings[680].desc = "Place the \"Mint Latte Counter\" in your room"
+mission_settings[680].detail_desc = "You can buy the/n\"Mint Latte Counter\" from the Shop#e1#"
+
+mission_settings[690].desc = "Buy the outfit Keroppi wants to wear"
+mission_settings[690].detail_desc = "Keroppi has an outfit he wants to wear./nTalk to him to find out what it is#o1#"
+
+mission_settings[691].desc = "Buy the outfit Keroppi wants to wear"
+mission_settings[691].detail_desc = "It looks like/nKerropi wants a comfy outfit/nsimilar to the ones/nCinnamon and Purin are wearing#o1#"
+
+mission_settings[710].desc = "#u2#Tap for Happiness 200 times"
+
+mission_settings[720].desc = "Collect 20/n\"000 Happiness"
+
+mission_settings[730].desc = "Use furniture 3 times"
+
+mission_settings[740].desc = "Place the \"Blue Latte Television\" in your room"
+mission_settings[740].detail_desc = "You can buy the/n\"Blue Latte Television\" from the Shop#e1#"
+
+mission_settings[750].desc = "Place the \"Light Blue Round Rug\" in your room"
+mission_settings[750].detail_desc = "You can buy the/n\"Light Blue Round Rug\" from the Shop#e1#"
+
+mission_settings[760].desc = "Place the \"Mint Latte Sofa\" in your room"
+mission_settings[760].detail_desc = "You can buy the/n\"Mint Latte Sofa\" from the Shop#e1#"
+
+mission_settings[770].desc = "Cinnamon\"s Wish: Buy an outfit for Cinnamon"
+mission_settings[770].detail_desc = "It looks like there\"s an outfit Cinnamon wants./nTalk to him to find out what it is#o1#"
+
+mission_settings[771].desc = "Cinnamon\"s Wish: Buy an outfit for Cinnamon"
+mission_settings[771].detail_desc = "It looks likeCinnamon/nwants everyone to wear/nmatching outfits fit for a cafe#o1#/nLet\"s get him the perfect outfit#e1#"
+
+mission_settings[780].desc = "Cinnamon\"s Wish: Buy an outfit for Purin"
+mission_settings[780].detail_desc = "It looks like there\"s an outfit Cinnamon wants./nTalk to him to find out what it is#o1#"
+
+mission_settings[781].desc = "Cinnamon\"s Wish: Buy an outfit for Purin"
+mission_settings[781].detail_desc = "It looks likeCinnamon/nwants everyone to wear/nmatching outfits fit for a cafe#o1#/nLet\"s get Purin the perfect outfit#e1#"
+
+mission_settings[790].desc = "Cinnamon\"s Wish: Buy an outfit for Keroppi"
+mission_settings[790].detail_desc = "It looks like there\"s an outfit Cinnamon wants./nTalk to him to find out what it is#o1#"
+
+mission_settings[791].desc = "Cinnamon\"s Wish: Buy an outfit for Keroppi"
+mission_settings[791].detail_desc = "It looks likeCinnamon/nwants everyone to wear/nmatching outfits fit for a cafe#o1#/nLet\"s get Keroppi the perfect outfit#e1#"
+
+mission_settings[810].desc = "#u2#Tap for Happiness 50 times"
+
+mission_settings[820].desc = "Get 5,000 Happiness"
+
+mission_settings[830].desc = "Use furniture 3 times"
+
+mission_settings[840].desc = "#u1#Use 3 Friendship points"
+
+mission_settings[850].desc = "Place 2 \"Pink Flower Chairs\" in your room"
+mission_settings[850].detail_desc = "You can buy the/n\"Pink Flower Chair\" from the Shop#e1#"
+
+mission_settings[860].desc = "What does Kitty want to do?/nMaybe she\"ll tell you if you help her#q1#"
+mission_settings[860].detail_desc = "It looks like Kitty/nwants to use the/n\"Pink Country Table#o1#"
+
+mission_settings[861].desc = "What does Kitty want to do?/nMaybe she\"ll tell you if you help her#q1#"
+mission_settings[861].detail_desc = "What does Kitty want to do#q1#/nTalk to her to find out#e1#"
+
+mission_settings[870].desc = "Place the \"Round Pink Dot Rug\" in your room"
+mission_settings[870].detail_desc = "You can buy the/n\"Round Pink Dot Rug\" from the Shop#e1#"
+
+mission_settings[880].desc = "Place the \"Pink Cafe Plant\" in your room"
+mission_settings[880].detail_desc = "You can buy the/n\"Pink Cafe Plant\" from the Shop#e1#"
+
+mission_settings[890].desc = "Water your plant"
+mission_settings[890].detail_desc = "If you have a plant in your room,/ndon\"t forget to water it#e1#"
+
+mission_settings[910].desc = "#u2#Tap for Happiness 200 times"
+
+mission_settings[920].desc = "Talk to Purin"
+
+mission_settings[930].desc = "Place the \"Happy Ribbon Piano\" in your room"
+mission_settings[930].detail_desc = "You can buy the/n\"Happy Ribbon Piano\" from the Shop#e1#"
+
+mission_settings[940].desc = "Place the \"Hello Kitty Face Rug\" in your room"
+mission_settings[940].detail_desc = "You can buy the/n\"Hello Kitty Face Rug\" from the Shop#e1#"
+
+mission_settings[950].desc = "Place the \"Camellia Flower Clock\" in your room"
+mission_settings[950].detail_desc = "You can buy the/n\"Camellia Flower Clock\" from the Shop#e1#"
+
+mission_settings[960].desc = "Play the piano"
+
+mission_settings[970].desc = "Buy the \"Cherry Rose Doll\" outfit for Kitty"
+
+mission_settings[980].desc = "Buy the \"Velvet Ribbon Dolche\" outfit for Melody"
+
+mission_settings[990].desc = "Buy the \"Velvet Ribbon Dolche\" outfit for Purin"
+
+mission_settings[1010].desc = "#u2#Tap for Happiness 200 times"
+
+mission_settings[1020].desc = "Use furniture 3 times"
+
+mission_settings[1030].desc = "Place 2 \"Sepia Country Lamps\" in your room"
+mission_settings[1030].detail_desc = "You can buy the/n\"Sepia Country Lamps\" from the Shop#e1#"
+
+mission_settings[1040].desc = "Place 3 \"Camellia Flower Beds\" in your room"
+mission_settings[1040].detail_desc = "You can buy the/n\"Camellia Flower Beds\" from the Shop#e1#"
+
+mission_settings[1050].desc = "Place 3 \"Yellow Dot Round Rugs\" in your room"
+mission_settings[1050].detail_desc = "You can buy the/n\"Yellow Dot Round Rug\" from the Shop#e1#"
+
+mission_settings[1060].desc = "Place furniture Kitty wants in your room"
+mission_settings[1060].detail_desc = "There\"s some furniture Kitty wants to use./nTalk to her and see what it is#o1#"
+
+mission_settings[1061].desc = "Place furniture Kitty wants in your room"
+mission_settings[1061].detail_desc = "Kitty wants/nto warm up the room/nwith a stove#o1#"
+
+mission_settings[1070].desc = "Buy the \"Milky Sleep\" outfit for Kitty"
+
+mission_settings[1080].desc = "Buy the \"Milky Sleep\" outfit for Melody"
+
+mission_settings[1090].desc = "Buy the \"Starry Sleep\" outfit for Purin"
+
+mission_settings[1110].desc = "#u2#Tap for Happiness 100 times"
+
+mission_settings[1120].desc = "Use furniture 3 times"
+
+mission_settings[1130].desc = "Place the \"Sepia Princess Dresser\" in your room"
+mission_settings[1130].detail_desc = "You can buy the/n\"Sepia Princess Dresser\" from the Shop#e1#"
+
+mission_settings[1140].desc = "Place the \"Brown Flower Clock\" in your room"
+mission_settings[1140].detail_desc = "You can buy the/n\"Brown Flower Clock\" from the Shop#e1#"
+
+mission_settings[1150].desc = "Place the \"Pink Ribbon Phone\" in your room"
+mission_settings[1150].detail_desc = "You can buy the/n\"Pink Ribbon Phone\" from the Shop#e1#"
+
+mission_settings[1160].desc = "Talk to Melody"
+
+mission_settings[1170].desc = "Talk to Cinnamon"
+
+mission_settings[1180].desc = "Buy the \"Mystery Ribbon\" outfit for Melody"
+
+mission_settings[1190].desc = "Buy the \"Classical Carousel\" outfit for Cinnamon"
+
+mission_settings[1210].desc = "#u2#Tap for Happiness 200 times"
+
+mission_settings[1220].desc = "Use furniture 5 times"
+
+mission_settings[1230].desc = "Place 2 \"Chocolate Latte Bookshelves\" in your room"
+mission_settings[1230].detail_desc = "You can buy the/n\"Chocolate Latte Bookshelf\" from the Shop#e1#"
+
+mission_settings[1240].desc = "Place 3 \"Chocolate Doll Lamps\" in your room"
+mission_settings[1240].detail_desc = "You can buy the/n\"Chocolate Doll Lamp\" from the Shop#e1#"
+
+mission_settings[1250].desc = "Place the \"Brown Picnic Rug\" in your room"
+mission_settings[1250].detail_desc = "You can buy the/n\"Chocolate Doll Lamp\" from the Shop#e1#"
+
+mission_settings[1260].desc = "Talk to Melody"
+
+mission_settings[1270].desc = "Talk to Cinnamon"
+
+mission_settings[1280].desc = "Talk to Keroppi"
+
+mission_settings[1290].desc = "Buy the \"Mellow Farm\" outfit for Keroppi"
+
+mission_settings[1310].desc = "#u2#Tap for Happiness 400 times"
+
+mission_settings[1320].desc = "Place 2 \"Sepia Princess Bodyforms\" in your room"
+mission_settings[1320].detail_desc = "You can buy the/n\"Sepia Princess Bodyform\" from the Shop#e1#"
+
+mission_settings[1330].desc = "Place a \"Sepia Princess Rabbit\" in your room"
+mission_settings[1330].detail_desc = "You can buy the/n\"Sepia Princess Rabbit\" from the Shop#e1#"
+
+mission_settings[1340].desc = "Place the \"Brown Flower Bed\" in your room"
+mission_settings[1340].detail_desc = "You can buy the/n\"Brown Flower Bed\" from the Shop#e1#"
+
+mission_settings[1350].desc = "Place the \"Old Cafe Table\" in your room"
+mission_settings[1350].detail_desc = "You can buy the/n\"Old Cafe Table\" from the Shop#e1#"
+
+mission_settings[1360].desc = "Talk to Melody"
+
+mission_settings[1370].desc = "Talk to Cinnamon"
+
+mission_settings[1380].desc = "Talk to Keroppi"
+
+mission_settings[1390].desc = "Buy the outfit Kitty wants to wear"
+mission_settings[1390].detail_desc = "Kitty has an outfit she wants to wear./nTalk to her to find out what it is#o1#"
+
+mission_settings[1391].desc = "Buy the outfit Kitty wants to wear"
+mission_settings[1391].detail_desc = "Kitty has an outfit she wants to wear./nTalk to her to find out what it is#o1#"
