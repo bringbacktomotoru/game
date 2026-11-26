@@ -1,5 +1,0 @@
-// UIScript created by PanelMissionList.ui 
-
-function setupNoChallenge(b=false) {
-	$pnl_nochallenge.visible = b;
-}

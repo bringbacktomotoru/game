@@ -25,10 +25,11 @@ from pathlib import Path
 import pytest
 
 from tests.test_server import _consume_userdata_array
-from tools.server.crypto import decrypt_payload, encrypt_payload
+from server.python.crypto import decrypt_payload, encrypt_payload
 
 ROOT = Path(__file__).resolve().parent.parent
-JAVA_SRC_DIR = ROOT / "android-server" / "src" / "main" / "java" / "com" / "tomotoru" / "offline"
+JAVA_SRC_DIR = ROOT / "server" / "android" / "src" / "main" / "java" / "com" / "tomotoru" / "offline"
+SXR_DIR = ROOT / ".cache" / "sxr"
 ANDROID_JAR = Path("/usr/lib/android-sdk/platforms/android-23/android.jar")
 ORG_JSON_JARS = [
     ROOT / "tests" / ".cache" / "org-json.jar",
@@ -157,7 +158,7 @@ class JavaServerProcess:
 
 def test_embedded_java_server_static_and_content_length(compiled_java_classes, tmp_path):
     classes_dir, org_json = compiled_java_classes
-    srv = JavaServerProcess(classes_dir, org_json, tmp_path / "saves", ROOT / "sxr", debug=False)
+    srv = JavaServerProcess(classes_dir, org_json, tmp_path / "saves", SXR_DIR, debug=False)
     try:
         status, headers, body = srv.get("/health")
         assert status == 200
@@ -186,7 +187,7 @@ def test_embedded_java_server_static_and_content_length(compiled_java_classes, t
         status, headers, body = srv.get("/dl/main.sxr")
         assert status == 200
         assert int(headers["content-length"]) == len(body)
-        assert body == (ROOT / "sxr" / "main.sxr").read_bytes()
+        assert body == (SXR_DIR / "main.sxr").read_bytes()
     finally:
         srv.stop()
 
@@ -194,7 +195,7 @@ def test_embedded_java_server_static_and_content_length(compiled_java_classes, t
 def test_embedded_java_server_full_gameplay_and_restart_persistence(compiled_java_classes, tmp_path):
     classes_dir, org_json = compiled_java_classes
     saves_dir = tmp_path / "saves"
-    srv = JavaServerProcess(classes_dir, org_json, saves_dir, ROOT / "sxr", debug=False)
+    srv = JavaServerProcess(classes_dir, org_json, saves_dir, SXR_DIR, debug=False)
     try:
         # 1. Auth
         auth = srv.post_enc(
@@ -256,7 +257,7 @@ def test_embedded_java_server_full_gameplay_and_restart_persistence(compiled_jav
         srv.stop()
 
     # Restart server with the same saves_dir and verify persistence!
-    srv2 = JavaServerProcess(classes_dir, org_json, saves_dir, ROOT / "sxr", debug=False)
+    srv2 = JavaServerProcess(classes_dir, org_json, saves_dir, SXR_DIR, debug=False)
     try:
         auth2 = srv2.post_enc("/app_kitty/entrance", {"uuid": "java-player-001", "cmd": 0})
         assert auth2["ret"] == 1
@@ -273,7 +274,7 @@ def test_embedded_java_server_full_gameplay_and_restart_persistence(compiled_jav
 
 def test_embedded_java_server_debug_mode(compiled_java_classes, tmp_path):
     classes_dir, org_json = compiled_java_classes
-    srv = JavaServerProcess(classes_dir, org_json, tmp_path / "saves_dbg", ROOT / "sxr", debug=True)
+    srv = JavaServerProcess(classes_dir, org_json, tmp_path / "saves_dbg", SXR_DIR, debug=True)
     try:
         auth = srv.post_enc("/app_kitty/entrance", {"uuid": "dbg-player", "cmd": 0})
         assert auth["ret"] == 1
@@ -290,9 +291,9 @@ def test_embedded_offline_apk_integrity():
     import hashlib
     import zipfile
 
-    apk_path = ROOT / "apk" / "tomotoru_offline_embedded.apk"
+    apk_path = ROOT / "dist" / "tomotoru-offline.apk"
     if not apk_path.exists():
-        pytest.skip("apk/tomotoru_offline_embedded.apk not built")
+        pytest.skip("dist/tomotoru-offline.apk not built")
 
     with zipfile.ZipFile(apk_path, "r") as z:
         # 1. Config asset

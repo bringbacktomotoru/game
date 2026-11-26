@@ -1,5 +1,0 @@
-
-
-function processing(){
-	$ar_load_arrow.anime(10,20,5,true);
-}

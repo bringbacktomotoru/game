@@ -6,7 +6,7 @@ import zlib
 import pytest
 from Crypto.Cipher import Blowfish
 
-from tools.server.crypto import BLOWFISH_KEY, COMPRESS_THRESHOLD, decrypt_payload, encrypt_payload
+from server.python.crypto import BLOWFISH_KEY, COMPRESS_THRESHOLD, decrypt_payload, encrypt_payload
 
 
 def test_key_matches_game_script():

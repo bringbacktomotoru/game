@@ -1,8 +1,0 @@
-// UIScript created by AnimationAddValue.ui 
-
-function show() {
-	$lbl_val.anime(10,15,20);
-	pass(400);
-	$lbl_val.anime(15,20,20);
-	pass(500);
-}

@@ -1,6 +1,0 @@
-foreach (f_name in [
-"CharaAction.sk"
-"CharaActionListFactory.sk"
-]) {
-  runsk("/src/stage/action/" + f_name);
-}
