@@ -23,6 +23,7 @@ public final class OfflineServer {
     private OfflineServer() {}
 
     public static synchronized void start(Context context) {
+        ScreenshotHelper.init(context);
         if (instance != null) {
             return;
         }

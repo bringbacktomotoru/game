@@ -100,6 +100,73 @@ def patch_sakana_application_smali(smali_path: Path) -> None:
     smali_path.write_text(patched, encoding="utf-8")
 
 
+def _replace_smali_method(text: str, signature: str, new_body: str) -> str:
+    idx = text.find(signature)
+    if idx < 0:
+        raise RuntimeError(f"Could not find method signature '{signature}'")
+    end_marker = ".end method"
+    end_idx = text.find(end_marker, idx)
+    if end_idx < 0:
+        raise RuntimeError(f"Could not find .end method for '{signature}'")
+    end_idx += len(end_marker)
+    return text[:idx] + new_body + text[end_idx:]
+
+
+def patch_sanrio_activity_smali(smali_path: Path) -> None:
+    """Delegate screenshot/storage/gallery/share methods in SanrioActivity to ScreenshotHelper."""
+    text = smali_path.read_text(encoding="utf-8")
+
+    text = _replace_smali_method(
+        text,
+        ".method public static getExternalStrageDirectory()Ljava/lang/String;",
+        ".method public static getExternalStrageDirectory()Ljava/lang/String;\n"
+        "    .registers 1\n\n"
+        "    invoke-static {}, Lcom/tomotoru/offline/ScreenshotHelper;->getExternalStorageDir()Ljava/lang/String;\n\n"
+        "    move-result-object v0\n\n"
+        "    return-object v0\n"
+        ".end method",
+    )
+
+    text = _replace_smali_method(
+        text,
+        ".method public static scanPhotoGallery(Ljava/lang/String;Landroid/content/Context;)V",
+        ".method public static scanPhotoGallery(Ljava/lang/String;Landroid/content/Context;)V\n"
+        "    .registers 2\n"
+        "    .param p0, \"filename\"    # Ljava/lang/String;\n"
+        "    .param p1, \"context\"    # Landroid/content/Context;\n\n"
+        "    invoke-static {p0, p1}, Lcom/tomotoru/offline/ScreenshotHelper;->scanPhotoGallery(Ljava/lang/String;Landroid/content/Context;)V\n\n"
+        "    return-void\n"
+        ".end method",
+    )
+
+    text = _replace_smali_method(
+        text,
+        ".method public static startExternalIntent(Ljava/lang/String;Ljava/lang/String;Landroid/content/Context;)V",
+        ".method public static startExternalIntent(Ljava/lang/String;Ljava/lang/String;Landroid/content/Context;)V\n"
+        "    .registers 3\n"
+        "    .param p0, \"filename\"    # Ljava/lang/String;\n"
+        "    .param p1, \"postStr\"    # Ljava/lang/String;\n"
+        "    .param p2, \"context\"    # Landroid/content/Context;\n\n"
+        "    invoke-static {p0, p1, p2}, Lcom/tomotoru/offline/ScreenshotHelper;->startExternalIntent(Ljava/lang/String;Ljava/lang/String;Landroid/content/Context;)V\n\n"
+        "    return-void\n"
+        ".end method",
+    )
+
+    text = _replace_smali_method(
+        text,
+        ".method public static sarCheckStoragePermission(Landroid/content/Context;)Z",
+        ".method public static sarCheckStoragePermission(Landroid/content/Context;)Z\n"
+        "    .registers 2\n"
+        "    .param p0, \"cont\"    # Landroid/content/Context;\n\n"
+        "    invoke-static {p0}, Lcom/tomotoru/offline/ScreenshotHelper;->checkStoragePermission(Landroid/content/Context;)Z\n\n"
+        "    move-result v0\n\n"
+        "    return v0\n"
+        ".end method",
+    )
+
+    smali_path.write_text(text, encoding="utf-8")
+
+
 def inject_embedded_server_into_dex(orig_dex_bytes: bytes) -> bytes:
     """Compile com.tomotoru.offline and merge it into the APK's classes.dex."""
     javac_bin = _find_tool("javac")
@@ -167,12 +234,17 @@ def inject_embedded_server_into_dex(orig_dex_bytes: bytes) -> bytes:
             shutil.rmtree(dst_pkg)
         shutil.copytree(src_pkg, dst_pkg)
 
-        # 5. Hook SakanaApplication.onCreate()
+        # 5. Hook SakanaApplication.onCreate() and SanrioActivity screenshot helpers
         app_smali = orig_smali_dir / "ls" / "sakana" / "SakanaApplication.smali"
         if not app_smali.is_file():
             raise FileNotFoundError(f"SakanaApplication.smali not found at {app_smali}")
         patch_sakana_application_smali(app_smali)
         print("  > Hooked ls.sakana.SakanaApplication.onCreate() -> OfflineServer.start(this)")
+
+        act_smali = orig_smali_dir / "com" / "cyberstep" / "sanriocharacters" / "SanrioActivity.smali"
+        if act_smali.is_file():
+            patch_sanrio_activity_smali(act_smali)
+            print("  > Patched SanrioActivity screenshot/gallery/share methods -> ScreenshotHelper")
 
         # 6. Reassemble merged classes.dex
         _run(

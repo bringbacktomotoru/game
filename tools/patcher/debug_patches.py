@@ -113,6 +113,50 @@ def patch_missing_bgm_fallback(sk_bytes: bytes) -> tuple[bytes, int]:
     return encode_sk(src.replace(target, repl, 1)), 1
 
 
+def patch_load_arutils_addon(sk_bytes: bytes) -> tuple[bytes, int]:
+    """Patch 107.sk so skLoadAddon("sksmartar") registers ARUtils on Android even when ENABLE_AR is false.
+
+    ARModuleAndroid.sk remains gated behind ENABLE_AR so Sony SmartAR camera/SLAM is never started,
+    while ARUtils (storage/gallery/share JNI bindings) stays available for screenshots.
+    """
+    if sk_bytes[:2] != b"\xfa\xfa":
+        return sk_bytes, 0
+
+    src = _decompile_sk_bytes(sk_bytes)
+    target = (
+        "if (ENABLE_AR) {\n\n"
+        "  local os_name = skGetOSName();\n"
+        '  if (os_name == "iOS") {\n'
+        '    skLoadAddon("skARKit");\n'
+        '    runsk("/src/ar/ARModuleIOS.sk");\n'
+        "  }\n"
+        '  else if (os_name == "Android") {\n'
+        '    skLoadAddon("sksmartar");\n'
+        '    runsk("/src/ar/ARModuleAndroid.sk");\n'
+        "  }\n"
+        "}"
+    )
+    repl = (
+        'if (skGetOSName() == "Android") {\n'
+        '  skLoadAddon("sksmartar");\n'
+        "}\n"
+        "if (ENABLE_AR) {\n"
+        "  local os_name = skGetOSName();\n"
+        '  if (os_name == "iOS") {\n'
+        '    skLoadAddon("skARKit");\n'
+        '    runsk("/src/ar/ARModuleIOS.sk");\n'
+        "  }\n"
+        '  else if (os_name == "Android") {\n'
+        '    runsk("/src/ar/ARModuleAndroid.sk");\n'
+        "  }\n"
+        "}"
+    )
+    if target not in src:
+        return sk_bytes, 0
+
+    return encode_sk(src.replace(target, repl, 1)), 1
+
+
 def patch_disable_ar(sk_bytes: bytes) -> tuple[bytes, int]:
     """Patch 194.sk to set ENABLE_AR <- false so tapping AR doesn't segfault libsksmartar.so."""
     if sk_bytes[:2] != b"\xfa\xfa":
@@ -249,6 +293,69 @@ def patch_homeui_eventstopper(sk_bytes: bytes) -> tuple[bytes, int]:
         )
         patches += 1
 
+    # Show clean native SimpleDialog alert when AR is disabled (Home button + movePanel catch-all)
+    target_ar_btn = "  function actionevent_movear(e) {\n    e.consume();"
+    repl_ar_btn = (
+        "  function actionevent_movear(e) {\n"
+        "    e.consume();\n"
+        "    if (!::ENABLE_AR) {\n"
+        "      newthread().start(function() {\n"
+        "        try {\n"
+        "          local _dlg = ::SimpleDialog();\n"
+        '          _dlg.lbl_msg.setText(::dict.get("can_not_use_AR"));\n'
+        "          _dlg.show();\n"
+        "        } catch (ex) {\n"
+        '          ::gamesession.sendReportToServer("AR_DLG_ERR: " + ex);\n'
+        "        }\n"
+        "      }, this);\n"
+        "      return;\n"
+        "    }"
+    )
+    if target_ar_btn in src:
+        src = src.replace(target_ar_btn, repl_ar_btn, 1)
+        patches += 1
+
+    target_ar_panel = (
+        "  function movePanel(clazz, pop = false, param = null, trans = null) {\n"
+        "    if (getclass(this.current_panel) == clazz) return;"
+    )
+    repl_ar_panel = (
+        "  function movePanel(clazz, pop = false, param = null, trans = null) {\n"
+        "    if (clazz == ::ARPanel && !::ENABLE_AR) {\n"
+        "      newthread().start(function() {\n"
+        "        local _dlg = ::SimpleDialog();\n"
+        '        _dlg.lbl_msg.setText(::dict.get("can_not_use_AR"));\n'
+        "        _dlg.show();\n"
+        "      }, this);\n"
+        "      return;\n"
+        "    }\n"
+        "    if (getclass(this.current_panel) == clazz) return;"
+    )
+    if target_ar_panel in src:
+        src = src.replace(target_ar_panel, repl_ar_panel, 1)
+        patches += 1
+
+    # Fix saveImage RGBAImage dimensions to match sk3dview.bnd.w/h (sprite.tex0)
+    target_save_img = (
+        "  function saveImage(sprite, path, width, height) {\n"
+        "    local rgba_image = RGBAImage(width, height);\n"
+        "    local x = 0;\n"
+        "    local y = 0;\n"
+        "    local w = getGameScene().getStage().sk3dview.bnd.w;\n"
+        "    local h = getGameScene().getStage().sk3dview.bnd.h;"
+    )
+    repl_save_img = (
+        "  function saveImage(sprite, path, width, height) {\n"
+        "    local x = 0;\n"
+        "    local y = 0;\n"
+        "    local w = getGameScene().getStage().sk3dview.bnd.w;\n"
+        "    local h = getGameScene().getStage().sk3dview.bnd.h;\n"
+        "    local rgba_image = RGBAImage(int(w), int(h));"
+    )
+    if target_save_img in src:
+        src = src.replace(target_save_img, repl_save_img, 1)
+        patches += 1
+
     if patches == 0:
         return sk_bytes, 0
 
@@ -287,7 +394,11 @@ def apply_debug_patch(entity_name: str, sk_bytes: bytes) -> tuple[bytes, str | N
     if sk_bytes[:2] != b"\xfa\xfa":
         return sk_bytes, None
 
-    if entity_name in ("114", "129"):
+    if entity_name == "107":
+        patched, count = patch_load_arutils_addon(sk_bytes)
+        if count > 0:
+            return patched, "Enabled ARUtils addon load (sksmartar) independently of ENABLE_AR in 107.sk"
+    elif entity_name in ("114", "129"):
         patched, count = patch_debug_hooks(entity_name, sk_bytes)
         if count > 0:
             return patched, f"Injected {count} live error hook(s) into {entity_name}.sk"

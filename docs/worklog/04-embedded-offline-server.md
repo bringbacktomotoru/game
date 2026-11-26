@@ -49,3 +49,12 @@ python -m tools.patcher.patch_apk apk/tomotoru_v1.0.4.apk --embed-server --debug
   - Autenticación, `LOAD_CONF`, `GET_ALL`, carga de la habitación 3D y apertura de Menú funcionando sin servidor externo.
   - Reinicio en frío con WiFi y datos móviles desactivados (`svc wifi disable && svc data disable`): arranque limpio 100% offline sin crashes.
   - Uso de memoria del proceso: ~1.5 MB Java Heap (~44 KB en DEX).
+
+## AR y Capturas de Pantalla (Android 12+)
+
+- **AR (`194.sk` + `384.sk`)**: Sony SmartAR (`libsmartar.so` / `libsksmartar.so`) usa reflexión no-SDK bloqueada en Android 9+ (`SurfaceView.setWindowType`/`mLayout`) y licencia legacy ECDSA. Se mantiene `ENABLE_AR <- false` y se interceptan `HomeUI.actionevent_movear()` y `HomeUI.movePanel(::ARPanel, ...)` para mostrar la alerta nativa `::SimpleDialog()` con `::dict.get("can_not_use_AR")` dentro de un coroutine thread (`newthread().start(...)`), sin crashear ni bloquear la UI.
+- **Screenshots (`107.sk` + `384.sk` + `ScreenshotHelper.java` + `SanrioActivity.smali`)**:
+  - `107.sk` carga `skLoadAddon("sksmartar")` en Android independientemente de `ENABLE_AR` para registrar los bindings JNI de `ARUtils` sin inicializar `ARModuleAndroid`.
+  - `384.sk` corrige `HomeUI.saveImage()` para dimensionar `RGBAImage(int(w), int(h))` según `sk3dview.bnd.w/h`.
+  - `ScreenshotHelper.java` + hook en `SanrioActivity.smali` reemplazan `sarCheckStoragePermission`, `getExternalStrageDirectory`, `scanPhotoGallery` (guardado vía `MediaStore` en `Pictures/Tomotoru/` en API 29+ y `MediaScannerConnection` en API 19–28, eliminando `FileUriExposedException` y bloqueos de Scoped Storage) y `startExternalIntent` (con `ClipData` y `FLAG_GRANT_READ_URI_PERMISSION`).
+  - Verificado en Moto G22 (Android 12): capturas JPEG `1524x720` (~145 KB) guardadas automáticamente en `/sdcard/Pictures/Tomotoru/` sin pedir permisos y diálogo AR nativo probado sin crashes.

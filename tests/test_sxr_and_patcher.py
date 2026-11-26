@@ -279,11 +279,18 @@ def test_debug_mode_applies_all_debug_patches_and_roundtrips(tmp_path):
     assert "/ui/image/base/icon_change.png" in src_270
     assert "/ui/image/base/back_y.png" in src_270
 
-    # 7. 384.sk: HomeUI.movePanel eventstopper guard + MOVEPANEL_ERR telemetry
+    # 7. 384.sk: HomeUI.movePanel eventstopper guard + MOVEPANEL_ERR + AR alert + screenshot fix
     src_384 = _decompile_sk(_read_sxr_entity(dst_1, "384"))
     assert "MOVEPANEL_ERR: " in src_384
     assert "::gamesession.sendReportToServer(_dbg_msg);" in src_384
     assert 'prev_clazz ? (prev_clazz["unique_bgm"] != null) : false' in src_384
+    assert '::dict.get("can_not_use_AR")' in src_384
+    assert "RGBAImage(int(w), int(h))" in src_384
+
+    # 7b. 107.sk: skLoadAddon("sksmartar") loaded outside ENABLE_AR for ARUtils
+    src_107 = _decompile_sk(_read_sxr_entity(dst_1, "107"))
+    assert 'if (skGetOSName() == "Android")' in src_107
+    assert 'skLoadAddon("sksmartar");' in src_107
 
     # 8. SK3DObject.sk: missing .pm fallback
     src_sk3d = _decompile_sk(_read_sxr_entity(dst_main, "SK3DObject.sk"))
