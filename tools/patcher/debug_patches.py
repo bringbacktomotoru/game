@@ -205,6 +205,47 @@ def patch_missing_icon_fallback(sk_bytes: bytes) -> tuple[bytes, int]:
     return encode_sk(src), patches
 
 
+def patch_charafocus_finish_mdl(sk_bytes: bytes) -> tuple[bytes, int]:
+    """Patch 376.sk (CharaFocusPanel.CharaSentenceProcessor._finishProcess) undefined `_mdl` bug.
+
+    Original CyberStep v1.0.4 bytecode calls showGetHapinessEffect(_mdl) where `_mdl` is undefined
+    (the member is `this.model`). When MAIN_CMD_COMUNICATION_TAP returns add_gm > 0, that throws
+    an uncaught exception before SentenceProcessor sets `this.thread = null`, permanently softlocking
+    the character at the end of dialogue bubbles.
+    """
+    if sk_bytes[:2] != b"\xfa\xfa":
+        return sk_bytes, 0
+
+    src = _decompile_sk_bytes(sk_bytes)
+    target = "::gamesession.getCurrentScene().showGetHapinessEffect(_mdl);"
+    repl = "::gamesession.getCurrentScene().showGetHapinessEffect(this.model);"
+    if target not in src:
+        return sk_bytes, 0
+
+    return encode_sk(src.replace(target, repl, 1)), 1
+
+
+def patch_sentence_processor_cleanup(sk_bytes: bytes) -> tuple[bytes, int]:
+    """Patch 421.sk (SentenceProcessor.startSentence) so `this.thread = null` always runs after _finishProcess."""
+    if sk_bytes[:2] != b"\xfa\xfa":
+        return sk_bytes, 0
+
+    src = _decompile_sk_bytes(sk_bytes)
+    target = "      _finishProcess();\n      this.thread = null;"
+    repl = (
+        "      try {\n"
+        "        _finishProcess();\n"
+        "      } catch (ex) {\n"
+        "        printexception(ex);\n"
+        "      }\n"
+        "      this.thread = null;"
+    )
+    if target not in src:
+        return sk_bytes, 0
+
+    return encode_sk(src.replace(target, repl, 1)), 1
+
+
 def patch_homeui_eventstopper(sk_bytes: bytes) -> tuple[bytes, int]:
     """Patch 384.sk (HomeUI.movePanel) so setEventStopper(false) is always reached.
 
@@ -307,10 +348,18 @@ def apply_debug_patch(entity_name: str, sk_bytes: bytes) -> tuple[bytes, str | N
         patched, count = patch_missing_icon_fallback(sk_bytes)
         if count > 0:
             return patched, f"Injected {count} missing-icon fallback(s) into 270.sk"
+    elif entity_name == "376":
+        patched, count = patch_charafocus_finish_mdl(sk_bytes)
+        if count > 0:
+            return patched, "Fixed undefined _mdl -> this.model in 376.sk (CharaFocusPanel._finishProcess)"
     elif entity_name == "384":
         patched, count = patch_homeui_eventstopper(sk_bytes)
         if count > 0:
             return patched, f"Patched HomeUI eventstopper guard ({count}) in 384.sk"
+    elif entity_name == "421":
+        patched, count = patch_sentence_processor_cleanup(sk_bytes)
+        if count > 0:
+            return patched, "Guarded SentenceProcessor._finishProcess() cleanup in 421.sk"
     elif entity_name == "SK3DObject.sk":
         patched, count = patch_missing_pm_fallback(sk_bytes)
         if count > 0:
