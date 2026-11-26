@@ -292,6 +292,13 @@ def test_debug_mode_applies_all_debug_patches_and_roundtrips(tmp_path):
     assert 'if (skGetOSName() == "Android")' in src_107
     assert 'skLoadAddon("sksmartar");' in src_107
 
+    # 7c. 376.sk & 421.sk: dialogue bubble end-of-talk softlock fix (_mdl -> this.model + cleanup guard)
+    src_376 = _decompile_sk(_read_sxr_entity(dst_1, "376"))
+    assert "showGetHapinessEffect(this.model);" in src_376
+    assert "showGetHapinessEffect(_mdl);" not in src_376
+    src_421 = _decompile_sk(_read_sxr_entity(dst_1, "421"))
+    assert "printexception(ex);" in src_421
+
     # 8. SK3DObject.sk: missing .pm fallback
     src_sk3d = _decompile_sk(_read_sxr_entity(dst_main, "SK3DObject.sk"))
     assert "/res/goods/goods_1/flower.pm" in src_sk3d
