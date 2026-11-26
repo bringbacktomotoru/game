@@ -23,3 +23,6 @@ tools/server/saves/
 # Generated patched APKs
 apk/*_offline*.apk
 apk/*.idsig
+
+# Test caches
+tests/.cache/

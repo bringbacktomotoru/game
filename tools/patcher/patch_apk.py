@@ -43,6 +43,7 @@ for _d in (_PATCHER_DIR, _REPACKER_DIR):
         sys.path.insert(0, _d)
 
 from debug_patches import apply_debug_patch  # noqa: E402
+from embed_server import inject_embedded_server_into_dex  # noqa: E402
 from repack import patch_sxr  # noqa: E402
 
 OLD_SK_URLS = (
@@ -258,19 +259,28 @@ def _update_pkg_json(pkg_path: Path, modified_sxrs: dict[str, Path]) -> None:
 
 def patch_apk(
     apk_path: str | Path,
-    mock_url: str,
+    mock_url: str | None = None,
     output_path: str | Path | None = None,
     keystore_path: str | Path | None = None,
     debug: bool = False,
+    embed_server: bool = False,
+    port: int = 18080,
 ) -> Path:
     """Full APK patching pipeline."""
     apk_path = Path(apk_path).resolve()
     if not apk_path.exists():
         raise FileNotFoundError(f"APK not found: {apk_path}")
 
+    if mock_url is None:
+        if embed_server:
+            mock_url = f"http://127.0.0.1:{port}"
+        else:
+            raise ValueError("mock_url is required unless embed_server=True")
+
     mock_url = mock_url.rstrip("/")
     if output_path is None:
-        output_path = apk_path.parent / f"{apk_path.stem}_offline.apk"
+        suffix = "_offline_embedded" if embed_server else "_offline"
+        output_path = apk_path.parent / f"{apk_path.stem}{suffix}.apk"
     output_path = Path(output_path).resolve()
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -337,10 +347,24 @@ def patch_apk(
             modified_files["assets/sxr/pkg.json"] = pkg_local
             print("  Updated assets/sxr/pkg.json checksums and sizes")
 
+        added_files: dict[str, bytes] = {}
+        if embed_server:
+            print(f"\n[2.5/5] Injecting embedded offline server into classes.dex (127.0.0.1:{port})...")
+            with zipfile.ZipFile(apk_path, "r") as zin:
+                orig_dex = zin.read("classes.dex")
+            patched_dex = inject_embedded_server_into_dex(orig_dex)
+            dex_local = work_dir / "classes.dex"
+            dex_local.write_bytes(patched_dex)
+            modified_files["classes.dex"] = dex_local
+            added_files["assets/tomotoru_offline.json"] = json.dumps(
+                {"port": port, "debug": bool(debug)}, separators=(",", ":")
+            ).encode("utf-8")
+
         # Step 3: Repack APK (strip old META-INF signatures)
         print("\n[3/5] Repacking APK...")
         unsigned_apk = work_dir / "unsigned.apk"
         with zipfile.ZipFile(apk_path, "r") as zin, zipfile.ZipFile(unsigned_apk, "w") as zout:
+            written_names: set[str] = set()
             for info in zin.infolist():
                 if info.filename.startswith("META-INF/"):
                     upper = info.filename.upper()
@@ -355,10 +379,17 @@ def patch_apk(
 
                 if info.filename in modified_files:
                     payload = modified_files[info.filename].read_bytes()
+                elif info.filename in added_files:
+                    payload = added_files[info.filename]
                 else:
                     payload = zin.read(info.filename)
 
                 zout.writestr(new_info, payload)
+                written_names.add(info.filename)
+
+            for new_name, new_payload in added_files.items():
+                if new_name not in written_names:
+                    zout.writestr(new_name, new_payload, compress_type=zipfile.ZIP_DEFLATED)
 
         # Step 4: Align
         print("\n[4/5] Aligning APK...")
@@ -430,9 +461,25 @@ def patch_apk(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Patch Tomotoru APK for offline play")
     parser.add_argument("apk", help="Path to the original APK")
-    parser.add_argument("url", help="Mock server URL (e.g. http://127.0.0.1:5000)")
+    parser.add_argument(
+        "url",
+        nargs="?",
+        default=None,
+        help="Mock server URL (e.g. http://127.0.0.1:5000). Optional when --embed-server is set.",
+    )
     parser.add_argument("-o", "--output", help="Output APK path")
     parser.add_argument("--keystore", help="Optional existing keystore path (pass: android)")
+    parser.add_argument(
+        "--embed-server",
+        action="store_true",
+        help="Embed the 100%% offline Java HTTP server directly inside classes.dex (no PC server needed)",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=18080,
+        help="Loopback port for --embed-server (default: 18080)",
+    )
     parser.add_argument(
         "--debug",
         action="store_true",
@@ -440,7 +487,15 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    patch_apk(args.apk, args.url, args.output, args.keystore, debug=args.debug)
+    patch_apk(
+        args.apk,
+        args.url,
+        args.output,
+        args.keystore,
+        debug=args.debug,
+        embed_server=args.embed_server,
+        port=args.port,
+    )
 
 
 if __name__ == "__main__":

@@ -17,14 +17,18 @@ pip install -e ".[sxr,dev]"
 Requires Java (`keytool`) and Android SDK `build-tools` (`zipalign`, `apksigner`) — auto-discovered from `PATH`, `ANDROID_HOME`, or the default SDK location.
 
 ```bash
-# Normal mode (clean preservation / full CDN asset packs):
+# 100% Standalone Offline APK (embeds local Java HTTP server inside the APK — no PC server needed):
+python -m tools.patcher.patch_apk apk/tomotoru_v1.0.4.apk --embed-server -o apk/tomotoru_offline_embedded.apk
+python -m tools.patcher.patch_apk apk/tomotoru_v1.0.4.apk --embed-server --debug -o apk/tomotoru_offline_embedded_debug.apk
+
+# External Python server mode (normal / clean preservation):
 python -m tools.patcher.patch_apk apk/tomotoru_v1.0.4.apk http://127.0.0.1:5000 -o apk/tomotoru_offline.apk
 
-# Debug mode (standalone APK workarounds + live /app_kitty/report telemetry):
+# External Python server mode (debug / standalone APK workarounds + live /app_kitty/report telemetry):
 python -m tools.patcher.patch_apk apk/tomotoru_v1.0.4.apk http://127.0.0.1:5000 -o apk/tomotoru_offline_debug.apk --debug
 ```
 
-*(Use your PC's LAN IP for a real phone, or `http://10.0.2.2:5000` for an Android emulator.)*
+*(Use `--embed-server` for a 100% self-contained offline APK that runs its own `127.0.0.1:18080` server on-device — configurable via `--port`. For the external Python server, use your PC's LAN IP for a real phone, or `http://10.0.2.2:5000` for an Android emulator.)*
 
 The patcher automatically:
 1. Patches `SERVER_URL` and `INSPECT_SERVER_URL` in `assets/sxr/1-011b.sxr` (entity `194`, preserving `.sk` string table indices)
