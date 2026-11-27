@@ -19,7 +19,7 @@ DEFAULT_APK_PATH = DEFAULT_CACHE_DIR / "tomotoru_v1.0.4.apk"
 DEFAULT_SXR_DIR = DEFAULT_CACHE_DIR / "sxr"
 
 BASE_RELEASE_URL = (
-    "https://github.com/clysnelzum/tomotoru/releases/download/"
+    "https://github.com/bringbacktomotoru/game/releases/download/"
     "v0.0.1/tomotoru-v1.0.4-original.apk"
 )
 EXPECTED_SHA256 = "e457b42783e245677cdf775fa161a5a54aefaaf788d1c73dcd67470f67fa831b"

@@ -1,8 +1,8 @@
 # Tomotoru
 
-Reverse-engineering toolkit and APK build pipeline for **Tomotoru** (*Hello Kitty Happy Life*) by CyberStep. Use [tomoserver](https://github.com/clysnelzum/tomoserver) to run a separate game server.
+Reverse-engineering toolkit and APK build pipeline for **Tomotoru** (*Hello Kitty Happy Life*) by CyberStep. Use [tomoserver](https://github.com/bringbacktomotoru/server) to run a separate game server.
 
-> Full technical documentation — architecture, wire protocol, command reference, asset formats, server internals, and Android 12+ compatibility — lives in the **[Project Wiki](https://github.com/clysnelzum/tomotoru/wiki)**.
+> Full technical documentation — architecture, wire protocol, command reference, asset formats, server internals, and Android 12+ compatibility — lives in the **[Project Wiki](https://github.com/bringbacktomotoru/game/wiki)**.
 
 ## Repository Layout
 
@@ -23,13 +23,13 @@ tomotoru/
 └── .github/workflows/   # ci.yml & release.yml
 ```
 
-Heavy binaries (`tomotoru-v1.0.4-original.apk` and compressed binary assets) are hosted in the [`v0.0.1`](https://github.com/clysnelzum/tomotoru/releases/tag/v0.0.1) GitHub Release and fetched on demand with SHA-256 verification.
+Heavy binaries (`tomotoru-v1.0.4-original.apk` and compressed binary assets) are hosted in the [`v0.0.1`](https://github.com/bringbacktomotoru/game/releases/tag/v0.0.1) GitHub Release and fetched on demand with SHA-256 verification.
 
 ## Quick Start
 
 ### 1. Install Dependencies & Fetch Base APK
 
-Initialize the [tomoffline](https://github.com/clysnelzum/tomoffline) submodule for offline
+Initialize the [tomoffline](https://github.com/bringbacktomotoru/offline) submodule for offline
 APK builds and Java integration tests. Run the same command after pulling changes to pick
 up any updated server revision.
 
@@ -57,12 +57,12 @@ python -m tools.build.build_apk --mode online-test
 
 ### 3. Run tomoserver Locally
 
-Clone [tomoserver](https://github.com/clysnelzum/tomoserver) next to this repository. After fetching the base APK and extracting its assets as shown above, start tomoserver on the port used by the `online-test` APK:
+Clone [tomoserver](https://github.com/bringbacktomotoru/server) next to this repository. After fetching the base APK and extracting its assets as shown above, start tomoserver on the port used by the `online-test` APK. These commands assume the default checkout names `game` and `server`:
 
 ```bash
-cd ../tomoserver
+cd ../server
 npm ci
-node scripts/sync-assets.mjs ../tomotoru/.cache/sxr
+node scripts/sync-assets.mjs ../game/.cache/sxr
 PORT=18880 SESSION_SECRET="$(openssl rand -hex 32)" npm start
 ```
 
