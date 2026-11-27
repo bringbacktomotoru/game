@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "tomotoru"
 version = "0.3.0"
@@ -17,6 +21,9 @@ dev = ["pytest>=8.0"]
 tomotoru-server = "server.python.mock:main"
 tomotoru-build = "tools.build.build_apk:main"
 tomotoru-fetch-base = "tools.assets.fetch_base:main"
+
+[tool.setuptools.packages.find]
+include = ["server*", "tools*"]
 
 [tool.flask]
 app = "server.python.mock:app"
