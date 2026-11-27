@@ -20,7 +20,7 @@ Preserved Android client sources, resources, and game metadata for **Tomotoru** 
   - **Official Online APK:** The app connects over the Internet to the server run by this project's maintainer. The server must be available to play, and your progress is saved there.
 - The [`v0.0.1` archive][base-release] contains the unmodified original Android v1.0.4 APK and binary assets. The original APK is neither revival edition.
 - For the APK builder, SXR tools, and Squirrel bytecode tools, see [Tomotoru Tools][tools].
-- For APK installation and signing details, see [Installing APKs][installing].
+- For Android installation warnings, SHA-256 verification, and APK signing details, see [Installing APKs][installing].
 
 - To test the client with a server on your computer, see [Run tomoserver locally][local-server] for the `online-test` build, asset extraction, and Android loopback setup.
 
