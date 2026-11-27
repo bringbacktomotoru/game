@@ -1,65 +1,60 @@
-# Tomotoru
+# Tomotoru Game Client
 
-Reverse-engineering toolkit and APK build pipeline for **Tomotoru** (*Hello Kitty Happy Life*) by CyberStep. Use [tomoserver](https://github.com/bringbacktomotoru/server) to run a separate game server.
+Preservation toolkit for the Android edition of **Tomotoru** (*Hello Kitty Happy Life*) by CyberStep. Build a standalone APK that runs without an internet connection, point the client at a separate server, or explore the original game's Squirrel scripts and asset bundles.
 
-> Full technical documentation — architecture, wire protocol, command reference, asset formats, server internals, and Android 12+ compatibility — lives in the **[Project Wiki](https://github.com/bringbacktomotoru/game/wiki)**.
+[Download APKs](https://github.com/bringbacktomotoru/game/releases) · [Technical wiki](https://github.com/bringbacktomotoru/game/wiki) · [Build from source](#build-from-source)
 
-## Repository Layout
+## Choose an APK
 
-```text
-tomotoru/
-├── game/                # Decompiled game source & lightweight metadata (no heavy binaries)
-│   ├── squirrel/        # Decompiled Squirrel (.sq) scripts in their logical directory tree
-│   ├── java/            # Decompiled Java sources (SanrioActivity, SakanaGL bridge)
-│   ├── resources/       # AndroidManifest.xml & XML/layout resources
-│   └── metadata/        # resource_index.json, pkg.json, version
-├── tomoffline/          # Submodule: Java server embedded in offline APKs
-├── tools/
-│   ├── assets/          # fetch_base.py, sxr_extract.py, sxr_pack.py
-│   ├── squirrel/        # decompile.py, sk_parser/decompiler/encoder, patch.py, strings.py
-│   ├── android/         # embed_server.py, sign_apk.py
-│   └── build/           # build_apk.py (orchestrates original/offline/online/test builds)
-├── tests/               # Pytest suite (wire protocol, decompiler, SXR, embedded Java server)
-└── .github/workflows/   # ci.yml & release.yml
-```
+| APK | Use it for |
+| --- | --- |
+| `tomotoru-offline.apk` | Standalone play. Includes [tomoffline](https://github.com/bringbacktomotoru/offline), a Java server running inside the app. |
+| `tomotoru-online.apk` | Connecting to the server configured when the APK was built. Build your own APK to use a different [tomoserver](https://github.com/bringbacktomotoru/server) instance. |
+| `tomotoru-v1.0.4-original.apk` | Archival reference and build input: the unmodified CyberStep APK. |
 
-Heavy binaries (`tomotoru-v1.0.4-original.apk` and compressed binary assets) are hosted in the [`v0.0.1`](https://github.com/bringbacktomotoru/game/releases/tag/v0.0.1) GitHub Release and fetched on demand with SHA-256 verification.
+GitHub release tags such as `v0.3.0` version **this toolkit**. The builds are based on the original Android **v1.0.4** APK. The historical [`v0.0.1` base-assets release](https://github.com/bringbacktomotoru/game/releases/tag/v0.0.1) hosts the original APK and compressed binary assets; the build tools verify the input APK against a pinned SHA-256 checksum.
 
-## Quick Start
+For installation and signing details, see [Installing APKs](https://github.com/bringbacktomotoru/game/wiki/Installing-APKs).
 
-### 1. Install Dependencies & Fetch Base APK
+## Build from Source
 
-Initialize the [tomoffline](https://github.com/bringbacktomotoru/offline) submodule for offline
-APK builds and Java integration tests. Run the same command after pulling changes to pick
-up any updated server revision.
+### 1. Install dependencies and fetch the base APK
+
+Use Python 3.10+, JDK 17, and Android tooling (`zipalign`, `apksigner`). Offline builds also require `smali`, `baksmali`, `dalvik-exchange` or `dx`, and an Android platform JAR. See [Build and Tooling](https://github.com/bringbacktomotoru/game/wiki/Build-and-Tooling) for details.
 
 ```bash
-git submodule update --init -- tomoffline
-pip install -e ".[sxr,dev]"
+git clone --recurse-submodules https://github.com/bringbacktomotoru/game.git
+cd game
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[dev]"
 python -m tools.assets.fetch_base --extract-sxr
 ```
 
-### 2. Build APK Variants
+In an existing checkout, run `git submodule update --init -- tomoffline` after pulling changes to sync the embedded server to the revision pinned by the game client.
+
+### 2. Build APK variants
+
+Build outputs go to `dist/` by default:
 
 ```bash
-# Standalone 100% offline APK (embedded Java server on 127.0.0.1:18080)
+# Standalone APK (embedded Java server on 127.0.0.1:18080)
 python -m tools.build.build_apk --mode offline
 
-# Debug offline test APK (embedded server + --debug workarounds & telemetry)
-python -m tools.build.build_apk --mode offline-test
-
-# Online APK (points to ONLINE_SERVER_URL or --url)
+# Online APK for a separate server
 python -m tools.build.build_apk --mode online --url https://your-server.example.com
 
-# Debug online test APK (points to loopback http://127.0.0.1:18880 + --debug)
+# Debug variants with extra telemetry; online-test defaults to 127.0.0.1:18880
+python -m tools.build.build_apk --mode offline-test
 python -m tools.build.build_apk --mode online-test
 ```
 
-### 3. Run tomoserver Locally
+### 3. Run tomoserver locally
 
-Clone [tomoserver](https://github.com/bringbacktomotoru/server) next to this repository. After fetching the base APK and extracting its assets as shown above, start tomoserver on the port used by the `online-test` APK. These commands assume the default checkout names `game` and `server`:
+From the `game` checkout, clone [tomoserver](https://github.com/bringbacktomotoru/server) into a sibling directory. With Node.js installed and the base assets extracted in step 1, start the server on the port used by `online-test`:
 
 ```bash
+git clone https://github.com/bringbacktomotoru/server.git ../server
 cd ../server
 npm ci
 node scripts/sync-assets.mjs ../game/.cache/sxr
@@ -75,8 +70,20 @@ uses the base APK's bundles with tomoserver's default manifest. To serve the pat
 from a custom APK instead, sync its extracted `assets/sxr` directory and make sure tomoserver
 serves the matching `pkg.json` manifest.
 
-### 4. Run Tests
+### 4. Run tests
+
+From the `game` checkout:
 
 ```bash
-pytest -v
+python -m pytest -v
 ```
+
+## Source Map
+
+| Path | What's inside |
+| --- | --- |
+| [`game/`](game/) | Decompiled Squirrel and Java, Android resources, and game metadata. |
+| [`tomoffline/`](https://github.com/bringbacktomotoru/offline) | Pinned Java server submodule for offline APKs and Java integration tests. |
+| [`tools/`](tools/) | SXR extraction and repacking, Squirrel decompilation and patching, DEX injection, and APK builds and signing. |
+| [`tests/`](tests/) | Protocol framing, bytecode roundtrips, SXR bundles, runtime patches, and embedded server tests. |
+| [`.github/workflows/`](.github/workflows/) | CI builds and tag-triggered APK releases. |
