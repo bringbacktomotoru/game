@@ -225,9 +225,9 @@ def test_resource_index_and_tree_mirror():
 
 
 def test_game_metadata_json():
-    """Verify server/python/data/game_metadata.json structure and key relationships."""
-    meta_path = REPO_ROOT / "server" / "python" / "data" / "game_metadata.json"
-    assert meta_path.exists(), "Missing server/python/data/game_metadata.json"
+    """Verify the extracted game metadata structure and key relationships."""
+    meta_path = REPO_ROOT / "game" / "metadata" / "game_metadata.json"
+    assert meta_path.exists(), "Missing game/metadata/game_metadata.json"
 
     meta = json.loads(meta_path.read_text(encoding="utf-8"))
     for section in (

@@ -1,7 +1,7 @@
 """End-to-end integration tests for the embedded Java offline server (com.tomotoru.offline).
 
-Compiles the real Java sources from android-server/ and runs StandaloneMain on a local
-ephemeral port, testing 100% wire-protocol parity with the Python mock server:
+Compiles the Java sources from server/android/ and runs StandaloneMain on a local
+ephemeral port to test the game wire protocol:
   - Blowfish ECB + zlib framing interoperability (small & >10KB payloads)
   - Exact Content-Length header on every response (required by SakanaGL URLRequest.java)
   - /health, /setting.json, /pkg.json, /dl/<sxr>
@@ -24,8 +24,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.test_server import _consume_userdata_array
-from server.python.crypto import decrypt_payload, encrypt_payload
+from tests.sakana_wire import decrypt_payload, encrypt_payload
 
 ROOT = Path(__file__).resolve().parent.parent
 JAVA_SRC_DIR = ROOT / "server" / "android" / "src" / "main" / "java" / "com" / "tomotoru" / "offline"
@@ -192,6 +191,93 @@ def test_embedded_java_server_static_and_content_length(compiled_java_classes, t
         srv.stop()
 
 
+def _consume_userdata_array(datas: list):
+    """Exact Python mirror of 176.sk.bin UserData.load(ServerDataLoader)."""
+    idx = 0
+
+    def get():
+        nonlocal idx
+        assert idx < len(datas), f"ServerDataLoader underflow at idx={idx}"
+        val = datas[idx]
+        idx += 1
+        return val
+
+    parsed = {
+        "friend_code": get(),
+        "name": get(),
+        "sex": get(),
+        "rank": get(),
+        "rankexp": get(),
+        "gmoney": get(),
+        "rmoney": get(),
+        "freerm": get(),
+        "capture_hapiness_time": get(),
+    }
+
+    # FurnitureData
+    parsed["furnitures"] = []
+    for _ in range(get()):
+        fid, uid, _exp, lvl, _view_idx, ptype, room_id = [get() for _ in range(7)]
+        assert ptype == 0
+        parsed["furnitures"].append({"furniture_id": fid, "uid": uid, "level": lvl, "room_id": room_id})
+
+    # RoomSlotData and unlocked slots
+    for _ in range(get()):
+        _room_uid = get()
+        _reside = [get() for _ in range(get())]
+    _unlocked = [get() for _ in range(get())]
+
+    # RoomEditData and room_layout
+    for _ in range(get()):
+        _uid, _room_id, flen = get(), get(), get()
+        assert flen == 0
+        _panel_mission_id, _room_gmoney = get(), get()
+    for _ in range(get()):
+        _row = [get() for _ in range(get())]
+
+    # CostumeData and WorkRewardData
+    parsed["costumes"] = []
+    for _ in range(get()):
+        cid, _exp, lvl, _hp, _pt, _pp, _pm, _ct = [get() for _ in range(8)]
+        _motions = [get() for _ in range(get())]
+        assert get() == 0  # has_work
+        parsed["costumes"].append({"id": cid, "level": lvl})
+    assert get() == 0
+
+    # Items, purchase records, GachaData, completed tutorials, costume requests and mail
+    for _ in range(get()):
+        _id, _nums = get(), get()
+    for _ in range(get()):
+        _id, _nums = get(), get()
+    assert get() == 0
+    parsed["end_tutorial_ids"] = [get() for _ in range(get())]
+    assert get() == 0
+    assert get() == 0
+
+    # Characters, bonus happiness and ad video
+    for _ in range(get()):
+        _cid = get()
+        _motions = [get() for _ in range(get())]
+        _received_motion_reward_index = get()
+        for _ in range(get()):
+            _key, _rental_id, _limit = get(), get(), get()
+    _bonus, _next_bonus, _last_ad, _ad_count = get(), get(), get(), get()
+
+    # Panel missions and reply records
+    for _ in range(get()):
+        _panel_id = get()
+        for _ in range(get()):
+            _mission_id, _progress, _clear, _piece = get(), get(), get(), get()
+        _all_clear, _clear_date, _reward_received = get(), get(), get()
+        _previous_missions = [get() for _ in range(get())]
+    for _ in range(get()):
+        key, value = get(), get()
+        assert isinstance(key, str) and isinstance(value, str)
+
+    assert idx == len(datas), f"Data not ended: idx={idx}, len={len(datas)}"
+    return parsed
+
+
 def test_embedded_java_server_full_gameplay_and_restart_persistence(compiled_java_classes, tmp_path):
     classes_dir, org_json = compiled_java_classes
     saves_dir = tmp_path / "saves"
@@ -318,4 +404,3 @@ def test_embedded_offline_apk_integrity():
             raw = z.read(f"assets/sxr/{fn}")
             assert len(raw) == expected_size, f"{fn} size mismatch"
             assert hashlib.md5(raw).hexdigest().upper() == expected_md5, f"{fn} md5 mismatch"
-

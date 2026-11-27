@@ -1,4 +1,4 @@
-"""Blowfish encryption/decryption for the Tomotoru (SakanaGL) wire protocol.
+"""Reference SakanaGL wire codec for testing interoperability with the embedded Java server.
 
 Reverse-engineered from 112.sk.bin (GameConnection.encrypt / decrypt):
   - Key: b"test" (string table index 17 in 112.sk.bin: Blowfish("test"))

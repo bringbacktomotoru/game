@@ -2,7 +2,7 @@
 """Download and verify the unmodified Tomotoru v1.0.4 base APK from GitHub Releases.
 
 Stores the base APK in `.cache/tomotoru_v1.0.4.apk` and optionally extracts
-`assets/sxr/*` into `.cache/sxr/` for tests and the online Python server.
+`assets/sxr/*` into `.cache/sxr/` for tests and for syncing assets to tomoserver.
 """
 from __future__ import annotations
 

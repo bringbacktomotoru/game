@@ -3,7 +3,7 @@
 
 Locates key .conf scripts via decompiled/resource_index.json, parses their
 .sk.bin token streams directly, and writes a concise, structured summary to
-tools/server/data/game_metadata.json.
+game/metadata/game_metadata.json.
 """
 import json
 import sys
@@ -379,7 +379,7 @@ def build_game_metadata(repo_root=REPO_ROOT):
 def export_game_metadata(repo_root=REPO_ROOT, out_path=None):
     repo_root = Path(repo_root)
     if out_path is None:
-        out_path = repo_root / "tools" / "server" / "data" / "game_metadata.json"
+        out_path = repo_root / "game" / "metadata" / "game_metadata.json"
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     metadata = build_game_metadata(repo_root)

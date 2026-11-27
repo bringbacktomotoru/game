@@ -13,7 +13,7 @@ dist/
 tests/.cache/
 *.idsig
 
-# Server runtime data
+# Save files from the former Python mock server
 server/python/saves/
 
 # IDE & OS
