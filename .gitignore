@@ -5,6 +5,7 @@ __pycache__/
 .venv/
 *.egg-info/
 build/
+!/tools/build/
 
 # Generated artifacts & caches
 .cache/
