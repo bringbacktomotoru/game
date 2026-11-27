@@ -25,7 +25,7 @@ tomotoru/
 └── .github/workflows/   # ci.yml & release.yml
 ```
 
-Heavy binaries (`tomotoru-v1.0.4-original.apk` and compressed binary assets) are hosted in the [`base-v1.0.4`](https://github.com/clysnelzum/tomotoru/releases/tag/base-v1.0.4) GitHub Release and fetched on demand with SHA-256 verification.
+Heavy binaries (`tomotoru-v1.0.4-original.apk` and compressed binary assets) are hosted in the [`v0.0.1`](https://github.com/clysnelzum/tomotoru/releases/tag/v0.0.1) GitHub Release and fetched on demand with SHA-256 verification.
 
 ## Quick Start
 

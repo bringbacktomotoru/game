@@ -39,7 +39,7 @@ jobs:
           path: |
             .cache
             tests/.cache
-          key: tomotoru-base-v1.0.4-v1
+          key: tomotoru-base-v0.0.1-v1
 
       - name: Fetch verified base APK & org.json test JAR
         env:
