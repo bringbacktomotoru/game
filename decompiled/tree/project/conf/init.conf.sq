@@ -1,6 +1,0 @@
-runsk("/conf/iaplists.conf");
-runsk("/conf/iaps.conf");
-runsk("/conf/stageenv.conf");
-
-runsk("/conf/snd.conf");
-runsk("/conf/voice.conf");

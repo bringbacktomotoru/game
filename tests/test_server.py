@@ -3,8 +3,8 @@ import json
 
 import pytest
 
-from tools.server.crypto import decrypt_payload, encrypt_payload
-from tools.server.mock import create_app
+from server.python.crypto import decrypt_payload, encrypt_payload
+from server.python.mock import create_app
 
 
 def _consume_userdata_array(datas: list):

@@ -7,15 +7,39 @@ import sys
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DECOMPILER_DIR = REPO_ROOT / "tools" / "decompiler"
-if str(DECOMPILER_DIR) not in sys.path:
-    sys.path.insert(0, str(DECOMPILER_DIR))
+SXR_1_011B = REPO_ROOT / ".cache" / "sxr" / "1-011b.sxr"
 
-from sk_decompiler import Decompiler, decompile_sk  # noqa: E402
-from sk_encoder import encode_sk  # noqa: E402
-from sk_parser import decode_string_bytes, parse_func_data, parse_header  # noqa: E402
+from tools.assets.sxr_extract import decode_trailer, decrypt_entity, parse_entities, read_u32_be, read_u64_be  # noqa: E402
+from tools.assets.sxr_pack import decompress_data  # noqa: E402
+from tools.squirrel.sk_decompiler import Decompiler  # noqa: E402
+from tools.squirrel.sk_encoder import encode_sk  # noqa: E402
+from tools.squirrel.sk_parser import decode_string_bytes, parse_func_data, parse_header  # noqa: E402
 
-EXTRACTED_DIR = REPO_ROOT / "extracted" / "1-011b"
+_SXR_CACHE: dict[str, bytes] = {}
+
+
+def _read_sk_from_bundle(entity_id: str) -> bytes:
+    if not _SXR_CACHE:
+        if not SXR_1_011B.is_file():
+            pytest.skip("Missing .cache/sxr/1-011b.sxr (run python -m tools.assets.fetch_base --extract-sxr)")
+        raw = SXR_1_011B.read_bytes()
+        to, tl = read_u64_be(raw, 10), read_u32_be(raw, 18)
+        for ent in parse_entities(decode_trailer(to, tl, raw[to : to + tl]), raw):
+            if ent["data_size"] == 0:
+                continue
+            payload = raw[ent["data_offset"] : ent["data_offset"] + ent["data_size"]]
+            if ent["encrypted"]:
+                payload = decrypt_entity(ent["name"], payload)
+            if ent["compression"] != 0:
+                payload = decompress_data(payload, ent["compression"], ent["decompressed_size"])
+            _SXR_CACHE[ent["name"]] = payload
+    return _SXR_CACHE[entity_id]
+
+
+def _decompile_entity(entity_id: str) -> str:
+    _, fd, strs = parse_header(_read_sk_from_bundle(entity_id))
+    return Decompiler(parse_func_data(fd, strs), strs).decompile()
+
 
 KEY_SCRIPT_IDS = [
     "112", "114", "126", "129", "144", "162", "163",
@@ -42,10 +66,7 @@ def _normalize_tokens(tokens):
 
 
 def test_decompile_112_game_connection():
-    sk_path = EXTRACTED_DIR / "112.sk.bin"
-    assert sk_path.exists(), f"Missing fixture: {sk_path}"
-
-    out = decompile_sk(str(sk_path))
+    out = _decompile_entity("112")
 
     assert 'Blowfish("test")' in out
     assert "Blowfish(17)" not in out
@@ -57,10 +78,7 @@ def test_decompile_112_game_connection():
 
 
 def test_decompile_194_config():
-    sk_path = EXTRACTED_DIR / "194.sk.bin"
-    assert sk_path.exists(), f"Missing fixture: {sk_path}"
-
-    out = decompile_sk(str(sk_path))
+    out = _decompile_entity("194")
 
     assert 'SERVER_URL <- "http://13.113.101.2:8080";' in out
     assert 'ENTRANCE_URL <- ::CMD_URL <+ "/entrance";' in out
@@ -72,10 +90,7 @@ def test_decompile_194_config():
 
 
 def test_decompile_144_package_updator():
-    sk_path = EXTRACTED_DIR / "144.sk.bin"
-    assert sk_path.exists(), f"Missing fixture: {sk_path}"
-
-    out = decompile_sk(str(sk_path))
+    out = _decompile_entity("144")
 
     assert '"/setting.json"' in out
     assert "release_pkg_version" in out
@@ -87,12 +102,9 @@ def test_decompile_144_package_updator():
     assert "/*0x" not in out
 
 
-@pytest.mark.parametrize("name", ["114.sk.bin", "176.sk.bin"])
-def test_decompile_additional_key_scripts(name):
-    sk_path = EXTRACTED_DIR / name
-    assert sk_path.exists(), f"Missing fixture: {sk_path}"
-
-    out = decompile_sk(str(sk_path))
+@pytest.mark.parametrize("entity_id", ["114", "176"])
+def test_decompile_additional_key_scripts(entity_id):
+    out = _decompile_entity(entity_id)
     assert len(out) > 200
     assert "/*0x" not in out
 
@@ -117,11 +129,8 @@ def test_synthetic_sk_operators_and_literals():
 
 
 def test_utf8_and_cp932_decoding():
-    """Verify 79.sk.bin (rooms.conf) has clean Japanese text and CP932 fallback works."""
-    sk_path = EXTRACTED_DIR / "79.sk.bin"
-    assert sk_path.exists(), f"Missing fixture: {sk_path}"
-
-    out = decompile_sk(str(sk_path))
+    """Verify 79.sk (rooms.conf) has clean Japanese text and CP932 fallback works."""
+    out = _decompile_entity("79")
     assert "\ufffd" not in out
     assert "はじめてのお部屋" in out
     assert "メロディのお部屋" in out
@@ -146,10 +155,7 @@ def test_utf8_and_cp932_decoding():
 @pytest.mark.parametrize("script_id", KEY_SCRIPT_IDS)
 def test_encoder_roundtrip_key_scripts(script_id):
     """Verify token-stream equivalence and decompile idempotence on key 1-011b scripts."""
-    sk_path = EXTRACTED_DIR / f"{script_id}.sk.bin"
-    assert sk_path.exists(), f"Missing fixture: {sk_path}"
-
-    orig_bytes = sk_path.read_bytes()
+    orig_bytes = _read_sk_from_bundle(script_id)
     _, orig_fd, orig_strs = parse_header(orig_bytes)
     orig_root = parse_func_data(orig_fd, orig_strs)
     src1 = Decompiler(orig_root, orig_strs).decompile()
@@ -197,9 +203,9 @@ def test_encoder_synthetic_squirrel_snippets():
 
 
 def test_resource_index_and_tree_mirror():
-    """Verify decompiled/resource_index.json and decompiled/tree/ mirror."""
-    index_path = REPO_ROOT / "decompiled" / "resource_index.json"
-    assert index_path.exists(), "Missing decompiled/resource_index.json"
+    """Verify game/metadata/resource_index.json and game/squirrel/ logical tree."""
+    index_path = REPO_ROOT / "game" / "metadata" / "resource_index.json"
+    assert index_path.exists(), "Missing game/metadata/resource_index.json"
 
     index = json.loads(index_path.read_text(encoding="utf-8"))
     assert "by_path" in index and "by_entity" in index
@@ -209,21 +215,19 @@ def test_resource_index_and_tree_mirror():
     rooms_entry = index["by_path"]["/project/conf/rooms.conf"]
     assert rooms_entry["bundle"] == "1-011b"
     assert rooms_entry["entity_id"] == 79
-    assert rooms_entry["extracted_path"] == "extracted/1-011b/79.sk.bin"
-    assert rooms_entry["decompiled_path"] == "decompiled/squirrel/1-011b/79.sk.sq"
 
     by_ent = index["by_entity"]["1-011b/79"]
     assert by_ent["path"] == "/project/conf/rooms.conf"
 
-    tree_rooms = REPO_ROOT / "decompiled" / "tree" / "project" / "conf" / "rooms.conf.sq"
+    tree_rooms = REPO_ROOT / "game" / "squirrel" / "project" / "conf" / "rooms.conf.sq"
     assert tree_rooms.exists()
     assert "はじめてのお部屋" in tree_rooms.read_text(encoding="utf-8")
 
 
 def test_game_metadata_json():
-    """Verify tools/server/data/game_metadata.json structure and key relationships."""
-    meta_path = REPO_ROOT / "tools" / "server" / "data" / "game_metadata.json"
-    assert meta_path.exists(), "Missing tools/server/data/game_metadata.json"
+    """Verify server/python/data/game_metadata.json structure and key relationships."""
+    meta_path = REPO_ROOT / "server" / "python" / "data" / "game_metadata.json"
+    assert meta_path.exists(), "Missing server/python/data/game_metadata.json"
 
     meta = json.loads(meta_path.read_text(encoding="utf-8"))
     for section in (

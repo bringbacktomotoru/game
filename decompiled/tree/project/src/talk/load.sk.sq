@@ -1,4 +1,0 @@
-foreach (v in [
-"/src/talk/SanrioTalkView.sk"
-"/src/talk/TalkRunner_extend.sk"
-]) runsk(v);

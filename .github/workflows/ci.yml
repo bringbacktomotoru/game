@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main, local, "refactor/**"]
+  pull_request:
+    branches: [main, local]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test Suite & APK Build Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Android & Java build tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq openjdk-17-jdk-headless zipalign apksigner smali dalvik-exchange libandroid-23-java
+
+      - name: Install Python dependencies
+        run: pip install -e ".[sxr,dev]"
+
+      - name: Cache base APK & test dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache
+            tests/.cache
+          key: tomotoru-base-v0.0.1-v1
+
+      - name: Fetch verified base APK & org.json test JAR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python -m tools.assets.fetch_base --extract-sxr
+          mkdir -p tests/.cache
+          if [ ! -f tests/.cache/org-json.jar ]; then
+            curl -fsSL https://repo1.maven.org/maven2/org/json/json/20231013/json-20231013.jar -o tests/.cache/org-json.jar
+          fi
+
+      - name: Run pytest suite
+        run: pytest -v
+
+      - name: Build test APK artifacts (offline-test & online-test)
+        run: |
+          python -m tools.build.build_apk --mode offline-test -o dist/tomotoru-offline-test.apk
+          python -m tools.build.build_apk --mode online-test -o dist/tomotoru-online-test.apk
+          ls -lh dist/
+
+      - name: Upload offline-test artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-test
+          path: dist/tomotoru-offline-test.apk
+          retention-days: 14
+
+      - name: Upload online-test artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: online-test
+          path: dist/tomotoru-online-test.apk
+          retention-days: 14

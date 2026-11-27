@@ -1,9 +1,0 @@
-::IronSource <- null;
-
-::registerIronSourceEvent <- function() {
-
-}
-
-::callPlacement <- function(placement_name, recieve_func = null) {
-
-}

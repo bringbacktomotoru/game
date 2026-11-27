@@ -1,9 +1,0 @@
-foreach (f_name in [
-"system/load.sk"
-"common/load.sk"
-"dialog/load.sk"
-"panel/load.sk"
-"component/load.sk"
-]) {
-  runsk("/src/ui/" + f_name);
-}

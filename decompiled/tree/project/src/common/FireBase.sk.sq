@@ -1,4 +1,0 @@
-::firebase <- null;
-
-local _os_name = skGetOSName();
-if (_os_name != "Android") return;

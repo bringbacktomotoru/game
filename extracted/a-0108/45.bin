@@ -1,5 +1,0 @@
-// UIScript created by TalkViewPanel.ui 
-
-function capturing(){
-	$capturing_arrow.anime(10,20,5,true);
-}

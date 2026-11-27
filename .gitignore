@@ -4,22 +4,21 @@ __pycache__/
 *.pyo
 .venv/
 *.egg-info/
-dist/
 build/
 
-# IDE
+# Generated artifacts & caches
+.cache/
+dist/
+tests/.cache/
+*.idsig
+
+# Server runtime data
+server/python/saves/
+
+# IDE & OS
 .idea/
 .vscode/
 *.swp
 *.swo
-
-# OS
 .DS_Store
 Thumbs.db
-
-# Server data
-tools/server/saves/
-
-# Generated patched APKs
-apk/*_offline*.apk
-apk/*.idsig

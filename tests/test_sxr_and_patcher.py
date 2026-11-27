@@ -5,17 +5,14 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "tools" / "extractor"))
-sys.path.insert(0, str(ROOT / "tools" / "repacker"))
-sys.path.insert(0, str(ROOT / "tools" / "decompiler"))
-sys.path.insert(0, str(ROOT / "tools" / "patcher"))
+SXR_DIR = ROOT / ".cache" / "sxr"
 
-from debug_patches import apply_debug_patch
-from extract import decode_trailer, decrypt_entity, extract_sxr, parse_entities, read_u32_be, read_u64_be
-from patch_apk import patch_sakana_proj, patch_sk_strings, patch_sxr_bundle
-from repack import decompress_data, repack_sxr
-from sk_decompiler import Decompiler
-from sk_parser import parse_func_data, parse_header
+from tools.assets.sxr_extract import decode_trailer, decrypt_entity, extract_sxr, parse_entities, read_u32_be, read_u64_be
+from tools.assets.sxr_pack import decompress_data, repack_sxr
+from tools.build.build_apk import patch_sakana_proj, patch_sk_strings, patch_sxr_bundle
+from tools.squirrel.patch import apply_debug_patch
+from tools.squirrel.sk_decompiler import Decompiler
+from tools.squirrel.sk_parser import parse_func_data, parse_header
 
 
 @pytest.mark.parametrize("compression", ["none", "zlib", "lz4"])
@@ -45,11 +42,11 @@ def test_sxr_repack_extract_roundtrip(tmp_path, compression, encrypt):
 
 
 def test_patch_sk_strings_preserves_string_table_indices():
-    sk_path = ROOT / "extracted" / "1-011b" / "194.sk.bin"
-    if not sk_path.exists():
-        pytest.skip("extracted/1-011b/194.sk.bin not present")
+    src_1 = SXR_DIR / "1-011b.sxr"
+    if not src_1.exists():
+        pytest.skip(".cache/sxr/1-011b.sxr not present")
 
-    orig_bytes = sk_path.read_bytes()
+    orig_bytes = _read_sxr_entity(src_1, "194")
     _, orig_code, orig_strs = parse_header(orig_bytes)
 
     new_url = "http://127.0.0.1:5000"
@@ -79,7 +76,7 @@ def test_patch_sxr_bundle_real_bundles(tmp_path):
     mock_url = "http://127.0.0.1:5000"
 
     # 1. Patch 1-011b.sxr (entity 194)
-    src_1 = ROOT / "sxr" / "1-011b.sxr"
+    src_1 = SXR_DIR / "1-011b.sxr"
     if src_1.exists():
         dst_1 = tmp_path / "1-011b.sxr"
         dst_1.write_bytes(src_1.read_bytes())
@@ -98,7 +95,7 @@ def test_patch_sxr_bundle_real_bundles(tmp_path):
         assert strs[5] == "/app_kitty"
 
     # 2. Patch main.sxr (LZ4-compressed sakana.proj)
-    src_main = ROOT / "sxr" / "main.sxr"
+    src_main = SXR_DIR / "main.sxr"
     if src_main.exists():
         dst_main = tmp_path / "main.sxr"
         dst_main.write_bytes(src_main.read_bytes())
@@ -202,8 +199,8 @@ def _decompile_sk(sk_bytes: bytes) -> str:
 
 def test_normal_mode_leaves_squirrel_logic_untouched(tmp_path):
     """Normal mode (debug=False) must only patch URLs and leave all Squirrel logic scripts untouched."""
-    src_1 = ROOT / "sxr" / "1-011b.sxr"
-    src_main = ROOT / "sxr" / "main.sxr"
+    src_1 = SXR_DIR / "1-011b.sxr"
+    src_main = SXR_DIR / "main.sxr"
     if not src_1.exists() or not src_main.exists():
         pytest.skip("sxr/1-011b.sxr or sxr/main.sxr not present")
 
@@ -234,8 +231,8 @@ def test_normal_mode_leaves_squirrel_logic_untouched(tmp_path):
 
 def test_debug_mode_applies_all_debug_patches_and_roundtrips(tmp_path):
     """--debug mode must apply all 7 debug patches cleanly (chaining 194.sk URL + AR disable) and produce valid .sk."""
-    src_1 = ROOT / "sxr" / "1-011b.sxr"
-    src_main = ROOT / "sxr" / "main.sxr"
+    src_1 = SXR_DIR / "1-011b.sxr"
+    src_main = SXR_DIR / "main.sxr"
     if not src_1.exists() or not src_main.exists():
         pytest.skip("sxr/1-011b.sxr or sxr/main.sxr not present")
 
@@ -279,11 +276,25 @@ def test_debug_mode_applies_all_debug_patches_and_roundtrips(tmp_path):
     assert "/ui/image/base/icon_change.png" in src_270
     assert "/ui/image/base/back_y.png" in src_270
 
-    # 7. 384.sk: HomeUI.movePanel eventstopper guard + MOVEPANEL_ERR telemetry
+    # 7. 384.sk: HomeUI.movePanel eventstopper guard + MOVEPANEL_ERR + AR alert + screenshot fix
     src_384 = _decompile_sk(_read_sxr_entity(dst_1, "384"))
     assert "MOVEPANEL_ERR: " in src_384
     assert "::gamesession.sendReportToServer(_dbg_msg);" in src_384
     assert 'prev_clazz ? (prev_clazz["unique_bgm"] != null) : false' in src_384
+    assert '::dict.get("can_not_use_AR")' in src_384
+    assert "RGBAImage(int(w), int(h))" in src_384
+
+    # 7b. 107.sk: skLoadAddon("sksmartar") loaded outside ENABLE_AR for ARUtils
+    src_107 = _decompile_sk(_read_sxr_entity(dst_1, "107"))
+    assert 'if (skGetOSName() == "Android")' in src_107
+    assert 'skLoadAddon("sksmartar");' in src_107
+
+    # 7c. 376.sk & 421.sk: dialogue bubble end-of-talk softlock fix (_mdl -> this.model + cleanup guard)
+    src_376 = _decompile_sk(_read_sxr_entity(dst_1, "376"))
+    assert "showGetHapinessEffect(this.model);" in src_376
+    assert "showGetHapinessEffect(_mdl);" not in src_376
+    src_421 = _decompile_sk(_read_sxr_entity(dst_1, "421"))
+    assert "printexception(ex);" in src_421
 
     # 7c. 376.sk & 421.sk: dialogue bubble end-of-talk softlock fix (_mdl -> this.model + cleanup guard)
     src_376 = _decompile_sk(_read_sxr_entity(dst_1, "376"))
