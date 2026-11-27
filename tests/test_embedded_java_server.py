@@ -1,6 +1,6 @@
 """End-to-end integration tests for the embedded Java offline server (com.tomotoru.offline).
 
-Compiles the Java sources from server/android/ and runs StandaloneMain on a local
+Compiles the Java sources from the tomoffline submodule and runs StandaloneMain on a local
 ephemeral port to test the game wire protocol:
   - Blowfish ECB + zlib framing interoperability (small & >10KB payloads)
   - Exact Content-Length header on every response (required by SakanaGL URLRequest.java)
@@ -25,9 +25,9 @@ from pathlib import Path
 import pytest
 
 from tests.sakana_wire import decrypt_payload, encrypt_payload
+from tools.android.embed_server import offline_java_sources
 
 ROOT = Path(__file__).resolve().parent.parent
-JAVA_SRC_DIR = ROOT / "server" / "android" / "src" / "main" / "java" / "com" / "tomotoru" / "offline"
 SXR_DIR = ROOT / ".cache" / "sxr"
 ANDROID_JAR = Path("/usr/lib/android-sdk/platforms/android-23/android.jar")
 ORG_JSON_JARS = [
@@ -62,7 +62,7 @@ def compiled_java_classes(tmp_path_factory):
         pytest.skip("libandroid-json-org-java not installed")
 
     out_dir = tmp_path_factory.mktemp("java_classes")
-    sources = sorted(str(p) for p in JAVA_SRC_DIR.glob("*.java"))
+    sources = [str(p) for p in offline_java_sources()]
     res = subprocess.run(
         [
             "javac",

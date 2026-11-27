@@ -1,7 +1,7 @@
 """Compile and inject the embedded Java offline server into Tomotoru's classes.dex.
 
 Pipeline:
-  1. Compile android-server/src/main/java/com/tomotoru/offline/*.java with javac against android.jar
+  1. Compile the tomoffline submodule's Java sources with javac against android.jar
   2. Convert compiled .class files to server.dex with dalvik-exchange / dx
   3. Disassemble server.dex and the APK's original classes.dex using baksmali
   4. Merge com/tomotoru/offline/*.smali into the original smali tree
@@ -18,7 +18,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-ANDROID_SERVER_SRC = ROOT / "server" / "android" / "src" / "main" / "java" / "com" / "tomotoru" / "offline"
+ANDROID_SERVER_SRC = ROOT / "tomoffline" / "src" / "main" / "java" / "com" / "tomotoru" / "offline"
 
 ANDROID_JAR_CANDIDATES = (
     Path("/usr/lib/android-sdk/platforms/android-23/android.jar"),
@@ -67,6 +67,15 @@ def _run(cmd: list[str], desc: str) -> None:
     if res.returncode != 0:
         err = res.stderr.strip() or res.stdout.strip()
         raise RuntimeError(f"Command failed ({cmd[0]}): {err}")
+
+
+def offline_java_sources() -> list[Path]:
+    if not (ANDROID_SERVER_SRC / "OfflineServer.java").is_file():
+        raise FileNotFoundError(
+            f"tomoffline sources are missing at {ANDROID_SERVER_SRC}. "
+            "From the tomotoru checkout, run: git submodule update --init -- tomoffline"
+        )
+    return sorted(ANDROID_SERVER_SRC.glob("*.java"))
 
 
 def patch_sakana_application_smali(smali_path: Path) -> None:
@@ -169,19 +178,12 @@ def patch_sanrio_activity_smali(smali_path: Path) -> None:
 
 def inject_embedded_server_into_dex(orig_dex_bytes: bytes) -> bytes:
     """Compile com.tomotoru.offline and merge it into the APK's classes.dex."""
+    java_files = [str(p) for p in offline_java_sources() if p.name != "StandaloneMain.java"]
     javac_bin = _find_tool("javac")
     smali_bin = _find_tool("smali")
     baksmali_bin = _find_tool("baksmali")
     dx_cmd = _find_dx()
     android_jar = _find_android_jar()
-
-    java_files = sorted(
-        str(p)
-        for p in ANDROID_SERVER_SRC.glob("*.java")
-        if p.name != "StandaloneMain.java"
-    )
-    if not java_files:
-        raise FileNotFoundError(f"No Java sources found in {ANDROID_SERVER_SRC}")
 
     work_dir = Path(tempfile.mkdtemp(prefix="tomotoru_dex_"))
     try:

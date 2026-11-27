@@ -3,8 +3,8 @@
 
 Supported build modes:
   - original     : Copies the verified unmodified v1.0.4 base APK
-  - offline      : Embeds server/android (127.0.0.1:18080), normal mode
-  - offline-test : Embeds server/android (127.0.0.1:18080), --debug enabled
+  - offline      : Embeds tomoffline (127.0.0.1:18080), normal mode
+  - offline-test : Embeds tomoffline (127.0.0.1:18080), --debug enabled
   - online       : Points to --url (or ONLINE_SERVER_URL env var), normal mode
   - online-test  : Points to http://127.0.0.1:18880, --debug enabled
 """

@@ -13,8 +13,7 @@ tomotoru/
 │   ├── java/            # Decompiled Java sources (SanrioActivity, SakanaGL bridge)
 │   ├── resources/       # AndroidManifest.xml & XML/layout resources
 │   └── metadata/        # resource_index.json, pkg.json, version
-├── server/
-│   └── android/         # Embedded Java HTTP/1.1 server injected into offline APKs
+├── tomoffline/          # Submodule: Java server embedded in offline APKs
 ├── tools/
 │   ├── assets/          # fetch_base.py, sxr_extract.py, sxr_pack.py
 │   ├── squirrel/        # decompile.py, sk_parser/decompiler/encoder, patch.py, strings.py
@@ -30,7 +29,12 @@ Heavy binaries (`tomotoru-v1.0.4-original.apk` and compressed binary assets) are
 
 ### 1. Install Dependencies & Fetch Base APK
 
+Initialize the [tomoffline](https://github.com/clysnelzum/tomoffline) submodule for offline
+APK builds and Java integration tests. Run the same command after pulling changes to pick
+up any updated server revision.
+
 ```bash
+git submodule update --init -- tomoffline
 pip install -e ".[sxr,dev]"
 python -m tools.assets.fetch_base --extract-sxr
 ```
